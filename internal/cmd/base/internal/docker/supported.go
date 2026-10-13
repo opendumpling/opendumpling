@@ -11,7 +11,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/db/common"
+	"github.com/opendumpling/opendumpling/internal/db/common"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/ory/dockertest/v3"
 )
@@ -43,20 +43,20 @@ func startDbInDockerSupported(dialect string, opt ...Option) (cleanup func() err
 	switch dialect {
 	case "postgres", "pgx":
 		switch {
-		case os.Getenv("BOUNDARY_TESTING_PG_URL") != "":
-			url = os.Getenv("BOUNDARY_TESTING_PG_URL")
+		case os.Getenv("DUMPLING_TESTING_PG_URL") != "":
+			url = os.Getenv("DUMPLING_TESTING_PG_URL")
 			return func() error { return nil }, url, "", nil
 		case repository != "":
-			resource, err = pool.Run(repository, tag, []string{"POSTGRES_PASSWORD=password", "POSTGRES_DB=boundary"})
+			resource, err = pool.Run(repository, tag, []string{"POSTGRES_PASSWORD=password", "POSTGRES_DB=dumpling"})
 			url = "postgres://postgres:password@localhost:%s?sslmode=disable"
 			if err == nil {
-				url = fmt.Sprintf("postgres://postgres:password@%s/boundary?sslmode=disable", resource.GetHostPort("5432/tcp"))
+				url = fmt.Sprintf("postgres://postgres:password@%s/dumpling?sslmode=disable", resource.GetHostPort("5432/tcp"))
 			}
 		default:
-			resource, err = pool.Run(dialect, tag, []string{"POSTGRES_PASSWORD=password", "POSTGRES_DB=boundary"})
+			resource, err = pool.Run(dialect, tag, []string{"POSTGRES_PASSWORD=password", "POSTGRES_DB=dumpling"})
 			url = "postgres://postgres:password@localhost:%s?sslmode=disable"
 			if err == nil {
-				url = fmt.Sprintf("postgres://postgres:password@%s/boundary?sslmode=disable", resource.GetHostPort("5432/tcp"))
+				url = fmt.Sprintf("postgres://postgres:password@%s/dumpling?sslmode=disable", resource.GetHostPort("5432/tcp"))
 			}
 		}
 

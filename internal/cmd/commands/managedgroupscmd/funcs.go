@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/managedgroups"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/managedgroups"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 )
 
 func (c *Command) printListTable(items []*managedgroups.ManagedGroup) string {

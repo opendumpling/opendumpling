@@ -11,9 +11,9 @@ package services
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
-	authmethods "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/authmethods"
-	authtokens "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/authtokens"
-	_ "github.com/hashicorp/boundary/sdk/pbs/controller/protooptions"
+	authmethods "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/authmethods"
+	authtokens "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/authtokens"
+	_ "github.com/opendumpling/opendumpling/sdk/pbs/controller/protooptions"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	_ "google.golang.org/genproto/googleapis/api/visibility"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"

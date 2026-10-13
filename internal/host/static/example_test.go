@@ -7,7 +7,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hashicorp/boundary/internal/host/static"
+	"github.com/opendumpling/opendumpling/internal/host/static"
 )
 
 func ExampleNewHostCatalog() {

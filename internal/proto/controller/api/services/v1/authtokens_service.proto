@@ -9,7 +9,7 @@ import "controller/api/resources/authtokens/v1/authtoken.proto";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/gen/controller/api/services;services";
+option go_package = "github.com/opendumpling/opendumpling/internal/gen/controller/api/services;services";
 
 service AuthTokenService {
   // GetAuthToken returns a stored Auth Token if present.  The provided request
@@ -32,7 +32,7 @@ service AuthTokenService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Lists all Auth Tokens."};
   }
 
-  // DeleteAuthToken removes a Auth Token from Boundary. If the provided
+  // DeleteAuthToken removes a Auth Token from Dumpling. If the provided
   // Auth Token id is malformed or not provided an error is returned.
   rpc DeleteAuthToken(DeleteAuthTokenRequest) returns (DeleteAuthTokenResponse) {
     option (google.api.http) = {delete: "/v1/auth-tokens/{id}"};

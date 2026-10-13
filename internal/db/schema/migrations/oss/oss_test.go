@@ -7,14 +7,14 @@ import (
 	"context"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/db/common"
-	"github.com/hashicorp/boundary/internal/db/schema"
-	"github.com/hashicorp/boundary/testing/dbtest"
+	"github.com/opendumpling/opendumpling/internal/db/common"
+	"github.com/opendumpling/opendumpling/internal/db/schema"
+	"github.com/opendumpling/opendumpling/testing/dbtest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
 	// import for init side-effects to include migrations
-	_ "github.com/hashicorp/boundary/internal/db/schema/migrations/oss"
+	_ "github.com/opendumpling/opendumpling/internal/db/schema/migrations/oss"
 )
 
 func TestApplyMigrations(t *testing.T) {

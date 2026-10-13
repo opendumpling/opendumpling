@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/hashicorp/boundary/testing/internal/e2e/boundary"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e/dumpling"
 	"github.com/ory/dockertest/v3"
 	"github.com/ory/dockertest/v3/docker"
 	"github.com/stretchr/testify/require"
@@ -26,9 +26,9 @@ type Container struct {
 	UriNetwork   string
 }
 
-// StartBoundaryDatabase spins up a postgres database in a docker container.
+// StartDumplingDatabase spins up a postgres database in a docker container.
 // Returns information about the container
-func StartBoundaryDatabase(t testing.TB, pool *dockertest.Pool, network *dockertest.Network) *Container {
+func StartDumplingDatabase(t testing.TB, pool *dockertest.Pool, network *dockertest.Network) *Container {
 	t.Log("Starting postgres database...")
 	c, err := LoadConfig()
 	require.NoError(t, err)
@@ -74,27 +74,27 @@ func StartBoundaryDatabase(t testing.TB, pool *dockertest.Pool, network *dockert
 	}
 }
 
-// InitBoundaryDatabase starts a boundary container (of the latest released version) and initializes a
-// postgres database (using `boundary database init`) at the specified postgres URI.
+// InitDumplingDatabase starts a boundary container (of the latest released version) and initializes a
+// postgres database (using `dumpling database init`) at the specified postgres URI.
 // Returns information about the container
-func InitBoundaryDatabase(t testing.TB, pool *dockertest.Pool, network *dockertest.Network, postgresURI string) *Container {
+func InitDumplingDatabase(t testing.TB, pool *dockertest.Pool, network *dockertest.Network, postgresURI string) *Container {
 	t.Log("Initializing postgres database...")
-	c, err := LoadConfig()
+	_, err := LoadConfig()
 	require.NoError(t, err)
 
-	boundaryConfigFilePath, err := filepath.Abs("testdata/boundary-config.hcl")
+	boundaryConfigFilePath, err := filepath.Abs("testdata/dumpling-config.hcl")
 	require.NoError(t, err)
 
 	resource, err := pool.RunWithOptions(&dockertest.RunOptions{
-		Repository: c.DockerMirror + "/hashicorp/boundary",
+		Repository: "ghcr.io/opendumpling/opendumpling",
 		Tag:        "latest",
-		Cmd:        []string{"boundary", "database", "init", "-config", "/boundary/boundary-config.hcl", "-format", "json"},
+		Cmd:        []string{"dumpling", "database", "init", "-config", "/dumpling/dumpling-config.hcl", "-format", "json"},
 		Env: []string{
-			"BOUNDARY_POSTGRES_URL=" + postgresURI,
+			"DUMPLING_POSTGRES_URL=" + postgresURI,
 			"SKIP_CHOWN=true",
 		},
-		Mounts:   []string{path.Dir(boundaryConfigFilePath) + ":/boundary/"},
-		Name:     "boundary-init",
+		Mounts:   []string{path.Dir(boundaryConfigFilePath) + ":/dumpling/"},
+		Name:     "dumpling-init",
 		Networks: []*dockertest.Network{network},
 		CapAdd:   []string{"IPC_LOCK"},
 	})
@@ -103,10 +103,10 @@ func InitBoundaryDatabase(t testing.TB, pool *dockertest.Pool, network *dockerte
 	return &Container{Resource: resource}
 }
 
-// GetDbInitInfoFromContainer extracts info from calling `boundary database init` in the specified
+// GetDbInitInfoFromContainer extracts info from calling `dumpling database init` in the specified
 // container.
 // Returns a struct containing the generated info.
-func GetDbInitInfoFromContainer(t testing.TB, pool *dockertest.Pool, container *Container) boundary.DbInitInfo {
+func GetDbInitInfoFromContainer(t testing.TB, pool *dockertest.Pool, container *Container) dumpling.DbInitInfo {
 	_, err := pool.Client.WaitContainer(container.Resource.Container.ID)
 	require.NoError(t, err)
 	buf := bytes.NewBuffer(nil)
@@ -122,35 +122,35 @@ func GetDbInitInfoFromContainer(t testing.TB, pool *dockertest.Pool, container *
 	require.NoError(t, err)
 	require.Empty(t, ebuf)
 
-	var dbInitInfo boundary.DbInitInfo
+	var dbInitInfo dumpling.DbInitInfo
 	err = json.Unmarshal(buf.Bytes(), &dbInitInfo)
 	require.NoError(t, err, buf.String())
 
 	return dbInitInfo
 }
 
-// StartBoundary starts a boundary container and spins up an instance of boundary using the
+// StartDumpling starts a boundary container and spins up an instance of boundary using the
 // specified database at postgresURI.
 // Returns information about the container.
-func StartBoundary(t testing.TB, pool *dockertest.Pool, network *dockertest.Network, postgresURI string) *Container {
-	t.Log("Starting Boundary...")
-	c, err := LoadConfig()
+func StartDumpling(t testing.TB, pool *dockertest.Pool, network *dockertest.Network, postgresURI string) *Container {
+	t.Log("Starting Dumpling...")
+	_, err := LoadConfig()
 	require.NoError(t, err)
 
-	boundaryConfigFilePath, err := filepath.Abs("testdata/boundary-config.hcl")
+	boundaryConfigFilePath, err := filepath.Abs("testdata/dumpling-config.hcl")
 	require.NoError(t, err)
 
 	resource, err := pool.RunWithOptions(&dockertest.RunOptions{
-		Repository: c.DockerMirror + "/hashicorp/boundary",
+		Repository: "ghcr.io/opendumpling/opendumpling",
 		Tag:        "latest",
-		Cmd:        []string{"boundary", "server", "-config", "/boundary/boundary-config.hcl"},
+		Cmd:        []string{"dumpling", "server", "-config", "/dumpling/dumpling-config.hcl"},
 		Env: []string{
-			"BOUNDARY_POSTGRES_URL=" + postgresURI,
+			"DUMPLING_POSTGRES_URL=" + postgresURI,
 			"HOSTNAME=boundary",
 			"SKIP_CHOWN=true",
 		},
-		Mounts:       []string{path.Dir(boundaryConfigFilePath) + ":/boundary/"},
-		Name:         "boundary",
+		Mounts:       []string{path.Dir(boundaryConfigFilePath) + ":/dumpling/"},
+		Name:         "dumpling",
 		Networks:     []*dockertest.Network{network},
 		ExposedPorts: []string{"9200", "9201", "9202", "9203"},
 		PortBindings: map[docker.Port][]docker.PortBinding{
@@ -209,14 +209,14 @@ func StartVault(t testing.TB, pool *dockertest.Pool, network *dockertest.Network
 // Returns information about the container.
 func ConnectToTarget(t testing.TB, pool *dockertest.Pool, network *dockertest.Network, boundaryAddr string, token string, targetId string) *Container {
 	t.Log("Connecting to target...")
-	c, err := LoadConfig()
+	_, err := LoadConfig()
 	require.NoError(t, err)
 
 	resource, err := pool.RunWithOptions(&dockertest.RunOptions{
-		Repository: c.DockerMirror + "/hashicorp/boundary",
+		Repository: "ghcr.io/opendumpling/opendumpling",
 		Tag:        "latest",
 		Cmd: []string{
-			"boundary", "connect",
+			"dumpling", "connect",
 			"-token", "env://E2E_AUTH_TOKEN",
 			"-target-id", targetId,
 			"-exec", "ls", // Execute something so that the command exits
@@ -224,7 +224,7 @@ func ConnectToTarget(t testing.TB, pool *dockertest.Pool, network *dockertest.Ne
 			// this method only cares about creating a session entry in the database, so the ssh is unnecessary
 		},
 		Env: []string{
-			"BOUNDARY_ADDR=" + boundaryAddr,
+			"DUMPLING_ADDR=" + boundaryAddr,
 			"E2E_AUTH_TOKEN=" + token,
 			"SKIP_CHOWN=true",
 		},
@@ -237,7 +237,7 @@ func ConnectToTarget(t testing.TB, pool *dockertest.Pool, network *dockertest.Ne
 	return &Container{Resource: resource}
 }
 
-// StartOpenSshServer starts an openssh container to serve as a target for Boundary.
+// StartOpenSshServer starts an openssh container to serve as a target for Dumpling.
 // Returns information about the container.
 func StartOpenSshServer(t testing.TB, pool *dockertest.Pool, network *dockertest.Network, user string, privateKeyFilePath string) *Container {
 	t.Log("Starting openssh-server to serve as target...")

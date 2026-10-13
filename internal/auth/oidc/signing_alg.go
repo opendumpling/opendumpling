@@ -7,8 +7,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hashicorp/boundary/internal/auth/oidc/store"
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/auth/oidc/store"
+	"github.com/opendumpling/opendumpling/internal/errors"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -74,7 +74,7 @@ func NewSigningAlg(ctx context.Context, authMethodId string, alg Alg) (*SigningA
 }
 
 // SupportedAlgorithm returns true iff the provided algorithm is supported
-// by boundary.
+// by dumpling.
 func SupportedAlgorithm(a Alg) bool {
 	return supportedAlgorithms[a]
 }

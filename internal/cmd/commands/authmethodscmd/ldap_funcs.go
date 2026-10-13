@@ -10,8 +10,8 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/hashicorp/boundary/api/authmethods"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api/authmethods"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/hashicorp/go-secure-stdlib/parseutil"
 )
 
@@ -232,22 +232,22 @@ func (c *LdapCommand) extraLdapHelpFunc(helpMap map[string]func() string) string
 	switch c.Func {
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary auth-methods create ldap [options] [args]",
+			"Usage: dumpling auth-methods create ldap [options] [args]",
 			"",
 			"  Create an ldap-type auth method. Example:",
 			"",
-			`    $ boundary auth-methods create ldap -name prodops -description "LDAP auth-method for ProdOps"`,
+			`    $ dumpling auth-methods create ldap -name prodops -description "LDAP auth-method for ProdOps"`,
 			"",
 			"",
 		})
 
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary auth-methods update ldap [options] [args]",
+			"Usage: dumpling auth-methods update ldap [options] [args]",
 			"",
 			"  Update an ldap-type auth method given its ID. Example:",
 			"",
-			`    $ boundary auth-methods update ldap -id amldap_1234567890 -name "devops" -description "LDAP auth-method for DevOps"`,
+			`    $ dumpling auth-methods update ldap -id amldap_1234567890 -name "devops" -description "LDAP auth-method for DevOps"`,
 			"",
 			"",
 		})

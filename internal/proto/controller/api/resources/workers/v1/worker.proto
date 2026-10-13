@@ -11,7 +11,7 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
-option go_package = "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/workers;workers";
+option go_package = "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/workers;workers";
 
 // Worker contains all fields related to a Worker resource
 message Worker {
@@ -89,7 +89,7 @@ message Worker {
   // Output only. The api tags set for the worker.
   map<string, google.protobuf.ListValue> api_tags = 180 [json_name = "api_tags"]; // @gotags: `class:"public"`
 
-  // Output only. The version of the Boundary binary the worker is running.
+  // Output only. The version of the Dumpling binary the worker is running.
   string release_version = 190 [json_name = "release_version"]; // @gotags: `class:"public"`
 
   // Output only. The ids of the workers directly connected to this worker.

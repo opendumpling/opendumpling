@@ -11,8 +11,8 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/hashicorp/boundary/internal/bsr/internal/is"
-	"github.com/hashicorp/boundary/internal/util"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/is"
+	"github.com/opendumpling/opendumpling/internal/util"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	wrappingEd "github.com/hashicorp/go-kms-wrapping/v2/ed25519"
 

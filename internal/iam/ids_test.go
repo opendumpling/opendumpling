@@ -8,9 +8,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/types/scope"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

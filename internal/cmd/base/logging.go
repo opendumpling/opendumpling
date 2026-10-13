@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/cmd/base/logging"
+	"github.com/opendumpling/opendumpling/internal/cmd/base/logging"
 	"github.com/hashicorp/go-hclog"
 )
 

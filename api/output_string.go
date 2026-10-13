@@ -49,15 +49,15 @@ func (d *OutputStringError) parseRequest() {
 	for k, v := range d.Request.Header {
 		for _, h := range v {
 			if strings.ToLower(k) == "authorization" {
-				tokenName := os.Getenv("BOUNDARY_TOKEN_NAME")
-				keyringType := os.Getenv("BOUNDARY_KEYRING_TYPE")
+				tokenName := os.Getenv("DUMPLING_TOKEN_NAME")
+				keyringType := os.Getenv("DUMPLING_KEYRING_TYPE")
 				switch {
 				case tokenName == "none" || keyringType == "none":
 					h = `Bearer <token>`
 				case tokenName == "" && keyringType == "":
-					h = `Bearer $(boundary config get-token)`
+					h = `Bearer $(dumpling config get-token)`
 				default:
-					h = fmt.Sprintf("Bearer $(boundary config get-token -keyring-type %s -token-name %s)", keyringType, tokenName)
+					h = fmt.Sprintf("Bearer $(dumpling config get-token -keyring-type %s -token-name %s)", keyringType, tokenName)
 				}
 			}
 			d.parsedCurlString = fmt.Sprintf("%s -H \"%s: %s\"", d.parsedCurlString, k, h)

@@ -10,9 +10,9 @@ import (
 	"net"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/daemon/common"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/observability/event"
+	"github.com/opendumpling/opendumpling/internal/daemon/common"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
 	nodeenet "github.com/hashicorp/nodeenrollment/net"
 )
 

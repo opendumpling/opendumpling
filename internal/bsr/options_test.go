@@ -7,7 +7,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/bsr/kms"
+	"github.com/opendumpling/opendumpling/internal/bsr/kms"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

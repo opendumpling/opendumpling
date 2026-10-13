@@ -3,7 +3,7 @@
 
 package host
 
-import "github.com/hashicorp/boundary/internal/boundary"
+import "github.com/opendumpling/opendumpling/internal/dumpling"
 
 // Domain defines the domain for the host package
 const Domain = "host"
@@ -11,19 +11,19 @@ const Domain = "host"
 // Catalog contains the common methods across all the different types of host
 // catalogs.
 type Catalog interface {
-	boundary.Resource
+	dumpling.Resource
 	GetProjectId() string
 }
 
 // Set contains the common methods across all the different types of host sets.
 type Set interface {
-	boundary.Resource
+	dumpling.Resource
 	GetCatalogId() string
 }
 
 // Host contains the common methods across all the different types of hosts.
 type Host interface {
-	boundary.Resource
+	dumpling.Resource
 	GetCatalogId() string
 	GetAddress() string
 	GetIpAddresses() []string

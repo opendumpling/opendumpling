@@ -22,7 +22,7 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/hashicorp/boundary/api/recovery"
+	"github.com/opendumpling/opendumpling/api/recovery"
 	cleanhttp "github.com/hashicorp/go-cleanhttp"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	retryablehttp "github.com/hashicorp/go-retryablehttp"
@@ -32,18 +32,18 @@ import (
 )
 
 const (
-	EnvBoundaryAddr          = "BOUNDARY_ADDR"
-	EnvBoundaryCACert        = "BOUNDARY_CACERT"
-	EnvBoundaryCAPath        = "BOUNDARY_CAPATH"
-	EnvBoundaryClientCert    = "BOUNDARY_CLIENT_CERT"
-	EnvBoundaryClientKey     = "BOUNDARY_CLIENT_KEY"
-	EnvBoundaryClientTimeout = "BOUNDARY_CLIENT_TIMEOUT"
-	EnvBoundaryTLSInsecure   = "BOUNDARY_TLS_INSECURE"
-	EnvBoundaryTLSServerName = "BOUNDARY_TLS_SERVER_NAME"
-	EnvBoundaryMaxRetries    = "BOUNDARY_MAX_RETRIES"
-	EnvBoundaryToken         = "BOUNDARY_TOKEN"
-	EnvBoundaryRateLimit     = "BOUNDARY_RATE_LIMIT"
-	EnvBoundarySRVLookup     = "BOUNDARY_SRV_LOOKUP"
+	EnvDumplingAddr          = "DUMPLING_ADDR"
+	EnvDumplingCACert        = "DUMPLING_CACERT"
+	EnvDumplingCAPath        = "DUMPLING_CAPATH"
+	EnvDumplingClientCert    = "DUMPLING_CLIENT_CERT"
+	EnvDumplingClientKey     = "DUMPLING_CLIENT_KEY"
+	EnvDumplingClientTimeout = "DUMPLING_CLIENT_TIMEOUT"
+	EnvDumplingTLSInsecure   = "DUMPLING_TLS_INSECURE"
+	EnvDumplingTLSServerName = "DUMPLING_TLS_SERVER_NAME"
+	EnvDumplingMaxRetries    = "DUMPLING_MAX_RETRIES"
+	EnvDumplingToken         = "DUMPLING_TOKEN"
+	EnvDumplingRateLimit     = "DUMPLING_RATE_LIMIT"
+	EnvDumplingSRVLookup     = "DUMPLING_SRV_LOOKUP"
 
 	AsciiCastMimeType = "application/x-asciicast"
 	StreamChunkSize   = 1024 * 64 // stream chuck buffer size
@@ -51,14 +51,14 @@ const (
 
 // Config is used to configure the creation of the client
 type Config struct {
-	// Addr is the address of the Boundary controller. This should be a
-	// complete URL such as "http://boundary.example.com". If you need a custom
+	// Addr is the address of the Dumpling controller. This should be a
+	// complete URL such as "http://dumpling.example.com". If you need a custom
 	// SSL cert or want to enable insecure mode, you need to specify a custom
 	// HttpClient.
 	Addr string
 
 	// Token is the client token that reuslts from authentication and can be
-	// used to make calls into Boundary
+	// used to make calls into Dumpling
 	Token string
 
 	// RecoveryKmsWrapper is a wrapper used in the recovery KMS authentication
@@ -66,9 +66,9 @@ type Config struct {
 	// per-call, regardless of any value set in Token.
 	RecoveryKmsWrapper wrapping.Wrapper
 
-	// HttpClient is the HTTP client to use. Boundary sets sane defaults for the
+	// HttpClient is the HTTP client to use. Dumpling sets sane defaults for the
 	// http.Client and its associated http.Transport created in DefaultConfig.
-	// If you must modify Boundary's defaults, it is suggested that you start
+	// If you must modify Dumpling's defaults, it is suggested that you start
 	// with that client and modify as needed rather than start with an empty
 	// client (or http.DefaultClient). Currently if the client is cloned the
 	// same HttpClient is used.
@@ -112,20 +112,20 @@ type Config struct {
 }
 
 // TLSConfig contains the parameters needed to configure TLS on the HTTP client
-// used to communicate with Boundary.
+// used to communicate with Dumpling.
 type TLSConfig struct {
 	// CACert is the path to a PEM-encoded CA cert file to use to verify the
-	// Boundary server SSL certificate.
+	// Dumpling server SSL certificate.
 	CACert string
 
 	// CAPath is the path to a directory of PEM-encoded CA cert files to verify
-	// the Boundary server SSL certificate.
+	// the Dumpling server SSL certificate.
 	CAPath string
 
-	// ClientCert is the path to the certificate for Boundary communication
+	// ClientCert is the path to the certificate for Dumpling communication
 	ClientCert string
 
-	// ClientKey is the path to the private key for Boundary communication
+	// ClientKey is the path to the private key for Dumpling communication
 	ClientKey string
 
 	// ServerName, if set, is used to set the SNI host when connecting via
@@ -140,7 +140,7 @@ type TLSConfig struct {
 // safe to modify the return value of this function.
 //
 // The default Addr is http://127.0.0.1:9200, but this can be overridden by
-// setting the `BOUNDARY_ADDR` environment variable.
+// setting the `DUMPLING_ADDR` environment variable.
 //
 // If an error is encountered, this will return nil.
 func DefaultConfig() (*Config, error) {
@@ -249,7 +249,7 @@ func (c *Config) setAddr(addr string) error {
 	// Remove trailing or leading slashes
 	path := strings.Trim(u.Path, "/")
 	// Remove v1 in front or back (e.g. they could have
-	// https://boundary.example.com/myinstall/v1 which would put it at the
+	// https://dumpling.example.com/myinstall/v1 which would put it at the
 	// back)
 	path = strings.TrimPrefix(path, "v1")
 	path = strings.TrimSuffix(path, "v1")
@@ -275,15 +275,15 @@ func (c *Config) ReadEnvironment() error {
 	var envServerName string
 
 	// Parse the environment variables
-	if v := os.Getenv(EnvBoundaryAddr); v != "" {
+	if v := os.Getenv(EnvDumplingAddr); v != "" {
 		c.Addr = v
 	}
 
-	if v := os.Getenv(EnvBoundaryToken); v != "" {
+	if v := os.Getenv(EnvDumplingToken); v != "" {
 		c.Token = v
 	}
 
-	if v := os.Getenv(EnvBoundaryMaxRetries); v != "" {
+	if v := os.Getenv(EnvDumplingMaxRetries); v != "" {
 		maxRetries, err := strconv.ParseUint(v, 10, 32)
 		if err != nil {
 			return err
@@ -291,24 +291,24 @@ func (c *Config) ReadEnvironment() error {
 		c.MaxRetries = int(maxRetries)
 	}
 
-	if v := os.Getenv(EnvBoundarySRVLookup); v != "" {
+	if v := os.Getenv(EnvDumplingSRVLookup); v != "" {
 		var err error
 		lookup, err := strconv.ParseBool(v)
 		if err != nil {
-			return fmt.Errorf("could not parse %s", EnvBoundarySRVLookup)
+			return fmt.Errorf("could not parse %s", EnvDumplingSRVLookup)
 		}
 		c.SRVLookup = lookup
 	}
 
-	if t := os.Getenv(EnvBoundaryClientTimeout); t != "" {
+	if t := os.Getenv(EnvDumplingClientTimeout); t != "" {
 		clientTimeout, err := parseutil.ParseDurationSecond(t)
 		if err != nil {
-			return fmt.Errorf("could not parse %q", EnvBoundaryClientTimeout)
+			return fmt.Errorf("could not parse %q", EnvDumplingClientTimeout)
 		}
 		c.Timeout = clientTimeout
 	}
 
-	if v := os.Getenv(EnvBoundaryRateLimit); v != "" {
+	if v := os.Getenv(EnvDumplingRateLimit); v != "" {
 		rateLimit, burstLimit, err := parseRateLimit(v)
 		if err != nil {
 			return err
@@ -319,31 +319,31 @@ func (c *Config) ReadEnvironment() error {
 	// TLS Config
 	{
 		var foundTLSConfig bool
-		if v := os.Getenv(EnvBoundaryCACert); v != "" {
+		if v := os.Getenv(EnvDumplingCACert); v != "" {
 			foundTLSConfig = true
 			envCACert = v
 		}
-		if v := os.Getenv(EnvBoundaryCAPath); v != "" {
+		if v := os.Getenv(EnvDumplingCAPath); v != "" {
 			foundTLSConfig = true
 			envCAPath = v
 		}
-		if v := os.Getenv(EnvBoundaryClientCert); v != "" {
+		if v := os.Getenv(EnvDumplingClientCert); v != "" {
 			foundTLSConfig = true
 			envClientCert = v
 		}
-		if v := os.Getenv(EnvBoundaryClientKey); v != "" {
+		if v := os.Getenv(EnvDumplingClientKey); v != "" {
 			foundTLSConfig = true
 			envClientKey = v
 		}
-		if v := os.Getenv(EnvBoundaryTLSInsecure); v != "" {
+		if v := os.Getenv(EnvDumplingTLSInsecure); v != "" {
 			foundTLSConfig = true
 			var err error
 			envInsecure, err = strconv.ParseBool(v)
 			if err != nil {
-				return fmt.Errorf("could not parse BOUNDARY_TLS_INSECURE")
+				return fmt.Errorf("could not parse DUMPLING_TLS_INSECURE")
 			}
 		}
-		if v := os.Getenv(EnvBoundaryTLSServerName); v != "" {
+		if v := os.Getenv(EnvDumplingTLSServerName); v != "" {
 			foundTLSConfig = true
 			envServerName = v
 		}
@@ -370,7 +370,7 @@ func parseRateLimit(val string) (rate float64, burst int, err error) {
 	if err != nil {
 		rate, err = strconv.ParseFloat(val, 64)
 		if err != nil {
-			err = fmt.Errorf("%v was provided but incorrectly formatted", EnvBoundaryRateLimit)
+			err = fmt.Errorf("%v was provided but incorrectly formatted", EnvDumplingRateLimit)
 		}
 		burst = int(rate)
 	}
@@ -378,7 +378,7 @@ func parseRateLimit(val string) (rate float64, burst int, err error) {
 	return rate, burst, err
 }
 
-// Client is the client to the Boundary API. Create a client with NewClient.
+// Client is the client to the Dumpling API. Create a client with NewClient.
 type Client struct {
 	modifyLock sync.RWMutex
 	config     *Config
@@ -386,10 +386,10 @@ type Client struct {
 
 // NewClient returns a new client for the given configuration.
 //
-// If the configuration is nil, Boundary will use configuration from
+// If the configuration is nil, Dumpling will use configuration from
 // DefaultConfig(), which is the recommended starting configuration.
 //
-// If the environment variable `BOUNDARY_TOKEN` is present, the token will be
+// If the environment variable `DUMPLING_TOKEN` is present, the token will be
 // automatically added to the client. Otherwise, you must manually call
 // `SetToken()`.
 func NewClient(c *Config) (*Client, error) {
@@ -438,9 +438,9 @@ func (c *Client) Addr() string {
 	return c.config.Addr
 }
 
-// Sets the address of Boundary in the client. The format of address should
+// Sets the address of Dumpling in the client. The format of address should
 // be "<Scheme>://<Host>:<Port>". Setting this on a client will override the
-// value of the BOUNDARY_ADDR environment variable.
+// value of the DUMPLING_ADDR environment variable.
 func (c *Client) SetAddr(addr string) error {
 	c.modifyLock.Lock()
 	defer c.modifyLock.Unlock()
@@ -597,7 +597,7 @@ func copyHeaders(in http.Header) http.Header {
 	return ret
 }
 
-// NewRequest creates a new raw request object to query the Boundary controller
+// NewRequest creates a new raw request object to query the Dumpling controller
 // configured for this client. This is an advanced method and generally
 // doesn't need to be called externally.
 func (c *Client) NewRequest(ctx context.Context, method, requestPath string, body any, opt ...Option) (*retryablehttp.Request, error) {
@@ -726,7 +726,7 @@ func (c *Client) Do(r *retryablehttp.Request, opt ...Option) (*Response, error) 
 		return !unicode.IsPrint(c)
 	})
 	if idx != -1 {
-		return nil, fmt.Errorf("configured Boundary token contains non-printable characters and cannot be used")
+		return nil, fmt.Errorf("configured Dumpling token contains non-printable characters and cannot be used")
 	}
 
 	if outputCurlString {
@@ -812,9 +812,9 @@ func (c *Client) Do(r *retryablehttp.Request, opt ...Option) (*Response, error) 
 					"but the client is configured to use TLS. Please either enable TLS\n"+
 					"on the server or run the client with -address set to an address\n"+
 					"that uses the http protocol:\n\n"+
-					"    boundary <command> -address http://<address>\n\n"+
-					"You can also set the BOUNDARY_ADDR environment variable:\n\n\n"+
-					"    BOUNDARY_ADDR=http://<address> boundary <command>\n\n"+
+					"    dumpling <command> -address http://<address>\n\n"+
+					"You can also set the DUMPLING_ADDR environment variable:\n\n\n"+
+					"    DUMPLING_ADDR=http://<address> dumpling <command>\n\n"+
 					"where <address> is replaced by the actual address to the controller.",
 				err)
 		}

@@ -64,7 +64,7 @@ begin;
       cst.public_id = tcs.credential_static_id;
   comment on view target_credential_source is
     'target_credential_source is a view where each row contains a credential source and the id of the parent credential store. '
-    'No encrypted data is returned. This view can be used to retrieve data which will be returned external to boundary.';
+    'No encrypted data is returned. This view can be used to retrieve data which will be returned external to dumpling.';
 
   create view credential_source_all_types
   as

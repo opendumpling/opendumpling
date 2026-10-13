@@ -6,9 +6,9 @@ package host
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/host/store"
-	"github.com/hashicorp/boundary/internal/libs/endpoint"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/host/store"
+	"github.com/opendumpling/opendumpling/internal/libs/endpoint"
 	"google.golang.org/protobuf/proto"
 )
 

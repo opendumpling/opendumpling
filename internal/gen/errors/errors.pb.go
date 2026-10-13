@@ -10,7 +10,7 @@
 package errors
 
 import (
-	api "github.com/hashicorp/boundary/internal/gen/controller/api"
+	api "github.com/opendumpling/opendumpling/internal/gen/controller/api"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"

@@ -9,11 +9,11 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	emptypb "github.com/hashicorp/boundary/internal/gen/controller/api"
+	emptypb "github.com/opendumpling/opendumpling/internal/gen/controller/api"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/api/services"
-	pba "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/authtokens"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/api/services"
+	pba "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/authtokens"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc/metadata"

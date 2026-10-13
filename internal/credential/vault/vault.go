@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/errors"
 	"github.com/hashicorp/go-rootcerts"
 	vault "github.com/hashicorp/vault/api"
 	"github.com/mitchellh/mapstructure"

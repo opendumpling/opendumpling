@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
 )
 
 // UpsertJob inserts a job into the repository or updates its current description

@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/errors"
 )
 
 // extractClientCertAndPk takes the values passed into the api for client

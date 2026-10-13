@@ -6,8 +6,8 @@ package ldap
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/auth/ldap/store"
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/auth/ldap/store"
+	"github.com/opendumpling/opendumpling/internal/errors"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	"github.com/hashicorp/go-kms-wrapping/v2/extras/structwrapping"
 	"google.golang.org/protobuf/proto"
@@ -15,7 +15,7 @@ import (
 
 const bindCredentialTableName = "auth_ldap_bind_credential"
 
-// BindCredential represent optional parameters which allow Boundary to bind
+// BindCredential represent optional parameters which allow Dumpling to bind
 // (aka authenticate) using the credentials provided when searching for the user
 // entry used to authenticate the end user.
 type BindCredential struct {

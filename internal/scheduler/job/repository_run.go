@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
 )
 
 // RunJobs queries the job repository for jobs that need to be run. It creates new entries

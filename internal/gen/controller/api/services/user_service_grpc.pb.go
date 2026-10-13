@@ -28,13 +28,13 @@ type UserServiceClient interface {
 	// If the scope ID is missing, malformed, or reference a non existing scope,
 	// an error is returned.
 	ListUsers(ctx context.Context, in *ListUsersRequest, opts ...grpc.CallOption) (*ListUsersResponse, error)
-	// CreateUser creates and stores a User in boundary.  The provided
+	// CreateUser creates and stores a User in dumpling.  The provided
 	// request must include the Scope id in which the User will be created.
 	// If the Scope id is missing, malformed or references a non existing
 	// resource, an error is returned.  If a name is provided that is in
 	// use in another User in the same scope, an error is returned.
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
-	// UpdateUser updates an existing User in boundary.  The provided
+	// UpdateUser updates an existing User in dumpling.  The provided
 	// User must not have any read only fields set.  The update mask must be
 	// included in the request and contain at least 1 mutable field.  To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -43,7 +43,7 @@ type UserServiceClient interface {
 	// if the request attempts to update the name to one that is already in use
 	// in this Scope.
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
-	// DeleteUser removes a User from Boundary. If the provided User ID
+	// DeleteUser removes a User from Dumpling. If the provided User ID
 	// is malformed or not provided an error is returned.
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
 	// AddUserAccounts adds Users as members to a group.  The provided request
@@ -162,13 +162,13 @@ type UserServiceServer interface {
 	// If the scope ID is missing, malformed, or reference a non existing scope,
 	// an error is returned.
 	ListUsers(context.Context, *ListUsersRequest) (*ListUsersResponse, error)
-	// CreateUser creates and stores a User in boundary.  The provided
+	// CreateUser creates and stores a User in dumpling.  The provided
 	// request must include the Scope id in which the User will be created.
 	// If the Scope id is missing, malformed or references a non existing
 	// resource, an error is returned.  If a name is provided that is in
 	// use in another User in the same scope, an error is returned.
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
-	// UpdateUser updates an existing User in boundary.  The provided
+	// UpdateUser updates an existing User in dumpling.  The provided
 	// User must not have any read only fields set.  The update mask must be
 	// included in the request and contain at least 1 mutable field.  To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -177,7 +177,7 @@ type UserServiceServer interface {
 	// if the request attempts to update the name to one that is already in use
 	// in this Scope.
 	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
-	// DeleteUser removes a User from Boundary. If the provided User ID
+	// DeleteUser removes a User from Dumpling. If the provided User ID
 	// is malformed or not provided an error is returned.
 	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
 	// AddUserAccounts adds Users as members to a group.  The provided request

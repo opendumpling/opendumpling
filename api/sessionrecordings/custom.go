@@ -11,7 +11,7 @@ import (
 	"io"
 	"net/url"
 
-	"github.com/hashicorp/boundary/api"
+	"github.com/opendumpling/opendumpling/api"
 )
 
 // Download will of course download the request session recording resource.

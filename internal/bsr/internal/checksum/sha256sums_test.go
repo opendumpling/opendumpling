@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/bsr/internal/checksum"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/checksum"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

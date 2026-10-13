@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/observability/event"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
 	configutil "github.com/hashicorp/go-secure-stdlib/configutil/v2"
 	"github.com/hashicorp/go-secure-stdlib/listenerutil"
 	"github.com/hashicorp/go-secure-stdlib/parseutil"
@@ -779,7 +779,7 @@ controller {
 
 func TestWorkerTags(t *testing.T) {
 	defaultStateFn := func(t *testing.T, tags string) {
-		t.Setenv("BOUNDARY_WORKER_TAGS", tags)
+		t.Setenv("DUMPLING_WORKER_TAGS", tags)
 	}
 	tests := []struct {
 		name          string
@@ -863,7 +863,7 @@ func TestWorkerTags(t *testing.T) {
 			name: "empty env var",
 			in: `
 			worker {
-				tags = "env://BOUNDARY_WORKER_TAGS"
+				tags = "env://DUMPLING_WORKER_TAGS"
 			}`,
 			expWorkerTags: map[string][]string{},
 			expErr:        false,
@@ -896,7 +896,7 @@ func TestWorkerTags(t *testing.T) {
 			name: "one tag key",
 			in: `
 			worker {
-				tags = "env://BOUNDARY_WORKER_TAGS"
+				tags = "env://DUMPLING_WORKER_TAGS"
 			}`,
 			stateFn:    defaultStateFn,
 			actualTags: `type = ["dev", "local"]`,
@@ -909,7 +909,7 @@ func TestWorkerTags(t *testing.T) {
 			name: "multiple tag keys",
 			in: `
 			worker {
-				tags = "env://BOUNDARY_WORKER_TAGS"
+				tags = "env://DUMPLING_WORKER_TAGS"
 			}`,
 			stateFn: defaultStateFn,
 			actualTags: `
@@ -948,7 +948,7 @@ func TestWorkerTags(t *testing.T) {
 			name: "json tags - entire tags block",
 			in: `
 			worker {
-				tags = "env://BOUNDARY_WORKER_TAGS"
+				tags = "env://DUMPLING_WORKER_TAGS"
 			}`,
 			stateFn: defaultStateFn,
 			actualTags: `
@@ -968,13 +968,13 @@ func TestWorkerTags(t *testing.T) {
 			in: `
 			worker {
 				tags = {
-					type = "env://BOUNDARY_WORKER_TAGS"
-					typetwo = "env://BOUNDARY_WORKER_TAGS_TWO"
+					type = "env://DUMPLING_WORKER_TAGS"
+					typetwo = "env://DUMPLING_WORKER_TAGS_TWO"
 				}
 			}`,
 			stateFn: func(t *testing.T, tags string) {
 				defaultStateFn(t, tags)
-				t.Setenv("BOUNDARY_WORKER_TAGS_TWO", `["devtwo", "localtwo"]`)
+				t.Setenv("DUMPLING_WORKER_TAGS_TWO", `["devtwo", "localtwo"]`)
 			},
 			actualTags: `["dev","local"]`,
 			expWorkerTags: map[string][]string{
@@ -989,7 +989,7 @@ func TestWorkerTags(t *testing.T) {
 			worker {
 				name = "web-prod-us-east-1"
 				tags {
-				  type = "env://BOUNDARY_WORKER_TYPE_TAGS"
+				  type = "env://DUMPLING_WORKER_TYPE_TAGS"
 				  typetwo = "file://type_two_tags.json"
 				  typethree = ["devthree", "localthree"]
 				}
@@ -997,7 +997,7 @@ func TestWorkerTags(t *testing.T) {
 			`,
 			stateFn: func(t *testing.T, tags string) {
 				workerTypeTags := `["dev", "local"]`
-				t.Setenv("BOUNDARY_WORKER_TYPE_TAGS", workerTypeTags)
+				t.Setenv("DUMPLING_WORKER_TYPE_TAGS", workerTypeTags)
 
 				filepath := "./type_two_tags.json"
 				err := os.WriteFile(filepath, []byte(`["devtwo", "localtwo"]`), 0o666)
@@ -1020,8 +1020,8 @@ func TestWorkerTags(t *testing.T) {
 			in: `
 			worker {
 				tags = {
-					type = "env://BOUNDARY_WORKER_TAGS"
-					typetwo = "env://BOUNDARY_WORKER_TAGS"
+					type = "env://DUMPLING_WORKER_TAGS"
+					typetwo = "env://DUMPLING_WORKER_TAGS"
 				}
 			}`,
 			stateFn: defaultStateFn,
@@ -1039,7 +1039,7 @@ func TestWorkerTags(t *testing.T) {
 			name: "no clean mapping to internal structures",
 			in: `
 			worker {
-				tags = "env://BOUNDARY_WORKER_TAGS"
+				tags = "env://DUMPLING_WORKER_TAGS"
 			}`,
 			stateFn: defaultStateFn,
 			actualTags: `
@@ -1055,7 +1055,7 @@ func TestWorkerTags(t *testing.T) {
 		{
 			name: "not HCL",
 			in: `worker {
-				tags = "env://BOUNDARY_WORKER_TAGS"
+				tags = "env://DUMPLING_WORKER_TAGS"
 			}`,
 			stateFn:    defaultStateFn,
 			actualTags: `not_hcl`,
@@ -1366,10 +1366,10 @@ func TestWorkerUpstreams(t *testing.T) {
 			in: `
 			worker {
 				name = "test"
-				initial_upstreams = "env://BOUNDARY_WORKER_UPSTREAMS"
+				initial_upstreams = "env://DUMPLING_WORKER_UPSTREAMS"
 			}
 			`,
-			stateFn:            func(t *testing.T) { t.Setenv("BOUNDARY_WORKER_UPSTREAMS", `["127.0.0.1", "127.0.0.2", "127.0.0.3"]`) },
+			stateFn:            func(t *testing.T) { t.Setenv("DUMPLING_WORKER_UPSTREAMS", `["127.0.0.1", "127.0.0.2", "127.0.0.3"]`) },
 			expWorkerUpstreams: []string{"127.0.0.1", "127.0.0.2", "127.0.0.3"},
 			expErr:             false,
 		},
@@ -1378,7 +1378,7 @@ func TestWorkerUpstreams(t *testing.T) {
 			in: `
 			worker {
 				name = "test"
-				initial_upstreams = "env://BOUNDARY_WORKER_UPSTREAMS"
+				initial_upstreams = "env://DUMPLING_WORKER_UPSTREAMS"
 			}
 			`,
 			stateFn: func(t *testing.T) {
@@ -1387,7 +1387,7 @@ func TestWorkerUpstreams(t *testing.T) {
 					initial_upstreams = ["127.0.0.1"]
 				}
 				`
-				t.Setenv("BOUNDARY_WORKER_UPSTREAMS", upstreams)
+				t.Setenv("DUMPLING_WORKER_UPSTREAMS", upstreams)
 			},
 			expWorkerUpstreams: nil,
 			expErr:             true,
@@ -1398,10 +1398,10 @@ func TestWorkerUpstreams(t *testing.T) {
 			in: `
 			worker {
 				name = "test"
-				initial_upstreams = "env://BOUNDARY_WORKER_UPSTREAMS"
+				initial_upstreams = "env://DUMPLING_WORKER_UPSTREAMS"
 			}
 			`,
-			stateFn:            func(t *testing.T) { t.Setenv("BOUNDARY_WORKER_UPSTREAMS", `initial_upstreams = ["127.0.0.1"]`) },
+			stateFn:            func(t *testing.T) { t.Setenv("DUMPLING_WORKER_UPSTREAMS", `initial_upstreams = ["127.0.0.1"]`) },
 			expWorkerUpstreams: nil,
 			expErr:             true,
 			expErrStr:          "Failed to parse worker upstreams: failed to unmarshal env/file contents: invalid character 'i' looking for beginning of value",
@@ -1617,8 +1617,8 @@ func TestPluginExecutionDir(t *testing.T) {
 			plugins {
   				execution_dir = "env://PLUGIN_EXEC_DIR"
 			}`,
-			envPluginExecutionDir: `/var/run/boundary/plugin-exec`,
-			expPluginExecutionDir: `/var/run/boundary/plugin-exec`,
+			envPluginExecutionDir: `/var/run/dumpling/plugin-exec`,
+			expPluginExecutionDir: `/var/run/dumpling/plugin-exec`,
 			expErr:                false,
 		}, {
 			name: "Invalid plugin execution dir  from env var",

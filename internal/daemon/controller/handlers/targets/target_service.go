@@ -15,32 +15,32 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/credential"
-	wl "github.com/hashicorp/boundary/internal/daemon/common"
-	"github.com/hashicorp/boundary/internal/daemon/controller/auth"
-	"github.com/hashicorp/boundary/internal/daemon/controller/common"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers"
-	"github.com/hashicorp/boundary/internal/db/timestamp"
-	"github.com/hashicorp/boundary/internal/errors"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/api/services"
-	intglobals "github.com/hashicorp/boundary/internal/globals"
-	"github.com/hashicorp/boundary/internal/host"
-	"github.com/hashicorp/boundary/internal/host/plugin"
-	"github.com/hashicorp/boundary/internal/host/static"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/perms"
-	"github.com/hashicorp/boundary/internal/requests"
-	"github.com/hashicorp/boundary/internal/server"
-	"github.com/hashicorp/boundary/internal/session"
-	"github.com/hashicorp/boundary/internal/target"
-	"github.com/hashicorp/boundary/internal/types/action"
-	"github.com/hashicorp/boundary/internal/types/resource"
-	"github.com/hashicorp/boundary/internal/types/scope"
-	"github.com/hashicorp/boundary/internal/types/subtypes"
-	"github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/scopes"
-	pb "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/targets"
-	fm "github.com/hashicorp/boundary/version"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/credential"
+	wl "github.com/opendumpling/opendumpling/internal/daemon/common"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/auth"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/common"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers"
+	"github.com/opendumpling/opendumpling/internal/db/timestamp"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/api/services"
+	intglobals "github.com/opendumpling/opendumpling/internal/globals"
+	"github.com/opendumpling/opendumpling/internal/host"
+	"github.com/opendumpling/opendumpling/internal/host/plugin"
+	"github.com/opendumpling/opendumpling/internal/host/static"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/perms"
+	"github.com/opendumpling/opendumpling/internal/requests"
+	"github.com/opendumpling/opendumpling/internal/server"
+	"github.com/opendumpling/opendumpling/internal/session"
+	"github.com/opendumpling/opendumpling/internal/target"
+	"github.com/opendumpling/opendumpling/internal/types/action"
+	"github.com/opendumpling/opendumpling/internal/types/resource"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
+	"github.com/opendumpling/opendumpling/internal/types/subtypes"
+	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/scopes"
+	pb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/targets"
+	fm "github.com/opendumpling/opendumpling/version"
 	"github.com/hashicorp/go-bexpr"
 	"github.com/hashicorp/go-multierror"
 	"github.com/hashicorp/go-secure-stdlib/strutil"
@@ -127,7 +127,7 @@ type Service struct {
 
 var _ pbs.TargetServiceServer = (*Service)(nil)
 
-// NewService returns a target service which handles target related requests to boundary.
+// NewService returns a target service which handles target related requests to dumpling.
 func NewService(
 	ctx context.Context,
 	kmsCache *kms.Kms,
@@ -728,7 +728,7 @@ func (s Service) AuthorizeSession(ctx context.Context, req *pbs.AuthorizeSession
 
 	// This could happen if, say, u_recovery was used or u_anon was granted. But
 	// don't allow it. It's one thing if grants give access to resources within
-	// Boundary, even if those could eventually be used to provide an unintended
+	// Dumpling, even if those could eventually be used to provide an unintended
 	// user access to a remote system. It's quite another to enable anonymous
 	// access directly to a remote system.
 	//

@@ -10,7 +10,7 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/session_recordings;session_recordings";
+option go_package = "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/session_recordings;session_recordings";
 
 // ChannelRecording contains recorded information about a single Channel within a Connection.
 // Channels are only present in multiplexed protocols, such as SSH.
@@ -83,7 +83,7 @@ message ConnectionRecording {
   repeated ChannelRecording channel_recordings = 10 [json_name = "channel_recordings"];
 }
 
-// User describes an authenticated user in Boundary.
+// User describes an authenticated user in Dumpling.
 message User {
   // The ID of the User.
   string id = 1; // @gotags: class:"public"
@@ -165,7 +165,7 @@ message StaticHostAttributes {
   string address = 1; // @gotags: class:"public"
 }
 
-// Target describes a target in Boundary.
+// Target describes a target in Dumpling.
 message Target {
   // The ID of the Target.
   string id = 1; // @gotags: class:"public"
@@ -374,7 +374,7 @@ message VaultSSHCertificateCredentialLibraryAttributes {
   map<string, string> extensions = 7; // @gotags: class:"public"
 }
 
-// ValuesAtTime contain information about other Boundary resources as they
+// ValuesAtTime contain information about other Dumpling resources as they
 // were at a certain time through the lifetime of the Session Recording.
 message ValuesAtTime {
   // Information about the User that created the Session.

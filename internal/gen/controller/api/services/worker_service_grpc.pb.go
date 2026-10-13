@@ -28,13 +28,13 @@ type WorkerServiceClient interface {
 	// If the scope ID is missing, malformed, or reference a non existing scope,
 	// an error is returned.
 	ListWorkers(ctx context.Context, in *ListWorkersRequest, opts ...grpc.CallOption) (*ListWorkersResponse, error)
-	// CreateWorkerLed creates and stores a Worker in Boundary. The provided
+	// CreateWorkerLed creates and stores a Worker in Dumpling. The provided
 	// request must include the Scope ID in which the Worker will be created. If
 	// the Scope ID is missing, malformed or references a non existing resource,
 	// an error is returned. If a name is provided that is in use in another
 	// Worker in the same scope, an error is returned.
 	CreateWorkerLed(ctx context.Context, in *CreateWorkerLedRequest, opts ...grpc.CallOption) (*CreateWorkerLedResponse, error)
-	// CreateControllerLed creates and stores a Worker in Boundary and returns an
+	// CreateControllerLed creates and stores a Worker in Dumpling and returns an
 	// activation token that can be used by a worker binary to claim the created
 	// Worker's identity. The provided request must include the Scope ID in which
 	// the Worker will be created. If the Scope ID is missing, malformed or
@@ -42,7 +42,7 @@ type WorkerServiceClient interface {
 	// provided that is in use in another Worker in the same scope, an error is
 	// returned.
 	CreateControllerLed(ctx context.Context, in *CreateControllerLedRequest, opts ...grpc.CallOption) (*CreateControllerLedResponse, error)
-	// UpdateWorker updates an existing Worker in boundary.  The provided
+	// UpdateWorker updates an existing Worker in dumpling.  The provided
 	// Worker must not have any read only fields set.  The update mask must be
 	// included in the request and contain at least 1 mutable field.  To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -51,7 +51,7 @@ type WorkerServiceClient interface {
 	// if the request attempts to update the name to one that is already in use
 	// in this Scope.
 	UpdateWorker(ctx context.Context, in *UpdateWorkerRequest, opts ...grpc.CallOption) (*UpdateWorkerResponse, error)
-	// DeleteWorker removes a Worker from Boundary. If the provided Worker ID
+	// DeleteWorker removes a Worker from Dumpling. If the provided Worker ID
 	// is malformed or not provided an error is returned.
 	DeleteWorker(ctx context.Context, in *DeleteWorkerRequest, opts ...grpc.CallOption) (*DeleteWorkerResponse, error)
 	// AddWorkerTags adds api tags to an existing Worker. If missing, malformed,
@@ -191,13 +191,13 @@ type WorkerServiceServer interface {
 	// If the scope ID is missing, malformed, or reference a non existing scope,
 	// an error is returned.
 	ListWorkers(context.Context, *ListWorkersRequest) (*ListWorkersResponse, error)
-	// CreateWorkerLed creates and stores a Worker in Boundary. The provided
+	// CreateWorkerLed creates and stores a Worker in Dumpling. The provided
 	// request must include the Scope ID in which the Worker will be created. If
 	// the Scope ID is missing, malformed or references a non existing resource,
 	// an error is returned. If a name is provided that is in use in another
 	// Worker in the same scope, an error is returned.
 	CreateWorkerLed(context.Context, *CreateWorkerLedRequest) (*CreateWorkerLedResponse, error)
-	// CreateControllerLed creates and stores a Worker in Boundary and returns an
+	// CreateControllerLed creates and stores a Worker in Dumpling and returns an
 	// activation token that can be used by a worker binary to claim the created
 	// Worker's identity. The provided request must include the Scope ID in which
 	// the Worker will be created. If the Scope ID is missing, malformed or
@@ -205,7 +205,7 @@ type WorkerServiceServer interface {
 	// provided that is in use in another Worker in the same scope, an error is
 	// returned.
 	CreateControllerLed(context.Context, *CreateControllerLedRequest) (*CreateControllerLedResponse, error)
-	// UpdateWorker updates an existing Worker in boundary.  The provided
+	// UpdateWorker updates an existing Worker in dumpling.  The provided
 	// Worker must not have any read only fields set.  The update mask must be
 	// included in the request and contain at least 1 mutable field.  To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -214,7 +214,7 @@ type WorkerServiceServer interface {
 	// if the request attempts to update the name to one that is already in use
 	// in this Scope.
 	UpdateWorker(context.Context, *UpdateWorkerRequest) (*UpdateWorkerResponse, error)
-	// DeleteWorker removes a Worker from Boundary. If the provided Worker ID
+	// DeleteWorker removes a Worker from Dumpling. If the provided Worker ID
 	// is malformed or not provided an error is returned.
 	DeleteWorker(context.Context, *DeleteWorkerRequest) (*DeleteWorkerResponse, error)
 	// AddWorkerTags adds api tags to an existing Worker. If missing, malformed,

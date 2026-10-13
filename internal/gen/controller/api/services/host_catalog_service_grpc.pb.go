@@ -28,20 +28,20 @@ type HostCatalogServiceClient interface {
 	// ID and if it is  missing, malformed, or references a non-existing resource
 	// an error is returned.
 	ListHostCatalogs(ctx context.Context, in *ListHostCatalogsRequest, opts ...grpc.CallOption) (*ListHostCatalogsResponse, error)
-	// CreateHostCatalog creates and stores a Host Catalog in boundary.  The
+	// CreateHostCatalog creates and stores a Host Catalog in dumpling.  The
 	// provided request must include the scope ID in which the Catalog will be
 	// created and the Catalog type to be created. If any of these required fields
 	// are missing, malformed, or reference a non-existing parent resource an
 	// error is returned.
 	CreateHostCatalog(ctx context.Context, in *CreateHostCatalogRequest, opts ...grpc.CallOption) (*CreateHostCatalogResponse, error)
-	// UpdateHostCatalog updates an existing Host Catalog in Boundary. The
+	// UpdateHostCatalog updates an existing Host Catalog in Dumpling. The
 	// provided Host Catalog must not have any read only fields set. The update
 	// mask must be provided and include at least 1 mutable field. To unset a
 	// field's value include that field name in the update mask and don't set the
 	// field in the Host Catalog.
 	UpdateHostCatalog(ctx context.Context, in *UpdateHostCatalogRequest, opts ...grpc.CallOption) (*UpdateHostCatalogResponse, error)
 	// DeleteHostCatalog removes a Host Catalog and all associated Hosts and Host
-	// sets from Boundary. If the provided Host Catalog IDs is malformed or not
+	// sets from Dumpling. If the provided Host Catalog IDs is malformed or not
 	// provided DeleteHostCatalog returns an error.
 	DeleteHostCatalog(ctx context.Context, in *DeleteHostCatalogRequest, opts ...grpc.CallOption) (*DeleteHostCatalogResponse, error)
 }
@@ -113,20 +113,20 @@ type HostCatalogServiceServer interface {
 	// ID and if it is  missing, malformed, or references a non-existing resource
 	// an error is returned.
 	ListHostCatalogs(context.Context, *ListHostCatalogsRequest) (*ListHostCatalogsResponse, error)
-	// CreateHostCatalog creates and stores a Host Catalog in boundary.  The
+	// CreateHostCatalog creates and stores a Host Catalog in dumpling.  The
 	// provided request must include the scope ID in which the Catalog will be
 	// created and the Catalog type to be created. If any of these required fields
 	// are missing, malformed, or reference a non-existing parent resource an
 	// error is returned.
 	CreateHostCatalog(context.Context, *CreateHostCatalogRequest) (*CreateHostCatalogResponse, error)
-	// UpdateHostCatalog updates an existing Host Catalog in Boundary. The
+	// UpdateHostCatalog updates an existing Host Catalog in Dumpling. The
 	// provided Host Catalog must not have any read only fields set. The update
 	// mask must be provided and include at least 1 mutable field. To unset a
 	// field's value include that field name in the update mask and don't set the
 	// field in the Host Catalog.
 	UpdateHostCatalog(context.Context, *UpdateHostCatalogRequest) (*UpdateHostCatalogResponse, error)
 	// DeleteHostCatalog removes a Host Catalog and all associated Hosts and Host
-	// sets from Boundary. If the provided Host Catalog IDs is malformed or not
+	// sets from Dumpling. If the provided Host Catalog IDs is malformed or not
 	// provided DeleteHostCatalog returns an error.
 	DeleteHostCatalog(context.Context, *DeleteHostCatalogRequest) (*DeleteHostCatalogResponse, error)
 	mustEmbedUnimplementedHostCatalogServiceServer()

@@ -8,10 +8,10 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/credentials"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/cmd/common"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/credentials"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/common"
 	"github.com/hashicorp/go-secure-stdlib/strutil"
 	"github.com/mitchellh/cli"
 	"github.com/posener/complete"
@@ -137,7 +137,7 @@ func (c *UsernamePasswordCommand) Run(args []string) int {
 
 		case "create":
 			if c.FlagCredentialStoreId == "" {
-				c.PrintCliError(errors.New("CredentialStore ID must be passed in via -credential-store-id or BOUNDARY_CREDENTIAL_STORE_ID"))
+				c.PrintCliError(errors.New("CredentialStore ID must be passed in via -credential-store-id or DUMPLING_CREDENTIAL_STORE_ID"))
 				return base.CommandUserError
 			}
 

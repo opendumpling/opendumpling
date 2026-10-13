@@ -10,7 +10,7 @@
 package services
 
 import (
-	health "github.com/hashicorp/boundary/internal/gen/worker/health"
+	health "github.com/opendumpling/opendumpling/internal/gen/worker/health"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"

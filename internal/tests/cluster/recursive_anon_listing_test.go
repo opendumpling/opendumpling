@@ -7,10 +7,10 @@ import (
 	"strings"
 	"testing"
 
-	amapi "github.com/hashicorp/boundary/api/authmethods"
-	rolesapi "github.com/hashicorp/boundary/api/roles"
-	"github.com/hashicorp/boundary/internal/daemon/controller"
-	"github.com/hashicorp/boundary/internal/types/scope"
+	amapi "github.com/opendumpling/opendumpling/api/authmethods"
+	rolesapi "github.com/opendumpling/opendumpling/api/roles"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
 	"github.com/stretchr/testify/require"
 )
 

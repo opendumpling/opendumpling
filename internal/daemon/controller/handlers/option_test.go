@@ -6,7 +6,7 @@ package handlers
 import (
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/perms"
+	"github.com/opendumpling/opendumpling/internal/perms"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

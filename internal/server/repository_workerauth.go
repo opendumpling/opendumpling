@@ -14,14 +14,14 @@ import (
 	"google.golang.org/protobuf/types/known/structpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/hashicorp/boundary/internal/daemon/cluster"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/db/timestamp"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/server/store"
-	"github.com/hashicorp/boundary/internal/types/scope"
-	"github.com/hashicorp/boundary/internal/util"
+	"github.com/opendumpling/opendumpling/internal/daemon/cluster"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/db/timestamp"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/server/store"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
+	"github.com/opendumpling/opendumpling/internal/util"
 	"github.com/hashicorp/go-dbw"
 	"github.com/hashicorp/nodeenrollment"
 	nodee "github.com/hashicorp/nodeenrollment"
@@ -150,13 +150,13 @@ func StoreNodeInformationTx(ctx context.Context, reader db.Reader, writer db.Wri
 		if wci.Name == "" {
 			return errors.New(ctx, errors.InvalidParameter, op, "in wrapping registration flow but worker name not provided")
 		}
-		if wci.BoundaryVersion == "" {
-			return errors.New(ctx, errors.InvalidParameter, op, "in wrapping registration flow but boundary version not provided")
+		if wci.DumplingVersion == "" {
+			return errors.New(ctx, errors.InvalidParameter, op, "in wrapping registration flow but dumpling version not provided")
 		}
 		wConf := NewWorker(scopeId,
 			WithName(wci.Name),
 			WithDescription(wci.Description),
-			WithReleaseVersion(fmt.Sprintf("Boundary v%s", wci.BoundaryVersion)),
+			WithReleaseVersion(fmt.Sprintf("Dumpling v%s", wci.DumplingVersion)),
 		)
 		wConf.Type = PkiWorkerType.String()
 		wConf.PublicId, err = NewWorkerIdFromScopeAndName(ctx, scopeId, wci.Name)

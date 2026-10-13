@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/credentials"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/credentials"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 )
 
 const (
@@ -25,37 +25,37 @@ func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
 	switch c.Func {
 	case "":
 		return base.WrapForHelpText([]string{
-			"Usage: boundary credentials [sub command] [options] [args]",
+			"Usage: dumpling credentials [sub command] [options] [args]",
 			"",
-			"  This command allows operations on Boundary credential resources. Example:",
+			"  This command allows operations on Dumpling credential resources. Example:",
 			"",
 			"    Read a credential:",
 			"",
-			`      $ boundary credentials read -id cred_1234567890`,
+			`      $ dumpling credentials read -id cred_1234567890`,
 			"",
 			"  Please see the credentials subcommand help for detailed usage information.",
 		})
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary credentials create [type] [sub command] [options] [args]",
+			"Usage: dumpling credentials create [type] [sub command] [options] [args]",
 			"",
-			"  This command allows create operations on Boundary credential resources. Example:",
+			"  This command allows create operations on Dumpling credential resources. Example:",
 			"",
 			"    Create a credential:",
 			"",
-			`      $ boundary credentials create username-password -credential-store-id cs_1234567890 -username user -password pass`,
+			`      $ dumpling credentials create username-password -credential-store-id cs_1234567890 -username user -password pass`,
 			"",
 			"  Please see the typed subcommand help for detailed usage information.",
 		})
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary credentials update [type] [sub command] [options] [args]",
+			"Usage: dumpling credentials update [type] [sub command] [options] [args]",
 			"",
-			"  This command allows update operations on Boundary credential resources. Example:",
+			"  This command allows update operations on Dumpling credential resources. Example:",
 			"",
 			"    Update a username/password credential:",
 			"",
-			`      $ boundary credentials update username-password -id cred_1234567890 -name devops -description "For DevOps usage"`,
+			`      $ dumpling credentials update username-password -id cred_1234567890 -name devops -description "For DevOps usage"`,
 			"",
 			"  Please see the typed subcommand help for detailed usage information.",
 		})

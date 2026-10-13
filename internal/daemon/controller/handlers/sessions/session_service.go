@@ -8,21 +8,21 @@ import (
 	stderrors "errors"
 	"fmt"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/daemon/controller/auth"
-	"github.com/hashicorp/boundary/internal/daemon/controller/common"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers"
-	"github.com/hashicorp/boundary/internal/errors"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/api/services"
-	"github.com/hashicorp/boundary/internal/perms"
-	"github.com/hashicorp/boundary/internal/requests"
-	"github.com/hashicorp/boundary/internal/session"
-	"github.com/hashicorp/boundary/internal/target"
-	"github.com/hashicorp/boundary/internal/types/action"
-	"github.com/hashicorp/boundary/internal/types/resource"
-	"github.com/hashicorp/boundary/internal/types/scope"
-	"github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/scopes"
-	pb "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/sessions"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/auth"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/common"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/api/services"
+	"github.com/opendumpling/opendumpling/internal/perms"
+	"github.com/opendumpling/opendumpling/internal/requests"
+	"github.com/opendumpling/opendumpling/internal/session"
+	"github.com/opendumpling/opendumpling/internal/target"
+	"github.com/opendumpling/opendumpling/internal/types/action"
+	"github.com/opendumpling/opendumpling/internal/types/resource"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
+	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/scopes"
+	pb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/sessions"
 	"google.golang.org/grpc/codes"
 )
 
@@ -54,7 +54,7 @@ type Service struct {
 
 var _ pbs.SessionServiceServer = (*Service)(nil)
 
-// NewService returns a session service which handles session related requests to boundary.
+// NewService returns a session service which handles session related requests to dumpling.
 func NewService(ctx context.Context, repoFn session.RepositoryFactory, iamRepoFn common.IamRepoFactory) (Service, error) {
 	const op = "sessions.NewService"
 	if repoFn == nil {

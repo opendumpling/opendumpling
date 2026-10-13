@@ -6,8 +6,8 @@ package managedgroupscmd
 import (
 	"fmt"
 
-	"github.com/hashicorp/boundary/api/managedgroups"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api/managedgroups"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/hashicorp/go-bexpr"
 )
 
@@ -37,22 +37,22 @@ func (c *OidcCommand) extraOidcHelpFunc(helpMap map[string]func() string) string
 	switch c.Func {
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary managed-groups create oidc [options] [args]",
+			"Usage: dumpling managed-groups create oidc [options] [args]",
 			"",
 			"  Create a oidc-type managed group. Example:",
 			"",
-			`    $ boundary managed-groups create oidc -filter '"/token/email" == "doe@example.com"' -description "Oidc managed group for ProdOps"`,
+			`    $ dumpling managed-groups create oidc -filter '"/token/email" == "doe@example.com"' -description "Oidc managed group for ProdOps"`,
 			"",
 			"",
 		})
 
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary managed-groups update oidc [options] [args]",
+			"Usage: dumpling managed-groups update oidc [options] [args]",
 			"",
 			"  Update a oidc-type managed group given its ID. Example:",
 			"",
-			`    $ boundary managed-groups update oidc -id acctoidc_1234567890 -name "devops" -description "Oidc managed group for DevOps"`,
+			`    $ dumpling managed-groups update oidc -id acctoidc_1234567890 -name "devops" -description "Oidc managed group for DevOps"`,
 			"",
 			"",
 		})

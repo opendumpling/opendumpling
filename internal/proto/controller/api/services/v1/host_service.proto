@@ -11,7 +11,7 @@ import "google/api/annotations.proto";
 import "google/protobuf/field_mask.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/gen/controller/api/services;services";
+option go_package = "github.com/opendumpling/opendumpling/internal/gen/controller/api/services;services";
 option (custom_options.v1.domain) = "host";
 
 service HostService {
@@ -36,7 +36,7 @@ service HostService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "List all Hosts for the specified Catalog."};
   }
 
-  // CreateHost creates and stores a Host in boundary.  The provided
+  // CreateHost creates and stores a Host in dumpling.  The provided
   // request must include the Host Catalog id in which the Host
   // will be created.  If the Catalog id is missing, malformed or references a
   // non-existing resource, an error is returned.  If a name is provided that
@@ -50,7 +50,7 @@ service HostService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Create a single Host."};
   }
 
-  // UpdateHost updates an existing Host in boundary.  The provided
+  // UpdateHost updates an existing Host in dumpling.  The provided
   // Host must not have any read only fields set.  The update mask must be
   // included in the request and contain at least 1 mutable field.  To unset
   // a field's value, include the field in the update mask and don't set it
@@ -67,7 +67,7 @@ service HostService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Update a Host."};
   }
 
-  // DeleteHost removes a Host from Boundary. If the provided Host ID
+  // DeleteHost removes a Host from Dumpling. If the provided Host ID
   // is malformed or not provided an error is returned.
   rpc DeleteHost(DeleteHostRequest) returns (DeleteHostResponse) {
     option (google.api.http) = {delete: "/v1/hosts/{id}"};

@@ -13,8 +13,8 @@ import (
 	"io"
 	"io/fs"
 
-	"github.com/hashicorp/boundary/internal/bsr/internal/is"
-	"github.com/hashicorp/boundary/internal/bsr/kms"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/is"
+	"github.com/opendumpling/opendumpling/internal/bsr/kms"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	"github.com/hashicorp/go-multierror"
 	"google.golang.org/protobuf/proto"

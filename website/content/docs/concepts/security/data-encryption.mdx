@@ -2,16 +2,16 @@
 layout: docs
 page_title: Data encryption
 description: |-
-  How Boundary secures data at rest
+  How Dumpling secures data at rest
 ---
 
-# Data security in Boundary
+# Data security in Dumpling
 
-Boundary has multiple mechanisms to ensure secure end-to-end behavior of the
+Dumpling has multiple mechanisms to ensure secure end-to-end behavior of the
 system. A key part of this is [support for various Key Management
 Systems](/boundary/docs/configuration/kms) that protect the base encryption keys used
 for various functions. This page describes the various KMS key purposes that
-Boundary supports and how they are used within the system.
+Dumpling supports and how they are used within the system.
 
 ## The `worker-auth-storage` KMS key
 
@@ -23,7 +23,7 @@ will not be encrypted on disk. This is not used by KMS workers.
 ## The `root` KMS key and per-scope KEK/DEKs <sup>OSS only</sup>
 
 Following best practices of using different encryption keys for different
-purposes, Boundary has a number of encryption keys generated within each scope.
+purposes, Dumpling has a number of encryption keys generated within each scope.
 Each key further contains versions, which hold the key material used to encrypt
 data. You can create new key versions by _rotating_ the keys. A key version
 can be destroyed, which will re-encrypt any existing data before destroying the
@@ -65,7 +65,7 @@ API using the key endpoints under the scopes section. To rotate all the keys
 in a scope, use the `rotate-keys` endpoint:
 
 ```shell-session
-$ boundary scopes rotate-keys -scope-id p_A4jfDjZ9jf
+$ dumpling scopes rotate-keys -scope-id p_A4jfDjZ9jf
 ```
 
 This endpoint creates new key versions for all keys in the scope
@@ -78,13 +78,13 @@ encrypted by the prior KEK version from when they were created.
 To list all keys in a scope and their versions, use the `list-keys` endpoint:
 
 ```shell-session
-$ boundary scopes list-keys -scope-id p_A4jfDjZ9jf
+$ dumpling scopes list-keys -scope-id p_A4jfDjZ9jf
 ```
 
 To destroy a key version, use the `destroy-key-version` endpoint:
 
 ```shell-session
-$ boundary scopes destroy-key-version -scope-id p_A4jfDjZ9jf -key-version-id kdkv_tr6ZN8opYr
+$ dumpling scopes destroy-key-version -scope-id p_A4jfDjZ9jf -key-version-id kdkv_tr6ZN8opYr
 ```
 
 The latest key version cannot be destroyed, so if you want to destroy the
@@ -99,7 +99,7 @@ purpose before they can be deleted. You can monitor the progress of this
 re-encryption job via the `list-key-destruction-jobs` endpoint:
 
 ```shell-session
-$ boundary scopes list-key-version-destruction-jobs -scope-id p_A4jfDjZ9jf
+$ dumpling scopes list-key-version-destruction-jobs -scope-id p_A4jfDjZ9jf
 ```
 
 Once the job disappears from this list, the associated key version will have
@@ -128,7 +128,7 @@ authentication](/boundary/docs/configuration/worker/pki-worker) this is unnecess
 ## The `recovery` KMS key <sup>OSS only</sup>
 
 The `recovery` KMS key is used for rescue/recovery operations that can be used
-by a client to authenticate almost any operation within Boundary. Its mechanism
+by a client to authenticate almost any operation within Dumpling. Its mechanism
 of operation is very similar to the `worker-auth` flow in terms of using a
 shared KMS between the client and the Controller for authentication. A nonce and
 creation time are included as an encrypted payload, formatted as a token and
@@ -153,21 +153,21 @@ identifying user information available.
 
 There are some other situations where this mechanism can be useful. For example,
 it is possible to use this mechanism, along with some defaults in the Terraform
-provider, to ensure that _everything_ in Boundary is created through Terraform,
+provider, to ensure that _everything_ in Dumpling is created through Terraform,
 with the exception of resources that cannot themselves be deleted. (This
 consists of built-in anonymous (`u_anon`), authenticated (`u_auth`), and
-recovery (`u_recovery`) users and the `global` scope.). By initializing Boundary
+recovery (`u_recovery`) users and the `global` scope.). By initializing Dumpling
 with the options to skip creating default resources, Terraform can be used to
 create the specific resources needed instead, with the `recovery` KMS used to
 authenticate setting up the initial auth method(s).
 
 ## The `config` KMS key <sup>OSS only</sup>
 
-This key can be used to encrypt values within Boundary's configuration file. By
-sharing this block between Boundary and an operator, the operator can put
-sensitive or secret values (such as cloud API keys for KMSes) in Boundary's
+This key can be used to encrypt values within Dumpling's configuration file. By
+sharing this block between Dumpling and an operator, the operator can put
+sensitive or secret values (such as cloud API keys for KMSes) in Dumpling's
 configuration file, run `boundary config encrypt` to encrypt the file, and then
 safely pass the file to a change control system. Only another operator or system
-with access to that KMS can decrypt the values. Boundary will check for a
+with access to that KMS can decrypt the values. Dumpling will check for a
 `config` KMS block on startup, and if it exists, will use it to decrypt any
 encrypted values found at startup time.

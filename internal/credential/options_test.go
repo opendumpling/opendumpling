@@ -6,8 +6,8 @@ package credential
 import (
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/util"
-	"github.com/hashicorp/boundary/internal/util/template"
+	"github.com/opendumpling/opendumpling/internal/util"
+	"github.com/opendumpling/opendumpling/internal/util/template"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

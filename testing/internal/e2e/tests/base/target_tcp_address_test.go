@@ -10,9 +10,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/target"
-	"github.com/hashicorp/boundary/testing/internal/e2e"
-	"github.com/hashicorp/boundary/testing/internal/e2e/boundary"
+	"github.com/opendumpling/opendumpling/internal/target"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e/dumpling"
 	"github.com/stretchr/testify/require"
 )
 
@@ -24,19 +24,19 @@ func TestCliCreateUpdateTargetAddress(t *testing.T) {
 	require.NoError(t, err)
 
 	ctx := context.Background()
-	boundary.AuthenticateAdminCli(t, ctx)
-	newOrgId := boundary.CreateNewOrgCli(t, ctx)
+	dumpling.AuthenticateAdminCli(t, ctx)
+	newOrgId := dumpling.CreateNewOrgCli(t, ctx)
 	t.Cleanup(func() {
 		ctx := context.Background()
-		boundary.AuthenticateAdminCli(t, ctx)
-		output := e2e.RunCommand(ctx, "boundary", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
+		dumpling.AuthenticateAdminCli(t, ctx)
+		output := e2e.RunCommand(ctx, "dumpling", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
 		require.NoError(t, output.Err, string(output.Stderr))
 	})
-	newProjectId := boundary.CreateNewProjectCli(t, ctx, newOrgId)
-	newTargetId := boundary.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort, target.WithAddress(c.TargetIp))
+	newProjectId := dumpling.CreateNewProjectCli(t, ctx, newOrgId)
+	newTargetId := dumpling.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort, target.WithAddress(c.TargetIp))
 
 	// Connect to target and print host's IP address
-	output := e2e.RunCommand(ctx, "boundary",
+	output := e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"connect",
 			"-target-id", newTargetId,
@@ -46,8 +46,8 @@ func TestCliCreateUpdateTargetAddress(t *testing.T) {
 			"-o", "UserKnownHostsFile=/dev/null",
 			"-o", "StrictHostKeyChecking=no",
 			"-o", "IdentitiesOnly=yes", // forces the use of the provided key
-			"-p", "{{boundary.port}}", // this is provided by boundary
-			"{{boundary.ip}}",
+			"-p", "{{dumpling.port}}", // this is provided by boundary
+			"{{dumpling.ip}}",
 			"hostname", "-i",
 		),
 	)
@@ -59,7 +59,7 @@ func TestCliCreateUpdateTargetAddress(t *testing.T) {
 	t.Log("Successfully connected to target")
 
 	// Remove target address. We have now no address or host sources.
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"targets", "update", "tcp",
 			"-id", newTargetId,
@@ -71,7 +71,7 @@ func TestCliCreateUpdateTargetAddress(t *testing.T) {
 
 	// Connect to target and print host's IP address - should error because
 	// there's no place to connect to.
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"connect",
 			"-target-id", newTargetId,
@@ -82,19 +82,19 @@ func TestCliCreateUpdateTargetAddress(t *testing.T) {
 			"-o", "UserKnownHostsFile=/dev/null",
 			"-o", "StrictHostKeyChecking=no",
 			"-o", "IdentitiesOnly=yes", // forces the use of the provided key
-			"-p", "{{boundary.port}}", // this is provided by boundary
-			"{{boundary.ip}}",
+			"-p", "{{dumpling.port}}", // this is provided by boundary
+			"{{dumpling.ip}}",
 			"hostname", "-i",
 		),
 	)
 	require.Error(t, output.Err, string(output.Stderr))
 
-	var response boundary.CliError
+	var response dumpling.CliError
 	require.NoError(t, json.Unmarshal(output.Stderr, &response))
 	require.Equal(t, http.StatusNotFound, response.Status, "Expected error when connecting to target with no host sources or address")
 
 	// Add a valid address back in.
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"targets", "update", "tcp",
 			"-id", newTargetId,
@@ -105,7 +105,7 @@ func TestCliCreateUpdateTargetAddress(t *testing.T) {
 	require.NoError(t, output.Err, string(output.Stderr))
 
 	// Connect to target and print host's IP address.
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"connect",
 			"-target-id", newTargetId,
@@ -115,8 +115,8 @@ func TestCliCreateUpdateTargetAddress(t *testing.T) {
 			"-o", "UserKnownHostsFile=/dev/null",
 			"-o", "StrictHostKeyChecking=no",
 			"-o", "IdentitiesOnly=yes", // forces the use of the provided key
-			"-p", "{{boundary.port}}", // this is provided by boundary
-			"{{boundary.ip}}",
+			"-p", "{{dumpling.port}}", // this is provided by boundary
+			"{{dumpling.ip}}",
 			"hostname", "-i",
 		),
 	)
@@ -139,23 +139,23 @@ func TestCliTargetAddressToHostSource(t *testing.T) {
 	require.NoError(t, err)
 
 	ctx := context.Background()
-	boundary.AuthenticateAdminCli(t, ctx)
-	newOrgId := boundary.CreateNewOrgCli(t, ctx)
+	dumpling.AuthenticateAdminCli(t, ctx)
+	newOrgId := dumpling.CreateNewOrgCli(t, ctx)
 	t.Cleanup(func() {
 		ctx := context.Background()
-		boundary.AuthenticateAdminCli(t, ctx)
-		output := e2e.RunCommand(ctx, "boundary", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
+		dumpling.AuthenticateAdminCli(t, ctx)
+		output := e2e.RunCommand(ctx, "dumpling", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
 		require.NoError(t, output.Err, string(output.Stderr))
 	})
-	newProjectId := boundary.CreateNewProjectCli(t, ctx, newOrgId)
-	newHostCatalogId := boundary.CreateNewHostCatalogCli(t, ctx, newProjectId)
-	newHostSetId := boundary.CreateNewHostSetCli(t, ctx, newHostCatalogId)
-	newHostId := boundary.CreateNewHostCli(t, ctx, newHostCatalogId, c.TargetIp)
-	boundary.AddHostToHostSetCli(t, ctx, newHostSetId, newHostId)
-	newTargetId := boundary.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort, target.WithAddress(c.TargetIp))
+	newProjectId := dumpling.CreateNewProjectCli(t, ctx, newOrgId)
+	newHostCatalogId := dumpling.CreateNewHostCatalogCli(t, ctx, newProjectId)
+	newHostSetId := dumpling.CreateNewHostSetCli(t, ctx, newHostCatalogId)
+	newHostId := dumpling.CreateNewHostCli(t, ctx, newHostCatalogId, c.TargetIp)
+	dumpling.AddHostToHostSetCli(t, ctx, newHostSetId, newHostId)
+	newTargetId := dumpling.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort, target.WithAddress(c.TargetIp))
 
 	// Connect to target and print host's IP address
-	output := e2e.RunCommand(ctx, "boundary",
+	output := e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"connect",
 			"-target-id", newTargetId,
@@ -165,8 +165,8 @@ func TestCliTargetAddressToHostSource(t *testing.T) {
 			"-o", "UserKnownHostsFile=/dev/null",
 			"-o", "StrictHostKeyChecking=no",
 			"-o", "IdentitiesOnly=yes", // forces the use of the provided key
-			"-p", "{{boundary.port}}", // this is provided by boundary
-			"{{boundary.ip}}",
+			"-p", "{{dumpling.port}}", // this is provided by boundary
+			"{{dumpling.ip}}",
 			"hostname", "-i",
 		),
 	)
@@ -178,7 +178,7 @@ func TestCliTargetAddressToHostSource(t *testing.T) {
 	t.Log("Successfully connected to target")
 
 	// Attempt add-host-sources. Should error because the target has an address.
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"targets", "add-host-sources",
 			"-id", newTargetId,
@@ -188,12 +188,12 @@ func TestCliTargetAddressToHostSource(t *testing.T) {
 	)
 	require.Error(t, output.Err, "Target add-host-sources did not return expected error")
 
-	var response boundary.CliError
+	var response dumpling.CliError
 	require.NoError(t, json.Unmarshal(output.Stderr, &response))
 	require.Equal(t, http.StatusBadRequest, response.Status, "Expected error when adding host source to target with an address")
 
 	// Attempt set-host-sources. Should error because the target has an address.
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"targets", "set-host-sources",
 			"-id", newTargetId,
@@ -207,7 +207,7 @@ func TestCliTargetAddressToHostSource(t *testing.T) {
 
 	// Remove the target's address. We should now be able to add/set host
 	// sources.
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"targets", "update", "tcp",
 			"-id", newTargetId,
@@ -217,11 +217,11 @@ func TestCliTargetAddressToHostSource(t *testing.T) {
 	)
 	require.NoError(t, output.Err, string(output.Stderr))
 
-	boundary.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
-	boundary.SetHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
+	dumpling.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
+	dumpling.SetHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
 
 	// Connect to target and print host's IP address, now using the host source.
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"connect",
 			"-target-id", newTargetId,
@@ -231,8 +231,8 @@ func TestCliTargetAddressToHostSource(t *testing.T) {
 			"-o", "UserKnownHostsFile=/dev/null",
 			"-o", "StrictHostKeyChecking=no",
 			"-o", "IdentitiesOnly=yes", // forces the use of the provided key
-			"-p", "{{boundary.port}}", // this is provided by boundary
-			"{{boundary.ip}}",
+			"-p", "{{dumpling.port}}", // this is provided by boundary
+			"{{dumpling.ip}}",
 			"hostname", "-i",
 		),
 	)
@@ -256,24 +256,24 @@ func TestCliTargetHostSourceToAddress(t *testing.T) {
 	require.NoError(t, err)
 
 	ctx := context.Background()
-	boundary.AuthenticateAdminCli(t, ctx)
-	newOrgId := boundary.CreateNewOrgCli(t, ctx)
+	dumpling.AuthenticateAdminCli(t, ctx)
+	newOrgId := dumpling.CreateNewOrgCli(t, ctx)
 	t.Cleanup(func() {
 		ctx := context.Background()
-		boundary.AuthenticateAdminCli(t, ctx)
-		output := e2e.RunCommand(ctx, "boundary", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
+		dumpling.AuthenticateAdminCli(t, ctx)
+		output := e2e.RunCommand(ctx, "dumpling", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
 		require.NoError(t, output.Err, string(output.Stderr))
 	})
-	newProjectId := boundary.CreateNewProjectCli(t, ctx, newOrgId)
-	newHostCatalogId := boundary.CreateNewHostCatalogCli(t, ctx, newProjectId)
-	newHostSetId := boundary.CreateNewHostSetCli(t, ctx, newHostCatalogId)
-	newHostId := boundary.CreateNewHostCli(t, ctx, newHostCatalogId, c.TargetIp)
-	boundary.AddHostToHostSetCli(t, ctx, newHostSetId, newHostId)
-	newTargetId := boundary.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort)
-	boundary.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
+	newProjectId := dumpling.CreateNewProjectCli(t, ctx, newOrgId)
+	newHostCatalogId := dumpling.CreateNewHostCatalogCli(t, ctx, newProjectId)
+	newHostSetId := dumpling.CreateNewHostSetCli(t, ctx, newHostCatalogId)
+	newHostId := dumpling.CreateNewHostCli(t, ctx, newHostCatalogId, c.TargetIp)
+	dumpling.AddHostToHostSetCli(t, ctx, newHostSetId, newHostId)
+	newTargetId := dumpling.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort)
+	dumpling.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
 
 	// Connect to target and print host's IP address
-	output := e2e.RunCommand(ctx, "boundary",
+	output := e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"connect",
 			"-target-id", newTargetId,
@@ -283,8 +283,8 @@ func TestCliTargetHostSourceToAddress(t *testing.T) {
 			"-o", "UserKnownHostsFile=/dev/null",
 			"-o", "StrictHostKeyChecking=no",
 			"-o", "IdentitiesOnly=yes", // forces the use of the provided key
-			"-p", "{{boundary.port}}", // this is provided by boundary
-			"{{boundary.ip}}",
+			"-p", "{{dumpling.port}}", // this is provided by boundary
+			"{{dumpling.ip}}",
 			"hostname", "-i",
 		),
 	)
@@ -297,7 +297,7 @@ func TestCliTargetHostSourceToAddress(t *testing.T) {
 
 	// Attempt to add an address to the target - should error because we have
 	// host sources set.
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"targets", "update", "tcp",
 			"-id", newTargetId,
@@ -307,14 +307,14 @@ func TestCliTargetHostSourceToAddress(t *testing.T) {
 	)
 	require.Error(t, output.Err, "Target update did not return expected error")
 
-	var response boundary.CliError
+	var response dumpling.CliError
 	require.NoError(t, json.Unmarshal(output.Stderr, &response))
 	require.Equal(t, http.StatusBadRequest, response.Status, "Expected error when setting address to target with a host source")
 
-	boundary.RemoveHostSourceFromTargetCli(t, ctx, newTargetId, newHostSetId)
+	dumpling.RemoveHostSourceFromTargetCli(t, ctx, newTargetId, newHostSetId)
 
 	// Attempt to add an address to the target again - should work
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"targets", "update", "tcp",
 			"-id", newTargetId,
@@ -325,7 +325,7 @@ func TestCliTargetHostSourceToAddress(t *testing.T) {
 	require.NoError(t, output.Err, string(output.Stderr))
 
 	// Connect to target and print host's IP address
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"connect",
 			"-target-id", newTargetId,
@@ -335,8 +335,8 @@ func TestCliTargetHostSourceToAddress(t *testing.T) {
 			"-o", "UserKnownHostsFile=/dev/null",
 			"-o", "StrictHostKeyChecking=no",
 			"-o", "IdentitiesOnly=yes", // forces the use of the provided key
-			"-p", "{{boundary.port}}", // this is provided by boundary
-			"{{boundary.ip}}",
+			"-p", "{{dumpling.port}}", // this is provided by boundary
+			"{{dumpling.ip}}",
 			"hostname", "-i",
 		),
 	)

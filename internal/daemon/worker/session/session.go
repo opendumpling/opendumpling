@@ -12,9 +12,9 @@ import (
 	"sync"
 	"time"
 
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/servers/services"
-	"github.com/hashicorp/boundary/internal/observability/event"
-	"github.com/hashicorp/boundary/internal/session"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/servers/services"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
+	"github.com/opendumpling/opendumpling/internal/session"
 )
 
 // ValidateSessionTimeout is the duration of the timeout when the worker queries the

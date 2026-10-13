@@ -11,7 +11,7 @@ import (
 	"io"
 	"io/fs"
 
-	"github.com/hashicorp/boundary/internal/bsr/internal/is"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/is"
 )
 
 var errInvalidParameter = errors.New("invalid parameter")

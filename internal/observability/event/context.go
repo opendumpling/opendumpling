@@ -10,7 +10,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/test"
+	"github.com/opendumpling/opendumpling/internal/test"
 )
 
 var (

@@ -4,7 +4,7 @@
 package loopback
 
 import (
-	plgpb "github.com/hashicorp/boundary/sdk/pbs/plugin"
+	plgpb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
 )
 
 const loopbackPluginHostInfoAttrField = "host_info"

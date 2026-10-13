@@ -6,7 +6,7 @@ package authtoken
 import (
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/authtoken/store"
+	"github.com/opendumpling/opendumpling/internal/authtoken/store"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

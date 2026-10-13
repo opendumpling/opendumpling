@@ -4,7 +4,7 @@
 package auth
 
 import (
-	"github.com/hashicorp/boundary/internal/boundary"
+	"github.com/opendumpling/opendumpling/internal/dumpling"
 )
 
 // Domain defines the domain for the auth package.
@@ -12,13 +12,13 @@ const Domain = "auth"
 
 // AuthMethod contains the common methods across all the different types of auth methods.
 type AuthMethod interface {
-	boundary.Resource
+	dumpling.Resource
 	GetScopeId() string
 	GetIsPrimaryAuthMethod() bool
 }
 
 type Account interface {
-	boundary.Resource
+	dumpling.Resource
 	GetAuthMethodId() string
 	GetLoginName() string
 	GetEmail() string
@@ -26,6 +26,6 @@ type Account interface {
 }
 
 type ManagedGroup interface {
-	boundary.Resource
+	dumpling.Resource
 	GetAuthMethodId() string
 }

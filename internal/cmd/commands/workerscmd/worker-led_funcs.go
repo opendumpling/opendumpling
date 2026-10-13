@@ -4,9 +4,9 @@
 package workerscmd
 
 import (
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/workers"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/workers"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 )
 
 func init() {
@@ -30,11 +30,11 @@ func (c *WorkerLedCommand) extraWorkerLedHelpFunc(helpMap map[string]func() stri
 	switch c.Func {
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary workers create worker-led [options] [args]",
+			"Usage: dumpling workers create worker-led [options] [args]",
 			"",
 			"  Create a worker using the worker-led approach by providing an auth token from the worker. Example:",
 			"",
-			`    $ boundary workers create worker-led -name us-east-1-1 -worker-generated-auth-token <token>"`,
+			`    $ dumpling workers create worker-led -name us-east-1-1 -worker-generated-auth-token <token>"`,
 			"",
 			"",
 		})
@@ -51,7 +51,7 @@ func extraWorkerLedFlagsFuncImpl(c *WorkerLedCommand, set *base.FlagSets, f *bas
 			f.StringVar(&base.StringVar{
 				Name:   "worker-generated-auth-token",
 				Target: &c.flagWorkerGeneratedAuthToken,
-				Usage:  "The auth token provided by the worker to use to register it to Boundary",
+				Usage:  "The auth token provided by the worker to use to register it to Dumpling",
 			})
 		}
 	}

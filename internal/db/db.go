@@ -10,8 +10,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/observability/event"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
 	"github.com/hashicorp/go-dbw"
 	_ "github.com/jackc/pgx/v5"
 	"gorm.io/driver/postgres"

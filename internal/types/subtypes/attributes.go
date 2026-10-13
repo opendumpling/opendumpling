@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/hashicorp/boundary/sdk/pbs/controller/protooptions"
+	"github.com/opendumpling/opendumpling/sdk/pbs/controller/protooptions"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/reflect/protoregistry"

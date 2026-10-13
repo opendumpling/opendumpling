@@ -10,10 +10,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/hashicorp/boundary/internal/bsr/internal/checksum"
-	"github.com/hashicorp/boundary/internal/bsr/internal/is"
-	"github.com/hashicorp/boundary/internal/bsr/kms"
-	"github.com/hashicorp/boundary/internal/storage"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/checksum"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/is"
+	"github.com/opendumpling/opendumpling/internal/bsr/kms"
+	"github.com/opendumpling/opendumpling/internal/storage"
 	"github.com/hashicorp/go-kms-wrapping/v2/extras/crypto"
 	"google.golang.org/protobuf/proto"
 )

@@ -8,7 +8,7 @@ package controller.storage.servers.store.v1;
 
 import "controller/storage/timestamp/v1/timestamp.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/server/store;store";
+option go_package = "github.com/opendumpling/opendumpling/internal/server/store;store";
 
 // WorkerAuth contains all fields related to an authorized Worker resource
 message WorkerAuth {

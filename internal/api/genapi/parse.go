@@ -7,7 +7,7 @@ import (
 	"fmt"
 
 	_struct "github.com/golang/protobuf/ptypes/struct"
-	"github.com/hashicorp/boundary/sdk/pbs/controller/protooptions"
+	"github.com/opendumpling/opendumpling/sdk/pbs/controller/protooptions"
 	"github.com/hashicorp/go-secure-stdlib/strutil"
 	"github.com/iancoleman/strcase"
 	"google.golang.org/protobuf/proto"

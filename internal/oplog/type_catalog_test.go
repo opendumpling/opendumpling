@@ -8,7 +8,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/oplog/oplog_test"
+	"github.com/opendumpling/opendumpling/internal/oplog/oplog_test"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

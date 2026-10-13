@@ -7,9 +7,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hashicorp/boundary/internal/daemon/cluster/handlers"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/servers/services"
-	"github.com/hashicorp/boundary/internal/util"
+	"github.com/opendumpling/opendumpling/internal/daemon/cluster/handlers"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/servers/services"
+	"github.com/opendumpling/opendumpling/internal/util"
 	"github.com/hashicorp/nodeenrollment"
 	"github.com/hashicorp/nodeenrollment/multihop"
 	"google.golang.org/grpc"

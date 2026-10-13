@@ -10,9 +10,9 @@ import (
 	"time"
 
 	"github.com/golang/protobuf/proto"
-	"github.com/hashicorp/boundary/internal/auth/oidc/request"
-	"github.com/hashicorp/boundary/internal/authtoken"
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/auth/oidc/request"
+	"github.com/opendumpling/opendumpling/internal/authtoken"
+	"github.com/opendumpling/opendumpling/internal/errors"
 	"github.com/hashicorp/cap/oidc"
 	"github.com/hashicorp/go-bexpr"
 	"github.com/mitchellh/pointerstructure"

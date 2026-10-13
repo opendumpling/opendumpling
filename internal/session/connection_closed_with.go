@@ -6,7 +6,7 @@ package session
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/errors"
 )
 
 // CloseWith defines the boundary data that is saved in the repo when the

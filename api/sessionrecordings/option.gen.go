@@ -7,7 +7,7 @@ package sessionrecordings
 import (
 	"strconv"
 
-	"github.com/hashicorp/boundary/api"
+	"github.com/opendumpling/opendumpling/api"
 )
 
 // Option is a func that sets optional attributes for a call. This does not need

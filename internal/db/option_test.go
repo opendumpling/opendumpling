@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/oplog"
+	"github.com/opendumpling/opendumpling/internal/oplog"
 	"github.com/hashicorp/go-hclog"
 	"github.com/stretchr/testify/assert"
 )

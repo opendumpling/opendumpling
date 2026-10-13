@@ -9,11 +9,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/api/authmethods"
-	"github.com/hashicorp/boundary/api/scopes"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/testing/internal/e2e"
-	"github.com/hashicorp/boundary/testing/internal/e2e/boundary"
+	"github.com/opendumpling/opendumpling/api/authmethods"
+	"github.com/opendumpling/opendumpling/api/scopes"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e/dumpling"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -23,10 +23,10 @@ func TestCliKeyDestruction(t *testing.T) {
 	e2e.MaybeSkipTest(t)
 
 	ctx := context.Background()
-	boundary.AuthenticateAdminCli(t, ctx)
+	dumpling.AuthenticateAdminCli(t, ctx)
 
 	t.Log("Creating scope...")
-	output := e2e.RunCommand(ctx, "boundary",
+	output := e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"scopes", "create",
 			"-name", "testscope",
@@ -38,7 +38,7 @@ func TestCliKeyDestruction(t *testing.T) {
 	var scopeReply scopes.ScopeCreateResult
 	require.NoError(t, json.Unmarshal(output.Stdout, &scopeReply))
 	t.Cleanup(func() {
-		output = e2e.RunCommand(ctx, "boundary",
+		output = e2e.RunCommand(ctx, "dumpling",
 			e2e.WithArgs(
 				"scopes", "delete",
 				"-id", scopeReply.Item.Id,
@@ -48,7 +48,7 @@ func TestCliKeyDestruction(t *testing.T) {
 		require.NoError(t, output.Err, string(output.Stderr))
 	})
 
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"scopes", "list-keys",
 			"-scope-id", scopeReply.Item.Id,
@@ -67,7 +67,7 @@ func TestCliKeyDestruction(t *testing.T) {
 
 	// Create OIDC auth method to create some encrypted data in the scope
 	t.Log("Creating auth method...")
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"auth-methods", "create", "oidc",
 			"-scope-id", scopeReply.Item.Id,
@@ -81,7 +81,7 @@ func TestCliKeyDestruction(t *testing.T) {
 	var amReply authmethods.AuthMethodCreateResult
 	require.NoError(t, json.Unmarshal(output.Stdout, &amReply))
 	t.Cleanup(func() {
-		output = e2e.RunCommand(ctx, "boundary",
+		output = e2e.RunCommand(ctx, "dumpling",
 			e2e.WithArgs(
 				"auth-methods", "delete",
 				"-id", amReply.Item.Id,
@@ -91,7 +91,7 @@ func TestCliKeyDestruction(t *testing.T) {
 	})
 
 	t.Log("Rotating keys...")
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"scopes", "rotate-keys",
 			"-scope-id", scopeReply.Item.Id,
@@ -100,7 +100,7 @@ func TestCliKeyDestruction(t *testing.T) {
 	)
 	require.NoError(t, output.Err, string(output.Stderr))
 
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"scopes", "list-keys",
 			"-scope-id", scopeReply.Item.Id,
@@ -125,7 +125,7 @@ func TestCliKeyDestruction(t *testing.T) {
 		}
 	}
 
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"scopes", "list-key-version-destruction-jobs",
 			"-scope-id", scopeReply.Item.Id,
@@ -139,7 +139,7 @@ func TestCliKeyDestruction(t *testing.T) {
 	assert.Len(t, jobs.Items, 0)
 
 	t.Log("Destroying root key...")
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"scopes", "destroy-key-version",
 			"-scope-id", scopeReply.Item.Id,
@@ -156,7 +156,7 @@ func TestCliKeyDestruction(t *testing.T) {
 	// Root key versions should be destroyed synchronously, as they don't require any re-encryption
 	assert.Equal(t, "completed", destruction.Item.State)
 
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"scopes", "list-key-version-destruction-jobs",
 			"-scope-id", scopeReply.Item.Id,
@@ -169,7 +169,7 @@ func TestCliKeyDestruction(t *testing.T) {
 	assert.Len(t, jobs.Items, 0)
 
 	t.Log("Destroying database key...")
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"scopes", "destroy-key-version",
 			"-scope-id", scopeReply.Item.Id,
@@ -191,7 +191,7 @@ func TestCliKeyDestruction(t *testing.T) {
 	cancelCtx, cancel := context.WithTimeout(ctx, 3*time.Minute)
 	t.Cleanup(cancel)
 	for {
-		output = e2e.RunCommand(cancelCtx, "boundary",
+		output = e2e.RunCommand(cancelCtx, "dumpling",
 			e2e.WithArgs(
 				"scopes", "list-key-version-destruction-jobs",
 				"-scope-id", scopeReply.Item.Id,
@@ -213,7 +213,7 @@ func TestCliKeyDestruction(t *testing.T) {
 		}
 	}
 
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"scopes", "list-keys",
 			"-scope-id", scopeReply.Item.Id,
@@ -241,7 +241,7 @@ func TestCliKeyDestruction(t *testing.T) {
 func TestApiKeyDestruction(t *testing.T) {
 	e2e.MaybeSkipTest(t)
 
-	client, err := boundary.NewApiClient()
+	client, err := dumpling.NewApiClient()
 	require.NoError(t, err)
 
 	ctx := context.Background()

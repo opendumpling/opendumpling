@@ -8,37 +8,37 @@ controller {
   description = "A controller"
 
   database {
-    url = "env://LOAD_TEST_BOUNDARY_POSTGRES_URL"
+    url = "env://LOAD_TEST_DUMPLING_POSTGRES_URL"
   }
 }
 
 worker {
   name              = "worker0"
   description       = "A worker"
-  address           = "boundary"
-  initial_upstreams = ["boundary:9201"]
+  address           = "dumpling"
+  initial_upstreams = ["dumpling:9201"]
 }
 
 listener "tcp" {
-  address     = "boundary"
+  address     = "dumpling"
   purpose     = "api"
   tls_disable = true
 }
 
 listener "tcp" {
-  address     = "boundary"
+  address     = "dumpling"
   purpose     = "cluster"
   tls_disable = true
 }
 
 listener "tcp" {
-  address     = "boundary"
+  address     = "dumpling"
   purpose     = "proxy"
   tls_disable = true
 }
 
 listener "tcp" {
-  address     = "boundary"
+  address     = "dumpling"
   purpose     = "ops"
   tls_disable = true
 }

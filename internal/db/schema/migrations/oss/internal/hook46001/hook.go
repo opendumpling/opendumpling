@@ -16,7 +16,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/hashicorp/boundary/internal/db/schema/migration"
+	"github.com/opendumpling/opendumpling/internal/db/schema/migration"
 )
 
 type illegalAssociation struct {

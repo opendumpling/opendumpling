@@ -7,10 +7,10 @@ import (
 	"context"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/db/schema"
-	"github.com/hashicorp/boundary/internal/db/schema/internal/edition"
-	"github.com/hashicorp/boundary/internal/db/schema/migration"
-	"github.com/hashicorp/boundary/testing/dbtest"
+	"github.com/opendumpling/opendumpling/internal/db/schema"
+	"github.com/opendumpling/opendumpling/internal/db/schema/internal/edition"
+	"github.com/opendumpling/opendumpling/internal/db/schema/migration"
+	"github.com/opendumpling/opendumpling/testing/dbtest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

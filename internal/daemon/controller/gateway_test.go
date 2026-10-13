@@ -8,11 +8,11 @@ import (
 	"math"
 	"testing"
 
-	"github.com/hashicorp/boundary/api/targets"
-	_ "github.com/hashicorp/boundary/internal/daemon/controller/handlers/targets/tcp"
-	"github.com/hashicorp/boundary/internal/iam"
-	"github.com/hashicorp/boundary/internal/target"
-	"github.com/hashicorp/boundary/internal/target/tcp"
+	"github.com/opendumpling/opendumpling/api/targets"
+	_ "github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/targets/tcp"
+	"github.com/opendumpling/opendumpling/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/target"
+	"github.com/opendumpling/opendumpling/internal/target/tcp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

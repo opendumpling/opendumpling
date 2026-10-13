@@ -6,7 +6,7 @@ package vault
 import (
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/credential/vault"
+	"github.com/opendumpling/opendumpling/internal/credential/vault"
 )
 
 // TestVaultServer is a vault server running in a docker container suitable

@@ -10,7 +10,7 @@
 package session_recordings
 
 import (
-	scopes "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/scopes"
+	scopes "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/scopes"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
@@ -286,7 +286,7 @@ func (x *ConnectionRecording) GetChannelRecordings() []*ChannelRecording {
 	return nil
 }
 
-// User describes an authenticated user in Boundary.
+// User describes an authenticated user in Dumpling.
 type User struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -666,7 +666,7 @@ func (x *StaticHostAttributes) GetAddress() string {
 	return ""
 }
 
-// Target describes a target in Boundary.
+// Target describes a target in Dumpling.
 type Target struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1672,7 +1672,7 @@ func (x *VaultSSHCertificateCredentialLibraryAttributes) GetExtensions() map[str
 	return nil
 }
 
-// ValuesAtTime contain information about other Boundary resources as they
+// ValuesAtTime contain information about other Dumpling resources as they
 // were at a certain time through the lifetime of the Session Recording.
 type ValuesAtTime struct {
 	state         protoimpl.MessageState

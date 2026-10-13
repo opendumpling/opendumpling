@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/cmd/config"
-	"github.com/hashicorp/boundary/internal/daemon/controller"
+	"github.com/opendumpling/opendumpling/internal/cmd/config"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 
-	_ "github.com/hashicorp/boundary/internal/daemon/controller/handlers/targets/tcp"
+	_ "github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/targets/tcp"
 )
 
 type option struct {

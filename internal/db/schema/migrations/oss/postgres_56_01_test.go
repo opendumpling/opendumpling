@@ -7,14 +7,14 @@ import (
 	"context"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/auth/password"
-	"github.com/hashicorp/boundary/internal/authtoken"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/db/common"
-	"github.com/hashicorp/boundary/internal/db/schema"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/types/scope"
-	"github.com/hashicorp/boundary/testing/dbtest"
+	"github.com/opendumpling/opendumpling/internal/auth/password"
+	"github.com/opendumpling/opendumpling/internal/authtoken"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/db/common"
+	"github.com/opendumpling/opendumpling/internal/db/schema"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
+	"github.com/opendumpling/opendumpling/testing/dbtest"
 	"github.com/stretchr/testify/require"
 )
 

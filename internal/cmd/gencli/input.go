@@ -4,7 +4,7 @@
 package main
 
 import (
-	"github.com/hashicorp/boundary/internal/types/resource"
+	"github.com/opendumpling/opendumpling/internal/types/resource"
 )
 
 type cmdInfo struct {

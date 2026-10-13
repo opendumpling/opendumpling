@@ -4,7 +4,7 @@
 begin;
 
 -- release_version can be null, but if provided it must be greater than 8 to account for
--- the 'Boundary' suffix
+-- the 'Dumpling' suffix
 alter table server_worker
   add column release_version text
     constraint release_version_too_short

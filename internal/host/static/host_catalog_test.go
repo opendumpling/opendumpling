@@ -10,9 +10,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/host/static/store"
-	"github.com/hashicorp/boundary/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/host/static/store"
+	"github.com/opendumpling/opendumpling/internal/iam"
 )
 
 func TestHostCatalog_New(t *testing.T) {

@@ -9,8 +9,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/hashicorp/boundary/api/accounts"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api/accounts"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/hashicorp/go-secure-stdlib/parseutil"
 	"github.com/hashicorp/go-secure-stdlib/password"
 	"github.com/hashicorp/go-secure-stdlib/strutil"
@@ -39,22 +39,22 @@ func (c *PasswordCommand) extraPasswordHelpFunc(helpMap map[string]func() string
 	switch c.Func {
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary accounts create password [options] [args]",
+			"Usage: dumpling accounts create password [options] [args]",
 			"",
 			"  Create a password-type account. Example:",
 			"",
-			`    $ boundary accounts create password -login-name prodops -description "Password account for ProdOps"`,
+			`    $ dumpling accounts create password -login-name prodops -description "Password account for ProdOps"`,
 			"",
 			"",
 		})
 
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary accounts update password [options] [args]",
+			"Usage: dumpling accounts update password [options] [args]",
 			"",
 			"  Update a password-type account given its ID. Example:",
 			"",
-			`    $ boundary accounts update password -id acctpw_1234567890 -name "devops" -description "Password account for DevOps"`,
+			`    $ dumpling accounts update password -id acctpw_1234567890 -name "devops" -description "Password account for DevOps"`,
 			"",
 			"",
 		})

@@ -132,7 +132,7 @@ const (
 
 	// External system errors are reserved codes 3000-3999
 	Unavailable    Code = 3000 // Unavailable represents that an external system is unavailable
-	ExternalPlugin Code = 3001 // ExternalPlugin represent an error that occurred on a plugin external to Boundary
+	ExternalPlugin Code = 3001 // ExternalPlugin represent an error that occurred on a plugin external to Dumpling
 
 	// Vault specific errors
 	VaultTokenNotOrphan           Code = 3010 // VaultTokenNotOrphan represents an error for a Vault token that is not an orphan token

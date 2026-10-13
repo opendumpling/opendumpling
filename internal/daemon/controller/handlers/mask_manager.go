@@ -8,12 +8,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/errors"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/descriptorpb"
 
-	pb "github.com/hashicorp/boundary/sdk/pbs/controller/protooptions"
+	pb "github.com/opendumpling/opendumpling/sdk/pbs/controller/protooptions"
 )
 
 type MaskManager map[string]string

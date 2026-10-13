@@ -5,7 +5,7 @@
 package sessionrecordings
 
 import (
-	"github.com/hashicorp/boundary/api/scopes"
+	"github.com/opendumpling/opendumpling/api/scopes"
 )
 
 type Target struct {

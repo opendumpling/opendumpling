@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/bsr/convert/internal/asciicast"
+	"github.com/opendumpling/opendumpling/internal/bsr/convert/internal/asciicast"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

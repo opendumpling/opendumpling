@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/hashicorp/boundary/api"
+	"github.com/opendumpling/opendumpling/api"
 )
 
 type AuthenticateResult struct {

@@ -3,7 +3,7 @@
 
 package bsr
 
-import "github.com/hashicorp/boundary/internal/bsr/kms"
+import "github.com/opendumpling/opendumpling/internal/bsr/kms"
 
 // getOpts - iterate the inbound Options and return a struct
 func getOpts(opt ...Option) options {

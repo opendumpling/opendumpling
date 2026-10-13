@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/sdk/wrapper"
+	"github.com/opendumpling/opendumpling/sdk/wrapper"
 	"github.com/hashicorp/eventlogger"
 	"github.com/hashicorp/eventlogger/filters/encrypt"
 	"github.com/stretchr/testify/assert"

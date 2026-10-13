@@ -1,11 +1,11 @@
-# Extending Boundary: adding additional field to an existing API
+# Extending Dumpling: adding additional field to an existing API
 
 A very high level list of things to do
 when you're adding an additional field to an existing API and corresponding CLI command.
 
 ## Add the new field to a repository
 
-Once you've figured out that you need an additional field in Boundary's domain model,
+Once you've figured out that you need an additional field in Dumpling's domain model,
 then you need to build in support for your new field from the bottom up starting with a repository's database schema.
 
 * Make schema changes:
@@ -30,7 +30,7 @@ then you need to build in support for your new field from the bottom up starting
 ## Add new fields to the API/SDK resource protobufs
 
 Now that the repository supports the new field,
-you can move on to adding this new field to Boundary's API layer and the generated SDK.
+you can move on to adding this new field to Dumpling's API layer and the generated SDK.
 The first step in the process is to add it to the API/SDK protobufs.
 
 * API protobufs are under: `internal/proto/controller/api/resources`
@@ -64,8 +64,8 @@ you can move on to adding this new field to the API service handler.
 
 ## Update the CLI's command for updating the resource
 
-At this point, the new field is available via Boundary's API.
-All that's left is to incorporate it into Boundary's CLI for the appropriate command.
+At this point, the new field is available via Dumpling's API.
+All that's left is to incorporate it into Dumpling's CLI for the appropriate command.
 
 * CLI commands are under: `internal/cmd/commands`
 * Incorporate the new fields to the command's `funcs.go`.

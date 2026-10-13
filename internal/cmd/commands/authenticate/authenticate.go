@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/hashicorp/boundary/api/authmethods"
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/cmd/common"
-	"github.com/hashicorp/boundary/internal/types/scope"
+	"github.com/opendumpling/opendumpling/api/authmethods"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/common"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
 	"github.com/mitchellh/cli"
 	"github.com/mitchellh/go-wordwrap"
 )
@@ -24,34 +24,34 @@ type Command struct {
 }
 
 func (c *Command) Synopsis() string {
-	return wordwrap.WrapString("Authenticate the Boundary command-line client", base.TermWidth)
+	return wordwrap.WrapString("Authenticate the Dumpling command-line client", base.TermWidth)
 }
 
 func (c *Command) Help() string {
 	return base.WrapForHelpText([]string{
-		"Usage: boundary authenticate [sub command] [options] [args]",
+		"Usage: dumpling authenticate [sub command] [options] [args]",
 		"",
-		"  This command authenticates the Boundary commandline client using a specified auth method. Examples:",
+		"  This command authenticates the Dumpling commandline client using a specified auth method. Examples:",
 		"",
 		"    Authenticate with the primary auth method in the global scope:",
 		"",
-		"      $ boundary authenticate",
+		"      $ dumpling authenticate",
 		"",
 		"    Authenticate using the primary auth method in a specific scope",
 		"",
-		"      $ boundary authenticate password -scope-id o_1234567890",
+		"      $ dumpling authenticate password -scope-id o_1234567890",
 		"",
 		"    Authenticate with a password auth method using a specific auth method ID:",
 		"",
-		"      $ boundary authenticate password -auth-method-id ampw_1234567890",
+		"      $ dumpling authenticate password -auth-method-id ampw_1234567890",
 		"",
 		"    Authenticate with an OIDC auth method using a specific auth method ID:",
 		"",
-		"      $ boundary authenticate oidc -auth-method-id amoidc_1234567890",
+		"      $ dumpling authenticate oidc -auth-method-id amoidc_1234567890",
 		"",
 		"    Authenticate with an LDAP auth method:",
 		"",
-		"      $ boundary authenticate ldap -auth-method-id amldap_1234567890",
+		"      $ dumpling authenticate ldap -auth-method-id amldap_1234567890",
 		"",
 		"  Please see the auth method subcommand help for detailed usage information.",
 	}) + c.Flags().Help()
@@ -63,7 +63,7 @@ func (c *Command) Flags() *base.FlagSets {
 
 	f.StringVar(&base.StringVar{
 		Name:   "scope-id",
-		EnvVar: "BOUNDARY_SCOPE_ID",
+		EnvVar: "DUMPLING_SCOPE_ID",
 		Target: &c.FlagScopeId,
 		Usage:  "The scope to use for the operation",
 	})
@@ -96,7 +96,7 @@ func (c *Command) Run(args []string) int {
 	aClient := authmethods.NewClient(client)
 	pri, err := getPrimaryAuthMethodId(c.Context, aClient, scope.Global.String(), "")
 	if err != nil {
-		c.PrintCliError(errors.New("Error looking up primary auth method ID for the global scope. Try setting a primary auth method for the global scope, or use an auth method subcommand (see 'boundary authenticate -h' for available sub command usage)."))
+		c.PrintCliError(errors.New("Error looking up primary auth method ID for the global scope. Try setting a primary auth method for the global scope, or use an auth method subcommand (see 'dumpling authenticate -h' for available sub command usage)."))
 		return base.CommandUserError
 	}
 

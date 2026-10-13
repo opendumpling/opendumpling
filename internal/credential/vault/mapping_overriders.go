@@ -4,10 +4,10 @@
 package vault
 
 import (
-	"github.com/hashicorp/boundary/internal/credential"
-	"github.com/hashicorp/boundary/internal/credential/vault/store"
-	"github.com/hashicorp/boundary/internal/db/sanitize"
-	"github.com/hashicorp/boundary/internal/db/sentinel"
+	"github.com/opendumpling/opendumpling/internal/credential"
+	"github.com/opendumpling/opendumpling/internal/credential/vault/store"
+	"github.com/opendumpling/opendumpling/internal/db/sanitize"
+	"github.com/opendumpling/opendumpling/internal/db/sentinel"
 	"google.golang.org/protobuf/proto"
 )
 

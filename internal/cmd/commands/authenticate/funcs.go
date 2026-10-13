@@ -11,9 +11,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hashicorp/boundary/api/authmethods"
-	"github.com/hashicorp/boundary/api/authtokens"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api/authmethods"
+	"github.com/opendumpling/opendumpling/api/authtokens"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	nkeyring "github.com/jefferai/keyring"
 	zkeyring "github.com/zalando/go-keyring"
 )
@@ -67,7 +67,7 @@ func saveAndOrPrintToken(c *base.Command, result *authmethods.AuthenticateResult
 			default:
 				krConfig := nkeyring.Config{
 					LibSecretCollectionName: "login",
-					PassPrefix:              "HashiCorp_Boundary",
+					PassPrefix:              "OpenDumpling",
 					AllowedBackends:         []nkeyring.BackendType{nkeyring.BackendType(keyringType)},
 				}
 
@@ -96,7 +96,7 @@ func saveAndOrPrintToken(c *base.Command, result *authmethods.AuthenticateResult
 
 	switch {
 	case gotErr:
-		c.UI.Warn(fmt.Sprintf("The token was not successfully saved to a system keyring. The token is:\n\n%s\n\nIt must be manually passed in via the BOUNDARY_TOKEN env var or -token flag. Storing the token can also be disabled via -keyring-type=none.", token.Token))
+		c.UI.Warn(fmt.Sprintf("The token was not successfully saved to a system keyring. The token is:\n\n%s\n\nIt must be manually passed in via the DUMPLING_TOKEN env var or -token flag. Storing the token can also be disabled via -keyring-type=none.", token.Token))
 	case c.FlagKeyringType == "none":
 		c.UI.Warn("\nStoring the token in a keyring was disabled. The token is:")
 		c.UI.Output(token.Token)
@@ -120,11 +120,11 @@ func getPrimaryAuthMethodId(ctx context.Context, client *authmethods.Client, sco
 	for _, m := range authMethodListResult.GetItems() {
 		if m.IsPrimary {
 			if !strings.HasPrefix(m.Id, amType) {
-				return "", fmt.Errorf("Error looking up primary auth method in scope '%s': got '%s' but the command requires an auth method prefix of '%s'. Make sure the sub command you're using matches the primary auth method type in the scope being used. For example, if using the password sub command the primary auth method must have a prefix of 'ampw'.\n\nSee 'boundary authenticate -h' for available sub command usage.", scopeId, m.Id, amType)
+				return "", fmt.Errorf("Error looking up primary auth method in scope '%s': got '%s' but the command requires an auth method prefix of '%s'. Make sure the sub command you're using matches the primary auth method type in the scope being used. For example, if using the password sub command the primary auth method must have a prefix of 'ampw'.\n\nSee 'dumpling authenticate -h' for available sub command usage.", scopeId, m.Id, amType)
 			}
 
 			return m.Id, nil
 		}
 	}
-	return "", fmt.Errorf("Primary auth method not found for scope ID: '%s'. Please set a primary auth method on this scope or pass one explicitly using an authenticate sub command (see 'boundary authenticate -h') along with the -auth-method-id flag.", scopeId)
+	return "", fmt.Errorf("Primary auth method not found for scope ID: '%s'. Please set a primary auth method on this scope or pass one explicitly using an authenticate sub command (see 'dumpling authenticate -h') along with the -auth-method-id flag.", scopeId)
 }

@@ -6,7 +6,7 @@ package schema_test
 import (
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/db/schema"
+	"github.com/opendumpling/opendumpling/internal/db/schema"
 	"github.com/stretchr/testify/assert"
 )
 

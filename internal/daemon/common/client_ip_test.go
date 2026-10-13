@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/errors"
 	"github.com/hashicorp/go-secure-stdlib/listenerutil"
 	"github.com/hashicorp/go-sockaddr"
 	"github.com/stretchr/testify/assert"

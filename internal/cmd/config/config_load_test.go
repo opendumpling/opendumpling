@@ -10,8 +10,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/cmd/config"
-	"github.com/hashicorp/boundary/internal/observability/event"
+	"github.com/opendumpling/opendumpling/internal/cmd/config"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
 	configutil "github.com/hashicorp/go-secure-stdlib/configutil/v2"
 	"github.com/hashicorp/go-secure-stdlib/listenerutil"
 	"github.com/stretchr/testify/require"
@@ -48,14 +48,14 @@ func TestLoad(t *testing.T) {
 					Listeners: []*listenerutil.ListenerConfig{
 						{
 							RawConfig: map[string]any{
-								"address":     "boundary",
+								"address":     "dumpling",
 								"purpose":     "api",
 								"tls_disable": true,
 							},
 							Type:                                "tcp",
 							Purpose:                             []string{"api"},
 							PurposeRaw:                          nil,
-							Address:                             "boundary",
+							Address:                             "dumpling",
 							ClusterAddress:                      "",
 							MaxRequestSize:                      0,
 							MaxRequestSizeRaw:                   nil,
@@ -117,14 +117,14 @@ func TestLoad(t *testing.T) {
 						},
 						{
 							RawConfig: map[string]any{
-								"address":     "boundary",
+								"address":     "dumpling",
 								"purpose":     "cluster",
 								"tls_disable": true,
 							},
 							Type:                                "tcp",
 							Purpose:                             []string{"cluster"},
 							PurposeRaw:                          nil,
-							Address:                             "boundary",
+							Address:                             "dumpling",
 							ClusterAddress:                      "",
 							MaxRequestSize:                      0,
 							MaxRequestSizeRaw:                   nil,
@@ -186,14 +186,14 @@ func TestLoad(t *testing.T) {
 						},
 						{
 							RawConfig: map[string]any{
-								"address":     "boundary",
+								"address":     "dumpling",
 								"purpose":     "proxy",
 								"tls_disable": true,
 							},
 							Type:                                "tcp",
 							Purpose:                             []string{"proxy"},
 							PurposeRaw:                          nil,
-							Address:                             "boundary",
+							Address:                             "dumpling",
 							ClusterAddress:                      "",
 							MaxRequestSize:                      0,
 							MaxRequestSizeRaw:                   nil,
@@ -255,14 +255,14 @@ func TestLoad(t *testing.T) {
 						},
 						{
 							RawConfig: map[string]any{
-								"address":     "boundary",
+								"address":     "dumpling",
 								"purpose":     "ops",
 								"tls_disable": true,
 							},
 							Type:                                "tcp",
 							Purpose:                             []string{"ops"},
 							PurposeRaw:                          nil,
-							Address:                             "boundary",
+							Address:                             "dumpling",
 							ClusterAddress:                      "",
 							MaxRequestSize:                      0,
 							MaxRequestSizeRaw:                   nil,
@@ -379,8 +379,8 @@ func TestLoad(t *testing.T) {
 					Name:                                "worker0",
 					Description:                         "A worker",
 					PublicAddr:                          "",
-					InitialUpstreams:                    []string{"boundary:9201"},
-					InitialUpstreamsRaw:                 []any{"boundary:9201"},
+					InitialUpstreams:                    []string{"dumpling:9201"},
+					InitialUpstreamsRaw:                 []any{"dumpling:9201"},
 					ControllersRaw:                      nil,
 					Tags:                                nil,
 					TagsRaw:                             nil,
@@ -393,7 +393,7 @@ func TestLoad(t *testing.T) {
 					Name:        "controller0",
 					Description: "A controller",
 					Database: &config.Database{
-						Url:                       "env://LOAD_TEST_BOUNDARY_POSTGRES_URL",
+						Url:                       "env://LOAD_TEST_DUMPLING_POSTGRES_URL",
 						MigrationUrl:              "",
 						MaxOpenConnections:        0,
 						MaxOpenConnectionsRaw:     nil,
@@ -471,14 +471,14 @@ func TestLoad(t *testing.T) {
 					Listeners: []*listenerutil.ListenerConfig{
 						{
 							RawConfig: map[string]any{
-								"address":     "boundary",
+								"address":     "dumpling",
 								"purpose":     "api",
 								"tls_disable": true,
 							},
 							Type:                                "tcp",
 							Purpose:                             []string{"api"},
 							PurposeRaw:                          nil,
-							Address:                             "boundary",
+							Address:                             "dumpling",
 							ClusterAddress:                      "",
 							MaxRequestSize:                      0,
 							MaxRequestSizeRaw:                   nil,
@@ -540,14 +540,14 @@ func TestLoad(t *testing.T) {
 						},
 						{
 							RawConfig: map[string]any{
-								"address":     "boundary",
+								"address":     "dumpling",
 								"purpose":     "cluster",
 								"tls_disable": true,
 							},
 							Type:                                "tcp",
 							Purpose:                             []string{"cluster"},
 							PurposeRaw:                          nil,
-							Address:                             "boundary",
+							Address:                             "dumpling",
 							ClusterAddress:                      "",
 							MaxRequestSize:                      0,
 							MaxRequestSizeRaw:                   nil,
@@ -609,14 +609,14 @@ func TestLoad(t *testing.T) {
 						},
 						{
 							RawConfig: map[string]any{
-								"address":     "boundary",
+								"address":     "dumpling",
 								"purpose":     "ops",
 								"tls_disable": true,
 							},
 							Type:                                "tcp",
 							Purpose:                             []string{"ops"},
 							PurposeRaw:                          nil,
-							Address:                             "boundary",
+							Address:                             "dumpling",
 							ClusterAddress:                      "",
 							MaxRequestSize:                      0,
 							MaxRequestSizeRaw:                   nil,
@@ -678,14 +678,14 @@ func TestLoad(t *testing.T) {
 						},
 						{
 							RawConfig: map[string]any{
-								"address":     "boundary",
+								"address":     "dumpling",
 								"purpose":     "proxy",
 								"tls_disable": true,
 							},
 							Type:                                "tcp",
 							Purpose:                             []string{"proxy"},
 							PurposeRaw:                          nil,
-							Address:                             "boundary",
+							Address:                             "dumpling",
 							ClusterAddress:                      "",
 							MaxRequestSize:                      0,
 							MaxRequestSizeRaw:                   nil,
@@ -802,8 +802,8 @@ func TestLoad(t *testing.T) {
 					Name:                                "worker0",
 					Description:                         "A worker",
 					PublicAddr:                          "",
-					InitialUpstreams:                    []string{"boundary:9201"},
-					InitialUpstreamsRaw:                 []any{"boundary:9201"},
+					InitialUpstreams:                    []string{"dumpling:9201"},
+					InitialUpstreamsRaw:                 []any{"dumpling:9201"},
 					ControllersRaw:                      nil,
 					Tags:                                nil,
 					TagsRaw:                             nil,
@@ -816,7 +816,7 @@ func TestLoad(t *testing.T) {
 					Name:        "controller0",
 					Description: "A controller",
 					Database: &config.Database{
-						Url:                       "env://LOAD_TEST_BOUNDARY_POSTGRES_URL",
+						Url:                       "env://LOAD_TEST_DUMPLING_POSTGRES_URL",
 						MigrationUrl:              "",
 						MaxOpenConnections:        0,
 						MaxOpenConnectionsRaw:     nil,
@@ -889,14 +889,14 @@ func TestLoad(t *testing.T) {
 					Listeners: []*listenerutil.ListenerConfig{
 						{
 							RawConfig: map[string]any{
-								"address":     "boundary",
+								"address":     "dumpling",
 								"purpose":     "api",
 								"tls_disable": true,
 							},
 							Type:                                "tcp",
 							Purpose:                             []string{"api"},
 							PurposeRaw:                          nil,
-							Address:                             "boundary",
+							Address:                             "dumpling",
 							ClusterAddress:                      "",
 							MaxRequestSize:                      0,
 							MaxRequestSizeRaw:                   nil,
@@ -958,14 +958,14 @@ func TestLoad(t *testing.T) {
 						},
 						{
 							RawConfig: map[string]any{
-								"address":     "boundary",
+								"address":     "dumpling",
 								"purpose":     "cluster",
 								"tls_disable": true,
 							},
 							Type:                                "tcp",
 							Purpose:                             []string{"cluster"},
 							PurposeRaw:                          nil,
-							Address:                             "boundary",
+							Address:                             "dumpling",
 							ClusterAddress:                      "",
 							MaxRequestSize:                      0,
 							MaxRequestSizeRaw:                   nil,
@@ -1027,14 +1027,14 @@ func TestLoad(t *testing.T) {
 						},
 						{
 							RawConfig: map[string]any{
-								"address":     "boundary",
+								"address":     "dumpling",
 								"purpose":     "ops",
 								"tls_disable": true,
 							},
 							Type:                                "tcp",
 							Purpose:                             []string{"ops"},
 							PurposeRaw:                          nil,
-							Address:                             "boundary",
+							Address:                             "dumpling",
 							ClusterAddress:                      "",
 							MaxRequestSize:                      0,
 							MaxRequestSizeRaw:                   nil,
@@ -1096,14 +1096,14 @@ func TestLoad(t *testing.T) {
 						},
 						{
 							RawConfig: map[string]any{
-								"address":     "boundary",
+								"address":     "dumpling",
 								"purpose":     "proxy",
 								"tls_disable": true,
 							},
 							Type:                                "tcp",
 							Purpose:                             []string{"proxy"},
 							PurposeRaw:                          nil,
-							Address:                             "boundary",
+							Address:                             "dumpling",
 							ClusterAddress:                      "",
 							MaxRequestSize:                      0,
 							MaxRequestSizeRaw:                   nil,
@@ -1220,8 +1220,8 @@ func TestLoad(t *testing.T) {
 					Name:                                "worker0",
 					Description:                         "A worker",
 					PublicAddr:                          "",
-					InitialUpstreams:                    []string{"boundary:9201"},
-					InitialUpstreamsRaw:                 []any{"boundary:9201"},
+					InitialUpstreams:                    []string{"dumpling:9201"},
+					InitialUpstreamsRaw:                 []any{"dumpling:9201"},
 					ControllersRaw:                      nil,
 					Tags:                                nil,
 					TagsRaw:                             nil,
@@ -1234,7 +1234,7 @@ func TestLoad(t *testing.T) {
 					Name:        "controller0",
 					Description: "A controller but duplicated",
 					Database: &config.Database{
-						Url:                       "env://LOAD_TEST_BOUNDARY_POSTGRES_URL",
+						Url:                       "env://LOAD_TEST_DUMPLING_POSTGRES_URL",
 						MigrationUrl:              "",
 						MaxOpenConnections:        0,
 						MaxOpenConnectionsRaw:     nil,
@@ -1307,14 +1307,14 @@ func TestLoad(t *testing.T) {
 					Listeners: []*listenerutil.ListenerConfig{
 						{
 							RawConfig: map[string]any{
-								"address":     "boundary",
+								"address":     "dumpling",
 								"purpose":     "api",
 								"tls_disable": true,
 							},
 							Type:                                "tcp",
 							Purpose:                             []string{"api"},
 							PurposeRaw:                          nil,
-							Address:                             "boundary",
+							Address:                             "dumpling",
 							ClusterAddress:                      "",
 							MaxRequestSize:                      0,
 							MaxRequestSizeRaw:                   nil,
@@ -1376,14 +1376,14 @@ func TestLoad(t *testing.T) {
 						},
 						{
 							RawConfig: map[string]any{
-								"address":     "boundary",
+								"address":     "dumpling",
 								"purpose":     "cluster",
 								"tls_disable": true,
 							},
 							Type:                                "tcp",
 							Purpose:                             []string{"cluster"},
 							PurposeRaw:                          nil,
-							Address:                             "boundary",
+							Address:                             "dumpling",
 							ClusterAddress:                      "",
 							MaxRequestSize:                      0,
 							MaxRequestSizeRaw:                   nil,
@@ -1445,14 +1445,14 @@ func TestLoad(t *testing.T) {
 						},
 						{
 							RawConfig: map[string]any{
-								"address":     "boundary",
+								"address":     "dumpling",
 								"purpose":     "proxy",
 								"tls_disable": true,
 							},
 							Type:                                "tcp",
 							Purpose:                             []string{"proxy"},
 							PurposeRaw:                          nil,
-							Address:                             "boundary",
+							Address:                             "dumpling",
 							ClusterAddress:                      "",
 							MaxRequestSize:                      0,
 							MaxRequestSizeRaw:                   nil,
@@ -1514,14 +1514,14 @@ func TestLoad(t *testing.T) {
 						},
 						{
 							RawConfig: map[string]any{
-								"address":     "boundary",
+								"address":     "dumpling",
 								"purpose":     "ops",
 								"tls_disable": true,
 							},
 							Type:                                "tcp",
 							Purpose:                             []string{"ops"},
 							PurposeRaw:                          nil,
-							Address:                             "boundary",
+							Address:                             "dumpling",
 							ClusterAddress:                      "",
 							MaxRequestSize:                      0,
 							MaxRequestSizeRaw:                   nil,
@@ -1638,8 +1638,8 @@ func TestLoad(t *testing.T) {
 					Name:                                "worker0",
 					Description:                         "A worker",
 					PublicAddr:                          "",
-					InitialUpstreams:                    []string{"boundary:9201"},
-					InitialUpstreamsRaw:                 []any{"boundary:9201"},
+					InitialUpstreams:                    []string{"dumpling:9201"},
+					InitialUpstreamsRaw:                 []any{"dumpling:9201"},
 					ControllersRaw:                      nil,
 					Tags:                                nil,
 					TagsRaw:                             nil,
@@ -1652,7 +1652,7 @@ func TestLoad(t *testing.T) {
 					Name:        "controller0",
 					Description: "A controller",
 					Database: &config.Database{
-						Url:                       "env://LOAD_TEST_BOUNDARY_POSTGRES_URL",
+						Url:                       "env://LOAD_TEST_DUMPLING_POSTGRES_URL",
 						MigrationUrl:              "",
 						MaxOpenConnections:        0,
 						MaxOpenConnectionsRaw:     nil,
@@ -1741,7 +1741,7 @@ func TestLoad(t *testing.T) {
 					Name:        "controller0",
 					Description: "A controller",
 					Database: &config.Database{
-						Url:                       "env://LOAD_TEST_BOUNDARY_POSTGRES_URL",
+						Url:                       "env://LOAD_TEST_DUMPLING_POSTGRES_URL",
 						MigrationUrl:              "",
 						MaxOpenConnections:        0,
 						MaxOpenConnectionsRaw:     nil,

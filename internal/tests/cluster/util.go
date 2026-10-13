@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/daemon/controller"
-	"github.com/hashicorp/boundary/internal/daemon/worker"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller"
+	"github.com/opendumpling/opendumpling/internal/daemon/worker"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

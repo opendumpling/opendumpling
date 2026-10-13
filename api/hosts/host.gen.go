@@ -11,9 +11,9 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/plugins"
-	"github.com/hashicorp/boundary/api/scopes"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/plugins"
+	"github.com/opendumpling/opendumpling/api/scopes"
 )
 
 type Host struct {

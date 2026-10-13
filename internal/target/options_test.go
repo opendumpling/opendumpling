@@ -6,10 +6,10 @@ package target
 import (
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/credential"
-	"github.com/hashicorp/boundary/internal/perms"
-	"github.com/hashicorp/boundary/internal/target/store"
-	"github.com/hashicorp/boundary/internal/types/subtypes"
+	"github.com/opendumpling/opendumpling/internal/credential"
+	"github.com/opendumpling/opendumpling/internal/perms"
+	"github.com/opendumpling/opendumpling/internal/target/store"
+	"github.com/opendumpling/opendumpling/internal/types/subtypes"
 	"github.com/stretchr/testify/assert"
 )
 

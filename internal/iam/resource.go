@@ -7,11 +7,11 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/types/action"
-	"github.com/hashicorp/boundary/internal/types/resource"
-	"github.com/hashicorp/boundary/internal/types/scope"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/types/action"
+	"github.com/opendumpling/opendumpling/internal/types/resource"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
 )
 
 // IamRepoFactory is a factory function that returns a repository and any error

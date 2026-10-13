@@ -122,7 +122,7 @@ func (_ *hclogFormatterFilter) Name() string {
 	return hclogNodeName
 }
 
-// Process formats the Boundary event as an hclog entry and stores that
+// Process formats the Dumpling event as an hclog entry and stores that
 // formatted data in Event.Formatted with a key of either "hclog-text"
 // (TextHclogSinkFormat) or "hclog-json" (JSONHclogSinkFormat) based on the
 // HclogFormatter.JSONFormat value.

@@ -8,14 +8,14 @@ import (
 	"net/textproto"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/types/resource"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/types/resource"
 	"github.com/mitchellh/go-wordwrap"
 )
 
 func SynopsisFunc(inFunc, resType string) string {
 	if inFunc == "" {
-		return wordwrap.WrapString(fmt.Sprintf("Manage Boundary %ss", resType), base.TermWidth)
+		return wordwrap.WrapString(fmt.Sprintf("Manage Dumpling %ss", resType), base.TermWidth)
 	}
 	articleType := resType
 	switch resType[0] {
@@ -48,13 +48,13 @@ func HelpMap(resType string) map[string]func() string {
 	return map[string]func() string{
 		"base": func() string {
 			return base.WrapForHelpText(subtype([]string{
-				"Usage: boundary {{hyphentypes}} [sub command] [options] [args]",
+				"Usage: dumpling {{hyphentypes}} [sub command] [options] [args]",
 				"",
-				"  This command allows operations on Boundary {{type}} resources. Example:",
+				"  This command allows operations on Dumpling {{type}} resources. Example:",
 				"",
 				"    Create {{articletype}}:",
 				"",
-				`      $ boundary {{hyphentypes}} create -name prodops -description "For ProdOps usage"`,
+				`      $ dumpling {{hyphentypes}} create -name prodops -description "For ProdOps usage"`,
 				"",
 				"  Please see the {{hyphentypes}} subcommand help for detailed usage information.",
 			}, resType, prefixMap))
@@ -62,11 +62,11 @@ func HelpMap(resType string) map[string]func() string {
 
 		"create": func() string {
 			return base.WrapForHelpText(subtype([]string{
-				"Usage: boundary {{hyphentypes}} create [options] [args]",
+				"Usage: dumpling {{hyphentypes}} create [options] [args]",
 				"",
 				"  Create {{articletype}}. Example:",
 				"",
-				`    $ boundary {{hyphentypes}} create -name prodops -description "{{uppertype}} for ProdOps"`,
+				`    $ dumpling {{hyphentypes}} create -name prodops -description "{{uppertype}} for ProdOps"`,
 				"",
 				"",
 			}, resType, prefixMap))
@@ -74,11 +74,11 @@ func HelpMap(resType string) map[string]func() string {
 
 		"update": func() string {
 			return base.WrapForHelpText(subtype([]string{
-				"Usage: boundary {{hyphentypes}} update [options] [args]",
+				"Usage: dumpling {{hyphentypes}} update [options] [args]",
 				"",
 				"  Update {{articletype}} given its ID. Example:",
 				"",
-				`    $ boundary {{hyphentypes}} update -id {{prefix}}_1234567890 -name "devops" -description "{{uppertype}} for DevOps"`,
+				`    $ dumpling {{hyphentypes}} update -id {{prefix}}_1234567890 -name "devops" -description "{{uppertype}} for DevOps"`,
 				"",
 				"",
 			}, resType, prefixMap))
@@ -86,11 +86,11 @@ func HelpMap(resType string) map[string]func() string {
 
 		"read": func() string {
 			return base.WrapForHelpText(subtype([]string{
-				"Usage: boundary {{hyphentypes}} read [options] [args]",
+				"Usage: dumpling {{hyphentypes}} read [options] [args]",
 				"",
 				"  Read {{articletype}} given its ID. Example:",
 				"",
-				`    $ boundary {{hyphentypes}} read -id {{prefix}}_1234567890`,
+				`    $ dumpling {{hyphentypes}} read -id {{prefix}}_1234567890`,
 				"",
 				"",
 			}, resType, prefixMap))
@@ -98,11 +98,11 @@ func HelpMap(resType string) map[string]func() string {
 
 		"delete": func() string {
 			return base.WrapForHelpText(subtype([]string{
-				"Usage: boundary {{hyphentypes}} delete [options] [args]",
+				"Usage: dumpling {{hyphentypes}} delete [options] [args]",
 				"",
 				"  Delete {{articletype}} given its ID. Example:",
 				"",
-				`    $ boundary {{hyphentypes}} delete -id {{prefix}}_1234567890`,
+				`    $ dumpling {{hyphentypes}} delete -id {{prefix}}_1234567890`,
 				"",
 				"",
 			}, resType, prefixMap))
@@ -110,11 +110,11 @@ func HelpMap(resType string) map[string]func() string {
 
 		"list": func() string {
 			return base.WrapForHelpText(subtype([]string{
-				"Usage: boundary {{hyphentypes}} list [options] [args]",
+				"Usage: dumpling {{hyphentypes}} list [options] [args]",
 				"",
 				"  List {{pluraltypes}} within an enclosing scope or resource. Example:",
 				"",
-				`    $ boundary {{hyphentypes}} list`,
+				`    $ dumpling {{hyphentypes}} list`,
 				"",
 				"",
 			}, resType, prefixMap))

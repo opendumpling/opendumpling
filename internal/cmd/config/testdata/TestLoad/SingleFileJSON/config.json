@@ -3,7 +3,7 @@
         {
             "database": [
                 {
-                    "url": "env://LOAD_TEST_BOUNDARY_POSTGRES_URL"
+                    "url": "env://LOAD_TEST_DUMPLING_POSTGRES_URL"
                 }
             ],
             "description": "A controller",
@@ -40,28 +40,28 @@
     "listener": [
         {
             "tcp": {
-              "address": "boundary",
+              "address": "dumpling",
               "purpose": "api",
               "tls_disable": true
             }
         },
         {
             "tcp": {
-              "address": "boundary",
+              "address": "dumpling",
               "purpose": "cluster",
               "tls_disable": true
             }
         },
         {
             "tcp": {
-              "address": "boundary",
+              "address": "dumpling",
               "purpose": "proxy",
               "tls_disable": true
             }
         },
         {
             "tcp": {
-              "address": "boundary",
+              "address": "dumpling",
               "purpose": "ops",
               "tls_disable": true
             }
@@ -69,10 +69,10 @@
     ],
     "worker": [
         {
-            "address": "boundary",
+            "address": "dumpling",
             "description": "A worker",
             "initial_upstreams": [
-                "boundary:9201"
+                "dumpling:9201"
             ],
             "name": "worker0"
         }

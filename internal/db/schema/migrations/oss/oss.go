@@ -8,10 +8,10 @@ package oss
 import (
 	"embed"
 
-	"github.com/hashicorp/boundary/internal/db/schema"
-	"github.com/hashicorp/boundary/internal/db/schema/internal/edition"
-	"github.com/hashicorp/boundary/internal/db/schema/migration"
-	"github.com/hashicorp/boundary/internal/db/schema/migrations/oss/internal/hook46001"
+	"github.com/opendumpling/opendumpling/internal/db/schema"
+	"github.com/opendumpling/opendumpling/internal/db/schema/internal/edition"
+	"github.com/opendumpling/opendumpling/internal/db/schema/migration"
+	"github.com/opendumpling/opendumpling/internal/db/schema/migrations/oss/internal/hook46001"
 )
 
 // postgres contains the migrations sql files for postgres oss edition

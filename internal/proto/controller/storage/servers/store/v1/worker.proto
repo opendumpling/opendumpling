@@ -8,7 +8,7 @@ package controller.storage.servers.store.v1;
 import "controller/custom_options/v1/options.proto";
 import "controller/storage/timestamp/v1/timestamp.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/server/store;store";
+option go_package = "github.com/opendumpling/opendumpling/internal/server/store;store";
 
 // Worker contains all fields related to a Worker resource
 message Worker {
@@ -58,7 +58,7 @@ message Worker {
   // @inject_tag: `gorm:"not_null"`
   string type = 130;
 
-  // The version of Boundary the worker binary is running
+  // The version of Dumpling the worker binary is running
   // @inject_tag: `gorm:"default:null"`
   string release_version = 140;
 

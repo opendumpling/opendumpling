@@ -7,7 +7,7 @@ package worker.health.v1;
 
 import "google/protobuf/wrappers.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/gen/worker/health;health";
+option go_package = "github.com/opendumpling/opendumpling/internal/gen/worker/health;health";
 
 message HealthInfo {
   string state = 1;

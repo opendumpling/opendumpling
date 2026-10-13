@@ -12,8 +12,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/types/scope"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
 	"github.com/hashicorp/go-secure-stdlib/parseutil"
 	"github.com/posener/complete"
 )
@@ -25,7 +25,7 @@ func PopulateCommonFlags(c *base.Command, f *base.FlagSet, resourceType string, 
 			f.StringVar(&base.StringVar{
 				Name:       "scope-id",
 				Target:     &c.FlagScopeId,
-				EnvVar:     "BOUNDARY_SCOPE_ID",
+				EnvVar:     "DUMPLING_SCOPE_ID",
 				Default:    scope.Global.String(),
 				Completion: complete.PredictAnything,
 				Usage:      `Scope in which to make the request.`,
@@ -34,7 +34,7 @@ func PopulateCommonFlags(c *base.Command, f *base.FlagSet, resourceType string, 
 			f.StringVar(&base.StringVar{
 				Name:       "scope-name",
 				Target:     &c.FlagScopeName,
-				EnvVar:     "BOUNDARY_SCOPE_NAME",
+				EnvVar:     "DUMPLING_SCOPE_NAME",
 				Completion: complete.PredictAnything,
 				Usage:      `Scope in which to make the request, identified by name.`,
 			})
@@ -79,21 +79,21 @@ func PopulateCommonFlags(c *base.Command, f *base.FlagSet, resourceType string, 
 		case "auth-method-id":
 			f.StringVar(&base.StringVar{
 				Name:   "auth-method-id",
-				EnvVar: "BOUNDARY_AUTH_METHOD_ID",
+				EnvVar: "DUMPLING_AUTH_METHOD_ID",
 				Target: &c.FlagAuthMethodId,
 				Usage:  "The auth-method resource to use for the operation.",
 			})
 		case "host-catalog-id":
 			f.StringVar(&base.StringVar{
 				Name:   "host-catalog-id",
-				EnvVar: "BOUNDARY_HOST_CATALOG_ID",
+				EnvVar: "DUMPLING_HOST_CATALOG_ID",
 				Target: &c.FlagHostCatalogId,
 				Usage:  "The host-catalog resource to use for the operation.",
 			})
 		case "credential-store-id":
 			f.StringVar(&base.StringVar{
 				Name:   "credential-store-id",
-				EnvVar: "BOUNDARY_CREDENTIAL_STORE_ID",
+				EnvVar: "DUMPLING_CREDENTIAL_STORE_ID",
 				Target: &c.FlagCredentialStoreId,
 				Usage:  "The credential-store resource to use for the operation.",
 			})
@@ -112,7 +112,7 @@ func PopulateCommonFlags(c *base.Command, f *base.FlagSet, resourceType string, 
 				f.StringVar(&base.StringVar{
 					Name:   "filter",
 					Target: &c.FlagFilter,
-					Usage:  "If set, the list operation will be filtered before being returned. The filter operates against each item in the list. Using single quotes is recommended as filters contain double quotes. See https://www.boundaryproject.io/docs/concepts/filtering/resource-listing for details.",
+					Usage:  "If set, the list operation will be filtered before being returned. The filter operates against each item in the list. Using single quotes is recommended as filters contain double quotes. See https://github.com/opendumpling/opendumpling/docs/concepts/filtering/resource-listing for details.",
 				})
 			}
 		}

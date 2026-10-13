@@ -15,7 +15,7 @@ import (
 
 	sfs "io/fs"
 
-	"github.com/hashicorp/boundary/internal/storage"
+	"github.com/opendumpling/opendumpling/internal/storage"
 )
 
 // Common erorrs

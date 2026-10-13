@@ -13,7 +13,7 @@ users, Terraform, etc. A separate package, under internal/intglobals, provides
 globals that perform a similar function but are only meant for internal use.
 
 There is no race checking; these values should only ever be set at startup of
-Boundary or a test, but available to reference from anywhere.
+Dumpling or a test, but available to reference from anywhere.
 */
 
 package globals

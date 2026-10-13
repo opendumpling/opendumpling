@@ -11,14 +11,14 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/db/timestamp"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/perms"
-	"github.com/hashicorp/boundary/internal/types/action"
-	"github.com/hashicorp/boundary/internal/types/resource"
-	"github.com/hashicorp/boundary/internal/util"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/db/timestamp"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/perms"
+	"github.com/opendumpling/opendumpling/internal/types/action"
+	"github.com/opendumpling/opendumpling/internal/types/resource"
+	"github.com/opendumpling/opendumpling/internal/util"
 )
 
 // Clonable provides a cloning interface
@@ -58,7 +58,7 @@ func NewRepository(ctx context.Context, r db.Reader, w db.Writer, kms *kms.Kms, 
 	}
 	opts := getOpts(opt...)
 	if opts.withLimit == 0 {
-		// zero signals the boundary defaults should be used.
+		// zero signals the dumpling defaults should be used.
 		opts.withLimit = db.DefaultLimit
 	}
 

@@ -10,8 +10,8 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/scopes"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/scopes"
 )
 
 type AuthToken struct {

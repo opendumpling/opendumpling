@@ -11,7 +11,7 @@ import "google/api/annotations.proto";
 import "google/protobuf/field_mask.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/gen/controller/api/services;services";
+option go_package = "github.com/opendumpling/opendumpling/internal/gen/controller/api/services;services";
 option (custom_options.v1.domain) = "host";
 
 service HostSetService {
@@ -34,7 +34,7 @@ service HostSetService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "List all Host Sets under the specific Catalog."};
   }
 
-  // CreateHostSet creates and stores a Host Set in boundary.  The provided
+  // CreateHostSet creates and stores a Host Set in dumpling.  The provided
   // request must include the Host Catalog id in which the Host Set
   // will be created.  If the Host Catalog id is missing, malformed or
   // references a non existing resource, an error is returned.  If a name is
@@ -49,7 +49,7 @@ service HostSetService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Create a Host Set."};
   }
 
-  // UpdateHostSet updates an existing Host Set in boundary.  The provided
+  // UpdateHostSet updates an existing Host Set in dumpling.  The provided
   // Host Set must not have any read only fields set.  The update mask must be
   // included in the request and contain at least 1 mutable field.  To unset
   // a field's value, include the field in the update mask and don't set it
@@ -66,7 +66,7 @@ service HostSetService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Update a Host Set."};
   }
 
-  // DeleteHostSet removes a Host Set from Boundary. If the provided
+  // DeleteHostSet removes a Host Set from Dumpling. If the provided
   // Host Set id is malformed or not provided an error is returned.
   rpc DeleteHostSet(DeleteHostSetRequest) returns (DeleteHostSetResponse) {
     option (google.api.http) = {delete: "/v1/host-sets/{id}"};

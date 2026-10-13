@@ -7,9 +7,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/bsr/internal/fstest"
-	"github.com/hashicorp/boundary/internal/bsr/kms"
-	"github.com/hashicorp/boundary/internal/storage"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/fstest"
+	"github.com/opendumpling/opendumpling/internal/bsr/kms"
+	"github.com/opendumpling/opendumpling/internal/storage"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"gopkg.in/square/go-jose.v2/json"

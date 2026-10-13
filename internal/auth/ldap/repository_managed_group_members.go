@@ -6,9 +6,9 @@ package ldap
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/auth/oidc/store"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/auth/oidc/store"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
 )
 
 // managedGroupMemberAccountTableName defines the default table name for a Managed Group

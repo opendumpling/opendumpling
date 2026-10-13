@@ -11,7 +11,7 @@ import "google/api/annotations.proto";
 import "google/protobuf/field_mask.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/gen/controller/api/services;services";
+option go_package = "github.com/opendumpling/opendumpling/internal/gen/controller/api/services;services";
 option (custom_options.v1.domain) = "host";
 
 service HostCatalogService {
@@ -36,7 +36,7 @@ service HostCatalogService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Gets a list of Host Catalogs."};
   }
 
-  // CreateHostCatalog creates and stores a Host Catalog in boundary.  The
+  // CreateHostCatalog creates and stores a Host Catalog in dumpling.  The
   // provided request must include the scope ID in which the Catalog will be
   // created and the Catalog type to be created. If any of these required fields
   // are missing, malformed, or reference a non-existing parent resource an
@@ -50,7 +50,7 @@ service HostCatalogService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Creates a Host Catalog"};
   }
 
-  // UpdateHostCatalog updates an existing Host Catalog in Boundary. The
+  // UpdateHostCatalog updates an existing Host Catalog in Dumpling. The
   // provided Host Catalog must not have any read only fields set. The update
   // mask must be provided and include at least 1 mutable field. To unset a
   // field's value include that field name in the update mask and don't set the
@@ -65,7 +65,7 @@ service HostCatalogService {
   }
 
   // DeleteHostCatalog removes a Host Catalog and all associated Hosts and Host
-  // sets from Boundary. If the provided Host Catalog IDs is malformed or not
+  // sets from Dumpling. If the provided Host Catalog IDs is malformed or not
   // provided DeleteHostCatalog returns an error.
   rpc DeleteHostCatalog(DeleteHostCatalogRequest) returns (DeleteHostCatalogResponse) {
     option (google.api.http) = {delete: "/v1/host-catalogs/{id}"};

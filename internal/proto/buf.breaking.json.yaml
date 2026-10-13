@@ -6,7 +6,7 @@
 # such as those used to describe the HTTP/JSON API we expose to the CLI,
 # the Desktop client and the admin UI.
 version: v1
-name: buf.build/hashicorp/boundary
+name: buf.build/opendumpling/opendumpling
 deps:
   - buf.build/googleapis/googleapis
   - buf.build/grpc-ecosystem/grpc-gateway

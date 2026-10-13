@@ -6,7 +6,7 @@ package subtypes
 import (
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/gen/testing/attribute"
+	"github.com/opendumpling/opendumpling/internal/gen/testing/attribute"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/proto"

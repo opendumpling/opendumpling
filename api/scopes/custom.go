@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/hashicorp/boundary/api"
+	"github.com/opendumpling/opendumpling/api"
 )
 
 type KeyListResult struct {

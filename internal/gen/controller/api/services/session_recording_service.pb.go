@@ -11,7 +11,7 @@ package services
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
-	session_recordings "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/session_recordings"
+	session_recordings "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/session_recordings"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	httpbody "google.golang.org/genproto/googleapis/api/httpbody"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"

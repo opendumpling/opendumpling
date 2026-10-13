@@ -6,9 +6,9 @@ package session
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/kms"
 )
 
 // AddSessionCredentials encrypts the credData and adds the credentials to the repository. The credentials are linked

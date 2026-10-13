@@ -6,8 +6,8 @@ package schema
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/db/common"
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/db/common"
+	"github.com/opendumpling/opendumpling/internal/errors"
 )
 
 // MigrateStore executes the migrations needed to initialize the store. It

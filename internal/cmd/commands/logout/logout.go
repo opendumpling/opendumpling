@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/authtokens"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/authtokens"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	nkeyring "github.com/jefferai/keyring"
 	"github.com/mitchellh/cli"
 	"github.com/posener/complete"
@@ -29,17 +29,17 @@ type LogoutCommand struct {
 }
 
 func (c *LogoutCommand) Synopsis() string {
-	return "Delete the current token within Boundary and forget it locally"
+	return "Delete the current token within Dumpling and forget it locally"
 }
 
 func (c *LogoutCommand) Help() string {
 	var args []string
 	args = append(args,
-		"Usage: boundary logout [options]",
+		"Usage: dumpling logout [options]",
 		"",
-		"  Delete the current token (as selected by -token-name) within Boundary and forget it from the local store. Example:",
+		"  Delete the current token (as selected by -token-name) within Dumpling and forget it from the local store. Example:",
 		"",
-		`    $ boundary logout`,
+		`    $ dumpling logout`,
 		"",
 	)
 
@@ -111,7 +111,7 @@ func (c *LogoutCommand) Run(args []string) (ret int) {
 	authtokensClient := authtokens.NewClient(client)
 	_, err = authtokensClient.Delete(c.Context, id)
 	if apiErr := api.AsServerError(err); apiErr != nil && apiErr.Response().StatusCode() == http.StatusNotFound {
-		c.UI.Output("The token was not found on the Boundary controller; proceeding to delete from the local store.")
+		c.UI.Output("The token was not found on the Dumpling controller; proceeding to delete from the local store.")
 		goto DeleteLocal
 	}
 	if err != nil {
@@ -123,7 +123,7 @@ func (c *LogoutCommand) Run(args []string) (ret int) {
 		return base.CommandCliError
 	}
 
-	c.UI.Output("The token was successfully deleted within the Boundary controller.")
+	c.UI.Output("The token was successfully deleted within the Dumpling controller.")
 
 DeleteLocal:
 	keyringType, tokenName, err := c.DiscoverKeyringTokenInfo()
@@ -149,7 +149,7 @@ DeleteLocal:
 	default:
 		krConfig := nkeyring.Config{
 			LibSecretCollectionName: "login",
-			PassPrefix:              "HashiCorp_Boundary",
+			PassPrefix:              "OpenDumpling",
 			AllowedBackends:         []nkeyring.BackendType{nkeyring.BackendType(keyringType)},
 		}
 

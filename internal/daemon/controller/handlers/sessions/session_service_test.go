@@ -11,26 +11,26 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/authtoken"
-	"github.com/hashicorp/boundary/internal/daemon/controller/auth"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/sessions"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/api/services"
-	authpb "github.com/hashicorp/boundary/internal/gen/controller/auth"
-	"github.com/hashicorp/boundary/internal/host/static"
-	"github.com/hashicorp/boundary/internal/iam"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/requests"
-	"github.com/hashicorp/boundary/internal/server"
-	"github.com/hashicorp/boundary/internal/session"
-	"github.com/hashicorp/boundary/internal/target"
-	"github.com/hashicorp/boundary/internal/target/tcp"
-	"github.com/hashicorp/boundary/internal/types/scope"
-	"github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/scopes"
-	pb "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/sessions"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/authtoken"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/auth"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/sessions"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/api/services"
+	authpb "github.com/opendumpling/opendumpling/internal/gen/controller/auth"
+	"github.com/opendumpling/opendumpling/internal/host/static"
+	"github.com/opendumpling/opendumpling/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/requests"
+	"github.com/opendumpling/opendumpling/internal/server"
+	"github.com/opendumpling/opendumpling/internal/session"
+	"github.com/opendumpling/opendumpling/internal/target"
+	"github.com/opendumpling/opendumpling/internal/target/tcp"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
+	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/scopes"
+	pb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/sessions"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc/codes"
@@ -193,7 +193,7 @@ func TestList_Self(t *testing.T) {
 	otherPrivAuthToken := authtoken.TestAuthToken(t, conn, kms, o.GetPublicId())
 	unprivAuthToken := authtoken.TestAuthToken(t, conn, kms, o.GetPublicId())
 
-	// See https://github.com/hashicorp/boundary/pull/2448 -- these roles both
+	// See https://github.com/opendumpling/opendumpling/pull/2448 -- these roles both
 	// test functionality and serve as a regression test
 
 	// Create a "privileged" role that gives admin on the scope

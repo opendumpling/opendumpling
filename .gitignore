@@ -119,8 +119,8 @@ main
 /pkg/
 /bin/
 update-ui-assets*
-/plugins/kms/assets/boundary-plugin*
-/plugins/boundary/assets/boundary-plugin*
+/plugins/kms/assets/dumpling-plugin*
+/plugins/dumpling/assets/dumpling-plugin*
 
 # Test config file
 test*.hcl

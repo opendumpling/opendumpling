@@ -1,0 +1,24 @@
+---
+extends: default
+
+ignore: |
+  .git/
+  .github/
+  .release/
+  internal/ui/
+  node_modules/
+  website/
+
+rules:
+  document-start: disable
+  line-length: disable
+  comments-indentation: disable
+  truthy:
+    allowed-values: ['true', 'false', 'on', 'off']
+  braces:
+    max-spaces-inside: 1
+  brackets:
+    max-spaces-inside: 1
+  indentation:
+    spaces: 2
+    indent-sequences: whatever

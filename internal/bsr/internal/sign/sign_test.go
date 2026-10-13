@@ -12,9 +12,9 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"github.com/hashicorp/boundary/internal/bsr/internal/fstest"
-	"github.com/hashicorp/boundary/internal/bsr/internal/sign"
-	"github.com/hashicorp/boundary/internal/bsr/kms"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/fstest"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/sign"
+	"github.com/opendumpling/opendumpling/internal/bsr/kms"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	"github.com/hashicorp/go-multierror"
 	"github.com/stretchr/testify/assert"

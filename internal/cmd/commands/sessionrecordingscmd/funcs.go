@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/scopes"
-	"github.com/hashicorp/boundary/api/sessionrecordings"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/scopes"
+	"github.com/opendumpling/opendumpling/api/sessionrecordings"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 )
 
 type extraCmdVars struct{}
@@ -21,21 +21,21 @@ func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
 	switch c.Func {
 	case "":
 		return base.WrapForHelpText([]string{
-			"Usage: boundary session-recordings [sub command] [options] [args]",
+			"Usage: dumpling session-recordings [sub command] [options] [args]",
 			"",
-			"  This command allows operations on Boundary session recordings.",
+			"  This command allows operations on Dumpling session recordings.",
 			"",
 			"    Read a session recording:",
 			"",
-			`      $ boundary session-recordings read -id s_1234567890`,
+			`      $ dumpling session-recordings read -id s_1234567890`,
 			"",
 			"    List session recording:",
 			"",
-			`      $ boundary session-recordings list -scope-id global`,
+			`      $ dumpling session-recordings list -scope-id global`,
 			"",
 			"    Download a session recording:",
 			"",
-			`      $ boundary session-recordings download -id chr_1234567890`,
+			`      $ dumpling session-recordings download -id chr_1234567890`,
 			"",
 
 			"  Please see the sessions subcommand help for detailed usage information.",

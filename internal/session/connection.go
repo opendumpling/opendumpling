@@ -6,9 +6,9 @@ package session
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/db/timestamp"
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/db/timestamp"
+	"github.com/opendumpling/opendumpling/internal/errors"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 

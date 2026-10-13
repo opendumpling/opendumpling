@@ -17,35 +17,35 @@ import (
 	"time"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/auth/oidc"
-	"github.com/hashicorp/boundary/internal/daemon/common"
-	"github.com/hashicorp/boundary/internal/daemon/controller/auth"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/accounts"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/authmethods"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/authtokens"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/credentiallibraries"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/credentials"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/credentialstores"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/groups"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/health"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/host_catalogs"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/host_sets"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/hosts"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/managed_groups"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/roles"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/scopes"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/session_recordings"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/sessions"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/storage_buckets"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/targets"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/users"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/workers"
-	"github.com/hashicorp/boundary/internal/daemon/controller/internal/metric"
-	"github.com/hashicorp/boundary/internal/gen/controller/api/services"
-	authpb "github.com/hashicorp/boundary/internal/gen/controller/auth"
-	opsservices "github.com/hashicorp/boundary/internal/gen/ops/services"
-	"github.com/hashicorp/boundary/internal/observability/event"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/auth/oidc"
+	"github.com/opendumpling/opendumpling/internal/daemon/common"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/auth"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/accounts"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/authmethods"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/authtokens"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/credentiallibraries"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/credentials"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/credentialstores"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/groups"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/health"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/host_catalogs"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/host_sets"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/hosts"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/managed_groups"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/roles"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/scopes"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/session_recordings"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/sessions"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/storage_buckets"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/targets"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/users"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/workers"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/internal/metric"
+	"github.com/opendumpling/opendumpling/internal/gen/controller/api/services"
+	authpb "github.com/opendumpling/opendumpling/internal/gen/controller/auth"
+	opsservices "github.com/opendumpling/opendumpling/internal/gen/ops/services"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
 	"github.com/hashicorp/go-cleanhttp"
 	"github.com/hashicorp/go-secure-stdlib/listenerutil"
 	"github.com/hashicorp/go-secure-stdlib/strutil"
@@ -54,7 +54,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers"
 )
 
 type HandlerProperties struct {
@@ -384,7 +384,7 @@ func wrapHandlerWithCommonFuncs(h http.Handler, c *Controller, props HandlerProp
 	}
 
 	disableAuthzFailures := c.conf.DisableAuthorizationFailures ||
-		(c.conf.RawConfig.DevController && os.Getenv("BOUNDARY_DEV_SKIP_AUTHZ") != "")
+		(c.conf.RawConfig.DevController && os.Getenv("DUMPLING_DEV_SKIP_AUTHZ") != "")
 	if disableAuthzFailures {
 		event.WriteSysEvent(context.TODO(), op, "AUTHORIZATION CHECKING DISABLED")
 	}
@@ -528,7 +528,7 @@ type cmdAttrs struct {
 }
 
 func wrapHandlerWithCallbackInterceptor(h http.Handler, c *Controller) http.Handler {
-	logCallbackErrors := os.Getenv("BOUNDARY_LOG_CALLBACK_ERRORS") != ""
+	logCallbackErrors := os.Getenv("DUMPLING_LOG_CALLBACK_ERRORS") != ""
 
 	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		const op = "controller.wrapHandlerWithCallbackInterceptor"

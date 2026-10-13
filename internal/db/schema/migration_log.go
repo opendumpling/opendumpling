@@ -7,8 +7,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/db/schema/internal/log"
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/db/schema/internal/log"
+	"github.com/opendumpling/opendumpling/internal/errors"
 )
 
 // LogEntry represents a log entry generated during migrations.

@@ -4,8 +4,8 @@
 package schema
 
 import (
-	"github.com/hashicorp/boundary/internal/db/schema/internal/edition"
-	"github.com/hashicorp/boundary/internal/db/schema/migration"
+	"github.com/opendumpling/opendumpling/internal/db/schema/internal/edition"
+	"github.com/opendumpling/opendumpling/internal/db/schema/migration"
 )
 
 // PartialEditions is used by TestCreatePartialEditions. It is a map of edition

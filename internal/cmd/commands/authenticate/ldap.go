@@ -9,12 +9,12 @@ import (
 	"os"
 	"strings"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/authmethods"
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/cmd/common"
-	"github.com/hashicorp/boundary/internal/types/scope"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/authmethods"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/common"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
 	"github.com/hashicorp/go-secure-stdlib/parseutil"
 	"github.com/hashicorp/go-secure-stdlib/password"
 	"github.com/mitchellh/cli"
@@ -37,16 +37,16 @@ type LdapCommand struct {
 }
 
 func (c *LdapCommand) Synopsis() string {
-	return wordwrap.WrapString("Invoke the ldap auth method to authenticate with Boundary", base.TermWidth)
+	return wordwrap.WrapString("Invoke the ldap auth method to authenticate with Dumpling", base.TermWidth)
 }
 
 func (c *LdapCommand) Help() string {
 	return base.WrapForHelpText([]string{
-		"Usage: boundary authenticate ldap [options] [args]",
+		"Usage: dumpling authenticate ldap [options] [args]",
 		"",
-		"  Invoke the ldap auth method to authenticate the Boundary CLI. Example:",
+		"  Invoke the ldap auth method to authenticate the Dumpling CLI. Example:",
 		"",
-		`    $ boundary authenticate ldap -auth-method-id amldap_1234567890 -login-name foo`,
+		`    $ dumpling authenticate ldap -auth-method-id amldap_1234567890 -login-name foo`,
 		"",
 		"",
 	}) + c.Flags().Help()
@@ -72,7 +72,7 @@ func (c *LdapCommand) Flags() *base.FlagSets {
 
 	f.StringVar(&base.StringVar{
 		Name:   "auth-method-id",
-		EnvVar: "BOUNDARY_AUTH_METHOD_ID",
+		EnvVar: "DUMPLING_AUTH_METHOD_ID",
 		Target: &c.FlagAuthMethodId,
 		Usage:  "The auth-method resource to use for the operation.",
 	})
@@ -80,7 +80,7 @@ func (c *LdapCommand) Flags() *base.FlagSets {
 	if c.parsedOpts == nil || !c.parsedOpts.WithSkipScopeIdFlag {
 		f.StringVar(&base.StringVar{
 			Name:   "scope-id",
-			EnvVar: "BOUNDARY_SCOPE_ID",
+			EnvVar: "DUMPLING_SCOPE_ID",
 			Target: &c.FlagScopeId,
 			Usage:  "The scope ID to use for the operation.",
 		})

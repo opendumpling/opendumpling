@@ -8,12 +8,12 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/db"
-	dbassert "github.com/hashicorp/boundary/internal/db/assert"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/host/static/store"
-	"github.com/hashicorp/boundary/internal/iam"
-	"github.com/hashicorp/boundary/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/db"
+	dbassert "github.com/opendumpling/opendumpling/internal/db/assert"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/host/static/store"
+	"github.com/opendumpling/opendumpling/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/kms"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

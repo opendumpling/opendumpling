@@ -6,11 +6,11 @@ package plugin
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/scheduler"
-	plgpb "github.com/hashicorp/boundary/sdk/pbs/plugin"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/scheduler"
+	plgpb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
 )
 
 // RegisterJobs registers plugin host related jobs with the provided scheduler.

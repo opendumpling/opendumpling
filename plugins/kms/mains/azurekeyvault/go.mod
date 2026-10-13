@@ -1,4 +1,4 @@
-module github.com/hashicorp/boundary/plugins/kms/mains/azurekeyvault
+module github.com/opendumpling/opendumpling/plugins/kms/mains/azurekeyvault
 
 go 1.20
 

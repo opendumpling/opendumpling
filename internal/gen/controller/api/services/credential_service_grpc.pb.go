@@ -26,13 +26,13 @@ type CredentialServiceClient interface {
 	// provided store. The request must include the Credential Store id and if missing,
 	// malformed, or referencing a non existing scope, an error is returned.
 	ListCredentials(ctx context.Context, in *ListCredentialsRequest, opts ...grpc.CallOption) (*ListCredentialsResponse, error)
-	// CreateCredential creates and stores an Credential in boundary.  The
+	// CreateCredential creates and stores an Credential in dumpling.  The
 	// provided request must include the credential_store_id in which the Credential
 	// will be created. If the store id is missing, malformed or referencing a
 	// non existing resource an error is returned.  If a name is provided that is
 	// in use in another Credential in the same store, an error is returned.
 	CreateCredential(ctx context.Context, in *CreateCredentialRequest, opts ...grpc.CallOption) (*CreateCredentialResponse, error)
-	// UpdateCredential updates an existing Credential in boundary.  The provided
+	// UpdateCredential updates an existing Credential in dumpling.  The provided
 	// Credential must not have any read only fields set.  The update mask must be
 	// included in the request and contain at least 1 mutable field.  To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -41,7 +41,7 @@ type CredentialServiceClient interface {
 	// request attempts to update the name to one that is already in use by
 	// another Credential in the parent scope.
 	UpdateCredential(ctx context.Context, in *UpdateCredentialRequest, opts ...grpc.CallOption) (*UpdateCredentialResponse, error)
-	// DeleteCredential removes an Credential from Boundary. If the Credential id
+	// DeleteCredential removes an Credential from Dumpling. If the Credential id
 	// is malformed or not provided an error is returned.
 	DeleteCredential(ctx context.Context, in *DeleteCredentialRequest, opts ...grpc.CallOption) (*DeleteCredentialResponse, error)
 }
@@ -111,13 +111,13 @@ type CredentialServiceServer interface {
 	// provided store. The request must include the Credential Store id and if missing,
 	// malformed, or referencing a non existing scope, an error is returned.
 	ListCredentials(context.Context, *ListCredentialsRequest) (*ListCredentialsResponse, error)
-	// CreateCredential creates and stores an Credential in boundary.  The
+	// CreateCredential creates and stores an Credential in dumpling.  The
 	// provided request must include the credential_store_id in which the Credential
 	// will be created. If the store id is missing, malformed or referencing a
 	// non existing resource an error is returned.  If a name is provided that is
 	// in use in another Credential in the same store, an error is returned.
 	CreateCredential(context.Context, *CreateCredentialRequest) (*CreateCredentialResponse, error)
-	// UpdateCredential updates an existing Credential in boundary.  The provided
+	// UpdateCredential updates an existing Credential in dumpling.  The provided
 	// Credential must not have any read only fields set.  The update mask must be
 	// included in the request and contain at least 1 mutable field.  To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -126,7 +126,7 @@ type CredentialServiceServer interface {
 	// request attempts to update the name to one that is already in use by
 	// another Credential in the parent scope.
 	UpdateCredential(context.Context, *UpdateCredentialRequest) (*UpdateCredentialResponse, error)
-	// DeleteCredential removes an Credential from Boundary. If the Credential id
+	// DeleteCredential removes an Credential from Dumpling. If the Credential id
 	// is malformed or not provided an error is returned.
 	DeleteCredential(context.Context, *DeleteCredentialRequest) (*DeleteCredentialResponse, error)
 	mustEmbedUnimplementedCredentialServiceServer()

@@ -7,11 +7,11 @@ import (
 	"context"
 	"strings"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/oplog"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/oplog"
 )
 
 // CreateAuthMethod creates am (*AuthMethod) in the repo along with its

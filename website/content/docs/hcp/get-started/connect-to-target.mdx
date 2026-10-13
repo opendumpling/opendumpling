@@ -9,13 +9,13 @@ description: |-
 
 The [Quick setup
 wizard](/boundary/docs/getting-started/deploy-and-login#login-to-hcp-boundary)
-is the fastest way to onboard a target to HCP Boundary.
+is the fastest way to onboard a target to HCP Dumpling.
 
 ![Setup Wizard](/img/setup-wizard-address-target.png)
 
 The Quick setup wizard creates a default `tcp` target with the port `22` (the default SSH port using TCP).
 The target is created with the address `127.0.0.1`.
-When you execute `boundary connect` against this target, Boundary establishes a local, authenticated proxy to the address on the target's default port (`127.0.0.1:22`.)
+When you execute `boundary connect` against this target, Dumpling establishes a local, authenticated proxy to the address on the target's default port (`127.0.0.1:22`.)
 
 ![Setup Wizard](/img/quick-start-targets.png)
 
@@ -25,17 +25,17 @@ To connect to the initial EC2 Instances target:
 
 1. Copy the **EC2 Instances** target ID (such as `ttcp_ZnHEU9h8qX`).
 
-1. Open a terminal session. Export the Boundary **Cluster URL** as an environment
+1. Open a terminal session. Export the Dumpling **Cluster URL** as an environment
    variable.
 
     ```shell-session
-    $ export BOUNDARY_ADDR=<boundary-cluster-url>
+    $ export DUMPLING_ADDR=<boundary-cluster-url>
     ```
 
 1. Connect to the target.
 
     ```shell-session
-    $ boundary connect -target-id ttcp_eTcZMueUYv
+    $ dumpling connect -target-id ttcp_eTcZMueUYv
     ```
 
     The output displays the address and port that your SSH client must use.
@@ -43,7 +43,7 @@ To connect to the initial EC2 Instances target:
 
 The `boundary connect` command has a number of notable options, such as
 `-listen-port` to choose the port on which the connect command will listen for
-an incoming connection. This is convenient for allowing Boundary to work with
+an incoming connection. This is convenient for allowing Dumpling to work with
 applications that allow you to select the connection address, but not the port.
 For many applications there are still some extra hurdles that can exist, which
 is why connect helpers can be useful.
@@ -54,7 +54,7 @@ within the authorized session. When you are finished making connections, simply
 
 ### Use connect helpers
 
-Boundary includes connect helpers that automatically accept host SSH key prompts
+Dumpling includes connect helpers that automatically accept host SSH key prompts
 for you. These are written as `boundary connect <subcommand>`.
 
 In the following example, the helper will automatically execute `ssh` for you,
@@ -63,7 +63,7 @@ warnings on future connections when a different port is allocated automatically.
 A host key must still be accepted upon first connect.
 
 ```shell-session
-$ boundary connect ssh -target-id ttcp_eTcZMueUYv
+$ dumpling connect ssh -target-id ttcp_eTcZMueUYv
 ```
 
 If you want to pass additional flags to the SSH client, add them to the command
@@ -71,7 +71,7 @@ line separated by a double-dash; anything after the double dash will be passed
 to the executed client. For instance:
 
 ```shell-session
-$ boundary connect ssh -target-id ttcp_eTcZMueUYv -- -l some-other-user
+$ dumpling connect ssh -target-id ttcp_eTcZMueUYv -- -l some-other-user
 ```
 
 There is also a `-style` flag to allow the command to format arguments in a
@@ -79,7 +79,7 @@ different style expected by different SSH clients. Besides the default `ssh`,
 the `boundary connect ssh` command supports `-style putty` to support passing
 connection information to PuTTY.
 
-One advantage to styles is that Boundary provides information to the client
+One advantage to styles is that Dumpling provides information to the client
 in the format that makes sense. For example, the `-username` flag is used to
 specify a username other than your currently logged-in user. This ensures that
 regardless of your `-style` choice, the username is properly passed to the
@@ -97,18 +97,18 @@ single explicit value, however other flags are supported:
 
 Note however that these are not uniquely identifying, as names can be reused
 across scopes. As a result, when not using the target ID, you must use the
-target's name in conjunction with the scope name or scope ID so that Boundary
+target's name in conjunction with the scope name or scope ID so that Dumpling
 can correctly identify the desired target.
 
 Here is an SSH example in dev-mode:
 
 ```shell-session
-$ boundary connect ssh -target-name "Generated target" -target-scope-name "Generated project scope"
+$ dumpling connect ssh -target-name "Generated target" -target-scope-name "Generated project scope"
 ```
 
 ## Built-in vs. exec
 
-Boundary comes with built-in wrappers for popular layer 7 connection protocols,
+Dumpling comes with built-in wrappers for popular layer 7 connection protocols,
 such as:
 
 - `ssh`: defaults to the local SSH client (`ssh`)
@@ -119,7 +119,7 @@ such as:
 
 However, `boundary connect` can accommodate executing clients even when there is
 no built-in support for a specific client using `-exec`. The `-exec` flag is a
-very powerful tool, allowing you to wrap Boundary TCP sessions in your preferred
+very powerful tool, allowing you to wrap Dumpling TCP sessions in your preferred
 client. You can use this flag to create an authenticated proxy to almost
 anything.
 
@@ -127,26 +127,26 @@ Whether using `-exec` or one of the listed helpers, you can pass flags to the
 executed command by including them after a double-dash `--`:
 
 ```shell-session
-$ boundary connect ssh -target-id ttcp_eTcZMueUYv -- -l myuser -i ~/.ssh/identity
+$ dumpling connect ssh -target-id ttcp_eTcZMueUYv -- -l myuser -i ~/.ssh/identity
 ```
 
 You also have access to some templated values that are substituted into the
 command arguments, and these values are additionally injected as environment
 variables in the executed command:
 
-- `{{boundary.ip}}` (`BOUNDARY_PROXIED_IP`): The IP address of the listening
+- `{{dumpling.ip}}` (`DUMPLING_PROXIED_IP`): The IP address of the listening
   socket that `boundary connect` has opened.
-- `{{boundary.port}}` (`BOUNDARY_PROXIED_PORT`): The port of the listening
+- `{{dumpling.port}}` (`DUMPLING_PROXIED_PORT`): The port of the listening
   socket that `boundary connect` has opened.
-- `{{boundary.addr}}` (`BOUNDARY_PROXIED_ADDR`): The host:port format of the
-  address. This is essentially equivalent to `{{boundary.ip}}:{{boundary.port}}`.
+- `{{dumpling.addr}}` (`DUMPLING_PROXIED_ADDR`): The host:port format of the
+  address. This is essentially equivalent to `{{dumpling.ip}}:{{dumpling.port}}`.
 
-For example, if you wanted to use Boundary to create an authenticated firewall
+For example, if you wanted to use Dumpling to create an authenticated firewall
 around 'curl', you could update the default TCP target from a default port
 of `:22` to `:443`:
 
 ```shell-session
-$ boundary targets update tcp -default-port 443 -id ttcp_eTcZMueUYv
+$ dumpling targets update tcp -default-port 443 -id ttcp_eTcZMueUYv
 
 Target information:
   Created Time:               Fri, 17 June 2022 18:35:47 PDT
@@ -179,7 +179,7 @@ Now, `curl` can be used as the executed client for the TCP target session to do
 an authenticated download of hashicorp.com:
 
 ```shell-session
-$ boundary connect -exec curl -target-id ttcp_eTcZMueUYv \
+$ dumpling connect -exec curl -target-id ttcp_eTcZMueUYv \
          -- -vvsL --output /dev/null hashicorp.com
 
 *   Trying 76.76.21.21...
@@ -198,7 +198,7 @@ run from WSL, the following allows usage of the wrapper while specifying the
 correct available binary (as WSL must use `.exe` when invoking Windows binaries):
 
 ```shell-session
-$ boundary connect ssh -style putty -exec putty.exe -target-id ttcp_eTcZMueUYv
+$ dumpling connect ssh -style putty -exec putty.exe -target-id ttcp_eTcZMueUYv
 ```
 
 ## Connect using the desktop client
@@ -221,7 +221,7 @@ proxy details.
 
 ## Tutorial
 
-Refer to the [Connect to your First Target](/boundary/tutorials/hcp-getting-started/hcp-getting-started-connect) tutorial for steps on how to create a host catalog, host set, and a target in Boundary.
+Refer to the [Connect to your First Target](/boundary/tutorials/hcp-getting-started/hcp-getting-started-connect) tutorial for steps on how to create a host catalog, host set, and a target in Dumpling.
 
 ## Next steps
 

@@ -10,7 +10,7 @@ import "google/api/annotations.proto";
 import "google/protobuf/field_mask.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/gen/controller/api/services;services";
+option go_package = "github.com/opendumpling/opendumpling/internal/gen/controller/api/services;services";
 
 service UserService {
   // GetUser returns a stored User if present.  The provided request
@@ -34,7 +34,7 @@ service UserService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Lists all Users."};
   }
 
-  // CreateUser creates and stores a User in boundary.  The provided
+  // CreateUser creates and stores a User in dumpling.  The provided
   // request must include the Scope id in which the User will be created.
   // If the Scope id is missing, malformed or references a non existing
   // resource, an error is returned.  If a name is provided that is in
@@ -48,7 +48,7 @@ service UserService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Creates a single User."};
   }
 
-  // UpdateUser updates an existing User in boundary.  The provided
+  // UpdateUser updates an existing User in dumpling.  The provided
   // User must not have any read only fields set.  The update mask must be
   // included in the request and contain at least 1 mutable field.  To unset
   // a field's value, include the field in the update mask and don't set it
@@ -65,7 +65,7 @@ service UserService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Updates a User."};
   }
 
-  // DeleteUser removes a User from Boundary. If the provided User ID
+  // DeleteUser removes a User from Dumpling. If the provided User ID
   // is malformed or not provided an error is returned.
   rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {
     option (google.api.http) = {delete: "/v1/users/{id}"};

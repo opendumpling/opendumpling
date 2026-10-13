@@ -6,10 +6,10 @@ package connect
 import (
 	"testing"
 
-	"github.com/hashicorp/boundary/api/targets"
-	"github.com/hashicorp/boundary/internal/credential"
-	"github.com/hashicorp/boundary/internal/credential/static"
-	"github.com/hashicorp/boundary/internal/credential/vault"
+	"github.com/opendumpling/opendumpling/api/targets"
+	"github.com/opendumpling/opendumpling/internal/credential"
+	"github.com/opendumpling/opendumpling/internal/credential/static"
+	"github.com/opendumpling/opendumpling/internal/credential/vault"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

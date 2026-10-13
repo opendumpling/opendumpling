@@ -10,9 +10,9 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"github.com/hashicorp/boundary/internal/bsr"
-	pssh "github.com/hashicorp/boundary/internal/bsr/gen/ssh/v1"
-	"github.com/hashicorp/boundary/internal/bsr/ssh"
+	"github.com/opendumpling/opendumpling/internal/bsr"
+	pssh "github.com/opendumpling/opendumpling/internal/bsr/gen/ssh/v1"
+	"github.com/opendumpling/opendumpling/internal/bsr/ssh"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	gossh "golang.org/x/crypto/ssh"

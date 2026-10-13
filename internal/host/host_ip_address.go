@@ -7,8 +7,8 @@ import (
 	"context"
 	"net"
 
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/host/store"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/host/store"
 	"google.golang.org/protobuf/proto"
 )
 

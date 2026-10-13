@@ -10,7 +10,7 @@
 package store
 
 import (
-	timestamp "github.com/hashicorp/boundary/internal/db/timestamp"
+	timestamp "github.com/opendumpling/opendumpling/internal/db/timestamp"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"

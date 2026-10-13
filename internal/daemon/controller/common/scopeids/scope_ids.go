@@ -7,17 +7,17 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hashicorp/boundary/internal/boundary"
-	"github.com/hashicorp/boundary/internal/daemon/controller/auth"
-	"github.com/hashicorp/boundary/internal/daemon/controller/common"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/iam"
-	"github.com/hashicorp/boundary/internal/perms"
-	"github.com/hashicorp/boundary/internal/types/action"
-	"github.com/hashicorp/boundary/internal/types/resource"
-	"github.com/hashicorp/boundary/internal/types/scope"
-	"github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/scopes"
+	"github.com/opendumpling/opendumpling/internal/dumpling"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/auth"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/common"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/perms"
+	"github.com/opendumpling/opendumpling/internal/types/action"
+	"github.com/opendumpling/opendumpling/internal/types/resource"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
+	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/scopes"
 )
 
 type authzProtectedEntityProvider interface {
@@ -25,7 +25,7 @@ type authzProtectedEntityProvider interface {
 	// "where clause" style of argument: if the set of scopes is populated these
 	// are the scopes to limit to (e.g. to put in a where clause). An empty set
 	// of scopes means to look in *all* scopes, not none!
-	FetchAuthzProtectedEntitiesByScope(ctx context.Context, projectIds []string) (map[string][]boundary.AuthzProtectedEntity, error)
+	FetchAuthzProtectedEntitiesByScope(ctx context.Context, projectIds []string) (map[string][]dumpling.AuthzProtectedEntity, error)
 }
 
 // ResourceInfo contains information about a particular resource

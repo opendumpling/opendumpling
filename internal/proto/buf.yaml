@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 
 version: v1
-name: buf.build/hashicorp/boundary
+name: buf.build/opendumpling/opendumpling
 deps:
   - buf.build/googleapis/googleapis
   - buf.build/grpc-ecosystem/grpc-gateway

@@ -1,6 +1,6 @@
 # oplog 
 
-oplog is a package for writing operation log (oplog) entries for the purpose of replication and verification of the data stored in the Boundary RDBMS. 
+oplog is a package for writing operation log (oplog) entries for the purpose of replication and verification of the data stored in the Dumpling RDBMS. 
 
 - [oplog](#oplog)
   - [Usage](#usage)
@@ -66,9 +66,9 @@ if err != nil {
 tx.Commit()
 ```
 ## TBD/TODO
-We need to discuss and decide how Boundary is going to handle the following oplog things:
+We need to discuss and decide how Dumpling is going to handle the following oplog things:
 
-* SQL migrations: you'll find the package's SQL migrations under: ./db/schema   We need to decide how Boundary will manage migrations across the system and we will likely need to reference this package's migrations somehow.
+* SQL migrations: you'll find the package's SQL migrations under: ./db/schema   We need to decide how Dumpling will manage migrations across the system and we will likely need to reference this package's migrations somehow.
 
 ## oplog entry
 ```                                            

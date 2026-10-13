@@ -18,7 +18,7 @@ collection. Many of these are common CRUD actions (`create`, `read`, `update`,
 `delete`) but many resources also specify actions specific to their type; for
 instance, a `target` has an `authorize-session` action to allow you to request
 making a connection to that target, and `auth-method` resources have an
-`authenticate` action to allow you to authenticate to Boundary. For the most
+`authenticate` action to allow you to authenticate to Dumpling. For the most
 part these are straightforward, however there are a couple of special cases to
 know.
 
@@ -33,21 +33,21 @@ also matches the API actions `read` and `read:self`. However, if a grant conveys
 ### The `no-op` action and listing visibility
 
 There is an action that can be granted called `no-op`. As might be apparent,
-`no-op` is not used for any real action in Boundary; the purpose of this action
-is for listing visibility. Boundary only shows resources in the output of a
+`no-op` is not used for any real action in Dumpling; the purpose of this action
+is for listing visibility. Dumpling only shows resources in the output of a
 `list` action for which a user has at least one granted action. Thus, without
 `no-op`, in order for a resource to be visible in a `list` action, a different
 action such as `read` would have to be granted to a user. This could result in
 exposing more information than desired, especially in the case of listing scopes
 and authentication methods so that users can perform initial authentication to
-Boundary (that is, granting access to `u_anon`).
+Dumpling (that is, granting access to `u_anon`).
 
 By granting the `no-op` action to users, they can see the resources in the
 output of a list command without needing other capability grants as well.
 
 ## Anonymous user restrictions
 
-Starting in Boundary 0.9.0, there are severe limits placed on the actions
+Starting in Dumpling 0.9.0, there are severe limits placed on the actions
 allowed to be assigned to the anonymous user `u_anon`. This is meant to avoid
 situations where an operator accidentally or mistakenly adds the anonymous user
 to a role that provides more privileges than might be intended for
@@ -74,9 +74,9 @@ In many cases, `output_fields` will not need to be set directly. However, an
 example in the form of some history helps provide some context as to when this
 might be useful.
 
-In Boundary 0.2.0, we restricted the set of fields returned for some `list`
+In Dumpling 0.2.0, we restricted the set of fields returned for some `list`
 calls (those on the `scopes` and `auth-methods` collections) to a small set if
-the user was the anonymous user `u_anon`. Although default behavior in Boundary
+the user was the anonymous user `u_anon`. Although default behavior in Dumpling
 was to display all resource fields when listing, because the default was also to
 allow anonymous access to perform `list` on scopes and auth methods (in order to
 discover auth methods and then authenticate to them), returning all
@@ -92,7 +92,7 @@ At the same time, this was not an ideal solution for two reasons:
    any other `list` action, which is not ideal
 
 As a result, we decided to approach this problem the same way we normally try to
-within Boundary: set resonable defaults, but give the administrator ultimate
+within Dumpling: set resonable defaults, but give the administrator ultimate
 control.
 
 The resulting behavior is as follows: `output_fields` references the field names
@@ -130,7 +130,7 @@ defaults are used. These defaults are implemented using internal values for
 - If the user is any authenticated user, the full set of fields is returned
 
 To think about it a different way, empty `output_fields`, after grant
-composition, is equivalent to using Boundary's default; however the moment that
+composition, is equivalent to using Dumpling's default; however the moment that
 grants start specifying output fields, it is composed from an empty set and thus
 nothing is contained unless explicitly specified. (An actual empty set is not
 currently supported, as we don't perform validation on the values given.

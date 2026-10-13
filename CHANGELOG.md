@@ -1,6 +1,6 @@
-# Boundary CHANGELOG
+# Dumpling CHANGELOG
 
-Canonical reference for changes, improvements, and bugfixes for Boundary.
+Canonical reference for changes, improvements, and bugfixes for Dumpling.
 
 ## 0.13.1 (2023/07/10)
 
@@ -9,7 +9,7 @@ Canonical reference for changes, improvements, and bugfixes for Boundary.
 * roles: In grants, the `id` field has been changed to `ids` (but `id` will
   still be accepted for now, up until 0.15.0). In the `ids` field, multiple IDs
   can now be specified in a grant, either via commas (text format) or array
-  (JSON format). ([PR](https://github.com/hashicorp/boundary/pull/3263)).
+  (JSON format). ([PR](https://github.com/opendumpling/opendumpling/pull/3263)).
 * dev environment: When running `boundary dev` the initial LDAP auth-method with an
   ID of `amldap_1234567890` is now in a public-active state, so it will be returned
   in the response from `boundary auth-methods list`
@@ -25,25 +25,25 @@ Canonical reference for changes, improvements, and bugfixes for Boundary.
 * PKI worker authentication: A worker authentication record can be stored more than once, if it matches the 
   existing record for that worker auth key ID. Fixes an edge case where a worker attempted authorization
   and the controller successfully stored the worker auth record but went down before returning authorization
-  details to the worker. ([PR](https://github.com/hashicorp/boundary/pull/3389))
+  details to the worker. ([PR](https://github.com/opendumpling/opendumpling/pull/3389))
 * LDAP managed groups: adding/setting/removing a principal to a role now works
   properly when it's an LDAP managed group.
-  ([PR](https://github.com/hashicorp/boundary/pull/3361) and
-  [PR](https://github.com/hashicorp/boundary/pull/3363))  
+  ([PR](https://github.com/opendumpling/opendumpling/pull/3361) and
+  [PR](https://github.com/opendumpling/opendumpling/pull/3363))  
 
 ## 0.13.0 (2023/06/13)
 
 ### New and Improved
 
-* SSH Session Recordings (Enterprise and HCP Boundary only): SSH targets can now
+* SSH Session Recordings (Enterprise and HCP Dumpling only): SSH targets can now
   be configured to record sessions. Recordings are signed and stored in a
   Storage Bucket. Recordings can be played back in the admin UI.
-  * Storage Buckets: This release introduces Storage Buckets, a Boundary
+  * Storage Buckets: This release introduces Storage Buckets, a Dumpling
     resource that represents a bucket in an external object store. Storage
     Buckets can be defined at the global or org scope. When associated with an
     SSH target, the storage bucket is used to store session recordings. This
     release includes support for AWS S3 only.
-  * BSR (Boundary Session Recording) file format: BSR is a new specification
+  * BSR (Dumpling Session Recording) file format: BSR is a new specification
     that defines a hierarchical directory structure of files and a binary file
     format. The contents of a BSR include all data transmitted between a user
     and a target during a single session, relevant session metadata and summary
@@ -61,22 +61,22 @@ Canonical reference for changes, improvements, and bugfixes for Boundary.
   authenticating downstreams across different networks. See the [worker
   configuration
   documentation](https://developer.hashicorp.com/boundary/docs/configuration/worker)
-  for more information. ([PR](https://github.com/hashicorp/boundary/pull/3101))
+  for more information. ([PR](https://github.com/opendumpling/opendumpling/pull/3101))
 * roles: Perform additional validity checking on grants at submission time
-  ([PR](https://github.com/hashicorp/boundary/pull/3081))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/3081))
 * targets: The new `default_client_port` field allows specifying the default
   port to use on the client side when connecting to a target, unless overridden
   by the client via `-listen-port`
-  ([PR](https://github.com/hashicorp/boundary/pull/2767))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2767))
 * cli/api/sdk: New LDAP auth method type added with support for create, read,
   update, delete, and list (see new cli `ldap` subcommands available on CRUDL
   operations for examples), as well as the ability to authenticate against it
   via the SDK, CLI, admin UI, and desktop client.
-  ([PR](https://github.com/hashicorp/boundary/pull/2912))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2912))
 * ui: Display external names when listing dynamic hosts ([PR](https://github.com/hashicorp/boundary-ui/pull/1664))
 * ui: Add support for LDAP authentication ([PR](https://github.com/hashicorp/boundary-ui/pull/1645))
 * Dynamic Host Catalog: You can now view the AWS or Azure host name when listing hosts in CLI,
-  admin console, and desktop client. ([PR](https://github.com/hashicorp/boundary/pull/3074))
+  admin console, and desktop client. ([PR](https://github.com/opendumpling/opendumpling/pull/3074))
 * Add configuration for license reporting (Enterprise only)
 
 ### Deprecations/Changes
@@ -110,11 +110,11 @@ Canonical reference for changes, improvements, and bugfixes for Boundary.
    - https://github.com/hashicorp/boundary-plugin-host-aws -> https://github.com/hashicorp/boundary-plugin-aws
    - https://github.com/hashicorp/boundary-plugin-host-azure -> https://github.com/hashicorp/boundary-plugin-azure
   
-  Similarly the `plugins/host` package has been renamed to `plugins/boundary`
-  ([PR1](https://github.com/hashicorp/boundary/pull/3262),
+  Similarly the `plugins/host` package has been renamed to `plugins/dumpling`
+  ([PR1](https://github.com/opendumpling/opendumpling/pull/3262),
   [PR2](https://github.com/hashicorp/boundary-plugin-aws/pull/24),
   [PR3](https://github.com/hashicorp/boundary-plugin-azure/pull/12),
-  [PR4](https://github.com/hashicorp/boundary/pull/3266)).
+  [PR4](https://github.com/opendumpling/opendumpling/pull/3266)).
 * PostgreSQL 12 or greater is now required. PostgreSQL 11 is no longer
   supported.
 
@@ -122,19 +122,19 @@ Canonical reference for changes, improvements, and bugfixes for Boundary.
 
 * targets: `authorize-session` now works properly when using a target's name as
   the identifier and the target name contains one or more slashes
-  ([PR](https://github.com/hashicorp/boundary/pull/3249))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/3249))
 * resource listing: API requests to list a resource (targets, sessions, users,
   etc) now properly return all resources the callers has appropriate permission
-  to list ([PR](https://github.com/hashicorp/boundary/pull/3278))
+  to list ([PR](https://github.com/opendumpling/opendumpling/pull/3278))
 * sessions: Fix a bug that contributed to slow response times when listing
   sessions that had a large number of connections
-  ([PR](https://github.com/hashicorp/boundary/pull/3280))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/3280))
 * ui: Fix `client secret` bug for OIDC authentication methods([PR](https://github.com/hashicorp/boundary-ui/pull/1698))
 * ui: Fix linking to a Host from the Host Set screen of a Dynamic Host Catalog ([PR](https://github.com/hashicorp/boundary-ui/pull/1659))
 
 ## 0.12.3 (2023/05/26)
 
-Note: As this issue currently only affected HCP Boundary customers, there is no
+Note: As this issue currently only affected HCP Dumpling customers, there is no
 open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
 
 ### Bug Fixes
@@ -150,7 +150,7 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
 
 ### Security
 
-* Boundary now uses Go 1.19.8 to address CVE-2023-24536. See the
+* Dumpling now uses Go 1.19.8 to address CVE-2023-24536. See the
   [Go announcement](https://groups.google.com/g/golang-announce/c/Xdv6JL9ENs8) for
   more details.
 
@@ -168,16 +168,16 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
   `-credential-type` when creating the credential library, the credential was
   correctly parsed. This fallback parsing is now fixed, but in order to support
   older clients, credential libraries will need to be recreated with a
-  credential type. [PR](https://github.com/hashicorp/boundary/pull/2989)
+  credential type. [PR](https://github.com/opendumpling/opendumpling/pull/2989)
 * ui: Fix credential library not saving correctly when trying to save it as a
   generic secrets type. ([PR](https://github.com/hashicorp/boundary-ui/pull/1640))
-* sessions: Fix tofu token retrieval. ([PR](https://github.com/hashicorp/boundary/pull/3064))
+* sessions: Fix tofu token retrieval. ([PR](https://github.com/opendumpling/opendumpling/pull/3064))
 
 ## 0.12.0 (2023/01/24)
 
 ### Deprecations/Changes
 
-* In Boundary 0.9.0, targets were updated to require a default port value. This
+* In Dumpling 0.9.0, targets were updated to require a default port value. This
   had been the original intention; it was a mistake that it was optional.
   Unfortunately, due to a separate defect in the update verification logic for
   static hosts, it was possible for a host to be updated (but not created) with
@@ -185,7 +185,7 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
   which was not the intention and leads to confusing behavior across different
   installations. In this version, updating static hosts will no longer allow
   ports to be part of the address; when authorizing a session, any port on such
-  a host will be ignored in favor of the default port on the target. In Boundary
+  a host will be ignored in favor of the default port on the target. In Dumpling
   0.14.0, this will become an error instead. As a consequence, it means that the
   fallback logic for targets that did not have a default port defined is no
   longer in service; all targets must now have a default port defined.
@@ -205,7 +205,7 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
   subcommand, will have the subtype set to `vault-generic`. The deprecated
   subtype and subcommands will be removed in boundary 0.14.0, at which point
   `vault-generic` must be used.
-* In Boundary 0.1.8 using the `-format=json` option with the cli would provide
+* In Dumpling 0.1.8 using the `-format=json` option with the cli would provide
   a `status_code` for successful API requests from the cli. However, in the
   case where an error was returned, the JSON would use `status` instead. This
   inconsistency has been fixed, with `status_code` being used in both cases.
@@ -216,18 +216,18 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
 
 * Direct Address Targets: You can now set an address directly on a target,
   bypassing the need for host catalogs, host sets and hosts.
-  ([PR](https://github.com/hashicorp/boundary/pull/2613))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2613))
 * Custom Response Headers: Adds ability to set api and ui response headers based
   on status code. Includes default secure CSP and other headers.
-  ([PR](https://github.com/hashicorp/boundary/pull/2587))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2587))
 * metrics: Adds accepted connections and closed connections counters to keep track
   downstream connections for worker and controller servers.
-  ([PR](https://github.com/hashicorp/boundary/pull/2668))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2668))
 * Egress and Ingress worker filters: The target `worker_filter` field has been deprecated and 
  replaced with egress and ingress worker filters. Egress worker filters determine which workers are
- used to access targets. Ingress worker filters (HCP Boundary only) determine which workers are 
- used to connect with a client to initiate a session. ([PR](https://github.com/hashicorp/boundary/pull/2654))
-* Multi-Hop Sessions (HCP Boundary only): Multi-hop PKI workers can communicate with each other to serve 
+ used to access targets. Ingress worker filters (HCP Dumpling only) determine which workers are 
+ used to connect with a client to initiate a session. ([PR](https://github.com/opendumpling/opendumpling/pull/2654))
+* Multi-Hop Sessions (HCP Dumpling only): Multi-hop PKI workers can communicate with each other to serve 
  2 primary purposes: authentication and session proxying. This results in the ability to chain 
  multiple workers together to access services hidden under layers of network security. Multi-hop 
  workers can also establish a TCP session through multiple workers, with the ability to reverse 
@@ -235,7 +235,7 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
 * Vault SSH certificate credential library: A new credential library that uses
   the vault ssh secret engine to generate ssh private key and certificates. The
   library can be used as an injected application credential source for targets
-  that support credential injection. ([PR](https://github.com/hashicorp/boundary/pull/2860))
+  that support credential injection. ([PR](https://github.com/opendumpling/opendumpling/pull/2860))
 * ui: Add support for managed groups in add-principals list.
   ([PR](https://github.com/hashicorp/boundary-ui/pull/1548))
 
@@ -243,17 +243,17 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
 
 * plugins: Ignore `SIGHUP` sent to parent process; some init systems, notably
   `dumb-init`, would pass them along to the child processes and cause the
-  plugin to exit ([PR](https://github.com/hashicorp/boundary/pull/2677))
+  plugin to exit ([PR](https://github.com/opendumpling/opendumpling/pull/2677))
 * data warehouse: Fix bug that caused credential dimensions to not get
-    associated with session facts ([PR](https://github.com/hashicorp/boundary/pull/2787)).
-* sessions: Fix two authorizeSession race conditions in handleProxy. ([PR](https://github.com/hashicorp/boundary/pull/2795))
+    associated with session facts ([PR](https://github.com/opendumpling/opendumpling/pull/2787)).
+* sessions: Fix two authorizeSession race conditions in handleProxy. ([PR](https://github.com/opendumpling/opendumpling/pull/2795))
 * cli: When using `-format=json` the JSON was inconsistent in how it reported
   status codes. In successful cases it would use `status_code`, but in error
   cases it would use `status`. Now `status_code` is used in both cases. In
   error cases `status` is still populated, see the deprecations above for
-  more details. ([PR](https://github.com/hashicorp/boundary/pull/2887))
+  more details. ([PR](https://github.com/opendumpling/opendumpling/pull/2887))
 * database: Add job that automatically cleans up completed runs in the `job_run` table.
-  ([PR](https://github.com/hashicorp/boundary/pull/2866))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2866))
 * core: Linux packages now have vendor label and set the default label to HashiCorp.
   This fix is implemented for any future releases, but will not be updated for historical releases.
 
@@ -261,7 +261,7 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
 
 ### Security
 
-* Boundary now uses Go 1.19.4 to address security vulnerability (CVE-2022-41717) See the
+* Dumpling now uses Go 1.19.4 to address security vulnerability (CVE-2022-41717) See the
   [Go announcement](https://groups.google.com/g/golang-announce/c/L_3rmdT0BMU) for
   more details.
 
@@ -301,34 +301,34 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
 
   Upgrade notice: If the Database purpose DEK for a scope is destroyed, you must use
   the API to cancel any sessions that predate the upgrade.
-  ([PR](https://github.com/hashicorp/boundary/pull/2477))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2477))
 * session: The amount of bytes received and transmitted over a session
-  is now recorded and persisted. ([PR](https://github.com/hashicorp/boundary/pull/2503))
+  is now recorded and persisted. ([PR](https://github.com/opendumpling/opendumpling/pull/2503))
 
 ### Bug Fixes
 
 * accounts: Deleted auth accounts would still show up as being associated with a
   User when reading the User
-  ([PR](https://github.com/hashicorp/boundary/pull/2528))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2528))
 * sessions: Fix workers not being in random order when returned to clients at
   `authorize-session` time, which could allow one worker to bear the majority of
-  sessions ([PR](https://github.com/hashicorp/boundary/pull/2544))
+  sessions ([PR](https://github.com/opendumpling/opendumpling/pull/2544))
 * workers: In some error conditions when sending status to controllers, errors
   could be written to stdout along with a message that they could not
   successfully be evented instead of being written to the event log
-  ([PR](https://github.com/hashicorp/boundary/pull/2544))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2544))
 * workers: Fixed a panic that can happen in certain situations
-  ([PR](https://github.com/hashicorp/boundary/pull/2553))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2553))
 * sessions: Fixed a panic in a controller when a worker is deleted while
-  sessions are ongoing ([PR](https://github.com/hashicorp/boundary/pull/2612))
+  sessions are ongoing ([PR](https://github.com/opendumpling/opendumpling/pull/2612))
 * sessions: Fixed a panic in a worker when a user with an active
-  session is deleted ([PR](https://github.com/hashicorp/boundary/pull/2629))
+  session is deleted ([PR](https://github.com/opendumpling/opendumpling/pull/2629))
 * sessions: Fixed a bug where reading a session after its associated project
   had been deleted would result in an error
-  ([PR](https://github.com/hashicorp/boundary/pull/2615))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2615))
 * config: Fixed a bug where supplying multiple KMS blocks with the same purpose
   would silently ignore all but the last block
-  ([PR](https://github.com/hashicorp/boundary/pull/2639))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2639))
 
 ### Deprecations/Changes
 
@@ -356,22 +356,22 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
 ### Bug Fixes
 
 * scopes: Organizations could be prevented from being deleted if some resources
-  remained ([PR](https://github.com/hashicorp/boundary/pull/2465))
+  remained ([PR](https://github.com/opendumpling/opendumpling/pull/2465))
 * workers: Authentication rotation could occur prior to the expected time
-  ([PR](https://github.com/hashicorp/boundary/pull/2484))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2484))
 * workers: When looking up worker authentication records, an old record could be
   returned instead of the new one, leading to errors for encryption or
-  decryption operations ([PR](https://github.com/hashicorp/boundary/pull/2495))
+  decryption operations ([PR](https://github.com/opendumpling/opendumpling/pull/2495))
 
 ### New and Improved
 
-* vault: (HCP Boundary only): Private Vault clusters can be used with HCP Boundary by using PKI workers
+* vault: (HCP Dumpling only): Private Vault clusters can be used with HCP Dumpling by using PKI workers
   deployed in the same network as a private cluster. Tags are used to control which PKI workers can manage private Vault
   requests by specifying a `worker_filter` attribute when configuring a Vault credential store.
 * credentials: There is now a `json` credential type supported by `static`
-  credential stores that allows submitting a generic JSON object to Boundary for
+  credential stores that allows submitting a generic JSON object to Dumpling for
   use with credential brokering workflows
-  ([PR](https://github.com/hashicorp/boundary/pull/2423))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2423))
 * ui: Add support for worker management
   ([PR](https://github.com/hashicorp/boundary-ui/pull/1229))
 * ui: Add support for PKI worker registration
@@ -382,23 +382,23 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
   ([PR](https://github.com/hashicorp/boundary-ui/pull/1205))
 * ui: Add support for Username & Key Pair Credentials
   ([PR](https://github.com/hashicorp/boundary-ui/pull/1266))
-* ui (HCP Boundary only): SSH Target creation along with injected application
+* ui (HCP Dumpling only): SSH Target creation along with injected application
   credential support ([PR](https://github.com/hashicorp/boundary-ui/pull/1027))
-* ui (HCP Boundary only): Update vault credential stores to support private
+* ui (HCP Dumpling only): Update vault credential stores to support private
   vault access ([PR](https://github.com/hashicorp/boundary-ui/pull/1318))
 * ui: Improve quick setup wizard onboarding guide resource names
   ([PR](https://github.com/hashicorp/boundary-ui/pull/1328))
 * ui: Updates to host catalog and host set forms and “Learn More” links
   ([PR](https://github.com/hashicorp/boundary-ui/pull/1342))
 * workers: Added the ability to read and reinitialize the Worker certificate
-  authority ([PR1](https://github.com/hashicorp/boundary/pull/2312),
-  [PR2](https://github.com/hashicorp/boundary/pull/2387))
-* workers: Return the worker Boundary binary version on worker list and read
-  ([PR](https://github.com/hashicorp/boundary/pull/2377))
+  authority ([PR1](https://github.com/opendumpling/opendumpling/pull/2312),
+  [PR2](https://github.com/opendumpling/opendumpling/pull/2387))
+* workers: Return the worker Dumpling binary version on worker list and read
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2377))
 * workers: Addition of worker graceful shutdown, triggered by an initial
-  `SIGINT` or `SIGTERM` ([PR](https://github.com/hashicorp/boundary/pull/2455))
+  `SIGINT` or `SIGTERM` ([PR](https://github.com/opendumpling/opendumpling/pull/2455))
 * workers: Retain one previous encryption/decryption key after authentication
-  rotation ([PR](https://github.com/hashicorp/boundary/pull/2495))
+  rotation ([PR](https://github.com/opendumpling/opendumpling/pull/2495))
 
 ### Deprecations/Changes
 
@@ -412,7 +412,7 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
   `add-/remove-/set-credential-sources`, although those actions would only be in
   grant strings in very rare circumstances as the `-sources` actions replaced
   the `-libraries` actions very quickly.
-  ([PR](https://github.com/hashicorp/boundary/pull/2393))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2393))
 
 ## 0.10.5 (2022/09/13)
 
@@ -432,7 +432,7 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
   limiting then they should be based on the grants. This only impacts the
   sessions list endpoint. It would result in users that have been granted access
   to list other user's sessions to be unable to see these sessions in the list
-  results ([PR](https://github.com/hashicorp/boundary/pull/2448)).
+  results ([PR](https://github.com/opendumpling/opendumpling/pull/2448)).
 
 ## 0.10.4 (2022/09/13)
 
@@ -445,7 +445,7 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
 ### New and Improved
 
 * Controller-led worker authorization: This is a second authorization option for
-  the workers using PKI-based authentication that was introduced in Boundary
+  the workers using PKI-based authentication that was introduced in Dumpling
   0.10.0. In 0.10.0, the only mode available was "worker-led", in which a worker
   generates an authorization request which can be submitted to a controller to
   authorize the worker. With this new controller-led flow, a worker can be
@@ -454,51 +454,51 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
   its configuration file, env var, or a file with the value. If the worker is
   not authorized and this token is provided, it will use the token to authorize
   itself to the controller and set up PKI-based authentication.
-  ([PR](https://github.com/hashicorp/boundary/pull/2413))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2413))
 * Initial upstreams reloading on `SIGHUP`: Workers will now re-read the
   `initial_upstreams` value from the configuration file when given a SIGHUP.
   This allows a worker to reconnect to controllers if the full set of
   controllers has been changed over at the same time, without having to restart
-  the worker. ([PR](https://github.com/hashicorp/boundary/pull/2417))
+  the worker. ([PR](https://github.com/opendumpling/opendumpling/pull/2417))
 * Database URL reloading on `SIGHUP`: Controllers will now re-read the database
     url value from the configuration file when given a SIGHUP. This is
     particularly useful for allowing database credentials to rotate and
     signaling the controller to use the new credentials without the need for a
-    restart. ([PR](https://github.com/hashicorp/boundary/pull/2422))
+    restart. ([PR](https://github.com/opendumpling/opendumpling/pull/2422))
 * Additional improvements to response time for listing sessions and targets
-    ([PR](https://github.com/hashicorp/boundary/pull/2342)).
+    ([PR](https://github.com/opendumpling/opendumpling/pull/2342)).
 
 ### Bug Fixes
 
 * aws host catalog: Fix an issue where the request to list hosts could timeout
   on a large number of hosts
-  ([Issue](https://github.com/hashicorp/boundary/issues/2224),
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/2224),
   [PR](https://github.com/hashicorp/boundary-plugin-host-aws/pull/17))
 * aws host catalog: Fix an issue where filters could become unreadable in the UI
   if only one filter was created and was set by the CLI or directly via the API
-  ([PR1](https://github.com/hashicorp/boundary/pull/2376),
+  ([PR1](https://github.com/opendumpling/opendumpling/pull/2376),
   [PR2](https://github.com/hashicorp/boundary-plugin-host-aws/pull/16))
 * aws host catalog: Use provided region for IAM calls in addition to EC2
-  ([Issue](https://github.com/hashicorp/boundary/issues/2233),
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/2233),
   [PR](https://github.com/hashicorp/boundary-plugin-host-aws/pull/18))
 * azure host catalog: Fix hosts not being found depending on the exact filter
   used because different filters return values with different casing
   ([PR](https://github.com/hashicorp/boundary-plugin-host-azure/pull/8))
 * sessions: Fix an issue where sessions could not have more than one connection
-  ([Issue](https://github.com/hashicorp/boundary/issues/2362),
-  [PR](https://github.com/hashicorp/boundary/pull/2369))
-* workers: Fix repeating error in logs when connected to HCP Boundary about an
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/2362),
+  [PR](https://github.com/opendumpling/opendumpling/pull/2369))
+* workers: Fix repeating error in logs when connected to HCP Dumpling about an
   unimplemented HcpbWorkers call
-  ([PR](https://github.com/hashicorp/boundary/pull/2361))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2361))
 * workers: Fix a panic that could occur when `workers:create:worker-led` (e.g.
   via `boundary workers create worker-led`) was given an invalid token
-  ([PR](https://github.com/hashicorp/boundary/pull/2388))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2388))
 * workers: Add the ability to set API-based worker tags via the CLI
-  ([PR](https://github.com/hashicorp/boundary/pull/2266))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2266))
 * vault: Correctly handle Vault credential stores and libraries that are linked
   to an expired Vault token
-  ([Issue](https://github.com/hashicorp/boundary/issues/2179),
-  [PR](https://github.com/hashicorp/boundary/pull/2399))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/2179),
+  [PR](https://github.com/opendumpling/opendumpling/pull/2399))
 
 ## 0.10.3 (2022/08/30)
 
@@ -512,8 +512,8 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
 
 * db: Fix an issue with migrations failing due to not updating the project_id
   value for the host plugin set
-  ([Issue](https://github.com/hashicorp/boundary/issues/2349#issuecomment-1229953874),
-  [PR](https://github.com/hashicorp/boundary/pull/2407)).
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/2349#issuecomment-1229953874),
+  [PR](https://github.com/opendumpling/opendumpling/pull/2407)).
 
 ## 0.10.2 (2022/08/23)
 
@@ -525,7 +525,7 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
 
 ### Security
 
-* Fix security vulnerability CVE-2022-36130: Boundary up to 0.10.1 did not
+* Fix security vulnerability CVE-2022-36130: Dumpling up to 0.10.1 did not
   properly perform data integrity checks to ensure that host-set and
   credential-source resources being added to a target were associated with the
   same scope as the target. This could allow privilege escalation via allowing a
@@ -538,8 +538,8 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
 
 * db: Fix an issue with migrations affecting clusters that contain credential
   libraries or static credentials.
-  ([Issue](https://github.com/hashicorp/boundary/issues/2349)),
-  ([PR](https://github.com/hashicorp/boundary/pull/2351)).
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/2349)),
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2351)).
 * managed groups: Fix an issue where the `filter` field is not sent by admin UI
   ([PR](https://github.com/hashicorp/boundary-ui/pull/1238)).
 * host sets: Fix an issue causing host sets to not display in UI when using the
@@ -547,10 +547,10 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
 * plugins: Fixes regression from 0.9.0 causing a failure to start when using
   multiple KMS blocks of the same type
   ([PR1](https://github.com/hashicorp/go-secure-stdlib/pull/43),
-  [PR2](https://github.com/hashicorp/boundary/pull/2346))
+  [PR2](https://github.com/opendumpling/opendumpling/pull/2346))
 * cli: Fixed errors related to URL detection when passing in `-attr` or
   `-secret` values that contained colons
-  ([PR](https://github.com/hashicorp/boundary/pull/2353))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2353))
 
 ## 0.10.0 (2022/08/10)
 
@@ -561,7 +561,7 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
 
 ### New and Improved
 
-* `ssh` Target Type With Credential Injection (HCP Boundary only): Boundary has
+* `ssh` Target Type With Credential Injection (HCP Dumpling only): Dumpling has
   gained a new `ssh` target type. Using this type, username/password or SSH
   private key credentials can be sourced from `vault` credential libraries or
   `static` credentials and injected into the SSH session between a client and
@@ -569,24 +569,24 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
   in possession of a valid credential for that target host.
 * SSH Private Key Credentials: There is now an `ssh_private_key` credential type
   that allows submitting a username/private key (and optional passphrase) to
-  Boundary for use with credential injection or brokering workflows.
+  Dumpling for use with credential injection or brokering workflows.
 * `boundary connect ssh` Credential Brokering Enhancements: we have extended
   support into the `boundary connect ssh` helper for brokered credentials of
   `ssh_private_key` type; the command will automatically pass the credentials to
-  the `ssh` process ([PR](https://github.com/hashicorp/boundary/pull/2267)).
+  the `ssh` process ([PR](https://github.com/opendumpling/opendumpling/pull/2267)).
 * `boundary authenticate`, `boundary accounts`: Enables use of `env://` and
   `file://` syntax to specify location of a password
-  ([PR](https://github.com/hashicorp/boundary/pull/2325))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2325))
 
 ### Bug Fixes
 
 * cli: Correctly cleanup plugins after exiting `boundary dev`, `boundary server`
   and `boundary database init`
-  ([Issue](https://github.com/hashicorp/boundary/issues/2332),
-  [PR](https://github.com/hashicorp/boundary/pull/2333)).
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/2332),
+  [PR](https://github.com/opendumpling/opendumpling/pull/2333)).
 * `boundary accounts change-password`: Fixed being prompted for confirmation of
   the current password instead of the new one
-  ([PR](https://github.com/hashicorp/boundary/pull/2325))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2325))
 
 ### Deprecations/Changes
 
@@ -594,27 +594,27 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
   expected typed definition. Type casting is only allowed against interface
   types, therefore to mitigate compiler errors please remove any type casting
   done against the return values.
-  ([Issue](https://github.com/hashicorp/boundary/issues/2122),
-  [PR](https://github.com/hashicorp/boundary/pull/2238))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/2122),
+  [PR](https://github.com/opendumpling/opendumpling/pull/2238))
 * Targets: Rename Application credentials to Brokered credentials
-  ([PR](https://github.com/hashicorp/boundary/pull/2260)).
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2260)).
 * Host plugins: Plugin-type host catalogs/sets/hosts now use typed prefixes for
   any newly-created resources. Existing resources will not be affected.
-  ([PR](https://github.com/hashicorp/boundary/pull/2256))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2256))
 * Credential stores: Static-type credential stores/credentials now use typed
   prefixes for any newly-created resources. Existing resources will not be
-  affected. ([PR](https://github.com/hashicorp/boundary/pull/2256))
+  affected. ([PR](https://github.com/opendumpling/opendumpling/pull/2256))
 * Change of behavior on `-token` flag in CLI: Passing a token this way can
   reveal the token to any user or service that can look at process information.
   This flag must now reference a file on disk or an env var. Direct usage of the
-  `BOUNDARY_TOKEN` env var is also deprecated as it can show up in environment
+  `DUMPLING_TOKEN` env var is also deprecated as it can show up in environment
   information; the `env://` format now supported by the `-token` flag causes the
-  Boundary process to read it instead of the shell so is safer.
-  ([PR](https://github.com/hashicorp/boundary/pull/2327))
+  Dumpling process to read it instead of the shell so is safer.
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2327))
 * Change of behavior on `-password` flag in CLI: The same change made above for
   `-token` has also been applied to `-password` or, for supporting resource
   types, `-current-password` and `-new-password`.
-  ([PR](https://github.com/hashicorp/boundary/pull/2327))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2327))
 
 ## 0.9.1 (2022/07/06)
 
@@ -627,19 +627,19 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
 
 * scheduler: Fix regression causing controller names of less than 10 characters
   to fail to register jobs
-  ([PR](https://github.com/hashicorp/boundary/pull/2226)).
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2226)).
 * sessions: Fix an additional case from the changes in the 0.8.x series that
   could result in sessions never moving from `canceling` state to terminated.
-  ([PR](https://github.com/hashicorp/boundary/pull/2229))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2229))
 * The plugin execution_dir configuration parameter is now respected by kms plugins too
-  ([PR](https://github.com/hashicorp/boundary/pull/2239)).
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2239)).
 
 ### Deprecations/Changes
 
 * sessions: The default connect limit for new sessions changed from 1 to unlimited (-1).
-  Specific connection limits is an advanced feature of Boundary and this setting is
+  Specific connection limits is an advanced feature of Dumpling and this setting is
   more friendly for new users.
-  ([PR](https://github.com/hashicorp/boundary/pull/2234))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2234))
 
 ## 0.9.0 (2022/06/20)
 
@@ -652,28 +652,28 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
 ### New and Improved
 
 * PKI Workers: This release introduces a new worker type `pki` which
-  authenticates to Boundary using a new certificate-based method, allowing for
+  authenticates to Dumpling using a new certificate-based method, allowing for
   worker deployment without using a shared KMS.
 * Credentials: This release introduces a new credential store type `static`,
   which simply takes in a user-supplied credential and stores it (encrypted)
-  directly in Boundary. Currently, the `static` credential store can hold
+  directly in Dumpling. Currently, the `static` credential store can hold
   credentials of type `username_password`. These credentials can act as
   credential sources for targets, similar to credential libraries from the
   `vault` credential store, and thus can be brokered to users at session
-  authorization time. ([PR](https://github.com/hashicorp/boundary/pull/2174))
+  authorization time. ([PR](https://github.com/opendumpling/opendumpling/pull/2174))
 * `boundary connect` Credential Brokering Integration: we have extended integration
   into the `boundary connect` helpers. A new `sshpass` style has been added to the
   `ssh` helper, when used, if the credential contains a username/password and `sshpass`
   is installed, the command will automatically pass the credentials to the `ssh` process.
   Additionally, the default `ssh` helper will now use the `username` of the brokered credential.
-  ([PR](https://github.com/hashicorp/boundary/pull/2191)).
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2191)).
 * controller: Improve response time for listing sessions.
   This also creates a new periodic job that will delete terminated
   sessions after 1 hour.
   See Deprecations/Changes for some additional details.
-  ([PR](https://github.com/hashicorp/boundary/pull/2160)).
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2160)).
 * event filtering: Change event filters to use lowercase and snake case for data
-  elements like the rest of Boundary filters do.
+  elements like the rest of Dumpling filters do.
 * ui: Use include_terminated flag for listing sessions.
   ([PR](https://github.com/hashicorp/boundary-ui/pull/1126)).
 * ui: Add Quick Setup onboarding guide.
@@ -682,32 +682,32 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
 ### Bug Fixes
 
 * The plugin execution_dir configuration parameter is now respected.
-  ([PR](https://github.com/hashicorp/boundary/pull/2183)).
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2183)).
 * ui: Fix Users page not updating fields correctly.
   ([PR](https://github.com/hashicorp/boundary-ui/pull/1105)).
 
 ### Deprecations/Changes
 
 * Targets: Removes support for `credential libraries` with respect to Target resources.
-  The `library` `fields` and `actions` were deprecated in [Boundary 0.5.0](#050-20210802),
+  The `library` `fields` and `actions` were deprecated in [Dumpling 0.5.0](#050-20210802),
   please use `credential sources` instead. See changelog referenced above for
-  more details ([PR](https://github.com/hashicorp/boundary/pull/1533)).
+  more details ([PR](https://github.com/opendumpling/opendumpling/pull/1533)).
 * Credential Libraries: The `user_password` credential type has been renamed to
   `username_password` to remove any inconsistency over what the credential type is.
   All existing `user_password` typed credential libraries will be migrated to
-  `username_password` ([PR](https://github.com/hashicorp/boundary/pull/2154)).
+  `username_password` ([PR](https://github.com/opendumpling/opendumpling/pull/2154)).
 * controller: Change the default behavior of the session list endpoint
   to no longer include sessions in a terminated state and introduces
   a new query parameter/cli flag to include the terminated sessions.
   This also removes the connection information from the list response.
-  ([PR](https://github.com/hashicorp/boundary/pull/2160)).
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2160)).
 * Anonymous user permissions: In order to reduce the risk of accidental and
   unintended granting of permissions to anonymous users, the permissions system
   now only allows certain actions on certain resources to be assigned to the
   anonymous user; currently these are the same permissions as assigned in
-  Boundary's default role permissions. If other use-cases arise this list can be
+  Dumpling's default role permissions. If other use-cases arise this list can be
   expanded. See [the
-  documentation](https://www.boundaryproject.io/docs/concepts/security/permissions/assignable-permissions)
+  documentation](https://github.com/opendumpling/opendumpling/docs/concepts/security/permissions/assignable-permissions)
   for more details.
 
 ## 0.8.1 (2022/05/13)
@@ -715,38 +715,38 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
 ### Bug Fixes
 
 * controller: Do not shut down cluster listener when it receives an invalid
-  packet ([Issue](https://github.com/hashicorp/boundary/issues/2072),
-  [PR](https://github.com/hashicorp/boundary/pull/2073))
+  packet ([Issue](https://github.com/opendumpling/opendumpling/issues/2072),
+  [PR](https://github.com/opendumpling/opendumpling/pull/2073))
 * session: update cancel_session() function to check for terminated state
-  ([Issue](https://github.com/hashicorp/boundary/issues/2064),
-  [PR](https://github.com/hashicorp/boundary/pull/2065))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/2064),
+  [PR](https://github.com/opendumpling/opendumpling/pull/2065))
 
 ## 0.8.0 (2022/05/03)
 
 ### New and Improved
 * metrics: Provide metrics for controllers and workers
-* controller: Add health endpoint ([PR](https://github.com/hashicorp/boundary/pull/1882))
+* controller: Add health endpoint ([PR](https://github.com/opendumpling/opendumpling/pull/1882))
 * controller: Improve response time for listing sessions and targets.
-  ([PR](https://github.com/hashicorp/boundary/pull/2049))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2049))
 * ui: Add support for worker filters in targets
 * ui: Add manual refresh button in sessions list
-* Audit events are no longer a WIP ([PR](https://github.com/hashicorp/boundary/pull/2031)).
+* Audit events are no longer a WIP ([PR](https://github.com/opendumpling/opendumpling/pull/2031)).
 
 ### Bug Fixes
 
 * worker: create new error to prevent `event.newError: missing error: invalid
   parameter` and handle session cancel with no TOFU token
-  ([Issue](https://github.com/hashicorp/boundary/issues/1902),
-  [PR](https://github.com/hashicorp/boundary/pull/1929))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/1902),
+  [PR](https://github.com/opendumpling/opendumpling/pull/1929))
 * controller: Reconcile DEKs with existing scopes
-  ([Issue](https://github.com/hashicorp/boundary/issues/1856),
-  [PR](https://github.com/hashicorp/boundary/pull/1976))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/1856),
+  [PR](https://github.com/opendumpling/opendumpling/pull/1976))
 * controller: Fix for retrieving sessions that could result in incomplete
   results when there is a large number (10k+) of sessions.
-  ([PR](https://github.com/hashicorp/boundary/pull/2049))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/2049))
 * session: update session state trigger to prevent transitions to invalid states
-  ([Issue](https://github.com/hashicorp/boundary/issues/2040),
-  [PR](https://github.com/hashicorp/boundary/pull/2046))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/2040),
+  [PR](https://github.com/opendumpling/opendumpling/pull/2046))
 
 ## 0.7.6 (2022/03/15)
 
@@ -754,12 +754,12 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
 
 * sessions: Sessions and session connections have been refactored to better
 isolate transactions and prevent resource contention that caused deadlocks.
-([Issue](https://github.com/hashicorp/boundary/issues/1812),
-  [PR](https://github.com/hashicorp/boundary/pull/1919))
+([Issue](https://github.com/opendumpling/opendumpling/issues/1812),
+  [PR](https://github.com/opendumpling/opendumpling/pull/1919))
 * scheduler: Fix bug that causes erroneous logs when racing controllers
   attempted to run jobs
-  ([Issue](https://github.com/hashicorp/boundary/issues/1903),
-  [PR](https://github.com/hashicorp/boundary/pull/1914)).
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/1903),
+  [PR](https://github.com/opendumpling/opendumpling/pull/1914)).
 
 ## 0.7.5 (2022/02/17)
 
@@ -767,23 +767,23 @@ isolate transactions and prevent resource contention that caused deadlocks.
 
 * cli: Update authentication examples to remove password flag and make
   subcommend selection a bit clearer
-  ([PR](https://github.com/hashicorp/boundary/pull/1835))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1835))
 * Data Warehouse: Add addresses on plugin based hosts to the database warehouse.
   3 new dimension tables have been added including `wh_network_address_group`
   (which is now referenced by `wh_host_dimension`),
   `wh_network_address_dimension`, and `wh_network_address_group_membership`.
-  ([PR](https://github.com/hashicorp/boundary/pull/1855))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1855))
 * ui: Add support for dynamic host catalog. AWS and Azure plugin-based CRUD operations.
 
 ### Bug Fixes
 
 * targets: Specifying a plugin based host id when authorizing a session
-  now works. ([PR](https://github.com/hashicorp/boundary/pull/1853))
+  now works. ([PR](https://github.com/opendumpling/opendumpling/pull/1853))
 * targets: DNS names are now properly parsed when selecting an endpoint
   for authorizing a session.
-  ([PR](https://github.com/hashicorp/boundary/pull/1849))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1849))
 * hosts: Static hosts now include the host sets they are in.
-  ([PR](https://github.com/hashicorp/boundary/pull/1828))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1828))
 
 ## 0.7.4 (2022/01/18)
 
@@ -798,52 +798,52 @@ isolate transactions and prevent resource contention that caused deadlocks.
 
 * config: The `description` field for workers now supports being set
   from environment variables or a file on disk
-  ([PR](https://github.com/hashicorp/boundary/pull/1783))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1783))
 * config: The `max_open_connections` field for the database field in controllers now supports being set
   from environment variables or a file on disk
-  ([PR](https://github.com/hashicorp/boundary/pull/1776))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1776))
 * config: The `execution_dir` field for plugins now supports being set from environment variables
-  or a file on disk.([PR](https://github.com/hashicorp/boundary/pull/1772))
+  or a file on disk.([PR](https://github.com/opendumpling/opendumpling/pull/1772))
 * config: Add support for reading worker controllers off of environment
-  variables as well as files. ([PR](https://github.com/hashicorp/boundary/pull/1765))
+  variables as well as files. ([PR](https://github.com/opendumpling/opendumpling/pull/1765))
 * config: The `description` field for controllers now supports being set
   from environment variables or a file on disk
-  ([PR](https://github.com/hashicorp/boundary/pull/1766))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1766))
 * config: Add support for reading worker tags off of environment variables
-  as well as files. ([PR](https://github.com/hashicorp/boundary/pull/1758))
+  as well as files. ([PR](https://github.com/opendumpling/opendumpling/pull/1758))
 * config: Add support for go-sockaddr templates to Worker and Controller
-  addresses. ([PR](https://github.com/hashicorp/boundary/pull/1731))
+  addresses. ([PR](https://github.com/opendumpling/opendumpling/pull/1731))
 * controllers/workers: Add client IP to inbound request information which is included in
-  Boundary events ([PR](https://github.com/hashicorp/boundary/pull/1678))
+  Dumpling events ([PR](https://github.com/opendumpling/opendumpling/pull/1678))
 * host: Plugin-based host catalogs will now schedule updates for all
   of its host sets when its attributes are updated.
-  ([PR](https://github.com/hashicorp/boundary/pull/1736))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1736))
 * scopes: Default roles in newly-created scopes now contain a grant to allow
-  listing targets. ([PR](https://github.com/hashicorp/boundary/pull/1803))
+  listing targets. ([PR](https://github.com/opendumpling/opendumpling/pull/1803))
 * plugins/aws: AWS plugin based hosts now include DNS names in addition to the
   IP addresses they already provide.
 
 ### Bug Fixes
-* session: Fix duplicate sessions and invalid session state transitions. ([PR](https://github.com/hashicorp/boundary/pull/1793))
+* session: Fix duplicate sessions and invalid session state transitions. ([PR](https://github.com/opendumpling/opendumpling/pull/1793))
 
 ## 0.7.3 (2021/12/16)
 
 ### Bug Fixes
 
 * target: Fix permission bug which prevents the UI from being able to add and remove
-  host sources on a target. ([PR](https://github.com/hashicorp/boundary/pull/1794))
+  host sources on a target. ([PR](https://github.com/opendumpling/opendumpling/pull/1794))
 * credential: Fix panic during credential issue when a nil secret is received. This can
   occur when using the Vault KV backend which returns a nil secret and no error if the
-  secret does not exist. ([PR](https://github.com/hashicorp/boundary/pull/1798))
+  secret does not exist. ([PR](https://github.com/opendumpling/opendumpling/pull/1798))
 
 ## 0.7.2 (2021/12/14)
 
 ### Security
 
-* Boundary now uses Go 1.17.5 to address a security vulnerability (CVE-2021-44716) where
+* Dumpling now uses Go 1.17.5 to address a security vulnerability (CVE-2021-44716) where
   an attacker can cause unbounded memory growth in a Go server accepting HTTP/2 requests.
   See the [Go announcement](https://groups.google.com/g/golang-announce/c/hcmEScgc00k) for
-  more details. ([PR](https://github.com/hashicorp/boundary/pull/1789))
+  more details. ([PR](https://github.com/opendumpling/opendumpling/pull/1789))
 
 ## 0.7.1 (2021/11/18)
 
@@ -853,36 +853,36 @@ isolate transactions and prevent resource contention that caused deadlocks.
   initialized resulted in running some functions on every startup that looked
   for some embedded files. However, Go's embed package does not use OS-specific
   path separators, so a mismatch between path separators caused a failure in the
-  function. ([PR](https://github.com/hashicorp/boundary/pull/1733))
+  function. ([PR](https://github.com/opendumpling/opendumpling/pull/1733))
 
 ## 0.7.0 (2021/11/17)
 
 ### Deprecations/Changes
 
-* tls: Boundary's support for TLS 1.0/1.1 on the API listener was broken. Rather
+* tls: Dumpling's support for TLS 1.0/1.1 on the API listener was broken. Rather
   than fix this, we are simply not supporting TLS 1.0/1.1 as they are insecure.
 
 ### New and Improved
 
-* Boundary now supports dynamic discovery of host resources using our (currently
+* Dumpling now supports dynamic discovery of host resources using our (currently
   internal) new plugin system. See the
-  [documentation](https://www.boundaryproject.io/docs) for configuration
+  [documentation](https://github.com/opendumpling/opendumpling/docs) for configuration
   instructions. Currently, only Azure and AWS are supported, but more providers
   will be following in future releases.
 * workers: The existing worker connection replay prevention logic has been
   enhanced to be more robust against attackers that have decryption access to
   the shared `worker-auth` KMS key
-  ([PR](https://github.com/hashicorp/boundary/pull/1641))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1641))
 
 ### Bug Fixes
 
 * tls: Support TLS 1.2 for more clients. This was broken for some clients due to
   a missing mandated cipher suite of the HTTP/2 (`h2`) specification that could
-  result in no shared cipher suites between the Boundary API listener and those
-  clients. ([PR](https://github.com/hashicorp/boundary/pull/1637))
+  result in no shared cipher suites between the Dumpling API listener and those
+  clients. ([PR](https://github.com/opendumpling/opendumpling/pull/1637))
 * vault: Fix credential store support when using Vault namespaces
-  ([Issue](https://github.com/hashicorp/boundary/issues/1597),
-  [PR](https://github.com/hashicorp/boundary/pull/1660))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/1597),
+  [PR](https://github.com/opendumpling/opendumpling/pull/1660))
 
 ## 0.6.2 (2021/09/27)
 
@@ -895,15 +895,15 @@ isolate transactions and prevent resource contention that caused deadlocks.
 * * `set-host-sets` -> `set-hosts`
 * * `add-host-sets` -> `add-hosts`
 * * `remove-host-sets` -> `remove-hosts`
-  ([PR](https://github.com/hashicorp/boundary/pull/1549)).
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1549)).
 * Removes support for the `auth-methods/<id>:authenticate:login` action that was
-  deprecated in [Boundary 0.2.0](#020-20210414), please use
+  deprecated in [Dumpling 0.2.0](#020-20210414), please use
   `auth-methods/<id>:authenticate` instead.
-  ([PR](https://github.com/hashicorp/boundary/pull/1534)).
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1534)).
 * Removes support for the `credential` field within `auth-methods/<id>:authenticate`
-  action. This field was deprecated in [Boundary 0.2.0](#020-20210414), please use
+  action. This field was deprecated in [Dumpling 0.2.0](#020-20210414), please use
   `attributes` instead.
-  ([PR](https://github.com/hashicorp/boundary/pull/1534)).
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1534)).
 
 ## 0.6.1 (2021/09/14)
 
@@ -912,11 +912,11 @@ isolate transactions and prevent resource contention that caused deadlocks.
 * grants: Fix issue where `credential-store`, `credential-library`, and
   `managed-group` would not be accepted as specific `type` values in grant
   strings. Also, fix authorized actions not showing `credential-store` values in
-  project scope output. ([PR](https://github.com/hashicorp/boundary/pull/1524))
+  project scope output. ([PR](https://github.com/opendumpling/opendumpling/pull/1524))
 * actions: Fix `sessions` collection actions not being visible when reading a
-  scope ([PR](https://github.com/hashicorp/boundary/pull/1527))
+  scope ([PR](https://github.com/opendumpling/opendumpling/pull/1527))
 * credential stores: Fix credential stores not showing authorized collection
-  actions ([PR](https://github.com/hashicorp/boundary/pull/1530))
+  actions ([PR](https://github.com/opendumpling/opendumpling/pull/1530))
 
 ## 0.6.0 (2021/09/03)
 
@@ -931,14 +931,14 @@ isolate transactions and prevent resource contention that caused deadlocks.
 * controller: Fix issue with recursive listing across services when using the
   unauthenticated user (`u_anon`) with no token and the list was started in a
   scope where the user does not have permission
-  ([PR](https://github.com/hashicorp/boundary/pull/1478))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1478))
 * grants: Fix grant format `type=<type>;output_fields=<fields>` with no action
   specified. In some code paths this format would trigger an error when
   validating even though it is correctly handled within the ACL code.
-  ([PR](https://github.com/hashicorp/boundary/pull/1474))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1474))
 * targets: Fix panic when using `boundary targets authorize-session`
-  ([Issue](https://github.com/hashicorp/boundary/issues/1488),
-  [PR](https://github.com/hashicorp/boundary/pull/1496))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/1488),
+  [PR](https://github.com/opendumpling/opendumpling/pull/1496))
 
 ## 0.5.1 (2021/08/16)
 
@@ -948,14 +948,14 @@ isolate transactions and prevent resource contention that caused deadlocks.
   Four new columns have been added to the `wh_user_dimension` table:
   `auth_method_external_id`, `auth_account_external_id`,
   `auth_account_full_name`, and `auth_account_email`.
-  ([PR](https://github.com/hashicorp/boundary/pull/1455))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1455))
 
 ### Bug Fixes
 
 * events: Fix panic when using the `hclog-text` event's format.
-  ([PR](https://github.com/hashicorp/boundary/pull/1456))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1456))
 * oidc managed groups: Allow colons in selector paths
-  ([PR](https://github.com/hashicorp/boundary/pull/1453))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1453))
 
 ## 0.5.0 (2021/08/02)
 
@@ -966,7 +966,7 @@ isolate transactions and prevent resource contention that caused deadlocks.
   Target resources that map them to targets:
 * * _Credential Libraries_: In Target definitions, the field referring to
     attached credential libraries is being renamed to the more abstract
-    _credential sources_. In the future Boundary will gain the ability to
+    _credential sources_. In the future Dumpling will gain the ability to
     internally store static credentials that are not generated or fetched
     dynamically, and the _sources_ terminology better reflects that the IDs
     provided are a source of credentials, whether via dynamic generation or via
@@ -974,7 +974,7 @@ isolate transactions and prevent resource contention that caused deadlocks.
     `principals` with roles, where the principal IDs can be a users, groups, and
     managed groups, rather than having them split out, and should result in an
     easier user experience once those features roll out compared to having
-    separate flags and fields. In this 0.5 release the Boundary CLI has gained
+    separate flags and fields. In this 0.5 release the Dumpling CLI has gained
     parallel `application-credential-source` flags to the existing
     `application-credential-library` flags, as well as `boundary targets
     add/remove/set-credential-sources` commands that parallel `boundary targets
@@ -983,11 +983,11 @@ isolate transactions and prevent resource contention that caused deadlocks.
     these commands, flags, and actions will be removed.
 * * _Host Sets_: Similarly, in Target definitions, the field referring to
     attached host sets is being renamed to the more abstract _host sources_. In
-    the future Boundary will allow attaching some host types directly, and
+    the future Dumpling will allow attaching some host types directly, and
     possibly other mechanisms for gathering hosts for targets, so the _sources_
     terminology better reflects that the IDs provided are a source of hosts,
     whether via sets or via the hosts themselves. Like with credential sources,
-    in this 0.5 release the Boundary CLI and API have gained parallel API
+    in this 0.5 release the Dumpling CLI and API have gained parallel API
     actions and fields, and the _set_ versions of these will be removed in 0.6.
 
 ### New and Improved
@@ -995,8 +995,8 @@ isolate transactions and prevent resource contention that caused deadlocks.
 * OIDC Accounts: When performing a `read` on an `oidc` type account, the
   original token and userinfo claims are provided in the output. This can make
   it significantly easier to write filters to create [managed
-  groups](https://www.boundaryproject.io/docs/concepts/filtering/oidc-managed-groups).
-  ([PR](https://github.com/hashicorp/boundary/pull/1419))
+  groups](https://github.com/opendumpling/opendumpling/docs/concepts/filtering/oidc-managed-groups).
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1419))
 * Controllers will now mark connections as closed in the database if the worker
   has not reported its status; this can be seen as the controller counterpart to
   the worker-side session cleanup functionality released in 0.4.0. As with the
@@ -1004,26 +1004,26 @@ isolate transactions and prevent resource contention that caused deadlocks.
 * Workers will shut down connections gracefully upon shutdown of the worker,
   both closing the connection and sending a request to mark the connection as
   closed in the database.
-* Pressing CTRL-C (or sending a SIGINT) when Boundary is already shutting
-  down due to a CTRL-C or interrupt will now cause Boundary to immediately shut
-  down non-gracefully. This may leave various parts of the Boundary deployment
+* Pressing CTRL-C (or sending a SIGINT) when Dumpling is already shutting
+  down due to a CTRL-C or interrupt will now cause Dumpling to immediately shut
+  down non-gracefully. This may leave various parts of the Dumpling deployment
   (namely sessions or connections) in an inconsistent state.
 
-* Events: Boundary has moved from writing hclog entries to emitting events.
-  There are four types of Boundary events: `error`, `system`, `observation` and
+* Events: Dumpling has moved from writing hclog entries to emitting events.
+  There are four types of Dumpling events: `error`, `system`, `observation` and
   `audit`. All events are emitted as
   [cloudevents](https://github.com/cloudevents/spec/blob/v1.0.1/spec.md) and we
-  support both a `cloudevents-json` format and custom Boundary
+  support both a `cloudevents-json` format and custom Dumpling
   `cloudevents-text` format.
 
   **Notes**:
-  * There are still a few lingering hclog bits within Boundary. If you wish to
-    only output json from Boundary logging/events then you should specify both
+  * There are still a few lingering hclog bits within Dumpling. If you wish to
+    only output json from Dumpling logging/events then you should specify both
     `"-log-format json"` and `"-event-format cloudevents-json"` when starting
-    Boundary.
+    Dumpling.
   * Filtering events: hclog log levels have been replaced by optional sets
     of allow and deny event
-    [filters](https://www.boundaryproject.io/docs/concepts/filtering) which are
+    [filters](https://github.com/opendumpling/opendumpling/docs/concepts/filtering) which are
     specified via configuration, or in the case of "boundary dev" there are new
     new cmd flags.
   * Observation events are MVP and contain a minimal set of observations about a
@@ -1031,36 +1031,36 @@ isolate transactions and prevent resource contention that caused deadlocks.
     observation event will be emitted per request. We anticipate that a rich set
     of aggregate data about each request will be developed over time.
   * Audit events are a WIP and will only be emitted if they are both enabled
-    and the env var `BOUNDARY_DEVELOPER_ENABLE_EVENTS` equals true.  We
+    and the env var `DUMPLING_DEVELOPER_ENABLE_EVENTS` equals true.  We
     anticipate many changes for audit events before they are generally available
     including what data is included and different options for
     redacting/encrypting that data.
 
 
   PRs:
-    [hclog json,text formats](https://github.com/hashicorp/boundary/pull/1440),
-    [log adapters](https://github.com/hashicorp/boundary/pull/1434),
-    [unneeded log deps](https://github.com/hashicorp/boundary/pull/1433),
-    [update eventlogger](https://github.com/hashicorp/boundary/pull/1411),
-    [convert from hclog to events](https://github.com/hashicorp/boundary/pull/1409),
-    [event filtering](https://github.com/hashicorp/boundary/pull/1404),
-    [cloudevents node](https://github.com/hashicorp/boundary/pull/1390),
-    [system events](https://github.com/hashicorp/boundary/pull/1360),
-    [convert errors to events](https://github.com/hashicorp/boundary/pull/1358),
-    [integrate events into servers](https://github.com/hashicorp/boundary/pull/1355),
-    [event pkg name](https://github.com/hashicorp/boundary/pull/1284),
-    [events using ctx](https://github.com/hashicorp/boundary/pull/1277),
-    [add eventer](https://github.com/hashicorp/boundary/pull/1276),
-    [and base event types](https://github.com/hashicorp/boundary/pull/1275)
+    [hclog json,text formats](https://github.com/opendumpling/opendumpling/pull/1440),
+    [log adapters](https://github.com/opendumpling/opendumpling/pull/1434),
+    [unneeded log deps](https://github.com/opendumpling/opendumpling/pull/1433),
+    [update eventlogger](https://github.com/opendumpling/opendumpling/pull/1411),
+    [convert from hclog to events](https://github.com/opendumpling/opendumpling/pull/1409),
+    [event filtering](https://github.com/opendumpling/opendumpling/pull/1404),
+    [cloudevents node](https://github.com/opendumpling/opendumpling/pull/1390),
+    [system events](https://github.com/opendumpling/opendumpling/pull/1360),
+    [convert errors to events](https://github.com/opendumpling/opendumpling/pull/1358),
+    [integrate events into servers](https://github.com/opendumpling/opendumpling/pull/1355),
+    [event pkg name](https://github.com/opendumpling/opendumpling/pull/1284),
+    [events using ctx](https://github.com/opendumpling/opendumpling/pull/1277),
+    [add eventer](https://github.com/opendumpling/opendumpling/pull/1276),
+    [and base event types](https://github.com/opendumpling/opendumpling/pull/1275)
 ### Bug Fixes
 
 * config: Fix error when populating all `kms` purposes in separate blocks (as
   well as the error message)
-  ([Issue](https://github.com/hashicorp/boundary/issues/1305),
-  [PR](https://github.com/hashicorp/boundary/pull/1384))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/1305),
+  [PR](https://github.com/opendumpling/opendumpling/pull/1384))
 * server: Fix panic on worker startup failure when the server was not also
   configured as a controller
-  ([PR](https://github.com/hashicorp/boundary/pull/1432))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1432))
 
 ### New and Improved
 
@@ -1080,7 +1080,7 @@ isolate transactions and prevent resource contention that caused deadlocks.
   credential library is the `generic` type that takes in a user-defined request
   body to send to Vault and thus can work for any type of Vault secrets engine.
   When a credential library is used to fetch a credential, if the credential
-  contains a lease, Boundary will keep the credential refreshed, and revoke the
+  contains a lease, Dumpling will keep the credential refreshed, and revoke the
   credential when the session that requested it is finished.
 * Credential Brokering: Credential libraries can be attached to targets; when a
   session is authorized against that target, a credential will be fetched from
@@ -1099,17 +1099,17 @@ isolate transactions and prevent resource contention that caused deadlocks.
 
 NOTE: When using credential brokering, remember that if the user can connect
 directly to the end resource, they can use the brokered username and password
-via that direct connection to skip Boundary. This isn't any different from
-normal Boundary behavior (if a user can directly connect, they can bypass
-Boundary) but it's worth repeating.
+via that direct connection to skip Dumpling. This isn't any different from
+normal Dumpling behavior (if a user can directly connect, they can bypass
+Dumpling) but it's worth repeating.
 
 ### Bug Fixes
 
 * scheduler: removes a Postgres check constraint, on the length of the controller name,
   causing an error when the scheduler attempts to run jobs
-  ([Issue](https://github.com/hashicorp/boundary/issues/1309),
-  [PR](https://github.com/hashicorp/boundary/pull/1310)).
-* Docker: update entrypoint script to handle more Boundary subcommands for
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/1309),
+  [PR](https://github.com/opendumpling/opendumpling/pull/1310)).
+* Docker: update entrypoint script to handle more Dumpling subcommands for
   better UX
 
 ## 0.3.0 (2021/06/08)
@@ -1126,7 +1126,7 @@ Boundary) but it's worth repeating.
 
 * oidc: The new Managed Groups feature allows groups of accounts to be created
   based on an authenticating user's JWT or User Info data. This data uses the
-  same filtering syntax found elsewhere in Boundary to provide a rich way to
+  same filtering syntax found elsewhere in Dumpling to provide a rich way to
   specify the criteria for group membership. Once defined, authenticated users
   are added to or removed from these groups as appropriateds each time they
   authenticate. These groups are treated like other role principals and can be
@@ -1135,7 +1135,7 @@ Boundary) but it's worth repeating.
   in the default `password` and `oidc` auth methods.
 * mlock: Add a Docker entrypoint script and modify Dockerfiles to handle mlock
   in a fashion similar to Vault
-  ([PR](https://github.com/hashicorp/boundary/pull/1269))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1269))
 
 ## 0.2.3 (2021/05/21)
 
@@ -1143,7 +1143,7 @@ Boundary) but it's worth repeating.
 
 * The behavior when `cors_enabled` is not specified for a listener is changing
   to be equivalent to a `cors_allowed_origins` value of `*`; that is, accept all
-  origins. This allows Boundary, by default, to have the admin UI and desktop
+  origins. This allows Dumpling, by default, to have the admin UI and desktop
   client work without further specification of origins by the operator. This is
   only affecting default behavior; if `cors_enabled` is explicitly set to
   `true`, the behavior will be the same as before. This had been changed in
@@ -1158,12 +1158,12 @@ Boundary) but it's worth repeating.
 
 * sessions: Return a `200` and session information when canceling an
   already-canceled or terminated session
-  ([PR](https://github.com/hashicorp/boundary/pull/1243))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1243))
 
 ### Bug Fixes
 
 * cors: Change the default allowed origins when `cors_enabled` is not specified
-  to be `*`. ([PR](https://github.com/hashicorp/boundary/pull/1249))
+  to be `*`. ([PR](https://github.com/opendumpling/opendumpling/pull/1249))
 
 ## 0.2.2 (2021/05/17)
 
@@ -1176,22 +1176,22 @@ Boundary) but it's worth repeating.
 ### Bug Fixes
 
 * oidc: If provider returns an `aud` claim as a `string` or `[]string`,
-  Boundary will properly parse the claims JSON.
+  Dumpling will properly parse the claims JSON.
   ([Issue](https://github.com/hashicorp/cap/issues/37),
-  [PR](https://github.com/hashicorp/boundary/pull/1231))
+  [PR](https://github.com/opendumpling/opendumpling/pull/1231))
 * sessions: Clean up connections that are dangling after a worker dies (is
   restarted, powered off, etc.) This fixes some cases where a session never goes
   to `terminated` state because connections are not properly marked closed.
-  ([Issue 1](https://github.com/hashicorp/boundary/issues/894), [Issue
-  2](https://github.com/hashicorp/boundary/issues/1055),
-  [PR](https://github.com/hashicorp/boundary/pull/1220))
+  ([Issue 1](https://github.com/opendumpling/opendumpling/issues/894), [Issue
+  2](https://github.com/opendumpling/opendumpling/issues/1055),
+  [PR](https://github.com/opendumpling/opendumpling/pull/1220))
 * sessions: Add some missing API-level checks when session cancellation was
   requested. It's much easier than interpreting the domain-level check failures.
-  ([PR](https://github.com/hashicorp/boundary/pull/1223))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1223))
 * authenticate: When authenticating with OIDC and `json` format output, the
   command will no longer print out a notice that it's opening your web browser
-  ([Issue](https://github.com/hashicorp/boundary/issues/1193),
-  [PR](https://github.com/hashicorp/boundary/pull/1213))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/1193),
+  [PR](https://github.com/opendumpling/opendumpling/pull/1213))
 
 ## 0.2.1 (2021/05/05)
 
@@ -1236,24 +1236,24 @@ Boundary) but it's worth repeating.
   users this defaults to all fields; for `u_anon` this defaults to the fields
   useful for navigating to and authenticating to the system. In either case,
   this is overridable. See the [permissions
-  documentation](https://www.boundaryproject.io/docs/concepts/security/permissions)
+  documentation](https://github.com/opendumpling/opendumpling/docs/concepts/security/permissions)
   for more information on why and when to use this. This currently only applies
   to top-level fields in the response.
 * cli/api/sdk: Add support to request additional OIDC claims scope values from
   the OIDC provider when making an authentication request.
-  ([PR](https://github.com/hashicorp/boundary/pull/1175)).
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1175)).
 
-  By default, Boundary only requests the "openid" claims scope value. Many
+  By default, Dumpling only requests the "openid" claims scope value. Many
   providers, like Okta and Auth0 for example, will not return the standard claims
   of email and name when you request the default claims scope (openid).
 
-  Boundary uses the standard email and name claims to populate an OIDC
+  Dumpling uses the standard email and name claims to populate an OIDC
   account's `Email` and `FullName` attributes. If you'd like these account
   attributes populated, you'll need to reference your OIDC provider's documentation
   to learn which claims scopes are required to have these claims returned during
   the authentication process.
 
-  Boundary now provides a new OIDC auth method parameter `claims_scopes` which
+  Dumpling now provides a new OIDC auth method parameter `claims_scopes` which
   allows you to add multiple additional claims scope values to an OIDC auth
   method configuration.
 
@@ -1261,16 +1261,16 @@ Boundary) but it's worth repeating.
   specification](https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims)
 
 * cli: Match JSON format output with the across-the-wire API JSON format
-  ([PR](https://github.com/hashicorp/boundary/pull/1155))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1155))
 * api: Return `204` instead of an empty object on successful `delete` operations
-  ([PR](https://github.com/hashicorp/boundary/pull/1155))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1155))
 * actions: The new `no-op` action allows a grant to be given to a principals
   without conveying any actionable result. Since resources do not appear in list
   results if the principal has no actions granted on that resource, this can be
   used to allow principals to see values in list results without also giving
   `read` or other capabilities on the resources. The default scope permissions
   have been updated to convey `no-op,list` instead of `read,list`.
-  ([PR](https://github.com/hashicorp/boundary/pull/1138))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1138))
 * cli/api/sdk: User resources have new attributes for:
   * Primary Account ID
   * Login Name
@@ -1285,23 +1285,23 @@ Boundary) but it's worth repeating.
   `read:self` and `delete:self` actions on auth tokens. If no token ID is
   provided, the stored token's ID will be used (after prompting), or `"self"`
   can be set as the value of the `-id` parameter to trigger this behavior
-  without prompting. ([PR](https://github.com/hashicorp/boundary/pull/1162))
-* cli: New `logout` command deletes the current token in Boundary and forgets it
+  without prompting. ([PR](https://github.com/opendumpling/opendumpling/pull/1162))
+* cli: New `logout` command deletes the current token in Dumpling and forgets it
   from the local system credential store, respecting `-token-name`
-  ([PR](https://github.com/hashicorp/boundary/pull/1134))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1134))
 * config: The `name` field for workers and controllers now supports being set
   from environment variables or a file on disk
-  ([PR](https://github.com/hashicorp/boundary/pull/1181))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1181))
 
 ### Bug Fixes
 
 * cors: Fix allowing all origins by default
-  ([PR](https://github.com/hashicorp/boundary/pull/1134))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1134))
 * cli: It is now an error to run `boundary database migrate` on an uninitalized db.
   Use `boundary database init` instead.
-  ([PR](https://github.com/hashicorp/boundary/pull/1184))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1184))
 * cli: Correctly honor the `-format` flag when running `boundary database init`
-  ([PR](https://github.com/hashicorp/boundary/pull/1204))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1204))
 
 ## 0.2.0 (2021/04/14)
 
@@ -1348,22 +1348,22 @@ Boundary) but it's worth repeating.
   update, delete, and list (see new cli `oidc` subcommands available on CRUDL
   operations for examples), as well as the ability to authenticate against it
   via the SDK, CLI, admin UI, and desktop client.
-  ([PR](https://github.com/hashicorp/boundary/pull/1090))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1090))
 * server: When performing recursive listing, `list` action is no longer required
   to be granted to the calling user. Instead, the given scope acts as the root
   point (so only results under that scope will be shown), and `list` grant is
-  evaluated per-scope. ([PR](https://github.com/hashicorp/boundary/pull/1016))
+  evaluated per-scope. ([PR](https://github.com/opendumpling/opendumpling/pull/1016))
 * database init: If the database is already initialized, return 0 as the exit
   code. This matches how the `database migrate` command works.
-  ([PR](https://github.com/hashicorp/boundary/pull/1033))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/1033))
 
 ### Bug Fixes
 
 * server: Roles for auto generated scopes are now generated at database init.
-  ([PR](https://github.com/hashicorp/boundary/pull/996))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/996))
 * cli: Don't panic on certain commands when outputting in `json` format
-  ([Issue](https://github.com/hashicorp/boundary/pull/992),
-  [PR](https://github.com/hashicorp/boundary/pull/1095))
+  ([Issue](https://github.com/opendumpling/opendumpling/pull/992),
+  [PR](https://github.com/opendumpling/opendumpling/pull/1095))
 
 ## 0.1.8 (2021/03/10)
 
@@ -1397,42 +1397,42 @@ to call out in this changelog. The full set of open issues is on GitHub.
   `ResponseMap()` and `ResponseBody()`, resources simply expose `Response()`.
   This higher-level response object contains the map and body, and also exposes
   `StatusCode()` in place of indivdidual resources.
-  ([PR](https://github.com/hashicorp/boundary/pull/962))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/962))
 * cli: In `json` output format, a resource item is now an object under the
   top-level key `item`; a list of resource items is now an list of objects under
   the top-level key `items`. This preserves the top level for putting in other
   useful information later on (and the HTTP status code is included now).
-  ([PR](https://github.com/hashicorp/boundary/pull/962))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/962))
 * cli: In `json` output format, errors are now serialized as a JSON object with
   an `error` key instead of outputting normal text
-  ([PR](https://github.com/hashicorp/boundary/pull/962))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/962))
 * cli: All errors, including API errors, are now written to `stderr`. Previously
   in the default table format, API errors would be written to `stdout`.
-  ([PR](https://github.com/hashicorp/boundary/pull/962))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/962))
 * cli: Error return codes have been standardized across CLI commands. An error
   code of `1` indicates an error generated from the actual controller API; an
   error code of `2` is an error encountered due to the CLI command's logic; and
   an error code of `3` indicates an error that was caused due to user input to
   the command. (There is some nuance sometimes whether an error is really due to
   user input or not, but we attempt to be consistent.)
-  ([PR](https://github.com/hashicorp/boundary/pull/976))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/976))
 
 ### New and Improved
 
 * list filtering: Listing now supports filtering results before being returned
   to the user. The filtering takes place server side and uses boolean
   expressions against the JSON representation of returned items. See [the
-  documentation](https://www.boundaryproject.io/docs/concepts/filtering/resource-listing)
-  for more details. ([PR 1](https://github.com/hashicorp/boundary/pull/952))
-  ([PR 2](https://github.com/hashicorp/boundary/pull/957))
-  ([PR 3](https://github.com/hashicorp/boundary/pull/967))
+  documentation](https://github.com/opendumpling/opendumpling/docs/concepts/filtering/resource-listing)
+  for more details. ([PR 1](https://github.com/opendumpling/opendumpling/pull/952))
+  ([PR 2](https://github.com/opendumpling/opendumpling/pull/957))
+  ([PR 3](https://github.com/opendumpling/opendumpling/pull/967))
 * server: Officially support reloading TLS parameters on `SIGHUP`. (This likely
   worked before but wasn't fully tested.)
-  ([PR](https://github.com/hashicorp/boundary/pull/959))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/959))
 * server: On `SIGHUP`, [worker
-  tags](https://www.boundaryproject.io/docs/configuration/worker#tags) will be
+  tags](https://github.com/opendumpling/opendumpling/docs/configuration/worker#tags) will be
   re-parsed and new values used
-  ([PR](https://github.com/hashicorp/boundary/pull/959))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/959))
 * server: In addition to the existing `tls_min_version` listener configuration
   value, `tls_max_version` is now supported. This should generally be left blank
   but can be useful for situations where e.g. a load balancer has broken TLS 1.3
@@ -1452,7 +1452,7 @@ for more details.
 ### Bug Fixes
 
 * server: Fix an issue with migrations affecting Postgres 11
-  ([PR](https://github.com/hashicorp/boundary/pull/940))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/940))
 
 ## 0.1.6 (2021/02/12)
 
@@ -1482,15 +1482,15 @@ for more details.
 
 * server: When running single-server mode and `controllers` is not specified in
   the `worker` block, use `public_cluster_addr` if given
-  ([PR](https://github.com/hashicorp/boundary/pull/904))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/904))
 * server: `public_cluster_addr` in the `controller` block can now be specified
   as a `file://` or `env://` URL to read the value from a file or env var
-  ([PR](https://github.com/hashicorp/boundary/pull/907))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/907))
 * server: Add `read` action to default scope grant
-  ([PR](https://github.com/hashicorp/boundary/pull/913))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/913))
 * server: `public_cluster_addr` in the `controller` block can now be specified
   as a `file://` or `env://` URL to read the value from a file or env var
-  ([PR](https://github.com/hashicorp/boundary/pull/907))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/907))
 * sessions: Add `read:self` and `cancel:self` actions and enable them by default
   (in new project scopes) for all sessions. This allows a user to read or cancel
   any session that is associated with their user ID. `read` and `cancel` actions
@@ -1500,15 +1500,15 @@ for more details.
 ### Bug Fixes
 
 * api: Fix nil pointer panic that could occur when using TLS
-  ([Issue](https://github.com/hashicorp/boundary/pull/902),
-  [PR](https://github.com/hashicorp/boundary/pull/901))
+  ([Issue](https://github.com/opendumpling/opendumpling/pull/902),
+  [PR](https://github.com/opendumpling/opendumpling/pull/901))
 * server: When shutting down a controller release the shared advisory lock with
   a non-canceled context.
-  ([Issue](https://github.com/hashicorp/boundary/pull/909),
-  [PR](https://github.com/hashicorp/boundary/pull/918))
+  ([Issue](https://github.com/opendumpling/opendumpling/pull/909),
+  [PR](https://github.com/opendumpling/opendumpling/pull/918))
 * targets: If a worker filter references a key that doesn't exist, treat it as a
   non-match rather than an error
-  ([PR](https://github.com/hashicorp/boundary/pull/900))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/900))
 
 ## 0.1.5 (2021/01/29)
 
@@ -1517,10 +1517,10 @@ database migrate` command.
 
 ### Security
 
-* Boundary now uses Go's new execabs package for execution of binaries in
+* Dumpling now uses Go's new execabs package for execution of binaries in
   `boundary connect`. This is for defense-in-depth rather than a specific
   issue. See the [Go blog post](https://blog.golang.org/path-security) for more
-  details. ([PR](https://github.com/hashicorp/boundary/pull/873))
+  details. ([PR](https://github.com/opendumpling/opendumpling/pull/873))
 
 ### Changes/Deprecations
 
@@ -1536,50 +1536,50 @@ database migrate` command.
 
 * targets: You can now specify a Boolean-expression filter against worker tags
   to control which workers are allowed to handle any given target's sessions
-  ([PR](https://github.com/hashicorp/boundary/pull/862))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/862))
 * api/cli: On listing/reading, return a list of actions the user is authorized
   to perform on the identified resources or their associated collections
-  ([PR](https://github.com/hashicorp/boundary/pull/870))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/870))
 * api/cli: Most resource types now support recursive listing, allowing listing
   to occur down a scope tree
-  ([PR](https://github.com/hashicorp/boundary/pull/885))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/885))
 * cli: Add a `database migrate` command which updates a database's schema to the
   version supported by the boundary binary
-  ([PR](https://github.com/hashicorp/boundary/pull/872)).
+  ([PR](https://github.com/opendumpling/opendumpling/pull/872)).
 
 ### Bug Fixes
 
 * controller/db: Correctly check if db init previously completed successfully
   when starting a controller or when running `database init`
-  ([Issue](https://github.com/hashicorp/boundary/issues/805))
-  ([PR](https://github.com/hashicorp/boundary/pull/842))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/805))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/842))
 * cli: When `output-curl-string` is used with `update` or `add-/remove-/set-`
   commands and automatic versioning is being used (that is, no `-version` flag
   is given), it will now display the final call instead of the `GET` that
   fetches the current version
-  ([Issue](https://github.com/hashicorp/boundary/issues/856))
-  ([PR](https://github.com/hashicorp/boundary/pull/858))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/856))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/858))
 * db: Fix panic in `database init` when controller config block is missing
-  ([Issue](https://github.com/hashicorp/boundary/issues/819))
-  ([PR](https://github.com/hashicorp/boundary/pull/851))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/819))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/851))
 
 ## 0.1.4 (2021/01/05)
 
 ### New and Improved
 
 * controller: Improved error handling in iam repo
-  ([PR](https://github.com/hashicorp/boundary/pull/841))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/841))
 * controller: Improved error handling in db
-  ([PR](https://github.com/hashicorp/boundary/pull/815))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/815))
 
 ### Bug Fixes
 
 * servers: Fix erronious global unicast check that disallowed valid addresses
-  from being assigned ([PR](https://github.com/hashicorp/boundary/pull/845))
+  from being assigned ([PR](https://github.com/opendumpling/opendumpling/pull/845))
 * cli: Fix (hopefully) panic some users experience depending on their Linux
   setup when running the binary
-  ([Issue](https://github.com/hashicorp/boundary/issues/830))
-  ([PR](https://github.com/hashicorp/boundary/pull/846))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/830))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/846))
 
 ## 0.1.3 (2020/12/18)
 
@@ -1587,55 +1587,55 @@ database migrate` command.
 
 * controller: Switch the session connection limit for dev mode and the initial
   target when doing database initialization to `-1`. This makes it easier for
-  people to start understanding Boundary while not hitting issues related to
+  people to start understanding Dumpling while not hitting issues related to
   some programs/protocols needing multiple connections as they may not be easy
   for new users to understand.
-  ([PR](https://github.com/hashicorp/boundary/pull/814))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/814))
 
 ### New and Improved
 
 * controller, worker, cli: When the client quits before the session time is
   over, but in a manner where the TOFU token will be locked, attempt canceling
   the session rather than leaving it open to time out
-  ([PR](https://github.com/hashicorp/boundary/pull/831))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/831))
 * controller: Improved error handling in hosts, host catalog and host set
-  ([PR](https://github.com/hashicorp/boundary/pull/786))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/786))
 * controller: Relax account login name constraints to allow dash as valid
-  character ([Issue](https://github.com/hashicorp/boundary/issues/759))
-  ([PR](https://github.com/hashicorp/boundary/pull/806))
+  character ([Issue](https://github.com/opendumpling/opendumpling/issues/759))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/806))
 * cli/connect/http: Pass endpoint address through to allow setting TLS server
   name directly in most cases
-  ([PR](https://github.com/hashicorp/boundary/pull/811))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/811))
 * cli/connect/kube: New `kube` subcommand for `boundary connect` that makes it
-  easy to route `kubectl` commands through Boundary, including when using
-  `kubectl proxy` ([PR](https://github.com/hashicorp/boundary/pull/816))
+  easy to route `kubectl` commands through Dumpling, including when using
+  `kubectl proxy` ([PR](https://github.com/opendumpling/opendumpling/pull/816))
 * cli/server: Add some extra checks around valid/invalid combinations of
   addresses to avoid hard-to-understand runtime issues
-  ([PR](https://github.com/hashicorp/boundary/pull/838))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/838))
 
 ### Bug Fixes
 
 * cli: Ensure errors print to stderr when token is not found
-  ([Issue](https://github.com/hashicorp/boundary/issues/791))
-  ([PR](https://github.com/hashicorp/boundary/pull/799))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/791))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/799))
 * controller: Fix grant IDs being lowercased when being read back (and when
   being used for permission evaluation)
-  ([Issue](https://github.com/hashicorp/boundary/issues/794))
-  ([PR](https://github.com/hashicorp/boundary/pull/839))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/794))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/839))
 
 ## 0.1.2 (2020/11/17)
 
 ### New and Improved
 
 * docker: Official Docker image for `hashicorp/boundary`
-  ([PR](https://github.com/hashicorp/boundary/pull/755))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/755))
 * controller: Add ability to set public address for cluster purposes
-  ([Issue](https://github.com/hashicorp/boundary/pull/758))
-  ([PR](https://github.com/hashicorp/boundary/pull/761))
+  ([Issue](https://github.com/opendumpling/opendumpling/pull/758))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/761))
 * ui: Improve scope awareness and navigation, including IAM for global scope
   ([PR](https://github.com/hashicorp/boundary-ui/pull/355))
 * ui: Add dark mode toggle
-  ([Issue](https://github.com/hashicorp/boundary/issues/719))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/719))
   ([PR](https://github.com/hashicorp/boundary-ui/pull/358))
 * ui: Add scope grants to roles
   ([PR](https://github.com/hashicorp/boundary-ui/pull/357))
@@ -1646,12 +1646,12 @@ database migrate` command.
 
 * controller, worker: Fix IPv4-only check so `0.0.0.0` specified without a port
   only listens on IPv4
-  ([PR](https://github.com/hashicorp/boundary/pull/752))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/752))
 * ui: Fix grant string corruption on updates
-  ([Issue](https://github.com/hashicorp/boundary/issues/757))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/757))
   ([PR](https://github.com/hashicorp/boundary-ui/pull/356))
 * controller, cli: Fix mutual exclusivity bug with using -authz-token on `boundary connect`
-  ([PR](https://github.com/hashicorp/boundary/pull/787))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/787))
 
 ## 0.1.1 (2020/10/22)
 
@@ -1667,45 +1667,45 @@ them to access targets).
     favor of specifying `none` for the new `-keyring-type` parameter.
   * [`pass`](https://www.passwordstore.org/) is now the default keyring type on
     non-Windows/non-macOS platforms. See the [CLI docs
-    page](https://www.boundaryproject.io/docs/api-clients/cli) for more
+    page](https://github.com/opendumpling/opendumpling/docs/api-clients/cli) for more
     information.
 
 ### New and Improved
 
 * cli: New `-keyring-type` option and `pass` keyring type for token storage
-  ([Issue](https://github.com/hashicorp/boundary/issues/697))
-  ([PR](https://github.com/hashicorp/boundary/issues/731))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/697))
+  ([PR](https://github.com/opendumpling/opendumpling/issues/731))
 * connect: Allow using `-target-name` in conjunction with either
   `-target-scope-id` or `-target-scope-name` to connect to targets, rather than
   the target's ID
-  ([PR](https://github.com/hashicorp/boundary/pull/737))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/737))
 * controller: Allow API/Cluster listeners to be Unix domain sockets
-  ([Issue](https://github.com/hashicorp/boundary/pull/699))
-  ([PR](https://github.com/hashicorp/boundary/pull/705))
+  ([Issue](https://github.com/opendumpling/opendumpling/pull/699))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/705))
 * ui: Allow creating and assigning a host to a host set directly from the host
   set view
-  ([Issue](https://github.com/hashicorp/boundary/issues/710))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/710))
   ([PR](https://github.com/hashicorp/boundary-ui/pull/350))
 
 ### Bug Fixes
 
 * cli: Fix database init when locale isn't English
-  ([Issue](https://github.com/hashicorp/boundary/issues/729))
-  ([PR](https://github.com/hashicorp/boundary/pull/736))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/729))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/736))
 * cli: Fix hyphenation in help output for resources with compound names
-  ([Issue](https://github.com/hashicorp/boundary/issues/686))
-  ([PR](https://github.com/hashicorp/boundary/pull/689))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/686))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/689))
 * controller: Allow connecting to Postgres when using remote Docker in dev mode
-  ([Issue](https://github.com/hashicorp/boundary/issues/720)
-  ([PR](https://github.com/hashicorp/boundary/pull/732))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/720)
+  ([PR](https://github.com/opendumpling/opendumpling/pull/732))
 * controller, worker: Fix listening on IPv6 addresses
-  ([Issue](https://github.com/hashicorp/boundary/issues/701))
-  ([PR](https://github.com/hashicorp/boundary/pull/703))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/701))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/703))
 * worker: Fix setting controller address for worker in dev mode
-  ([Issue](https://github.com/hashicorp/boundary/issues/727))
-  ([PR](https://github.com/hashicorp/boundary/pull/705))
+  ([Issue](https://github.com/opendumpling/opendumpling/issues/727))
+  ([PR](https://github.com/opendumpling/opendumpling/pull/705))
 
 ## 0.1.0 (2020/10/14)
 
-v0.1.0 is the first release of Boundary. As a result there are no changes,
+v0.1.0 is the first release of Dumpling. As a result there are no changes,
 improvements, or bugfixes from past versions.

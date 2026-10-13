@@ -7,9 +7,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/hostcatalogs"
-	"github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/hostsets"
-	plgpb "github.com/hashicorp/boundary/sdk/pbs/plugin"
+	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/hostcatalogs"
+	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/hostsets"
+	plgpb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
 	ta "github.com/stretchr/testify/assert"
 	tr "github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/types/known/structpb"

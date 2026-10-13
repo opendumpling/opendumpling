@@ -1,10 +1,10 @@
-module github.com/hashicorp/boundary
+module github.com/opendumpling/opendumpling
 
 go 1.20
 
-replace github.com/hashicorp/boundary/api => ./api
+replace github.com/opendumpling/opendumpling/api => ./api
 
-replace github.com/hashicorp/boundary/sdk => ./sdk
+replace github.com/opendumpling/opendumpling/sdk => ./sdk
 
 //replace github.com/hashicorp/nodeenrollment => ../nodeenrollment
 
@@ -19,8 +19,8 @@ require (
 	github.com/google/go-cmp v0.5.9
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.0
-	github.com/hashicorp/boundary/api v0.0.39
-	github.com/hashicorp/boundary/sdk v0.0.35
+	github.com/opendumpling/opendumpling/api v0.0.39
+	github.com/opendumpling/opendumpling/sdk v0.0.35
 	github.com/hashicorp/cap v0.3.2
 	github.com/hashicorp/dawdle v0.4.0
 	github.com/hashicorp/eventlogger v0.1.2-0.20230428153751-cca445805f24

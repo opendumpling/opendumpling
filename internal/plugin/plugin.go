@@ -4,9 +4,9 @@
 package plugin
 
 import (
-	"github.com/hashicorp/boundary/internal/oplog"
-	"github.com/hashicorp/boundary/internal/plugin/store"
-	"github.com/hashicorp/boundary/internal/types/scope"
+	"github.com/opendumpling/opendumpling/internal/oplog"
+	"github.com/opendumpling/opendumpling/internal/plugin/store"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -43,7 +43,7 @@ type pluginSupportedTable interface {
 	isPluginSupported()
 }
 
-// A Plugin enables additional logic to be used by boundary.
+// A Plugin enables additional logic to be used by dumpling.
 // It is owned by a scope.
 type Plugin struct {
 	*store.Plugin

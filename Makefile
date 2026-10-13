@@ -4,7 +4,7 @@ THIS_FILE := $(lastword $(MAKEFILE_LIST))
 THIS_DIR := $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
 
 TMP_DIR := $(shell mktemp -d)
-REPO_PATH := github.com/hashicorp/boundary
+REPO_PATH := github.com/opendumpling/opendumpling
 
 TEST_PACKAGE ?= ./...
 TEST_TIMEOUT ?= 30m
@@ -52,13 +52,15 @@ dev:
 	@echo "      to build the binary and install it into GOPATH/bin"
 
 .PHONY: build
-build: BUILD_TAGS+=ui
-build: build-ui-ifne
-	@echo "==> Building Boundary with UI features enabled"
+# The upstream web UI (hashicorp/boundary-ui) is licensed under BUSL-1.1 and is
+# therefore deliberately not embedded/downloaded. OpenDumpling builds the
+# CLI + controller/worker server binary only.
+build:
+	@echo "==> Building dumpling"
 	@CGO_ENABLED=$(CGO_ENABLED) BUILD_TAGS='$(BUILD_TAGS)' sh -c "'$(CURDIR)/scripts/build.sh'"
 
 .PHONY: install
-install: export BOUNDARY_INSTALL_BINARY=1
+install: export DUMPLING_INSTALL_BINARY=1
 install: build
 
 .PHONY: install-no-plugins
@@ -68,7 +70,7 @@ install-no-plugins: install
 .PHONY: build-memprof
 build-memprof: BUILD_TAGS+=memprofiler
 build-memprof:
-	@echo "==> Building Boundary with memory profiling enabled"
+	@echo "==> Building Dumpling with memory profiling enabled"
 	@CGO_ENABLED=$(CGO_ENABLED) BUILD_TAGS='$(BUILD_TAGS)' sh -c "'$(CURDIR)/scripts/build.sh'"
 
 # Format Go files, ignoring files marked as generated through the header defined at
@@ -89,44 +91,14 @@ lint-diff:
 	@echo "Checking for lint compared to $(LINT_DIFF_BRANCH)"
 	golangci-lint run --timeout 10m --new-from-rev=$(LINT_DIFF_BRANCH)
 
-# Set env for all UI targets.
-UI_TARGETS := update-ui-version build-ui build-ui-ifne clean-ui
-# Note the extra .tmp path segment in UI_CLONE_DIR is significant and required.
-$(UI_TARGETS): export UI_CLONE_DIR      := internal/ui/.tmp/boundary-ui
-$(UI_TARGETS): export UI_VERSION_FILE   := internal/ui/VERSION
-$(UI_TARGETS): export UI_DEFAULT_BRANCH := main
-$(UI_TARGETS): export UI_COMMITISH ?=
-
-.PHONY: update-ui-version
-update-ui-version:
-	@if [ -z "$(UI_COMMITISH)" ]; then \
-		echo "==> Setting UI version to latest commit on branch '$(UI_DEFAULT_BRANCH)'"; \
-		export UI_COMMITISH="$(UI_DEFAULT_BRANCH)"; \
-	else \
-		echo "==> Setting to latest commit matching '$(UI_COMMITISH)'"; \
-	fi; \
-	./scripts/uiupdate.sh
-
-.PHONY: build-ui
-build-ui:
-	./scripts/build-ui.sh
+# The upstream web admin UI (hashicorp/boundary-ui) is licensed under BUSL-1.1
+# and is intentionally not built or embedded by this fork. The `ui` build tag
+# and its build/update scripts have been removed; the binary uses the built-in
+# no-UI stub in internal/ui/dummy.go.
 
 .PHONY: build-plugins
 build-plugins:
 	@CGO_ENABLED=$(CGO_ENABLED) BUILD_TAGS='$(BUILD_TAGS)' sh -c "'$(CURDIR)/scripts/plugins.sh'"
-
-.PHONY: clean-ui
-clean-ui:
-	rm -rf ${UI_CLONE_DIR}
-
-.PHONY: build-ui-ifne
-build-ui-ifne:
-ifeq (,$(wildcard internal/ui/.tmp/boundary-ui))
-	@echo "==> No UI assets found, building..."
-	@$(MAKE) build-ui
-else
-	@echo "==> UI assets found, use build-ui target to update"
-endif
 
 .PHONY: perms-table
 perms-table:
@@ -252,12 +224,12 @@ protobuild:
 protolint:
 	@buf lint
 	# First check all protos except controller/servers and controller/storage for WIRE_JSON compatibility
-	cd internal/proto && buf breaking --against 'https://github.com/hashicorp/boundary.git#branch=stable-website,subdir=internal/proto' \
+	cd internal/proto && buf breaking --against 'https://github.com/opendumpling/opendumpling.git#branch=stable-website,subdir=internal/proto' \
 		--exclude-path=controller/servers \
 		--exclude-path=controller/storage \
 		--config buf.breaking.json.yaml
 	# Next check all protos for WIRE compatibility. WIRE is a subset of WIRE_JSON so we don't need to exclude any files.
-	cd internal/proto && buf breaking --against 'https://github.com/hashicorp/boundary.git#branch=stable-website,subdir=internal/proto' \
+	cd internal/proto && buf breaking --against 'https://github.com/opendumpling/opendumpling.git#branch=stable-website,subdir=internal/proto' \
 		--config buf.breaking.wire.yaml
 
 .PHONY: copywrite
@@ -329,9 +301,9 @@ install-go:
 	./ci/goinstall.sh
 
 # Docker build and publish variables and targets
-REGISTRY_NAME?=docker.io/hashicorp
-IMAGE_NAME=boundary
-VERSION?=0.7.4
+REGISTRY_NAME?=ghcr.io/opendumpling
+IMAGE_NAME=opendumpling
+VERSION?=$(shell cat version/VERSION 2>/dev/null || echo dev)
 IMAGE_TAG=$(REGISTRY_NAME)/$(IMAGE_NAME):$(VERSION)
 IMAGE_TAG_DEV?=$(REGISTRY_NAME)/$(IMAGE_NAME):latest-$(shell git rev-parse --short HEAD)
 
@@ -339,22 +311,20 @@ IMAGE_TAG_DEV?=$(REGISTRY_NAME)/$(IMAGE_NAME):latest-$(shell git rev-parse --sho
 docker: docker-build
 
 .PHONY: docker-build
-# Builds from the releases.hashicorp.com official binary
+# Builds the OpenDumpling container image from source.
 docker-build:
 	docker build \
 		--tag $(IMAGE_TAG) \
-		--tag hashicorp/boundary:latest \
-		--target=official \
+		--tag $(REGISTRY_NAME)/$(IMAGE_NAME):latest \
 		--build-arg VERSION=$(VERSION) \
 		.
 
 .PHONY: docker-multiarch-build
-# Builds multiarch from the releases.hashicorp.com official binary
+# Builds the multi-arch OpenDumpling image (does not push on its own).
 docker-multiarch-build:
 	docker buildx build \
 		--tag $(IMAGE_TAG) \
-		--tag hashicorp/boundary:latest \
-		--target=official \
+		--tag $(REGISTRY_NAME)/$(IMAGE_NAME):latest \
 		--build-arg VERSION=$(VERSION) \
 		--platform linux/amd64,linux/arm64 \
 		.
@@ -363,16 +333,14 @@ DEV_DOCKER_GOOS ?= linux
 DEV_DOCKER_GOARCH ?= amd64
 
 .PHONY: docker-build-dev
-# Builds from the locally generated binary in ./bin/
+# Builds the local-platform image from the working tree.
 docker-build-dev: export GOOS=$(DEV_DOCKER_GOOS)
 docker-build-dev: export GOARCH=$(DEV_DOCKER_GOARCH)
-docker-build-dev: build
-	docker buildx build \
-		--load \
+docker-build-dev:
+	docker build \
 		--platform $(DEV_DOCKER_GOOS)/$(DEV_DOCKER_GOARCH) \
 		--tag $(IMAGE_TAG_DEV) \
-		--target=dev \
-		--build-arg=boundary \
+		--build-arg VERSION=$(VERSION) \
 		.
 	@echo "Successfully built $(IMAGE_TAG_DEV)"
 
@@ -381,14 +349,14 @@ docker-build-dev: build
 .PHONY: version
 # This is used for release builds by .github/workflows/build.yml
 version:
-	@go run ./cmd/boundary version | awk '/Version Number:/ { print $$3 }'
+	@go run ./cmd/dumpling version | awk '/Version Number:/ { print $$3 }'
 
 EDITION?=
 .PHONY: edition
 # This is used for release builds by .github/workflows/build.yml
 edition:
 	@if [ -z "$(EDITION)" ]; then \
-		go run ./cmd/boundary version -format=json | jq -r '.version_metadata // "oss"'; \
+		go run ./cmd/dumpling version -format=json | jq -r '.version_metadata // "oss"'; \
 	else \
 		echo $(EDITION); \
 	fi; \

@@ -7,10 +7,10 @@ import (
 	"context"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/db"
-	dbassert "github.com/hashicorp/boundary/internal/db/assert"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/db"
+	dbassert "github.com/opendumpling/opendumpling/internal/db/assert"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/kms"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

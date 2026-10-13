@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/hashicorp/boundary/globals"
+	"github.com/opendumpling/opendumpling/globals"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

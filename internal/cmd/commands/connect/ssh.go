@@ -9,8 +9,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/target"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/target"
 	"github.com/posener/complete"
 )
 
@@ -24,7 +24,7 @@ func sshOptions(c *Command, set *base.FlagSets) {
 	f.StringVar(&base.StringVar{
 		Name:       "style",
 		Target:     &c.flagSshStyle,
-		EnvVar:     "BOUNDARY_CONNECT_SSH_STYLE",
+		EnvVar:     "DUMPLING_CONNECT_SSH_STYLE",
 		Completion: complete.PredictSet("ssh", "putty", "sshpass"),
 		Default:    "ssh",
 		Usage:      `Specifies how the CLI will attempt to invoke an SSH client. This will also set a suitable default for -exec if a value was not specified. Currently-understood values are "ssh" and "putty".`,
@@ -33,7 +33,7 @@ func sshOptions(c *Command, set *base.FlagSets) {
 	f.StringVar(&base.StringVar{
 		Name:       "username",
 		Target:     &c.flagUsername,
-		EnvVar:     "BOUNDARY_CONNECT_USERNAME",
+		EnvVar:     "DUMPLING_CONNECT_USERNAME",
 		Completion: complete.PredictNothing,
 		Usage:      `Specifies the username to pass through to the client`,
 	})
@@ -149,7 +149,7 @@ func (s *sshFlags) buildArgs(c *Command, port, ip, _ string, creds credentials) 
 				return nil
 			})
 			// SSH requires the private key file to end with a newline.
-			// When ingesting an ssh_private_key from a file:// Boundary calls strings.TrimSpace
+			// When ingesting an ssh_private_key from a file:// Dumpling calls strings.TrimSpace
 			// which will also trim newlines.
 			if !strings.HasSuffix(privateKey, "\n") {
 				privateKey = fmt.Sprintln(privateKey)

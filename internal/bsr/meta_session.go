@@ -3,7 +3,7 @@
 
 package bsr
 
-// Scope contains information about the scope of a Boundary domain object
+// Scope contains information about the scope of a Dumpling domain object
 type Scope struct {
 	PublicId            string
 	Name                string // optional

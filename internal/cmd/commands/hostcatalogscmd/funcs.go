@@ -8,9 +8,9 @@ import (
 	"sort"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/hostcatalogs"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/hostcatalogs"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 )
 
 func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
@@ -18,37 +18,37 @@ func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
 	switch c.Func {
 	case "":
 		return base.WrapForHelpText([]string{
-			"Usage: boundary host-catalogs [sub command] [options] [args]",
+			"Usage: dumpling host-catalogs [sub command] [options] [args]",
 			"",
-			"  This command allows operations on Boundary host catalog resources. Example:",
+			"  This command allows operations on Dumpling host catalog resources. Example:",
 			"",
 			"    Read a host catalog:",
 			"",
-			`      $ boundary host-catalogs read -id hcst_1234567890`,
+			`      $ dumpling host-catalogs read -id hcst_1234567890`,
 			"",
 			"  Please see the host-catalogs subcommand help for detailed usage information.",
 		})
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary host-catalogs create [type] [sub command] [options] [args]",
+			"Usage: dumpling host-catalogs create [type] [sub command] [options] [args]",
 			"",
-			"  This command allows create operations on Boundary host catalog resources. Example:",
+			"  This command allows create operations on Dumpling host catalog resources. Example:",
 			"",
 			"    Create a static-type host catalog:",
 			"",
-			`      $ boundary host-catalogs create static -name prodops -description "For ProdOps usage"`,
+			`      $ dumpling host-catalogs create static -name prodops -description "For ProdOps usage"`,
 			"",
 			"  Please see the typed subcommand help for detailed usage information.",
 		})
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary host-catalogs update [type] [sub command] [options] [args]",
+			"Usage: dumpling host-catalogs update [type] [sub command] [options] [args]",
 			"",
-			"  This command allows update operations on Boundary host catalog resources. Example:",
+			"  This command allows update operations on Dumpling host catalog resources. Example:",
 			"",
 			"    Update a static-type host catalog:",
 			"",
-			`      $ boundary host-catalogs update static -id hcst_1234567890 -name devops -description "For DevOps usage"`,
+			`      $ dumpling host-catalogs update static -id hcst_1234567890 -name devops -description "For DevOps usage"`,
 			"",
 			"  Please see the typed subcommand help for detailed usage information.",
 		})

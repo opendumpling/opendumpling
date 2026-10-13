@@ -10,8 +10,8 @@
 package store
 
 import (
-	timestamp "github.com/hashicorp/boundary/internal/db/timestamp"
-	_ "github.com/hashicorp/boundary/sdk/pbs/controller/protooptions"
+	timestamp "github.com/opendumpling/opendumpling/internal/db/timestamp"
+	_ "github.com/opendumpling/opendumpling/sdk/pbs/controller/protooptions"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -61,7 +61,7 @@ type Worker struct {
 	// The type of the worker, denoted by how it authenticates: pki or kms.
 	// @inject_tag: `gorm:"not_null"`
 	Type string `protobuf:"bytes,130,opt,name=type,proto3" json:"type,omitempty" gorm:"not_null"`
-	// The version of Boundary the worker binary is running
+	// The version of Dumpling the worker binary is running
 	// @inject_tag: `gorm:"default:null"`
 	ReleaseVersion string `protobuf:"bytes,140,opt,name=release_version,json=releaseVersion,proto3" json:"release_version,omitempty" gorm:"default:null"`
 	// The state of the worker, to indicate if the worker is active or in shutdown.

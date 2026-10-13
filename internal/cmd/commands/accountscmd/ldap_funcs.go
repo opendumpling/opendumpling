@@ -4,8 +4,8 @@
 package accountscmd
 
 import (
-	"github.com/hashicorp/boundary/api/accounts"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api/accounts"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 )
 
 const (
@@ -33,22 +33,22 @@ func (c *LdapCommand) extraLdapHelpFunc(helpMap map[string]func() string) string
 	switch c.Func {
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary accounts create ldap [options] [args]",
+			"Usage: dumpling accounts create ldap [options] [args]",
 			"",
 			"  Create an ldap-type account. Example:",
 			"",
-			`    $ boundary accounts create ldap -login-name prodops -description "ldap account for ProdOps"`,
+			`    $ dumpling accounts create ldap -login-name prodops -description "ldap account for ProdOps"`,
 			"",
 			"",
 		})
 
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary accounts update ldap [options] [args]",
+			"Usage: dumpling accounts update ldap [options] [args]",
 			"",
 			"  Update an ldap-type account given its ID. Example:",
 			"",
-			`    $ boundary accounts update ldap -id acctldap_1234567890 -name "devops" -description "ldap account for DevOps"`,
+			`    $ dumpling accounts update ldap -id acctldap_1234567890 -name "devops" -description "ldap account for DevOps"`,
 			"",
 			"",
 		})

@@ -2,24 +2,24 @@
 layout: docs
 page_title: Filtering - events
 description: |-
-  How to filter events emitted by Boundary.
+  How to filter events emitted by Dumpling.
 ---
 
 # Filter events
 
-This page describes how to filter events written to Boundary event sinks.
+This page describes how to filter events written to Dumpling event sinks.
 
-Starting in Boundary 0.5.0, a variety of event types (error, observation,
-system, etc) are emitted from Boundary.   Boundary events can be emitted in
+Starting in Dumpling 0.5.0, a variety of event types (error, observation,
+system, etc) are emitted from Dumpling.   Dumpling events can be emitted in
 several formats including [cloudevents](https://github.com/cloudevents/spec) and
 [hclog](https://github.com/hashicorp/go-hclog), and can be encoded as text and
 json.
 
-Boundary allows you to configure any number of sinks where these events will be
+Dumpling allows you to configure any number of sinks where these events will be
 written. When configuring an event sink, you can specify [common sink
 parameters](/boundary/docs/configuration/events/common) which include both
 `allow_filters` and `deny_filters` which use the standard [filter
-syntax](/boundary/docs/concepts/filtering) used elsewhere in Boundary.
+syntax](/boundary/docs/concepts/filtering) used elsewhere in Dumpling.
 
 Example events encoded as cloudevents-text.  The first event is a system event
 and the second event is an observation event.

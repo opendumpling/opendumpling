@@ -5,7 +5,7 @@ syntax = "proto3";
 
 package controller.tokens.v1;
 
-option go_package = "github.com/hashicorp/boundary/internal/gen/controller/tokens;tokens";
+option go_package = "github.com/opendumpling/opendumpling/internal/gen/controller/tokens;tokens";
 
 message S1TokenInfo {
   string token = 10;

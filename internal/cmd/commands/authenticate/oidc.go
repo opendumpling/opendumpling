@@ -11,11 +11,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/authmethods"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/cmd/common"
-	"github.com/hashicorp/boundary/internal/types/scope"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/authmethods"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/common"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
 	"github.com/hashicorp/cap/util"
 	"github.com/mitchellh/cli"
 	"github.com/mitchellh/go-wordwrap"
@@ -35,16 +35,16 @@ type OidcCommand struct {
 }
 
 func (c *OidcCommand) Synopsis() string {
-	return wordwrap.WrapString("Invoke the OIDC auth method to authenticate with Boundary", base.TermWidth)
+	return wordwrap.WrapString("Invoke the OIDC auth method to authenticate with Dumpling", base.TermWidth)
 }
 
 func (c *OidcCommand) Help() string {
 	return base.WrapForHelpText([]string{
-		"Usage: boundary authenticate oidc [options] [args]",
+		"Usage: dumpling authenticate oidc [options] [args]",
 		"",
-		"  Invoke the OIDC auth method to authenticate the Boundary CLI. Example:",
+		"  Invoke the OIDC auth method to authenticate the Dumpling CLI. Example:",
 		"",
-		`    $ boundary authenticate oidc -auth-method-id amoidc_1234567890`,
+		`    $ dumpling authenticate oidc -auth-method-id amoidc_1234567890`,
 		"",
 		"",
 	}) + c.Flags().Help()
@@ -56,7 +56,7 @@ func (c *OidcCommand) Flags() *base.FlagSets {
 
 	f.StringVar(&base.StringVar{
 		Name:   "auth-method-id",
-		EnvVar: "BOUNDARY_AUTH_METHOD_ID",
+		EnvVar: "DUMPLING_AUTH_METHOD_ID",
 		Target: &c.FlagAuthMethodId,
 		Usage:  "The auth-method resource to use for the operation",
 	})
@@ -64,7 +64,7 @@ func (c *OidcCommand) Flags() *base.FlagSets {
 	if c.parsedOpts == nil || !c.parsedOpts.WithSkipScopeIdFlag {
 		f.StringVar(&base.StringVar{
 			Name:   "scope-id",
-			EnvVar: "BOUNDARY_SCOPE_ID",
+			EnvVar: "DUMPLING_SCOPE_ID",
 			Target: &c.FlagScopeId,
 			Usage:  "The scope ID to use for the operation.",
 		})

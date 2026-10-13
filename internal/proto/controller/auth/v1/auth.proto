@@ -5,7 +5,7 @@ syntax = "proto3";
 
 package controller.auth.v1;
 
-option go_package = "github.com/hashicorp/boundary/internal/gen/controller/auth;auth";
+option go_package = "github.com/opendumpling/opendumpling/internal/gen/controller/auth;auth";
 
 // RequestInfo contains request parameters necessary for checking authn/authz
 message RequestInfo {

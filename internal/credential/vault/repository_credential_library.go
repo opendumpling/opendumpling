@@ -8,12 +8,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/credential"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/db/timestamp"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/oplog"
+	"github.com/opendumpling/opendumpling/internal/credential"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/db/timestamp"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/oplog"
 	"github.com/hashicorp/go-dbw"
 	"github.com/hashicorp/go-secure-stdlib/strutil"
 )
@@ -346,7 +346,7 @@ func (r *Repository) LookupCredentialLibrary(ctx context.Context, publicId strin
 
 // listLookupLibrary is a credential library and any of library's credential
 // mapping overrides. It does not include encrypted data and is safe to
-// return external to boundary.
+// return external to dumpling.
 type listLookupLibrary struct {
 	PublicId                      string `gorm:"primary_key"`
 	StoreId                       string

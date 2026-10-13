@@ -15,8 +15,8 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/storagebuckets"
-	plgpb "github.com/hashicorp/boundary/sdk/pbs/plugin"
+	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/storagebuckets"
+	plgpb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
 	ta "github.com/stretchr/testify/assert"
 	tr "github.com/stretchr/testify/require"
 	"google.golang.org/grpc/codes"

@@ -2,13 +2,13 @@
 layout: docs
 page_title: Domain model - session connections
 description: |-
-  The anatomy of a Boundary session connection
+  The anatomy of a Dumpling session connection
 ---
 
 # Session connections
 
 A session connection represents an authorized proxy between a [user][] and a [host][]. After the creation of a
-[session][], a user initiates a connection to a [target][] using the Boundary-provided
+[session][], a user initiates a connection to a [target][] using the Dumpling-provided
 proxy information and [credentials][] (if applicable).
 
 Users can create multiple connections to a [target][], so long as the [session][] has not expired or reached its maximum

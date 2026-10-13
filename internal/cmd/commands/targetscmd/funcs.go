@@ -11,15 +11,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/scopes"
-	"github.com/hashicorp/boundary/api/targets"
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/credential"
-	"github.com/hashicorp/boundary/internal/credential/static"
-	"github.com/hashicorp/boundary/internal/credential/vault"
-	"github.com/hashicorp/boundary/internal/types/scope"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/scopes"
+	"github.com/opendumpling/opendumpling/api/targets"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/credential"
+	"github.com/opendumpling/opendumpling/internal/credential/static"
+	"github.com/opendumpling/opendumpling/internal/credential/vault"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
 	"github.com/hashicorp/go-secure-stdlib/strutil"
 	"github.com/mitchellh/go-wordwrap"
 	"github.com/posener/complete"
@@ -94,125 +94,125 @@ func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
 	switch c.Func {
 	case "":
 		return base.WrapForHelpText([]string{
-			"Usage: boundary targets [sub command] [options] [args]",
+			"Usage: dumpling targets [sub command] [options] [args]",
 			"",
-			"  This command allows operations on Boundary target resources. Example:",
+			"  This command allows operations on Dumpling target resources. Example:",
 			"",
 			"    Read a target:",
 			"",
-			`      $ boundary targets read -id ttcp_1234567890`,
+			`      $ dumpling targets read -id ttcp_1234567890`,
 			"",
 			"  Please see the targets subcommand help for detailed usage information.",
 		})
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary targets create [type] [sub command] [options] [args]",
+			"Usage: dumpling targets create [type] [sub command] [options] [args]",
 			"",
-			"  This command allows create operations on Boundary target resources. Example:",
+			"  This command allows create operations on Dumpling target resources. Example:",
 			"",
 			"    Create a tcp-type target:",
 			"",
-			`      $ boundary targets create tcp -name prodops -description "For ProdOps usage"`,
+			`      $ dumpling targets create tcp -name prodops -description "For ProdOps usage"`,
 			"",
 			"  Please see the typed subcommand help for detailed usage information.",
 		})
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary targets update [type] [sub command] [options] [args]",
+			"Usage: dumpling targets update [type] [sub command] [options] [args]",
 			"",
-			"  This command allows update operations on Boundary target resources. Example:",
+			"  This command allows update operations on Dumpling target resources. Example:",
 			"",
 			"    Update a tcp-type target:",
 			"",
-			`      $ boundary targets update tcp -id ttcp_1234567890 -name devops -description "For DevOps usage"`,
+			`      $ dumpling targets update tcp -id ttcp_1234567890 -name devops -description "For DevOps usage"`,
 			"",
 			"  Please see the typed subcommand help for detailed usage information.",
 		})
 	case "add-host-sources":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary target add-host-sources [options] [args]",
+			"Usage: dumpling target add-host-sources [options] [args]",
 			"",
 			"  This command allows adding host sources to target resources. Example:",
 			"",
 			"    Add host sources to a tcp-type target:",
 			"",
-			`      $ boundary targets add-host-sources -id ttcp_1234567890 -host-source hsst_1234567890 -host-source hsst_0987654321`,
+			`      $ dumpling targets add-host-sources -id ttcp_1234567890 -host-source hsst_1234567890 -host-source hsst_0987654321`,
 			"",
 			"",
 		})
 	case "remove-host-sources":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary target remove-host-sources [options] [args]",
+			"Usage: dumpling target remove-host-sources [options] [args]",
 			"",
 			"  This command allows removing host sources from target resources. Example:",
 			"",
 			"    Remove host sources from a tcp-type target:",
 			"",
-			`      $ boundary targets remove-host-sources -id ttcp_1234567890 -host-source hsst_1234567890 -host-source hsst_0987654321`,
+			`      $ dumpling targets remove-host-sources -id ttcp_1234567890 -host-source hsst_1234567890 -host-source hsst_0987654321`,
 			"",
 			"",
 		})
 	case "set-host-sources":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary target set-host-sources [options] [args]",
+			"Usage: dumpling target set-host-sources [options] [args]",
 			"",
 			"  This command allows setting the complete set of host sources on a target resource. Example:",
 			"",
 			"    Set host sources on a tcp-type target:",
 			"",
-			`      $ boundary targets set-host-sources -id ttcp_1234567890 -host-source hsst_1234567890`,
+			`      $ dumpling targets set-host-sources -id ttcp_1234567890 -host-source hsst_1234567890`,
 			"",
 			"",
 		})
 	case "add-credential-sources":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary target add-credential-sources [options] [args]",
+			"Usage: dumpling target add-credential-sources [options] [args]",
 			"",
 			"  This command allows adding credential sources to target resources. Example:",
 			"",
 			"    Add credential sources to a tcp-type target:",
 			"",
-			`      $ boundary targets add-credential-sources -id ttcp_1234567890 -brokered-credential-source clvlt_1234567890 -brokered-credential-source clvlt_0987654321`,
+			`      $ dumpling targets add-credential-sources -id ttcp_1234567890 -brokered-credential-source clvlt_1234567890 -brokered-credential-source clvlt_0987654321`,
 			"",
 			"",
 		})
 	case "remove-credential-sources":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary target remove-credential-sources [options] [args]",
+			"Usage: dumpling target remove-credential-sources [options] [args]",
 			"",
 			"  This command allows removing credential sources from target resources. Example:",
 			"",
 			"    Remove credential sources from a tcp-type target:",
 			"",
-			`      $ boundary targets remove-credential-sources -id ttcp_1234567890 -brokered-credential-source clvlt_1234567890 -brokered-credential-source clvlt_0987654321`,
+			`      $ dumpling targets remove-credential-sources -id ttcp_1234567890 -brokered-credential-source clvlt_1234567890 -brokered-credential-source clvlt_0987654321`,
 			"",
 			"",
 		})
 	case "set-credential-sources":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary target set-credential-sources [options] [args]",
+			"Usage: dumpling target set-credential-sources [options] [args]",
 			"",
 			"  This command allows setting the complete set of credential sources on a target resource. Example:",
 			"",
 			"    Set credential sources on a tcp-type target:",
 			"",
-			`      $ boundary targets set-credential-sources -id ttcp_1234567890 -brokered-credential-source clvlt_1234567890`,
+			`      $ dumpling targets set-credential-sources -id ttcp_1234567890 -brokered-credential-source clvlt_1234567890`,
 			"",
 			"",
 		})
 	case "authorize-session":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary target authorize-session [options] [args]",
+			"Usage: dumpling target authorize-session [options] [args]",
 			"",
 			"  This command allows fetching session authorization credentials against a target. Example:",
 			"",
 			"    Request an authorized session using the target ID:",
 			"",
-			`      $ boundary targets authorize-session -id ttcp_1234567890`,
+			`      $ dumpling targets authorize-session -id ttcp_1234567890`,
 			"",
 			"    Request an authorized session using the scope ID and target name:",
 			"",
-			`      $ boundary targets authorize-session -scope-id o_1234567890 -name prod-ssh`,
+			`      $ dumpling targets authorize-session -scope-id o_1234567890 -name prod-ssh`,
 			"",
 			"",
 		})
@@ -245,7 +245,7 @@ func extraFlagsFuncImpl(c *Command, _ *base.FlagSets, f *base.FlagSet) {
 			f.StringSliceVar(&base.StringSliceVar{
 				Name:   "brokered-credential-source",
 				Target: &c.flagBrokeredCredentialSources,
-				Usage:  "The credential source to add, set, or remove that Boundary will return to the user when creating a connection. May be specified multiple times.",
+				Usage:  "The credential source to add, set, or remove that Dumpling will return to the user when creating a connection. May be specified multiple times.",
 			})
 		case "application-credential-source":
 			f.StringSliceVar(&base.StringSliceVar{
@@ -257,7 +257,7 @@ func extraFlagsFuncImpl(c *Command, _ *base.FlagSets, f *base.FlagSet) {
 			f.StringSliceVar(&base.StringSliceVar{
 				Name:   "injected-application-credential-source",
 				Target: &c.flagInjectedApplicationCredentialSources,
-				Usage:  "The credential source to add, set, or remove that Boundary will inject when creating a connection. May be specified multiple times.",
+				Usage:  "The credential source to add, set, or remove that Dumpling will inject when creating a connection. May be specified multiple times.",
 			})
 		}
 	}
@@ -277,7 +277,7 @@ func extraFlagsFuncImpl(c *Command, _ *base.FlagSets, f *base.FlagSet) {
 		f.StringVar(&base.StringVar{
 			Name:       "scope-id",
 			Target:     &c.FlagScopeId,
-			EnvVar:     "BOUNDARY_SCOPE_ID",
+			EnvVar:     "DUMPLING_SCOPE_ID",
 			Completion: complete.PredictAnything,
 			Usage:      "Target scope ID, if authorizing the session via scope parameters and target name. Mutually exclusive with -scope-name.",
 		})
@@ -285,7 +285,7 @@ func extraFlagsFuncImpl(c *Command, _ *base.FlagSets, f *base.FlagSet) {
 		f.StringVar(&base.StringVar{
 			Name:       "scope-name",
 			Target:     &c.FlagScopeName,
-			EnvVar:     "BOUNDARY_SCOPE_NAME",
+			EnvVar:     "DUMPLING_SCOPE_NAME",
 			Completion: complete.PredictAnything,
 			Usage:      "Target scope name, if authorizing the session via scope parameters and target name. Mutually exclusive with -scope-id.",
 		})

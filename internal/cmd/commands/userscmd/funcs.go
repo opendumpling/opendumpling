@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/users"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/users"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/mitchellh/go-wordwrap"
 )
 
@@ -46,7 +46,7 @@ func extraSynopsisFuncImpl(c *Command) string {
 		case strings.HasPrefix(c.Func, "remove"):
 			in = "Remove accounts from"
 		}
-		return wordwrap.WrapString(fmt.Sprintf("%s a user within Boundary", in), base.TermWidth)
+		return wordwrap.WrapString(fmt.Sprintf("%s a user within Dumpling", in), base.TermWidth)
 	}
 
 	return ""
@@ -57,33 +57,33 @@ func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
 	switch c.Func {
 	case "add-accounts":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary users add-accounts [options] [args]",
+			"Usage: dumpling users add-accounts [options] [args]",
 			"",
 			`  Associates accounts to a user given its ID. The "account" flag can be specified multiple times. Example:`,
 			"",
-			`    $ boundary users add-accounts -id u_1234567890 -account a_1234567890`,
+			`    $ dumpling users add-accounts -id u_1234567890 -account a_1234567890`,
 			"",
 			"",
 		})
 
 	case "set-accounts":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary users set-accounts [options] [args]",
+			"Usage: dumpling users set-accounts [options] [args]",
 			"",
 			`  Sets the complete set of associated accounts on a user given its ID. The "account" flag can be specified multiple times. Example:`,
 			"",
-			`    $ boundary users set-principals -id u_1234567890 -account a_0987654321 -account a_1234567890`,
+			`    $ dumpling users set-principals -id u_1234567890 -account a_0987654321 -account a_1234567890`,
 			"",
 			"",
 		})
 
 	case "remove-accounts":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary users remove-accounts [options] [args]",
+			"Usage: dumpling users remove-accounts [options] [args]",
 			"",
 			`  Disassociates accounts from a user given its ID. The "account" flag can be specified multiple times. Example:`,
 			"",
-			`    $ boundary users remove-accounts -id u_1234567890 -account a_1234567890`,
+			`    $ dumpling users remove-accounts -id u_1234567890 -account a_1234567890`,
 			"",
 			"",
 		})

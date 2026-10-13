@@ -8,10 +8,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/cmd/config"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/types/scope"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/config"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
 	"github.com/hashicorp/go-secure-stdlib/mlock"
 	"github.com/hashicorp/go-secure-stdlib/parseutil"
 	"github.com/mitchellh/cli"
@@ -50,16 +50,16 @@ type InitCommand struct {
 }
 
 func (c *InitCommand) Synopsis() string {
-	return "Initialize Boundary's database"
+	return "Initialize Dumpling's database"
 }
 
 func (c *InitCommand) Help() string {
 	return base.WrapForHelpText([]string{
-		"Usage: boundary database init [options]",
+		"Usage: dumpling database init [options]",
 		"",
-		"  Initialize Boundary's database:",
+		"  Initialize Dumpling's database:",
 		"",
-		"    $ boundary database init -config=/etc/boundary/controller.hcl",
+		"    $ dumpling database init -config=/etc/dumpling/controller.hcl",
 		"",
 		"  Unless told not to via flags, some initial resources will be created, in the following order and in the indicated scopes:",
 		"",
@@ -100,13 +100,13 @@ func (c *InitCommand) Flags() *base.FlagSets {
 			complete.PredictFiles("*.hcl"),
 			complete.PredictFiles("*.json"),
 		),
-		Usage: `Path to a configuration file containing a "kms" block marked for "config" purpose, to perform decryption of the main configuration file. If not set, will look for such a block in the main configuration file, which has some drawbacks; see the help output for "boundary config encrypt -h" for details.`,
+		Usage: `Path to a configuration file containing a "kms" block marked for "config" purpose, to perform decryption of the main configuration file. If not set, will look for such a block in the main configuration file, which has some drawbacks; see the help output for "dumpling config encrypt -h" for details.`,
 	})
 
 	f.StringVar(&base.StringVar{
 		Name:       "log-level",
 		Target:     &c.flagLogLevel,
-		EnvVar:     "BOUNDARY_LOG_LEVEL",
+		EnvVar:     "DUMPLING_LOG_LEVEL",
 		Completion: complete.PredictSet("trace", "debug", "info", "warn", "err"),
 		Usage: "Log verbosity level. Supported values (in order of more detail to less) are " +
 			"\"trace\", \"debug\", \"info\", \"warn\", and \"err\".",
@@ -199,7 +199,7 @@ func (c *InitCommand) Run(args []string) (retCode int) {
 		c.UI.Error(fmt.Errorf("Unable to determine hostname: %w", err).Error())
 		return base.CommandCliError
 	}
-	serverName = fmt.Sprintf("%s/boundary-database-init", serverName)
+	serverName = fmt.Sprintf("%s/dumpling-database-init", serverName)
 	if err := c.SetupEventing(c.Context, c.Logger, c.StderrLock, serverName, base.WithEventerConfig(c.Config.Eventing)); err != nil {
 		c.UI.Error(err.Error())
 		return base.CommandCliError
@@ -216,14 +216,14 @@ func (c *InitCommand) Run(args []string) (retCode int) {
 	}
 
 	// If mlockall(2) isn't supported, show a warning. We disable this in dev
-	// because it is quite scary to see when first using Boundary. We also disable
+	// because it is quite scary to see when first using Dumpling. We also disable
 	// this if the user has explicitly disabled mlock in configuration.
 	if !c.Config.DisableMlock && !mlock.Supported() {
 		c.UI.Warn(base.WrapAtLength(
 			"WARNING! mlock is not supported on this system! An mlockall(2)-like " +
 				"syscall to prevent memory from being swapped to disk is not " +
-				"supported on this system. For better security, only run Boundary on " +
-				"systems where this call is supported. If you are running Boundary" +
+				"supported on this system. For better security, only run Dumpling on " +
+				"systems where this call is supported. If you are running Dumpling" +
 				"in a Docker container, provide the IPC_LOCK cap to the container."))
 	}
 

@@ -6,8 +6,8 @@ package credentialstorescmd
 import (
 	"fmt"
 
-	"github.com/hashicorp/boundary/api/credentialstores"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api/credentialstores"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/hashicorp/go-bexpr"
 	"github.com/hashicorp/go-secure-stdlib/parseutil"
 )
@@ -99,19 +99,19 @@ func extraVaultFlagsFuncImpl(c *VaultCommand, set *base.FlagSets, _ *base.FlagSe
 			f.StringVar(&base.StringVar{
 				Name:   vaultTokenFlagName,
 				Target: &c.flagVaultToken,
-				Usage:  "The vault token to use when boundary connects to vault for this store.",
+				Usage:  "The vault token to use when dumpling connects to vault for this store.",
 			})
 		case clientCertificateFlagName:
 			f.StringVar(&base.StringVar{
 				Name:   clientCertificateFlagName,
 				Target: &c.flagClientCert,
-				Usage:  "The client certificate to use when boundary connects to vault for this store. This can be the value itself, refer to a file on disk (file://) from which the value will be read, or an env var (env://) from which the value will be read.",
+				Usage:  "The client certificate to use when dumpling connects to vault for this store. This can be the value itself, refer to a file on disk (file://) from which the value will be read, or an env var (env://) from which the value will be read.",
 			})
 		case clientCertificateKeyFlagName:
 			f.StringVar(&base.StringVar{
 				Name:   clientCertificateKeyFlagName,
 				Target: &c.flagClientCertKey,
-				Usage:  `The client certificate's private key to use when boundary connects to vault for this store. This can be the value itself, refer to a file on disk (file://) from which the value will be read, or an env var (env://) from which the value will be read.`,
+				Usage:  `The client certificate's private key to use when dumpling connects to vault for this store. This can be the value itself, refer to a file on disk (file://) from which the value will be read, or an env var (env://) from which the value will be read.`,
 			})
 		case workerFilterFlagName:
 			f.StringVar(&base.StringVar{
@@ -188,22 +188,22 @@ func (c *VaultCommand) extraVaultHelpFunc(helpMap map[string]func() string) stri
 	switch c.Func {
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary credential-stores create vault [options] [args]",
+			"Usage: dumpling credential-stores create vault [options] [args]",
 			"",
 			"  Create a vault-type credential store. Example:",
 			"",
-			`    $ boundary credential-stores create vault -vault-address "http://localhost:8200" -vault-token "s.s0m3t0k3n"`,
+			`    $ dumpling credential-stores create vault -vault-address "http://localhost:8200" -vault-token "s.s0m3t0k3n"`,
 			"",
 			"",
 		})
 
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary credential-stores update vault [options] [args]",
+			"Usage: dumpling credential-stores update vault [options] [args]",
 			"",
 			"  Update a vault-type credential store given its ID. Example:",
 			"",
-			`    $ boundary credential-stores update vault -id csvlt_1234567890 -name devops -description "For DevOps usage"`,
+			`    $ dumpling credential-stores update vault -id csvlt_1234567890 -name devops -description "For DevOps usage"`,
 			"",
 			"",
 		})

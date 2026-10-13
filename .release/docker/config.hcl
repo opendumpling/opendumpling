@@ -14,12 +14,12 @@ controller {
 
   database {
     # This configuration setting requires the user to execute the container with the URL as an env var
-    # to connect to the Boundary postgres DB. An example of how this can be done assuming the postgres 
+    # to connect to the Dumpling postgres DB. An example of how this can be done assuming the postgres 
     # database is running as a container and you're using Docker for Mac (replace host.docker.internal with
     # localhost if you're on Linux):
     #
-    #    $  docker run -e 'BOUNDARY_POSTGRES_URL=postgresql://postgres:postgres@host.docker.internal:5432/postgres?sslmode=disable' [other options] boundary:[version]
-    url = "env://BOUNDARY_POSTGRES_URL"
+    #    $  docker run -e 'DUMPLING_POSTGRES_URL=postgresql://postgres:postgres@host.docker.internal:5432/postgres?sslmode=disable' [other options] dumpling:[version]
+    url = "env://DUMPLING_POSTGRES_URL"
   }
 
   public_cluster_addr = "env://HOSTNAME"
@@ -48,7 +48,7 @@ listener "tcp" {
   tls_disable   = true 
 }
 
-# Root KMS configuration block: this is the root key for Boundary
+# Root KMS configuration block: this is the root key for Dumpling
 # Use a production KMS such as AWS KMS in production installs
 kms "aead" {
   purpose = "root"
@@ -67,7 +67,7 @@ kms "aead" {
   key_id = "global_worker-auth"
 }
 
-# Recovery KMS block: configures the recovery key for Boundary
+# Recovery KMS block: configures the recovery key for Dumpling
 # Use a production KMS such as AWS KMS for production installs
 kms "aead" {
   purpose = "recovery"

@@ -9,10 +9,10 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/managedgroups"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/cmd/common"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/managedgroups"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/common"
 	"github.com/hashicorp/go-secure-stdlib/strutil"
 	"github.com/mitchellh/cli"
 	"github.com/posener/complete"
@@ -151,7 +151,7 @@ func (c *Command) Run(args []string) int {
 
 		case "list":
 			if c.FlagAuthMethodId == "" {
-				c.PrintCliError(errors.New("AuthMethod ID must be passed in via -auth-method-id or BOUNDARY_AUTH_METHOD_ID"))
+				c.PrintCliError(errors.New("AuthMethod ID must be passed in via -auth-method-id or DUMPLING_AUTH_METHOD_ID"))
 				return base.CommandUserError
 			}
 

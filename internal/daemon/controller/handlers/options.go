@@ -4,9 +4,9 @@
 package handlers
 
 import (
-	"github.com/hashicorp/boundary/internal/perms"
-	"github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/plugins"
-	"github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/scopes"
+	"github.com/opendumpling/opendumpling/internal/perms"
+	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/plugins"
+	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/scopes"
 	"google.golang.org/protobuf/types/known/structpb"
 )
 

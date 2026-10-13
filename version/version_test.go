@@ -16,7 +16,7 @@ func TestFromVersionString(t *testing.T) {
 		want  *Info
 	}{
 		{
-			input: "Boundary v0.12.0-beta+hcp.int (revision)",
+			input: "Dumpling v0.12.0-beta+hcp.int (revision)",
 			want: &Info{
 				Revision:          "revision",
 				Version:           "0.12.0",
@@ -25,14 +25,14 @@ func TestFromVersionString(t *testing.T) {
 			},
 		},
 		{
-			input: "Boundary v0.12.0+hcp.int",
+			input: "Dumpling v0.12.0+hcp.int",
 			want: &Info{
 				Version:         "0.12.0",
 				VersionMetadata: "hcp.int",
 			},
 		},
 		{
-			input: "Boundary v0.12.0",
+			input: "Dumpling v0.12.0",
 			want: &Info{
 				Version: "0.12.0",
 			},
@@ -59,7 +59,7 @@ func TestFromVersionString(t *testing.T) {
 			want:  nil,
 		},
 		{
-			input: "Boundary (version unknown)",
+			input: "Dumpling (version unknown)",
 			want:  nil,
 		},
 		{

@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/hashicorp/boundary/api/targets"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api/targets"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/hashicorp/go-bexpr"
 )
 
@@ -42,22 +42,22 @@ func (c *TcpCommand) extraTcpHelpFunc(helpMap map[string]func() string) string {
 	switch c.Func {
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary targets create tcp [options] [args]",
+			"Usage: dumpling targets create tcp [options] [args]",
 			"",
 			"  Create a tcp-type target. Example:",
 			"",
-			`    $ boundary targets create tcp -name prodops -description "Tcp target for ProdOps"`,
+			`    $ dumpling targets create tcp -name prodops -description "Tcp target for ProdOps"`,
 			"",
 			"",
 		})
 
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary targets update tcp [options] [args]",
+			"Usage: dumpling targets update tcp [options] [args]",
 			"",
 			"  Update a tcp-type target given its ID. Example:",
 			"",
-			`    $ boundary targets update tcp -id ttcp_1234567890 -name "devops" -description "Tcp target for DevOps"`,
+			`    $ dumpling targets update tcp -id ttcp_1234567890 -name "devops" -description "Tcp target for DevOps"`,
 			"",
 			"",
 		})

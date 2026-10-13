@@ -10,21 +10,21 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/credential"
-	"github.com/hashicorp/boundary/internal/credential/static"
-	"github.com/hashicorp/boundary/internal/credential/static/store"
-	"github.com/hashicorp/boundary/internal/daemon/controller/auth"
-	"github.com/hashicorp/boundary/internal/daemon/controller/common"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers"
-	"github.com/hashicorp/boundary/internal/errors"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/api/services"
-	"github.com/hashicorp/boundary/internal/perms"
-	"github.com/hashicorp/boundary/internal/requests"
-	"github.com/hashicorp/boundary/internal/types/action"
-	"github.com/hashicorp/boundary/internal/types/resource"
-	"github.com/hashicorp/boundary/internal/types/subtypes"
-	pb "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/credentials"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/credential"
+	"github.com/opendumpling/opendumpling/internal/credential/static"
+	"github.com/opendumpling/opendumpling/internal/credential/static/store"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/auth"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/common"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/api/services"
+	"github.com/opendumpling/opendumpling/internal/perms"
+	"github.com/opendumpling/opendumpling/internal/requests"
+	"github.com/opendumpling/opendumpling/internal/types/action"
+	"github.com/opendumpling/opendumpling/internal/types/resource"
+	"github.com/opendumpling/opendumpling/internal/types/subtypes"
+	pb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/credentials"
 	"golang.org/x/crypto/ssh"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/protobuf/proto"
@@ -98,7 +98,7 @@ type Service struct {
 
 var _ pbs.CredentialServiceServer = (*Service)(nil)
 
-// NewService returns a credential service which handles credential related requests to boundary.
+// NewService returns a credential service which handles credential related requests to dumpling.
 func NewService(ctx context.Context, repo common.StaticCredentialRepoFactory, iamRepo common.IamRepoFactory) (Service, error) {
 	const op = "credentials.NewService"
 	if iamRepo == nil {

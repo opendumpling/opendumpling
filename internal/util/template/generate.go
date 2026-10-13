@@ -8,8 +8,8 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/util"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/util"
 )
 
 // Parsed contains information about a template parsed via New. Technically

@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/hashicorp/boundary/api"
+	"github.com/opendumpling/opendumpling/api"
 )
 
 func (c *Client) Cancel(ctx context.Context, sessionId string, version uint32, opt ...Option) (*SessionUpdateResult, error) {

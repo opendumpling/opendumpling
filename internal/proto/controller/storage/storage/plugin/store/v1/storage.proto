@@ -10,7 +10,7 @@ package controller.storage.storage.plugin.store.v1;
 import "controller/custom_options/v1/options.proto";
 import "controller/storage/timestamp/v1/timestamp.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/storage/plugin/store;store";
+option go_package = "github.com/opendumpling/opendumpling/internal/storage/plugin/store;store";
 
 message StorageBucket {
   // public_id is a surrogate key suitable for use in a public API.

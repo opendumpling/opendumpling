@@ -4,7 +4,7 @@
 package credential
 
 import (
-	"github.com/hashicorp/boundary/internal/util/template"
+	"github.com/opendumpling/opendumpling/internal/util/template"
 )
 
 // GetOpts - iterate the inbound Options and return a struct

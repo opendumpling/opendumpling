@@ -11,7 +11,7 @@ import "google/protobuf/field_mask.proto";
 import "google/protobuf/struct.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/gen/controller/api/services;services";
+option go_package = "github.com/opendumpling/opendumpling/internal/gen/controller/api/services;services";
 
 service WorkerService {
   // GetWorker returns a stored Worker if present.  The provided request
@@ -35,7 +35,7 @@ service WorkerService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Lists all Workers."};
   }
 
-  // CreateWorkerLed creates and stores a Worker in Boundary. The provided
+  // CreateWorkerLed creates and stores a Worker in Dumpling. The provided
   // request must include the Scope ID in which the Worker will be created. If
   // the Scope ID is missing, malformed or references a non existing resource,
   // an error is returned. If a name is provided that is in use in another
@@ -49,7 +49,7 @@ service WorkerService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Creates a single Worker."};
   }
 
-  // CreateControllerLed creates and stores a Worker in Boundary and returns an
+  // CreateControllerLed creates and stores a Worker in Dumpling and returns an
   // activation token that can be used by a worker binary to claim the created
   // Worker's identity. The provided request must include the Scope ID in which
   // the Worker will be created. If the Scope ID is missing, malformed or
@@ -65,7 +65,7 @@ service WorkerService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Creates a single Worker."};
   }
 
-  // UpdateWorker updates an existing Worker in boundary.  The provided
+  // UpdateWorker updates an existing Worker in dumpling.  The provided
   // Worker must not have any read only fields set.  The update mask must be
   // included in the request and contain at least 1 mutable field.  To unset
   // a field's value, include the field in the update mask and don't set it
@@ -82,7 +82,7 @@ service WorkerService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Updates a Worker."};
   }
 
-  // DeleteWorker removes a Worker from Boundary. If the provided Worker ID
+  // DeleteWorker removes a Worker from Dumpling. If the provided Worker ID
   // is malformed or not provided an error is returned.
   rpc DeleteWorker(DeleteWorkerRequest) returns (DeleteWorkerResponse) {
     option (google.api.http) = {delete: "/v1/workers/{id}"};

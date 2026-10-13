@@ -6,8 +6,8 @@ package password
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
 )
 
 // Prefixes for private ids for types in the password package.

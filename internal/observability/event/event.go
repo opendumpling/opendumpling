@@ -12,7 +12,7 @@ type (
 	Op string
 )
 
-// RequestInfo defines the fields captured about a Boundary request.
+// RequestInfo defines the fields captured about a Dumpling request.
 type RequestInfo struct {
 	EventId  string `json:"-"`
 	Id       string `json:"id,omitempty" class:"public"`
@@ -22,7 +22,7 @@ type RequestInfo struct {
 	ClientIp string `json:"client_ip,omitempty" class:"public"`
 }
 
-// UserInfo defines the fields captured about a user for a Boundary request.
+// UserInfo defines the fields captured about a user for a Dumpling request.
 type UserInfo struct {
 	UserId        string `json:"id,omitempty" class:"public"`
 	AuthAccountId string `json:"auth_account_id,omitempty" class:"public"`

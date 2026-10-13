@@ -10,10 +10,10 @@ import (
 	"os"
 	"sync"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/targets"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/cmd/common"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/targets"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/common"
 	"github.com/hashicorp/go-secure-stdlib/strutil"
 	"github.com/mitchellh/cli"
 	"github.com/posener/complete"
@@ -117,7 +117,7 @@ func (c *Command) Flags() *base.FlagSets {
 func (c *Command) Run(args []string) int {
 	initFlags()
 
-	if os.Getenv("BOUNDARY_EXAMPLE_CLI_OUTPUT") != "" {
+	if os.Getenv("DUMPLING_EXAMPLE_CLI_OUTPUT") != "" {
 		c.UI.Output(exampleOutput())
 		return base.CommandSuccess
 	}
@@ -154,7 +154,7 @@ func (c *Command) Run(args []string) int {
 
 		case "list":
 			if c.FlagScopeId == "" {
-				c.PrintCliError(errors.New("Scope ID must be passed in via -scope-id or BOUNDARY_SCOPE_ID"))
+				c.PrintCliError(errors.New("Scope ID must be passed in via -scope-id or DUMPLING_SCOPE_ID"))
 				return base.CommandUserError
 			}
 

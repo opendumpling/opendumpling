@@ -17,7 +17,7 @@ as $$
   declare current_version bigint;
   begin
     select max(version)
-	  from boundary_schema_version into current_version
+	  from dumpling_schema_version into current_version
 	 where edition = new.edition;
     new.migration_version = current_version;
     return new;

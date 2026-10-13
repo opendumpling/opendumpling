@@ -19,7 +19,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/db"
+	"github.com/opendumpling/opendumpling/internal/db"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	"github.com/stretchr/testify/require"
 )

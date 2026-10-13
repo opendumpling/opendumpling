@@ -11,8 +11,8 @@ package services
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
-	targets "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/targets"
-	_ "github.com/hashicorp/boundary/sdk/pbs/controller/protooptions"
+	targets "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/targets"
+	_ "github.com/opendumpling/opendumpling/sdk/pbs/controller/protooptions"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -880,7 +880,7 @@ type AddTargetCredentialSourcesRequest struct {
 	ApplicationCredentialSourceIds []string `protobuf:"bytes,3,rep,name=application_credential_source_ids,proto3" json:"application_credential_source_ids,omitempty" class:"public"` // @gotags: `class:"public"`
 	// Brokered credentials are returned to the user during session authorization.
 	BrokeredCredentialSourceIds []string `protobuf:"bytes,10,rep,name=brokered_credential_source_ids,proto3" json:"brokered_credential_source_ids,omitempty" class:"public"` // @gotags: `class:"public"`
-	// Injected application credentials are used by a Boundary worker to secure the
+	// Injected application credentials are used by a Dumpling worker to secure the
 	// connection between the worker and the endpoint. Injected application credentials are
 	// never returned to the user.
 	InjectedApplicationCredentialSourceIds []string `protobuf:"bytes,20,rep,name=injected_application_credential_source_ids,proto3" json:"injected_application_credential_source_ids,omitempty" class:"public"` // @gotags: `class:"public"`
@@ -1018,7 +1018,7 @@ type SetTargetCredentialSourcesRequest struct {
 	ApplicationCredentialSourceIds []string `protobuf:"bytes,3,rep,name=application_credential_source_ids,proto3" json:"application_credential_source_ids,omitempty" class:"public"` // @gotags: `class:"public"`
 	// Brokered credentials are returned to the user during session authorization.
 	BrokeredCredentialSourceIds []string `protobuf:"bytes,10,rep,name=brokered_credential_source_ids,proto3" json:"brokered_credential_source_ids,omitempty" class:"public"` // @gotags: `class:"public"`
-	// Injected application credentials are used by a Boundary worker to secure the
+	// Injected application credentials are used by a Dumpling worker to secure the
 	// connection between the worker and the endpoint. Injected application credentials are
 	// never returned to the user.
 	InjectedApplicationCredentialSourceIds []string `protobuf:"bytes,20,rep,name=injected_application_credential_source_ids,proto3" json:"injected_application_credential_source_ids,omitempty" class:"public"` // @gotags: `class:"public"`
@@ -1154,7 +1154,7 @@ type RemoveTargetCredentialSourcesRequest struct {
 	ApplicationCredentialSourceIds []string `protobuf:"bytes,3,rep,name=application_credential_source_ids,json=application_credential_source_id,proto3" json:"application_credential_source_ids,omitempty" class:"public"` // @gotags: `class:"public"`
 	// Brokered credentials are returned to the user during session authorization.
 	BrokeredCredentialSourceIds []string `protobuf:"bytes,10,rep,name=brokered_credential_source_ids,proto3" json:"brokered_credential_source_ids,omitempty" class:"public"` // @gotags: `class:"public"`
-	// Injected application credentials are used by a Boundary worker to secure the
+	// Injected application credentials are used by a Dumpling worker to secure the
 	// connection between the worker and the endpoint. Injected application credentials are
 	// never returned to the user.
 	InjectedApplicationCredentialSourceIds []string `protobuf:"bytes,20,rep,name=injected_application_credential_source_ids,proto3" json:"injected_application_credential_source_ids,omitempty" class:"public"` // @gotags: `class:"public"`

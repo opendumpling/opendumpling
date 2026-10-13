@@ -10,7 +10,7 @@ import (
 	"encoding/pem"
 	"fmt"
 
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/errors"
 )
 
 // EncodeCertificates will encode a number of x509 certificates to PEMs.

@@ -4,8 +4,8 @@
 package hostscmd
 
 import (
-	"github.com/hashicorp/boundary/api/hosts"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api/hosts"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 )
 
 func init() {
@@ -30,22 +30,22 @@ func (c *StaticCommand) extraStaticHelpFunc(helpMap map[string]func() string) st
 	switch c.Func {
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary hosts create static [options] [args]",
+			"Usage: dumpling hosts create static [options] [args]",
 			"",
 			"  Create a static-type host. Example:",
 			"",
-			`    $ boundary hosts create static -name prodops -description "Static host for ProdOps" -address "127.0.0.1"`,
+			`    $ dumpling hosts create static -name prodops -description "Static host for ProdOps" -address "127.0.0.1"`,
 			"",
 			"",
 		})
 
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary hosts update static [options] [args]",
+			"Usage: dumpling hosts update static [options] [args]",
 			"",
 			"  Update a static-type host given its ID. Example:",
 			"",
-			`    $ boundary hosts update static -id hst_1234567890 -name "devops" -description "Static host for DevOps" -address "10.20.30.40"`,
+			`    $ dumpling hosts update static -id hst_1234567890 -name "devops" -description "Static host for DevOps" -address "10.20.30.40"`,
 			"",
 			"",
 		})

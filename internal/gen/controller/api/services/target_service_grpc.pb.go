@@ -28,13 +28,13 @@ type TargetServiceClient interface {
 	// the Targets being retrieved. If the scope ID is missing, malformed, or
 	// reference a non existing scope, an error is returned.
 	ListTargets(ctx context.Context, in *ListTargetsRequest, opts ...grpc.CallOption) (*ListTargetsResponse, error)
-	// CreateTarget creates and stores a Target in boundary.  The provided
+	// CreateTarget creates and stores a Target in dumpling.  The provided
 	// request must include the scope id in which the Target will be created.
 	// If the scope id is missing, malformed or references a non existing
 	// scope, an error is returned.  If a name is provided that is in
 	// use in another Target in the same scope, an error is returned.
 	CreateTarget(ctx context.Context, in *CreateTargetRequest, opts ...grpc.CallOption) (*CreateTargetResponse, error)
-	// UpdateTarget updates an existing Target in boundary.  The provided
+	// UpdateTarget updates an existing Target in dumpling.  The provided
 	// Target must not have any read only fields set.  The update mask must be
 	// included in the request and contain at least 1 mutable field.  To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -43,7 +43,7 @@ type TargetServiceClient interface {
 	// request attempts to update the name to one that is already in use in
 	// this scope.
 	UpdateTarget(ctx context.Context, in *UpdateTargetRequest, opts ...grpc.CallOption) (*UpdateTargetResponse, error)
-	// DeleteTarget removes a Target from Boundary. If the provided Target ID
+	// DeleteTarget removes a Target from Dumpling. If the provided Target ID
 	// is malformed or not provided an error is returned.
 	DeleteTarget(ctx context.Context, in *DeleteTargetRequest, opts ...grpc.CallOption) (*DeleteTargetResponse, error)
 	// AuthorizeSession creates authorization information from a given Target.
@@ -233,13 +233,13 @@ type TargetServiceServer interface {
 	// the Targets being retrieved. If the scope ID is missing, malformed, or
 	// reference a non existing scope, an error is returned.
 	ListTargets(context.Context, *ListTargetsRequest) (*ListTargetsResponse, error)
-	// CreateTarget creates and stores a Target in boundary.  The provided
+	// CreateTarget creates and stores a Target in dumpling.  The provided
 	// request must include the scope id in which the Target will be created.
 	// If the scope id is missing, malformed or references a non existing
 	// scope, an error is returned.  If a name is provided that is in
 	// use in another Target in the same scope, an error is returned.
 	CreateTarget(context.Context, *CreateTargetRequest) (*CreateTargetResponse, error)
-	// UpdateTarget updates an existing Target in boundary.  The provided
+	// UpdateTarget updates an existing Target in dumpling.  The provided
 	// Target must not have any read only fields set.  The update mask must be
 	// included in the request and contain at least 1 mutable field.  To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -248,7 +248,7 @@ type TargetServiceServer interface {
 	// request attempts to update the name to one that is already in use in
 	// this scope.
 	UpdateTarget(context.Context, *UpdateTargetRequest) (*UpdateTargetResponse, error)
-	// DeleteTarget removes a Target from Boundary. If the provided Target ID
+	// DeleteTarget removes a Target from Dumpling. If the provided Target ID
 	// is malformed or not provided an error is returned.
 	DeleteTarget(context.Context, *DeleteTargetRequest) (*DeleteTargetResponse, error)
 	// AuthorizeSession creates authorization information from a given Target.

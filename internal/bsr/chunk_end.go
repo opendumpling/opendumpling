@@ -7,7 +7,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hashicorp/boundary/internal/bsr/internal/is"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/is"
 )
 
 // EndChunk identifies the end of the chunks in a BSR data file.

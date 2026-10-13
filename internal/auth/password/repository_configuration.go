@@ -7,11 +7,11 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/hashicorp/boundary/internal/auth/password/store"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/oplog"
+	"github.com/opendumpling/opendumpling/internal/auth/password/store"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/oplog"
 )
 
 // A Configuration is an interface holding one of the configuration types

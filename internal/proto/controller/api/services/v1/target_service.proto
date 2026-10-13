@@ -11,7 +11,7 @@ import "google/api/annotations.proto";
 import "google/protobuf/field_mask.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/gen/controller/api/services;services";
+option go_package = "github.com/opendumpling/opendumpling/internal/gen/controller/api/services;services";
 option (custom_options.v1.domain) = "target";
 
 service TargetService {
@@ -36,7 +36,7 @@ service TargetService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Lists all Targets."};
   }
 
-  // CreateTarget creates and stores a Target in boundary.  The provided
+  // CreateTarget creates and stores a Target in dumpling.  The provided
   // request must include the scope id in which the Target will be created.
   // If the scope id is missing, malformed or references a non existing
   // scope, an error is returned.  If a name is provided that is in
@@ -50,7 +50,7 @@ service TargetService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Creates a single Target."};
   }
 
-  // UpdateTarget updates an existing Target in boundary.  The provided
+  // UpdateTarget updates an existing Target in dumpling.  The provided
   // Target must not have any read only fields set.  The update mask must be
   // included in the request and contain at least 1 mutable field.  To unset
   // a field's value, include the field in the update mask and don't set it
@@ -67,7 +67,7 @@ service TargetService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Updates a Target."};
   }
 
-  // DeleteTarget removes a Target from Boundary. If the provided Target ID
+  // DeleteTarget removes a Target from Dumpling. If the provided Target ID
   // is malformed or not provided an error is returned.
   rpc DeleteTarget(DeleteTargetRequest) returns (DeleteTargetResponse) {
     option (google.api.http) = {delete: "/v1/targets/{id}"};
@@ -280,7 +280,7 @@ message AddTargetCredentialSourcesRequest {
   // Brokered credentials are returned to the user during session authorization.
   repeated string brokered_credential_source_ids = 10 [json_name = "brokered_credential_source_ids"]; // @gotags: `class:"public"`
 
-  // Injected application credentials are used by a Boundary worker to secure the
+  // Injected application credentials are used by a Dumpling worker to secure the
   // connection between the worker and the endpoint. Injected application credentials are
   // never returned to the user.
   repeated string injected_application_credential_source_ids = 20 [json_name = "injected_application_credential_source_ids"]; // @gotags: `class:"public"`
@@ -311,7 +311,7 @@ message SetTargetCredentialSourcesRequest {
   // Brokered credentials are returned to the user during session authorization.
   repeated string brokered_credential_source_ids = 10 [json_name = "brokered_credential_source_ids"]; // @gotags: `class:"public"`
 
-  // Injected application credentials are used by a Boundary worker to secure the
+  // Injected application credentials are used by a Dumpling worker to secure the
   // connection between the worker and the endpoint. Injected application credentials are
   // never returned to the user.
   repeated string injected_application_credential_source_ids = 20 [json_name = "injected_application_credential_source_ids"]; // @gotags: `class:"public"`
@@ -340,7 +340,7 @@ message RemoveTargetCredentialSourcesRequest {
   // Brokered credentials are returned to the user during session authorization.
   repeated string brokered_credential_source_ids = 10 [json_name = "brokered_credential_source_ids"]; // @gotags: `class:"public"`
 
-  // Injected application credentials are used by a Boundary worker to secure the
+  // Injected application credentials are used by a Dumpling worker to secure the
   // connection between the worker and the endpoint. Injected application credentials are
   // never returned to the user.
   repeated string injected_application_credential_source_ids = 20 [json_name = "injected_application_credential_source_ids"]; // @gotags: `class:"public"`

@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers"
-	"github.com/hashicorp/boundary/internal/session"
-	"github.com/hashicorp/boundary/internal/target"
-	"github.com/hashicorp/boundary/internal/types/subtypes"
-	pb "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/targets"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers"
+	"github.com/opendumpling/opendumpling/internal/session"
+	"github.com/opendumpling/opendumpling/internal/target"
+	"github.com/opendumpling/opendumpling/internal/types/subtypes"
+	pb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/targets"
 	"google.golang.org/protobuf/proto"
 )
 

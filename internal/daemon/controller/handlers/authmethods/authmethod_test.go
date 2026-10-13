@@ -7,9 +7,9 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/api/services"
-	pb "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/authmethods"
-	pba "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/authtokens"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/api/services"
+	pb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/authmethods"
+	pba "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/authtokens"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/testing/protocmp"

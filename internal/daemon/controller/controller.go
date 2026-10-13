@@ -11,44 +11,44 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/hashicorp/boundary/internal/auth/ldap"
-	"github.com/hashicorp/boundary/internal/auth/oidc"
-	"github.com/hashicorp/boundary/internal/auth/password"
-	"github.com/hashicorp/boundary/internal/authtoken"
-	"github.com/hashicorp/boundary/internal/census"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/cmd/config"
-	credstatic "github.com/hashicorp/boundary/internal/credential/static"
-	"github.com/hashicorp/boundary/internal/credential/vault"
-	"github.com/hashicorp/boundary/internal/daemon/cluster"
-	"github.com/hashicorp/boundary/internal/daemon/controller/common"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/health"
-	"github.com/hashicorp/boundary/internal/daemon/controller/internal/metric"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
-	intglobals "github.com/hashicorp/boundary/internal/globals"
-	pluginhost "github.com/hashicorp/boundary/internal/host/plugin"
-	"github.com/hashicorp/boundary/internal/host/static"
-	"github.com/hashicorp/boundary/internal/iam"
-	"github.com/hashicorp/boundary/internal/kms"
-	kmsjob "github.com/hashicorp/boundary/internal/kms/job"
-	"github.com/hashicorp/boundary/internal/observability/event"
-	"github.com/hashicorp/boundary/internal/plugin"
-	"github.com/hashicorp/boundary/internal/plugin/loopback"
-	"github.com/hashicorp/boundary/internal/scheduler"
-	"github.com/hashicorp/boundary/internal/scheduler/cleaner"
-	"github.com/hashicorp/boundary/internal/scheduler/job"
-	"github.com/hashicorp/boundary/internal/server"
-	serversjob "github.com/hashicorp/boundary/internal/server/job"
-	"github.com/hashicorp/boundary/internal/session"
-	"github.com/hashicorp/boundary/internal/snapshot"
-	pluginstorage "github.com/hashicorp/boundary/internal/storage/plugin"
-	"github.com/hashicorp/boundary/internal/target"
-	"github.com/hashicorp/boundary/internal/types/scope"
-	boundary_plugin_assets "github.com/hashicorp/boundary/plugins/boundary"
-	plgpb "github.com/hashicorp/boundary/sdk/pbs/plugin"
-	external_plugins "github.com/hashicorp/boundary/sdk/plugins"
-	"github.com/hashicorp/boundary/version"
+	"github.com/opendumpling/opendumpling/internal/auth/ldap"
+	"github.com/opendumpling/opendumpling/internal/auth/oidc"
+	"github.com/opendumpling/opendumpling/internal/auth/password"
+	"github.com/opendumpling/opendumpling/internal/authtoken"
+	"github.com/opendumpling/opendumpling/internal/census"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/config"
+	credstatic "github.com/opendumpling/opendumpling/internal/credential/static"
+	"github.com/opendumpling/opendumpling/internal/credential/vault"
+	"github.com/opendumpling/opendumpling/internal/daemon/cluster"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/common"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/health"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/internal/metric"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	intglobals "github.com/opendumpling/opendumpling/internal/globals"
+	pluginhost "github.com/opendumpling/opendumpling/internal/host/plugin"
+	"github.com/opendumpling/opendumpling/internal/host/static"
+	"github.com/opendumpling/opendumpling/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	kmsjob "github.com/opendumpling/opendumpling/internal/kms/job"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
+	"github.com/opendumpling/opendumpling/internal/plugin"
+	"github.com/opendumpling/opendumpling/internal/plugin/loopback"
+	"github.com/opendumpling/opendumpling/internal/scheduler"
+	"github.com/opendumpling/opendumpling/internal/scheduler/cleaner"
+	"github.com/opendumpling/opendumpling/internal/scheduler/job"
+	"github.com/opendumpling/opendumpling/internal/server"
+	serversjob "github.com/opendumpling/opendumpling/internal/server/job"
+	"github.com/opendumpling/opendumpling/internal/session"
+	"github.com/opendumpling/opendumpling/internal/snapshot"
+	pluginstorage "github.com/opendumpling/opendumpling/internal/storage/plugin"
+	"github.com/opendumpling/opendumpling/internal/target"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
+	dumpling_plugin_assets "github.com/opendumpling/opendumpling/plugins/dumpling"
+	plgpb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
+	external_plugins "github.com/opendumpling/opendumpling/sdk/plugins"
+	"github.com/opendumpling/opendumpling/version"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-secure-stdlib/mlock"
 	"github.com/hashicorp/go-secure-stdlib/pluginutil/v2"
@@ -196,10 +196,10 @@ func New(ctx context.Context, conf *Config) (*Controller, error) {
 			return nil, fmt.Errorf(
 				"Failed to lock memory: %v\n\n"+
 					"This usually means that the mlock syscall is not available.\n"+
-					"Boundary uses mlock to prevent memory from being swapped to\n"+
+					"Dumpling uses mlock to prevent memory from being swapped to\n"+
 					"disk. This requires root privileges as well as a machine\n"+
 					"that supports mlock. Please enable mlock on your system or\n"+
-					"disable Boundary from using it. To disable Boundary from using it,\n"+
+					"disable Dumpling from using it. To disable Dumpling from using it,\n"+
 					"set the `disable_mlock` configuration option in your configuration\n"+
 					"file.",
 				err)
@@ -261,7 +261,7 @@ func New(ctx context.Context, conf *Config) (*Controller, error) {
 			}
 			plg := loopback.NewWrappingPluginHostClient(lp)
 			opts := []plugin.Option{
-				plugin.WithDescription("Provides an initial loopback storage and host plugin in Boundary"),
+				plugin.WithDescription("Provides an initial loopback storage and host plugin in Dumpling"),
 				plugin.WithPublicId(conf.DevLoopbackPluginId),
 			}
 			if _, err = conf.RegisterPlugin(ctx, "loopback", plg, []plugin.PluginType{plugin.PluginTypeHost, plugin.PluginTypeStorage}, opts...); err != nil {
@@ -274,7 +274,7 @@ func New(ctx context.Context, conf *Config) (*Controller, error) {
 				pluginType,
 				external_plugins.WithPluginOptions(
 					pluginutil.WithPluginExecutionDirectory(conf.RawConfig.Plugins.ExecutionDir),
-					pluginutil.WithPluginsFilesystem(boundary_plugin_assets.PluginPrefix, boundary_plugin_assets.FileSystem()),
+					pluginutil.WithPluginsFilesystem(dumpling_plugin_assets.PluginPrefix, dumpling_plugin_assets.FileSystem()),
 				),
 				external_plugins.WithLogger(pluginLogger.Named(pluginType)),
 			)
@@ -292,7 +292,7 @@ func New(ctx context.Context, conf *Config) (*Controller, error) {
 				pluginType,
 				external_plugins.WithPluginOptions(
 					pluginutil.WithPluginExecutionDirectory(conf.RawConfig.Plugins.ExecutionDir),
-					pluginutil.WithPluginsFilesystem(boundary_plugin_assets.PluginPrefix, boundary_plugin_assets.FileSystem()),
+					pluginutil.WithPluginsFilesystem(dumpling_plugin_assets.PluginPrefix, dumpling_plugin_assets.FileSystem()),
 				),
 				external_plugins.WithLogger(pluginLogger.Named(pluginType)),
 			)

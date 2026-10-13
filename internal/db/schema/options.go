@@ -3,7 +3,7 @@
 
 package schema
 
-import "github.com/hashicorp/boundary/internal/db/schema/internal/edition"
+import "github.com/opendumpling/opendumpling/internal/db/schema/internal/edition"
 
 // getOpts - iterate the inbound Options and return a struct.
 func getOpts(opt ...Option) options {

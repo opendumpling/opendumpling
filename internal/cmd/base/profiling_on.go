@@ -14,12 +14,12 @@ import (
 	"runtime/pprof"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/observability/event"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
 )
 
 func StartMemProfiler(ctx context.Context) {
 	const op = "base.StartMemProfiler"
-	profileDir := filepath.Join(os.TempDir(), "boundaryprof")
+	profileDir := filepath.Join(os.TempDir(), "dumplingprof")
 	if err := os.MkdirAll(profileDir, 0o700); err != nil {
 		event.WriteError(ctx, op, err, event.WithInfoMsg("could not create profile directory"))
 		return

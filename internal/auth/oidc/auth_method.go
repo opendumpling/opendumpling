@@ -10,10 +10,10 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/auth/oidc/store"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/libs/crypto"
-	"github.com/hashicorp/boundary/internal/oplog"
+	"github.com/opendumpling/opendumpling/internal/auth/oidc/store"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/libs/crypto"
+	"github.com/opendumpling/opendumpling/internal/oplog"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	"github.com/hashicorp/go-kms-wrapping/v2/extras/structwrapping"
 	"github.com/hashicorp/go-multierror"
@@ -42,7 +42,7 @@ type AuthMethod struct {
 // new AuthMethods.
 //
 // Issuer equals a URL that identifies the OIDC provider.
-// Boundary will strip off anything beyond scheme, host and port
+// Dumpling will strip off anything beyond scheme, host and port
 //
 // ClientId equals an OAuth 2.0 Client Identifier valid at the Authorization
 // Server.

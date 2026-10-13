@@ -2,18 +2,18 @@
 layout: docs
 page_title: GCP Cloud KMS - KMSs - configuration
 description: >-
-  The GCP Cloud KMS configures Boundary to use GCP Cloud KMS for key management.
+  The GCP Cloud KMS configures Dumpling to use GCP Cloud KMS for key management.
 ---
 
 # `gcpckms` KMS
 
-The GCP Cloud KMS configures Boundary to use GCP Cloud KMS for key management.
+The GCP Cloud KMS configures Dumpling to use GCP Cloud KMS for key management.
 
-The GCP Cloud KMS seal is activated by the presence of a `seal "gcpckms"` block in Boundary's configuration file.
+The GCP Cloud KMS seal is activated by the presence of a `seal "gcpckms"` block in Dumpling's configuration file.
 
 ## `gcpckms` example
 
-This example shows configuring GCP Cloud KMS through the Boundary
+This example shows configuring GCP Cloud KMS through the Dumpling
 configuration file by providing all the required values:
 
 ```hcl
@@ -29,7 +29,7 @@ kms "gcpckms" {
 
 ## `gcpckms` parameters
 
-These parameters apply to the `kms` stanza in the Boundary configuration file:
+These parameters apply to the `kms` stanza in the Dumpling configuration file:
 
 - `purpose` - Purpose of this KMS, acceptable values are: `worker-auth`, `worker-auth-storage`,
    `root`, `previous-root`, `recovery`, or `config`.

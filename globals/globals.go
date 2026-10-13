@@ -6,7 +6,7 @@ package globals
 import "time"
 
 const (
-	TcpProxyV1     = "boundary-tcp-proxy-v1"
+	TcpProxyV1     = "dumpling-tcp-proxy-v1"
 	ServiceTokenV1 = "s1"
 
 	AnyAuthenticatedUserId = "u_auth"

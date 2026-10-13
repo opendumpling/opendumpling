@@ -13,9 +13,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/hashicorp/boundary/internal/authtoken"
-	"github.com/hashicorp/boundary/internal/cmd/config"
-	"github.com/hashicorp/boundary/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/authtoken"
+	"github.com/opendumpling/opendumpling/internal/cmd/config"
+	"github.com/opendumpling/opendumpling/internal/iam"
 	"github.com/hashicorp/go-retryablehttp"
 )
 
@@ -163,7 +163,7 @@ func TestHandler_CORS(t *testing.T) {
 		{
 			name:        "enabled with allowed origins and desktop origin",
 			method:      http.MethodPost,
-			origin:      "serve://boundary",
+			origin:      "serve://dumpling",
 			code:        http.StatusOK,
 			listenerNum: 3,
 		},

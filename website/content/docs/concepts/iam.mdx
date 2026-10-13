@@ -2,30 +2,30 @@
 layout: docs
 page_title: Identity and access management (IAM)
 description: |-
-  Identity and access management in Boundary
+  Identity and access management in Dumpling
 ---
 
 # Identity and access management (IAM)
 
 ## IAM components
-There are 6 key components to Boundary's identity and access management system: **Scopes**, **Auth Methods**, **Accounts**, **Users**, **Groups**, and **Roles**.
+There are 6 key components to Dumpling's identity and access management system: **Scopes**, **Auth Methods**, **Accounts**, **Users**, **Groups**, and **Roles**.
 
 ### Scopes
 [Scopes](/boundary/docs/concepts/domain-model/scopes) can be considered as containers for resources and permissions. Each scope also has a permissions boundary that is isolated from other scopes on the same level. There are three types of scopes:
-- **Global** - The highest-level scope of Boundary where administrators configure and manage Boundary for the entire company.
+- **Global** - The highest-level scope of Dumpling where administrators configure and manage Dumpling for the entire company.
 - **Org (Organization)** - Org scopes are contained in the global scope and are typically used to represent business units, organizations, or departments.
 Org scopes can also be used to contain multiple production-level auth methods in separate scopes.
 - **Project** - Project scopes are contained in Org scopes and be used to separate different business workflows. For example, projects can be used to represent different teams, products, or environments (test, dev, prod).
 
 ### Auth methods
 [Auth Methods](/boundary/docs/concepts/domain-model/auth-methods) are resources that authenticate users to
-Boundary. Auth methods can only be contained by the global or Org scopes. The available auth methods are:
+Dumpling. Auth methods can only be contained by the global or Org scopes. The available auth methods are:
 - Username/Password
 - [OIDC](/boundary/tutorials/identity-management/oidc-auth)
 - LDAP
 
 ### Accounts
-[Accounts](/boundary/docs/concepts/domain-model/accounts) are resources that represent an authenticated user from a trusted identity provider through a Boundary auth method. Accounts must belong to an auth method, and can be associated with a single Boundary user. Boundary accounts can belong to the global or Org Scopes.
+[Accounts](/boundary/docs/concepts/domain-model/accounts) are resources that represent an authenticated user from a trusted identity provider through a Dumpling auth method. Accounts must belong to an auth method, and can be associated with a single Dumpling user. Dumpling accounts can belong to the global or Org Scopes.
 
 ### Users
 [Users](/boundary/docs/concepts/domain-model/users) are resources that represent an individual person or entity for the purposes of
@@ -44,14 +44,14 @@ can be contained by any scope, and the permissions can be applied to the same sc
 ## Access management
 
 ### Configure users - username/password
-There are 3 steps to adding new users to Boundary using the password auth method:
-1. Choose the **scope** and the **auth method** that the user will use to authenticate to Boundary. If the desired auth method does not exist, you must create a new one.
+There are 3 steps to adding new users to Dumpling using the password auth method:
+1. Choose the **scope** and the **auth method** that the user will use to authenticate to Dumpling. If the desired auth method does not exist, you must create a new one.
 2. After the auth method is selected, you can create an **account** under the auth method.
-3. In the same scope, create a new **user**, and then attach the new account to the new user. The user is now able to authenticate to Boundary.
+3. In the same scope, create a new **user**, and then attach the new account to the new user. The user is now able to authenticate to Dumpling.
 
 ### Configure users - OIDC/LDAP
-[OIDC](/boundary/tutorials/identity-management/oidc-auth) and LDAP accounts and users are auto-vivified (automatically generated) in Boundary in the same scope
-as the auth method. The accounts and users are only created once the user authenticates to Boundary for the first time. The same applies to OIDC/LDAP
+[OIDC](/boundary/tutorials/identity-management/oidc-auth) and LDAP accounts and users are auto-vivified (automatically generated) in Dumpling in the same scope
+as the auth method. The accounts and users are only created once the user authenticates to Dumpling for the first time. The same applies to OIDC/LDAP
 [managed groups](/boundary/tutorials/identity-management/oidc-idp-groups).
 
 ### Grant permissions
@@ -66,14 +66,14 @@ Projects.
 
 ![IAM Example Structure](/img/iam-example-structure.png)
 
-### Boundary admin
+### Dumpling admin
 1. **Each** of the 7 scopes requires a role (ex. “admin”)
 2. Each role needs to have the user/group added as a principal
 3. Each role needs to have the grants of
 
    - `id=*;type=*;actions=*`
 
-### Boundary viewer
+### Dumpling viewer
 1. **Each** of the 7 scopes requires a role (ex. “viewer”)
 2. Each role needs to have the user/group added as a principal
 3. Each role needs to have the grants of
@@ -106,6 +106,6 @@ Projects.
    - `id=*;type=session;actions=read:self,cancel:self,list`
 
 <Tip>
-You can use the same roles across “Boundary Admin”, “Org_A Admin”, and “Project_1 Admin” since the scopes and grants are the same. The only difference is
+You can use the same roles across “Dumpling Admin”, “Org_A Admin”, and “Project_1 Admin” since the scopes and grants are the same. The only difference is
 the users/groups that are added to each role.
 </Tip>

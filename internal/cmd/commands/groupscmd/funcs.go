@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/groups"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/groups"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/mitchellh/go-wordwrap"
 )
 
@@ -61,33 +61,33 @@ func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
 
 	case "add-members":
 		return base.WrapForHelpText([]string{
-			"Usage: boundary groups add-members [options] [args]",
+			"Usage: dumpling groups add-members [options] [args]",
 			"",
 			`  Adds members (users) to a group given its ID. The "member" flag can be specified multiple times. Example:`,
 			"",
-			`    $ boundary groups add-members -id g_1234567890 -member u_1234567890`,
+			`    $ dumpling groups add-members -id g_1234567890 -member u_1234567890`,
 			"",
 			"",
 		})
 
 	case "set-members":
 		return base.WrapForHelpText([]string{
-			"Usage: boundary groups set-members [options] [args]",
+			"Usage: dumpling groups set-members [options] [args]",
 			"",
 			`  Sets the complete set of members (users) on a group given its ID. The "member" flag can be specified multiple times. Example:`,
 			"",
-			`    $ boundary groups set-principals -id g_1234567890 -member u_anon -member u_1234567890`,
+			`    $ dumpling groups set-principals -id g_1234567890 -member u_anon -member u_1234567890`,
 			"",
 			"",
 		})
 
 	case "remove-members":
 		return base.WrapForHelpText([]string{
-			"Usage: boundary groups remove-members [options] [args]",
+			"Usage: dumpling groups remove-members [options] [args]",
 			"",
 			`  Removes members (users) from a group given its ID. The "member" flag can be specified multiple times. Example:`,
 			"",
-			`    $ boundary groups remove-members -id g_1234567890 -member u_1234567890`,
+			`    $ dumpling groups remove-members -id g_1234567890 -member u_1234567890`,
 			"",
 			"",
 		})

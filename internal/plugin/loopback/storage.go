@@ -13,8 +13,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/storagebuckets"
-	plgpb "github.com/hashicorp/boundary/sdk/pbs/plugin"
+	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/storagebuckets"
+	plgpb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"

@@ -133,7 +133,7 @@ dump() {
     until pg_isready -h "${DB_HOST}" -p "${SQL_TEST_DB_PORT}"; do
         ((c+=1))
         if [[ $c -ge $max ]]; then
-            docker logs boundary-sql-tests
+            docker logs dumpling-sql-tests
             make -C internal/db/sqltest clean
             die "timeout waiting for database, likely an error in a migration"
         fi

@@ -1,4 +1,4 @@
-module github.com/hashicorp/boundary/plugins/kms/mains/alicloudkms
+module github.com/opendumpling/opendumpling/plugins/kms/mains/alicloudkms
 
 go 1.20
 

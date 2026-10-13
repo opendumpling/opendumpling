@@ -6,9 +6,9 @@ package authtoken
 import (
 	"time"
 
-	"github.com/hashicorp/boundary/internal/auth/password"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/auth/password"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/iam"
 )
 
 var (

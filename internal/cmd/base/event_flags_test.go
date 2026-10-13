@@ -6,7 +6,7 @@ package base
 import (
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/observability/event"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

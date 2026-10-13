@@ -8,7 +8,7 @@ package controller.storage.target.tcp.store.v1;
 import "controller/custom_options/v1/options.proto";
 import "controller/storage/timestamp/v1/timestamp.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/target/tcp/store;store";
+option go_package = "github.com/opendumpling/opendumpling/internal/target/tcp/store;store";
 
 message Target {
   // public_id is used to access the tcp.Target via an API

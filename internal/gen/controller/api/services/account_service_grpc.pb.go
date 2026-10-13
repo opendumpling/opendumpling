@@ -27,14 +27,14 @@ type AccountServiceClient interface {
 	// contains the Accounts being listed. If missing or malformed an error
 	// is returned.
 	ListAccounts(ctx context.Context, in *ListAccountsRequest, opts ...grpc.CallOption) (*ListAccountsResponse, error)
-	// CreateAccount creates and stores an Account in boundary. The provided
+	// CreateAccount creates and stores an Account in dumpling. The provided
 	// request must include the Auth Method ID in which the Account will be
 	// created. If the Auth Method ID is missing, malformed, or references a non
 	// existing resource an error is returned. If a name or login_name is
 	// provided that is in use in another Account in the same Auth Method an
 	// error is returned.
 	CreateAccount(ctx context.Context, in *CreateAccountRequest, opts ...grpc.CallOption) (*CreateAccountResponse, error)
-	// UpdateAccount updates an existing Account in boundary. The provided Account
+	// UpdateAccount updates an existing Account in dumpling. The provided Account
 	// must not have any read only fields set. The update mask must be included in
 	// the request and contain at least 1 mutable field. To unset a field's value,
 	// include the field in the update mask and don't set it in the provided
@@ -43,7 +43,7 @@ type AccountServiceClient interface {
 	// to update the name or login_name to one that is already in use in the
 	// containing Auth Method.
 	UpdateAccount(ctx context.Context, in *UpdateAccountRequest, opts ...grpc.CallOption) (*UpdateAccountResponse, error)
-	// DeleteAccount removes an Account from Boundary. If the provided Account Id
+	// DeleteAccount removes an Account from Dumpling. If the provided Account Id
 	// is malformed or not provided an error is returned.
 	DeleteAccount(ctx context.Context, in *DeleteAccountRequest, opts ...grpc.CallOption) (*DeleteAccountResponse, error)
 	// SetPassword sets the Account's password to the one provided in the
@@ -140,14 +140,14 @@ type AccountServiceServer interface {
 	// contains the Accounts being listed. If missing or malformed an error
 	// is returned.
 	ListAccounts(context.Context, *ListAccountsRequest) (*ListAccountsResponse, error)
-	// CreateAccount creates and stores an Account in boundary. The provided
+	// CreateAccount creates and stores an Account in dumpling. The provided
 	// request must include the Auth Method ID in which the Account will be
 	// created. If the Auth Method ID is missing, malformed, or references a non
 	// existing resource an error is returned. If a name or login_name is
 	// provided that is in use in another Account in the same Auth Method an
 	// error is returned.
 	CreateAccount(context.Context, *CreateAccountRequest) (*CreateAccountResponse, error)
-	// UpdateAccount updates an existing Account in boundary. The provided Account
+	// UpdateAccount updates an existing Account in dumpling. The provided Account
 	// must not have any read only fields set. The update mask must be included in
 	// the request and contain at least 1 mutable field. To unset a field's value,
 	// include the field in the update mask and don't set it in the provided
@@ -156,7 +156,7 @@ type AccountServiceServer interface {
 	// to update the name or login_name to one that is already in use in the
 	// containing Auth Method.
 	UpdateAccount(context.Context, *UpdateAccountRequest) (*UpdateAccountResponse, error)
-	// DeleteAccount removes an Account from Boundary. If the provided Account Id
+	// DeleteAccount removes an Account from Dumpling. If the provided Account Id
 	// is malformed or not provided an error is returned.
 	DeleteAccount(context.Context, *DeleteAccountRequest) (*DeleteAccountResponse, error)
 	// SetPassword sets the Account's password to the one provided in the

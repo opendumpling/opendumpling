@@ -5,7 +5,7 @@ syntax = "proto3";
 
 package controller.servers.v1;
 
-option go_package = "github.com/hashicorp/boundary/internal/gen/controller/servers;servers";
+option go_package = "github.com/opendumpling/opendumpling/internal/gen/controller/servers;servers";
 
 // TagPair matches a key to a value.
 message TagPair {
@@ -33,7 +33,7 @@ message ServerWorkerStatus {
   // The key id for this worker, if applicable (optional)
   string key_id = 50; // @gotags: `class:"public"`
 
-  // The version of Boundary the worker binary is running
+  // The version of Dumpling the worker binary is running
   string release_version = 60 [json_name = "release_version"]; // @gotags: `class:"public"`
 
   // The state of the worker, to indicate if the worker is active or in shutdown.

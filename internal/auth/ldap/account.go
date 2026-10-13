@@ -7,10 +7,10 @@ import (
 	"context"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/auth"
-	"github.com/hashicorp/boundary/internal/auth/ldap/store"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/oplog"
+	"github.com/opendumpling/opendumpling/internal/auth"
+	"github.com/opendumpling/opendumpling/internal/auth/ldap/store"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/oplog"
 	"google.golang.org/protobuf/proto"
 )
 

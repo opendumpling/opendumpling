@@ -9,7 +9,7 @@ import (
 	"runtime"
 	"testing"
 
-	serverpb "github.com/hashicorp/boundary/internal/gen/controller/servers/services"
+	serverpb "github.com/opendumpling/opendumpling/internal/gen/controller/servers/services"
 	"github.com/stretchr/testify/assert"
 )
 

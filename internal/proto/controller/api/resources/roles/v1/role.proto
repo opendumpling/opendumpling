@@ -10,7 +10,7 @@ import "controller/custom_options/v1/options.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
-option go_package = "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/roles;roles";
+option go_package = "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/roles;roles";
 
 message Principal {
   // Output only. The ID of the principal.

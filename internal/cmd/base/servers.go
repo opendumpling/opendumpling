@@ -22,19 +22,19 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/cmd/base/internal/metric"
-	"github.com/hashicorp/boundary/internal/cmd/base/logging"
-	"github.com/hashicorp/boundary/internal/cmd/config"
-	"github.com/hashicorp/boundary/internal/db"
-	berrors "github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/observability/event"
-	"github.com/hashicorp/boundary/internal/types/scope"
-	"github.com/hashicorp/boundary/internal/util"
-	kms_plugin_assets "github.com/hashicorp/boundary/plugins/kms"
-	plgpb "github.com/hashicorp/boundary/sdk/pbs/plugin"
-	"github.com/hashicorp/boundary/version"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/cmd/base/internal/metric"
+	"github.com/opendumpling/opendumpling/internal/cmd/base/logging"
+	"github.com/opendumpling/opendumpling/internal/cmd/config"
+	"github.com/opendumpling/opendumpling/internal/db"
+	berrors "github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
+	"github.com/opendumpling/opendumpling/internal/util"
+	kms_plugin_assets "github.com/opendumpling/opendumpling/plugins/kms"
+	plgpb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
+	"github.com/opendumpling/opendumpling/version"
 	"github.com/hashicorp/go-hclog"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	"github.com/hashicorp/go-kms-wrapping/v2/extras/multi"
@@ -280,7 +280,7 @@ func (b *Server) SetupLogging(flagLogLevel, flagLogFormat, configLogLevel, confi
 	namedGRPCLogFaker := b.Logger.Named("grpclogfaker")
 	grpclog.SetLogger(&GRPCLogFaker{
 		Logger: namedGRPCLogFaker,
-		Log:    os.Getenv("BOUNDARY_GRPC_LOGGING") != "",
+		Log:    os.Getenv("DUMPLING_GRPC_LOGGING") != "",
 	})
 
 	b.Info["log level"] = logLevel.String()
@@ -401,7 +401,7 @@ func (b *Server) PrintInfo(ui cli.Ui) {
 		}
 	}
 	sort.Strings(b.InfoKeys)
-	ui.Output("==> Boundary server configuration:\n")
+	ui.Output("==> Dumpling server configuration:\n")
 	for _, k := range b.InfoKeys {
 		ui.Output(fmt.Sprintf(
 			"%s%s: %s",
@@ -413,7 +413,7 @@ func (b *Server) PrintInfo(ui cli.Ui) {
 
 	// Output the header that the server has started
 	if !b.CombineLogs {
-		ui.Output("==> Boundary server started! Log data will stream in below:\n")
+		ui.Output("==> Dumpling server started! Log data will stream in below:\n")
 	}
 }
 
@@ -756,7 +756,7 @@ func (b *Server) OpenDatabase(ctx context.Context, dialect, url string) (*db.DB,
 		db.WithMaxIdleConnections(b.DatabaseMaxIdleConnections),
 		db.WithConnMaxIdleTimeDuration(b.DatabaseConnMaxIdleTimeDuration),
 	}
-	if os.Getenv("BOUNDARY_DISABLE_GORM_FORMATTER") == "" {
+	if os.Getenv("DUMPLING_DISABLE_GORM_FORMATTER") == "" {
 		opts = append(opts, db.WithGormFormatter(b.Logger))
 	}
 

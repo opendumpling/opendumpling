@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/hashicorp/boundary/internal/db/schema/internal/edition"
+	"github.com/opendumpling/opendumpling/internal/db/schema/internal/edition"
 )
 
 // Dialect is same as edition.Dialect

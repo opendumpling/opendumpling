@@ -6,9 +6,9 @@ package oidc
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/auth/oidc/store"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/oplog"
+	"github.com/opendumpling/opendumpling/internal/auth/oidc/store"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/oplog"
 	"github.com/hashicorp/go-bexpr"
 	"google.golang.org/protobuf/proto"
 )

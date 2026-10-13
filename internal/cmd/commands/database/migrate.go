@@ -9,13 +9,13 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/cmd/config"
-	"github.com/hashicorp/boundary/internal/db/schema"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/observability/event"
-	boundary_plugin_assets "github.com/hashicorp/boundary/plugins/boundary"
-	external_plugins "github.com/hashicorp/boundary/sdk/plugins"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/config"
+	"github.com/opendumpling/opendumpling/internal/db/schema"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
+	dumpling_plugin_assets "github.com/opendumpling/opendumpling/plugins/dumpling"
+	external_plugins "github.com/opendumpling/opendumpling/sdk/plugins"
 	"github.com/hashicorp/go-secure-stdlib/mlock"
 	"github.com/hashicorp/go-secure-stdlib/parseutil"
 	"github.com/hashicorp/go-secure-stdlib/pluginutil/v2"
@@ -55,16 +55,16 @@ type MigrateCommand struct {
 }
 
 func (c *MigrateCommand) Synopsis() string {
-	return "Migrate Boundary's database to the most recent schema supported by this binary."
+	return "Migrate Dumpling's database to the most recent schema supported by this binary."
 }
 
 func (c *MigrateCommand) Help() string {
 	return base.WrapForHelpText([]string{
-		"Usage: boundary database migrate [options]",
+		"Usage: dumpling database migrate [options]",
 		"",
-		"  Migrate Boundary's database:",
+		"  Migrate Dumpling's database:",
 		"",
-		"    $ boundary database migrate -config=/etc/boundary/controller.hcl",
+		"    $ dumpling database migrate -config=/etc/dumpling/controller.hcl",
 		"",
 		"  For a full list of examples, please see the documentation.",
 	}) + c.Flags().Help()
@@ -92,13 +92,13 @@ func (c *MigrateCommand) Flags() *base.FlagSets {
 			complete.PredictFiles("*.hcl"),
 			complete.PredictFiles("*.json"),
 		),
-		Usage: `Path to a configuration file containing a "kms" block marked for "config" purpose, to perform decryption of the main configuration file. If not set, will look for such a block in the main configuration file, which has some drawbacks; see the help output for "boundary config encrypt -h" for details.`,
+		Usage: `Path to a configuration file containing a "kms" block marked for "config" purpose, to perform decryption of the main configuration file. If not set, will look for such a block in the main configuration file, which has some drawbacks; see the help output for "dumpling config encrypt -h" for details.`,
 	})
 
 	f.StringVar(&base.StringVar{
 		Name:       "log-level",
 		Target:     &c.flagLogLevel,
-		EnvVar:     "BOUNDARY_LOG_LEVEL",
+		EnvVar:     "DUMPLING_LOG_LEVEL",
 		Completion: complete.PredictSet("trace", "debug", "info", "warn", "err"),
 		Usage: "Log verbosity level. Supported values (in order of more detail to less) are " +
 			"\"trace\", \"debug\", \"info\", \"warn\", and \"err\".",
@@ -163,7 +163,7 @@ func (c *MigrateCommand) Run(args []string) (retCode int) {
 		c.UI.Error(fmt.Errorf("Unable to determine hostname: %w", err).Error())
 		return base.CommandCliError
 	}
-	serverName = fmt.Sprintf("%s/boundary-database-migrate", serverName)
+	serverName = fmt.Sprintf("%s/dumpling-database-migrate", serverName)
 	if err := c.srv.SetupEventing(
 		c.Context,
 		c.srv.Logger,
@@ -185,21 +185,21 @@ func (c *MigrateCommand) Run(args []string) (retCode int) {
 		"aws",
 		external_plugins.WithPluginOptions(
 			pluginutil.WithPluginExecutionDirectory(c.Config.Plugins.ExecutionDir),
-			pluginutil.WithPluginsFilesystem(boundary_plugin_assets.PluginPrefix, boundary_plugin_assets.FileSystem()),
+			pluginutil.WithPluginsFilesystem(dumpling_plugin_assets.PluginPrefix, dumpling_plugin_assets.FileSystem()),
 		),
 		external_plugins.WithLogger(pluginLogger.Named("aws")),
 	)
 	if err != nil {
 		c.UI.Error(fmt.Errorf("Error creating dynamic host plugin: %w", err).Error())
 		c.UI.Warn(base.WrapAtLength(
-			"Starting in Boundary 0.7.0, plugins are being introduced for " +
+			"Starting in Dumpling 0.7.0, plugins are being introduced for " +
 				"various parts of the system. These plugins are created by writing " +
 				"out and executing plugin binaries. The migration function performed " +
 				"a check to ensure this system is capable of running plugins and " +
 				"encountered an error. The ability to run plugins will eventually " +
 				"become mandatory (for instance, for KMS implementations), so we are " +
 				"ensuring that it's feasible on a given system before migrating the " +
-				"database to the new version of Boundary that requires this capability. " +
+				"database to the new version of Dumpling that requires this capability. " +
 				"If your temporary directory is not writable and/or you cannot execute " +
 				"binaries in that directory, try setting the field " +
 				`"execution_dir" in the "plugins" block in the configuration file:`))
@@ -210,7 +210,7 @@ plugins {
 `)
 		c.UI.Warn(base.WrapAtLength(
 			"Otherwise, please file a bug at " +
-				"https://github.com/hashicorp/boundary/issues/new/choose and tell us " +
+				"https://github.com/opendumpling/opendumpling/issues/new/choose and tell us " +
 				"what the error message is, along with details about your environment. " +
 				"We are committed to resolving any issues as quickly as possible."))
 		return base.CommandCliError
@@ -221,14 +221,14 @@ plugins {
 	}
 
 	// If mlockall(2) isn't supported, show a warning. We disable this in dev
-	// because it is quite scary to see when first using Boundary. We also disable
+	// because it is quite scary to see when first using Dumpling. We also disable
 	// this if the user has explicitly disabled mlock in configuration.
 	if !c.Config.DisableMlock && !mlock.Supported() {
 		c.UI.Warn(base.WrapAtLength(
 			"WARNING! mlock is not supported on this system! An mlockall(2)-like " +
 				"syscall to prevent memory from being swapped to disk is not " +
-				"supported on this system. For better security, only run Boundary on " +
-				"systems where this call is supported. If you are running Boundary" +
+				"supported on this system. For better security, only run Dumpling on " +
+				"systems where this call is supported. If you are running Dumpling" +
 				"in a Docker container, provide the IPC_LOCK cap to the container."))
 	}
 

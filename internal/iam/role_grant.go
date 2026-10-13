@@ -6,10 +6,10 @@ package iam
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/iam/store"
-	"github.com/hashicorp/boundary/internal/perms"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/iam/store"
+	"github.com/opendumpling/opendumpling/internal/perms"
 	"google.golang.org/protobuf/proto"
 )
 

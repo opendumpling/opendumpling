@@ -4,18 +4,18 @@
 package common
 
 import (
-	"github.com/hashicorp/boundary/internal/auth/ldap"
-	"github.com/hashicorp/boundary/internal/auth/oidc"
-	"github.com/hashicorp/boundary/internal/auth/password"
-	credstatic "github.com/hashicorp/boundary/internal/credential/static"
-	"github.com/hashicorp/boundary/internal/credential/vault"
-	pluginhost "github.com/hashicorp/boundary/internal/host/plugin"
-	"github.com/hashicorp/boundary/internal/host/static"
-	"github.com/hashicorp/boundary/internal/iam"
-	"github.com/hashicorp/boundary/internal/plugin"
-	"github.com/hashicorp/boundary/internal/server"
-	"github.com/hashicorp/boundary/internal/session"
-	pluginstorage "github.com/hashicorp/boundary/internal/storage/plugin"
+	"github.com/opendumpling/opendumpling/internal/auth/ldap"
+	"github.com/opendumpling/opendumpling/internal/auth/oidc"
+	"github.com/opendumpling/opendumpling/internal/auth/password"
+	credstatic "github.com/opendumpling/opendumpling/internal/credential/static"
+	"github.com/opendumpling/opendumpling/internal/credential/vault"
+	pluginhost "github.com/opendumpling/opendumpling/internal/host/plugin"
+	"github.com/opendumpling/opendumpling/internal/host/static"
+	"github.com/opendumpling/opendumpling/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/plugin"
+	"github.com/opendumpling/opendumpling/internal/server"
+	"github.com/opendumpling/opendumpling/internal/session"
+	pluginstorage "github.com/opendumpling/opendumpling/internal/storage/plugin"
 )
 
 type (

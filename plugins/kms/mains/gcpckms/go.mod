@@ -1,4 +1,4 @@
-module github.com/hashicorp/boundary/plugins/kms/mains/gcpckms
+module github.com/opendumpling/opendumpling/plugins/kms/mains/gcpckms
 
 go 1.20
 

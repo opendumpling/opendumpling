@@ -11,11 +11,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/hashicorp/boundary/api/credentiallibraries"
-	"github.com/hashicorp/boundary/api/targets"
-	"github.com/hashicorp/boundary/testing/internal/e2e"
-	"github.com/hashicorp/boundary/testing/internal/e2e/boundary"
-	"github.com/hashicorp/boundary/testing/internal/e2e/vault"
+	"github.com/opendumpling/opendumpling/api/credentiallibraries"
+	"github.com/opendumpling/opendumpling/api/targets"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e/dumpling"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e/vault"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -30,21 +30,21 @@ func TestCliTcpTargetVaultConnectTarget(t *testing.T) {
 	require.NoError(t, err)
 
 	ctx := context.Background()
-	boundary.AuthenticateAdminCli(t, ctx)
-	newOrgId := boundary.CreateNewOrgCli(t, ctx)
+	dumpling.AuthenticateAdminCli(t, ctx)
+	newOrgId := dumpling.CreateNewOrgCli(t, ctx)
 	t.Cleanup(func() {
 		ctx := context.Background()
-		boundary.AuthenticateAdminCli(t, ctx)
-		output := e2e.RunCommand(ctx, "boundary", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
+		dumpling.AuthenticateAdminCli(t, ctx)
+		output := e2e.RunCommand(ctx, "dumpling", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
 		require.NoError(t, output.Err, string(output.Stderr))
 	})
-	newProjectId := boundary.CreateNewProjectCli(t, ctx, newOrgId)
-	newHostCatalogId := boundary.CreateNewHostCatalogCli(t, ctx, newProjectId)
-	newHostSetId := boundary.CreateNewHostSetCli(t, ctx, newHostCatalogId)
-	newHostId := boundary.CreateNewHostCli(t, ctx, newHostCatalogId, c.TargetIp)
-	boundary.AddHostToHostSetCli(t, ctx, newHostSetId, newHostId)
-	newTargetId := boundary.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort)
-	boundary.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
+	newProjectId := dumpling.CreateNewProjectCli(t, ctx, newOrgId)
+	newHostCatalogId := dumpling.CreateNewHostCatalogCli(t, ctx, newProjectId)
+	newHostSetId := dumpling.CreateNewHostSetCli(t, ctx, newHostCatalogId)
+	newHostId := dumpling.CreateNewHostCli(t, ctx, newHostCatalogId, c.TargetIp)
+	dumpling.AddHostToHostSetCli(t, ctx, newHostSetId, newHostId)
+	newTargetId := dumpling.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort)
+	dumpling.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
 
 	// Configure vault
 	boundaryPolicyName, kvPolicyFilePath := vault.Setup(t)
@@ -98,10 +98,10 @@ func TestCliTcpTargetVaultConnectTarget(t *testing.T) {
 	t.Log("Created Vault Cred Store Token")
 
 	// Create a credential store
-	newCredentialStoreId := boundary.CreateNewCredentialStoreVaultCli(t, ctx, newProjectId, c.VaultAddr, credStoreToken)
+	newCredentialStoreId := dumpling.CreateNewCredentialStoreVaultCli(t, ctx, newProjectId, c.VaultAddr, credStoreToken)
 
 	// Create a credential library
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"credential-libraries", "create", "vault",
 			"-credential-store-id", newCredentialStoreId,
@@ -119,10 +119,10 @@ func TestCliTcpTargetVaultConnectTarget(t *testing.T) {
 	t.Logf("Created Credential Library: %s", newCredentialLibraryId)
 
 	// Add brokered credentials to target
-	boundary.AddBrokeredCredentialSourceToTargetCli(t, ctx, newTargetId, newCredentialLibraryId)
+	dumpling.AddBrokeredCredentialSourceToTargetCli(t, ctx, newTargetId, newCredentialLibraryId)
 
 	// Get credentials for target
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs("targets", "authorize-session", "-id", newTargetId, "-format", "json"),
 	)
 	require.NoError(t, output.Err, string(output.Stderr))
@@ -152,7 +152,7 @@ func TestCliTcpTargetVaultConnectTarget(t *testing.T) {
 	require.NoError(t, err)
 
 	// Connect to target and print host's IP address using retrieved credentials
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"connect",
 			"-target-id", newTargetId,
@@ -162,8 +162,8 @@ func TestCliTcpTargetVaultConnectTarget(t *testing.T) {
 			"-o", "UserKnownHostsFile=/dev/null",
 			"-o", "StrictHostKeyChecking=no",
 			"-o", "IdentitiesOnly=yes", // forces the use of the provided key
-			"-p", "{{boundary.port}}", // this is provided by boundary
-			"{{boundary.ip}}",
+			"-p", "{{dumpling.port}}", // this is provided by boundary
+			"{{dumpling.ip}}",
 			"hostname", "-i",
 		),
 	)

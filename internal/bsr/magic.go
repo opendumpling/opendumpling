@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/hashicorp/boundary/internal/bsr/internal/is"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/is"
 )
 
 const (

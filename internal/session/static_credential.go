@@ -4,7 +4,7 @@
 package session
 
 import (
-	cred "github.com/hashicorp/boundary/internal/credential"
+	cred "github.com/opendumpling/opendumpling/internal/credential"
 )
 
 // A StaticCredential represents the relationship between a session, a

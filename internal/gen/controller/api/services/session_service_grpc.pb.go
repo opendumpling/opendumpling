@@ -28,7 +28,7 @@ type SessionServiceClient interface {
 	// the Sessions being retrieved. If the scope ID is missing, malformed, or
 	// reference a non existing scope, an error is returned.
 	ListSessions(ctx context.Context, in *ListSessionsRequest, opts ...grpc.CallOption) (*ListSessionsResponse, error)
-	// CancelSession cancels an existing Session in boundary.  An error
+	// CancelSession cancels an existing Session in dumpling.  An error
 	// is returned if the request attempts to cancel a Session that does
 	// not exist.
 	CancelSession(ctx context.Context, in *CancelSessionRequest, opts ...grpc.CallOption) (*CancelSessionResponse, error)
@@ -83,7 +83,7 @@ type SessionServiceServer interface {
 	// the Sessions being retrieved. If the scope ID is missing, malformed, or
 	// reference a non existing scope, an error is returned.
 	ListSessions(context.Context, *ListSessionsRequest) (*ListSessionsResponse, error)
-	// CancelSession cancels an existing Session in boundary.  An error
+	// CancelSession cancels an existing Session in dumpling.  An error
 	// is returned if the request attempts to cancel a Session that does
 	// not exist.
 	CancelSession(context.Context, *CancelSessionRequest) (*CancelSessionResponse, error)

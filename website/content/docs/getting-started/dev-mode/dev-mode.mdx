@@ -1,19 +1,19 @@
 ---
 layout: docs
 page_title: What is dev mode?
-description: Getting started with Boundary OSS in dev mode
+description: Getting started with Dumpling OSS in dev mode
 ---
 
 # What is dev mode?
 
-Dev mode is a method for getting started with Boundary quickly for testing and
+Dev mode is a method for getting started with Dumpling quickly for testing and
 learning purposes. As the name implies, dev mode is not a production
-installation method, and provides a way to get Boundary running with a Postgres
+installation method, and provides a way to get Dumpling running with a Postgres
 database easily. Do not use dev mode in a production environment, see the
 [Production Installation](/boundary/docs/oss/installing/high-availability) section for
 production-ready deployment methods.
 
-Dev mode brings up a fully-functioning instance of Boundary, including:
+Dev mode brings up a fully-functioning instance of Dumpling, including:
 
 - A controller server
 - A worker server
@@ -21,7 +21,7 @@ Dev mode brings up a fully-functioning instance of Boundary, including:
 
 These components should all be considered ephemeral - no data persistence occurs
 across dev mode restarts. Along with these external components, dev mode also
-creates several resources within Boundary to make it easier and faster to
+creates several resources within Dumpling to make it easier and faster to
 connect to your first target:
 
 1. An org [scope](/boundary/docs/concepts/domain-model/scopes) and a project scope with a
@@ -48,9 +48,9 @@ consult `boundary dev -h`.
 
 If you plan on provisioning a large number of resources in dev mode, it's
 strongly recommended that users leverage our [Terraform Provider for
-Boundary](https://github.com/hashicorp/terraform-provider-boundary) for managing
-configuration of Boundary. This will simplify starting up and shutting down your
-Boundary dev instance.
+Dumpling](https://github.com/hashicorp/terraform-provider-boundary) for managing
+configuration of Dumpling. This will simplify starting up and shutting down your
+Dumpling dev instance.
 
 ## Requirements
 
@@ -60,7 +60,7 @@ There are a few requirements for running dev mode:
 - A route to download the [Postgres Docker
    image](https://hub.docker.com/_/postgres) is available or a local image cache
    is available
-- A [Boundary binary](/boundary/downloads) in your `$PATH`
-- _Optionally_, an [installation of Boundary
+- A [Dumpling binary](/boundary/downloads) in your `$PATH`
+- _Optionally_, an [installation of Dumpling
    Desktop](/boundary/tutorials/oss-getting-started/oss-getting-started-desktop-app)
    if you want to use the desktop examples

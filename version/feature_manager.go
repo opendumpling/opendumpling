@@ -61,7 +61,7 @@ func init() {
 	// UseTargetIdForHostId supports old CLI clients that are unaware of host-sourceless targets,
 	// this feature populates the target's public id into the AuthorizeSessionResponse
 	// and the SessionAuthroizationData so the CLI can properly build the ssh command
-	// when calling "boundary connect ssh..."
+	// when calling "dumpling connect ssh..."
 	featureMap[UseTargetIdForHostId] = MetadataConstraint{
 		Constraints: mustNewConstraints("< 0.14.0"),
 	}
@@ -113,7 +113,7 @@ func SupportsFeature(version *gvers.Version, feature Feature) bool {
 	return Check(version, featureVersion)
 }
 
-// GetReleaseVersion returns a go-version of this binary's Boundary version
+// GetReleaseVersion returns a go-version of this binary's Dumpling version
 func GetReleaseVersion() (*gvers.Version, error) {
 	ver := Get()
 	return gvers.NewVersion(ver.VersionNumber())

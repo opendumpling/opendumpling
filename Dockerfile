@@ -1,130 +1,100 @@
+# syntax=docker/dockerfile:1
 # Copyright (c) HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
+# Copyright (c) The OpenDumpling Authors
 
-# This Dockerfile contains multiple targets.
-# Use 'docker build --target=<name> .' to build one.
-# e.g. `docker build --target=dev .`
+# OpenDumpling container image.
 #
-# All non-dev targets have a VERSION argument that must be provided 
-# via --build-arg=VERSION=<version> when building. 
-# e.g. --build-arg=0.7.4
+# Build for the local platform:
+#   docker build -t opendumpling .
 #
-# `default` is the production docker image which cannot be built locally. 
-# For local dev and testing purposes, please build and use the `dev` docker image.
+# Build and push a multi-arch image to GHCR:
+#   docker buildx build \
+#     --platform linux/amd64,linux/arm64 \
+#     --build-arg VERSION=0.13.1 \
+#     -t ghcr.io/opendumpling/opendumpling:0.13.1 \
+#     --push .
 
+# ---------------------------------------------------------------------------
+# Build stage
+# ---------------------------------------------------------------------------
+FROM --platform=$BUILDPLATFORM golang:1.23-alpine AS build
 
-# Development docker image
-FROM docker.mirror.hashicorp.services/alpine:3.13 as dev
-
-RUN set -eux && \
-    addgroup boundary && \
-    adduser -s /bin/sh -S -G boundary boundary && \
-    apk add --no-cache wget ca-certificates dumb-init gnupg libcap openssl su-exec iputils libc6-compat iptables
-
-ADD bin/boundary /bin/boundary
-
-RUN mkdir /boundary/
-ADD .release/docker/config.hcl /boundary/config.hcl
-RUN chown -R boundary:boundary /boundary/
-RUN chmod -R 640 /boundary/*
-
-EXPOSE 9200 9201 9202
-VOLUME /boundary/
-
-COPY .release/docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["server", "-config", "/boundary/config.hcl"]
-
-
-# Official docker image that uses binaries from releases.hashicorp.com
-FROM docker.mirror.hashicorp.services/alpine:3.13 as official
-
-ARG PRODUCT_VERSION
-
-LABEL name="Boundary" \
-      maintainer="HashiCorp Boundary Team <boundary@hashicorp.com>" \
-      vendor="HashiCorp" \
-      version=$PRODUCT_VERSION \
-      release=$PRODUCT_VERSION \
-      summary="Boundary provides simple and secure access to hosts and services" \
-      description="The Boundary Docker image is designed to enable practitioners to run Boundary in server mode on a container scheduler"
-
-RUN set -eux && \
-    addgroup boundary && \
-    adduser -s /bin/sh -S -G boundary boundary && \
-    apk add --no-cache wget ca-certificates dumb-init gnupg libcap openssl su-exec iputils libc6-compat iptables && \
-    gpg --keyserver keyserver.ubuntu.com --recv-keys C874011F0AB405110D02105534365D9472D7468F && \
-    cd /tmp && \
-    apkArch="$(apk --print-arch)" && \
-    case "${apkArch}" in \
-        aarch64) boundaryArch='arm64' ;; \
-        armhf) boundaryArch='armhfv6' ;; \
-        x86) boundaryArch='386' ;; \
-        x86_64) boundaryArch='amd64' ;; \
-        *) echo >&2 "error: unsupported architecture: ${apkArch} (see https://releases.hashicorp.com/boundary/${PRODUCT_VERSION}/ )" && exit 1 ;; \
-    esac && \
-    wget https://releases.hashicorp.com/boundary/${PRODUCT_VERSION}/boundary_${PRODUCT_VERSION}_linux_${boundaryArch}.zip && \
-    wget https://releases.hashicorp.com/boundary/${PRODUCT_VERSION}/boundary_${PRODUCT_VERSION}_SHA256SUMS && \
-    wget https://releases.hashicorp.com/boundary/${PRODUCT_VERSION}/boundary_${PRODUCT_VERSION}_SHA256SUMS.sig && \
-    gpg --batch --verify boundary_${PRODUCT_VERSION}_SHA256SUMS.sig boundary_${PRODUCT_VERSION}_SHA256SUMS && \
-    grep boundary_${PRODUCT_VERSION}_linux_${boundaryArch}.zip boundary_${PRODUCT_VERSION}_SHA256SUMS | sha256sum -c && \
-    unzip -d /bin boundary_${PRODUCT_VERSION}_linux_${boundaryArch}.zip && \
-    rm boundary_${PRODUCT_VERSION}_linux_${boundaryArch}.zip boundary_${PRODUCT_VERSION}_SHA256SUMS boundary_${PRODUCT_VERSION}_SHA256SUMS.sig && \
-    mkdir /boundary
-
-COPY .release/docker/config.hcl /boundary/config.hcl
-
-RUN chown -R boundary:boundary /boundary/ 
-RUN chmod -R 640 /boundary/*
-
-EXPOSE 9200 9201 9202
-VOLUME /boundary/
-
-COPY .release/docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["server", "-config", "/boundary/config.hcl"]
-
-
-# Production docker image
-# Remember, this cannot be built locally
-FROM docker.mirror.hashicorp.services/alpine:3.13 as default
-
-ARG BIN_NAME
-# NAME and PRODUCT_VERSION are the name of the software in releases.hashicorp.com
-# and the version to download. Example: NAME=boundary PRODUCT_VERSION=1.2.3.
-ARG NAME=boundary
-ARG PRODUCT_VERSION
-# TARGETARCH and TARGETOS are set automatically when --platform is provided.
+# TARGETOS/TARGETARCH are provided automatically by BuildKit when --platform
+# is used, and used here to cross-compile a static binary.
 ARG TARGETOS TARGETARCH
+ARG VERSION=dev
+ARG GIT_COMMIT=unknown
 
-LABEL name="Boundary" \
-      maintainer="HashiCorp Boundary Team <boundary@hashicorp.com>" \
-      vendor="HashiCorp" \
-      version=$PRODUCT_VERSION \
-      release=$PRODUCT_VERSION \
-      summary="Boundary provides simple and secure access to hosts and services" \
-      description="The Boundary Docker image is designed to enable practitioners to run Boundary in server mode on a container scheduler"
+WORKDIR /src
 
-# Set ARGs as ENV so that they can be used in ENTRYPOINT/CMD
-ENV NAME=$NAME
-ENV VERSION=$PRODUCT_VERSION
+# The repository is split into several replace-based modules (api, sdk), so the
+# whole tree is needed.
+COPY . .
 
-# Create a non-root user to run the software.
-RUN addgroup ${NAME} && adduser -s /bin/sh -S -G ${NAME} ${NAME}
+RUN --mount=type=cache,target=/go/pkg/mod \
+    --mount=type=cache,target=/root/.cache/go-build \
+    CGO_ENABLED=0 \
+    GOOS=${TARGETOS:-linux} \
+    GOARCH=${TARGETARCH:-amd64} \
+    go build -trimpath -tags=dumpling \
+      -ldflags "-X github.com/opendumpling/opendumpling/version.GitCommit=${GIT_COMMIT} -X github.com/opendumpling/opendumpling/version.Version=${VERSION} -X github.com/opendumpling/opendumpling/version.BuildDate=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+      -o /out/dumpling ./cmd/dumpling
 
-RUN apk add --no-cache wget ca-certificates dumb-init gnupg libcap openssl su-exec iputils libc6-compat iptables
+# ---------------------------------------------------------------------------
+# Runtime stage
+# ---------------------------------------------------------------------------
+FROM alpine:3.20 AS release
 
-COPY .release/docker/config.hcl /boundary/config.hcl
+ARG VERSION=dev
 
-COPY dist/$TARGETOS/$TARGETARCH/$BIN_NAME /bin/
+LABEL org.opencontainers.image.authors="OpenDumpling contributors" \
+      org.opencontainers.image.url="https://github.com/opendumpling/opendumpling" \
+      org.opencontainers.image.documentation="https://github.com/opendumpling/opendumpling#readme" \
+      org.opencontainers.image.source="https://github.com/opendumpling/opendumpling" \
+      org.opencontainers.image.version="${VERSION}" \
+      org.opencontainers.image.vendor="OpenDumpling" \
+      org.opencontainers.image.title="dumpling" \
+      org.opencontainers.image.description="OpenDumpling provides simple and secure access to hosts and services" \
+      org.opencontainers.image.licenses="MPL-2.0" \
+      name="OpenDumpling" \
+      summary="OpenDumpling provides simple and secure access to hosts and services"
 
-RUN chown -R ${NAME}:${NAME} /boundary
-RUN chmod -R 640 /boundary/*
+# libc6-compat is needed to symlink the shared libraries for ARM builds.
+RUN apk add --no-cache \
+        ca-certificates \
+        dumb-init \
+        libc6-compat \
+        libcap \
+        openssl \
+        su-exec \
+        tzdata \
+ && addgroup -S dumpling \
+ && adduser -S -G dumpling -h /home/dumpling -s /sbin/nologin dumpling
 
+COPY --from=build /out/dumpling /bin/dumpling
+
+# /dumpling holds the default configuration. Mount a volume elsewhere for any
+# persistent state; the default config expects an external Postgres database.
+RUN mkdir -p /dumpling \
+ && chown -R dumpling:dumpling /dumpling
+
+COPY .release/docker/config.hcl /dumpling/config.hcl
+RUN chown -R dumpling:dumpling /dumpling \
+ && chmod -R 640 /dumpling/*
+
+# Set up nsswitch.conf for Go's "netgo" resolver, otherwise DNS supersedes the
+# container's hosts file, which we don't want.
+RUN test -e /etc/nsswitch.conf || echo 'hosts: files dns' > /etc/nsswitch.conf
+
+# Controller API, cluster, and proxy listener ports.
 EXPOSE 9200 9201 9202
-VOLUME /boundary/
+VOLUME /dumpling
 
+# OpenDumpling doesn't need root, so the entrypoint drops privileges to the
+# "dumpling" user, and uses dumb-init as PID 1 to reap zombie processes.
 COPY .release/docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["server", "-config", "/boundary/config.hcl"]
+
+CMD ["server", "-config", "/dumpling/config.hcl"]

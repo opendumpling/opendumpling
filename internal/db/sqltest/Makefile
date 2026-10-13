@@ -41,7 +41,7 @@ POSTGRES_DOCKER_IMAGE := $(POSTGRES_DOCKER_IMAGE_BASE):$(PG_DOCKER_TAG)
 PG_TAP_DOCKER_IMAGE_BASE ?= hashicorpboundary/pgtap
 PG_TAP_DOCKER_IMAGE := $(PG_TAP_DOCKER_IMAGE_BASE):$(PG_TAP_DOCKER_TAG)
 
-SQL_TEST_CONTAINER_NAME ?= boundary-sql-tests
+SQL_TEST_CONTAINER_NAME ?= dumpling-sql-tests
 
 
 # re-write paths for docker
@@ -55,7 +55,7 @@ test:
 		$(DOCKER_ARGS) \
 		-e POSTGRES_PASSWORD=boundary \
 		-e POSTGRES_USER=boundary \
-		-e POSTGRES_DB=boundary \
+		-e POSTGRES_DB=dumpling \
 		-v "$(CWD)/../schema/migrations":/migrations \
 		-v "$(CWD)/initdb.d":/docker-entrypoint-initdb.d/ \
 		$(POSTGRES_DOCKER_IMAGE)
@@ -79,7 +79,7 @@ database-up:
 		$(DOCKER_ARGS) \
 		-e POSTGRES_PASSWORD=boundary \
 		-e POSTGRES_USER=boundary \
-		-e POSTGRES_DB=boundary \
+		-e POSTGRES_DB=dumpling \
 		-v "$(CWD)/../schema/migrations":/migrations \
 		-v "$(CWD)/initdb.d":/docker-entrypoint-initdb.d/ \
 		$(POSTGRES_DOCKER_IMAGE)

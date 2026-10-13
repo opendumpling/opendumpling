@@ -7,8 +7,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hashicorp/boundary/internal/auth/oidc/store"
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/auth/oidc/store"
+	"github.com/opendumpling/opendumpling/internal/errors"
 	"google.golang.org/protobuf/proto"
 )
 

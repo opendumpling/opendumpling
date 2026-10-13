@@ -79,7 +79,7 @@ const (
 	ConnectionsField                            = "connections"
 	CredentialTypeField                         = "credential_type"
 	CredentialMappingOverridesField             = "credential_mapping_overrides"
-	MetricNamespace                             = "boundary"
+	MetricNamespace                             = "dumpling"
 	LastStatusTimeField                         = "last_status_time"
 	AddressField                                = "address"
 	CanonicalAddressField                       = "canonical_address"

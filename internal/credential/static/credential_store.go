@@ -4,8 +4,8 @@
 package static
 
 import (
-	"github.com/hashicorp/boundary/internal/credential/static/store"
-	"github.com/hashicorp/boundary/internal/oplog"
+	"github.com/opendumpling/opendumpling/internal/credential/static/store"
+	"github.com/opendumpling/opendumpling/internal/oplog"
 	"google.golang.org/protobuf/proto"
 )
 

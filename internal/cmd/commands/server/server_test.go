@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/cmd/config"
-	"github.com/hashicorp/boundary/internal/daemon/controller"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/config"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller"
 	"github.com/mitchellh/cli"
 	"github.com/stretchr/testify/require"
 )
@@ -82,7 +82,7 @@ func testServerCommand(t *testing.T, opts testServerCommandOpts) *Command {
 			cmd.Server.DevSecondaryTargetId = defaultSecondaryTestTargetId
 		}
 
-		err = cmd.CreateDevDatabase(cmd.Context, base.WithDatabaseTemplate("boundary_template"), base.WithSkipOidcAuthMethodCreation(), base.WithSkipLdapAuthMethodCreation())
+		err = cmd.CreateDevDatabase(cmd.Context, base.WithDatabaseTemplate("dumpling_template"), base.WithSkipOidcAuthMethodCreation(), base.WithSkipLdapAuthMethodCreation())
 		if err != nil {
 			if cmd.DevDatabaseCleanupFunc != nil {
 				require.NoError(cmd.DevDatabaseCleanupFunc())

@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"text/template"
 
-	"github.com/hashicorp/boundary/internal/types/resource"
+	"github.com/opendumpling/opendumpling/internal/types/resource"
 	"github.com/hashicorp/go-secure-stdlib/strutil"
 	"github.com/iancoleman/strcase"
 )
@@ -95,10 +95,10 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/{{ .Pkg }}"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/cmd/common"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/{{ .Pkg }}"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/common"
 	"github.com/hashicorp/go-secure-stdlib/strutil"
 	"github.com/mitchellh/cli"
 	"github.com/posener/complete"
@@ -260,7 +260,7 @@ func (c *{{ camelCase .SubActionPrefix }}Command) Run(args []string) int {
 	init{{ camelCase .SubActionPrefix }}Flags()
 
 	{{ if .HasExampleCliOutput }}
-	if os.Getenv("BOUNDARY_EXAMPLE_CLI_OUTPUT") != "" {
+	if os.Getenv("DUMPLING_EXAMPLE_CLI_OUTPUT") != "" {
 		c.UI.Output(exampleOutput())
 		return base.CommandSuccess
 	}
@@ -327,14 +327,14 @@ func (c *{{ camelCase .SubActionPrefix }}Command) Run(args []string) int {
 		{{ if hasAction .StdActions "create" }}
 		case "create":
 			if c.Flag{{ .Container }}Id == "" {
-				c.PrintCliError(errors.New("{{ .Container }} ID must be passed in via -{{ kebabCase .Container }}-id or BOUNDARY_{{ envCase .Container }}_ID"))
+				c.PrintCliError(errors.New("{{ .Container }} ID must be passed in via -{{ kebabCase .Container }}-id or DUMPLING_{{ envCase .Container }}_ID"))
 				return base.CommandUserError
 			}
 		{{ end }}
 		{{ if hasAction .StdActions "list" }}
 		case "list":
 			if c.Flag{{ .Container }}Id == "" {
-				c.PrintCliError(errors.New("{{ .Container }} ID must be passed in via -{{ kebabCase .Container }}-id or BOUNDARY_{{ envCase .Container }}_ID"))
+				c.PrintCliError(errors.New("{{ .Container }} ID must be passed in via -{{ kebabCase .Container }}-id or DUMPLING_{{ envCase .Container }}_ID"))
 				return base.CommandUserError
 			}
 		{{ end }}

@@ -8,24 +8,24 @@ controller {
   description = "A controller"
 
   database {
-    url = "env://LOAD_TEST_BOUNDARY_POSTGRES_URL"
+    url = "env://LOAD_TEST_DUMPLING_POSTGRES_URL"
   }
 }
 
 listener "tcp" {
-  address     = "boundary"
+  address     = "dumpling"
   purpose     = "api"
   tls_disable = true
 }
 
 listener "tcp" {
-  address     = "boundary"
+  address     = "dumpling"
   purpose     = "cluster"
   tls_disable = true
 }
 
 listener "tcp" {
-  address     = "boundary"
+  address     = "dumpling"
   purpose     = "ops"
   tls_disable = true
 }

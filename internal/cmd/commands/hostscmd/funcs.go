@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/hosts"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/hosts"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 )
 
 func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
@@ -17,37 +17,37 @@ func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
 	switch c.Func {
 	case "":
 		return base.WrapForHelpText([]string{
-			"Usage: boundary hosts [sub command] [options] [args]",
+			"Usage: dumpling hosts [sub command] [options] [args]",
 			"",
-			"  This command allows operations on Boundary host resources. Example:",
+			"  This command allows operations on Dumpling host resources. Example:",
 			"",
 			"    Read a host:",
 			"",
-			`      $ boundary hosts read -id hst_1234567890`,
+			`      $ dumpling hosts read -id hst_1234567890`,
 			"",
 			"  Please see the hosts subcommand help for detailed usage information.",
 		})
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary hosts create [type] [sub command] [options] [args]",
+			"Usage: dumpling hosts create [type] [sub command] [options] [args]",
 			"",
-			"  This command allows create operations on Boundary host resources. Example:",
+			"  This command allows create operations on Dumpling host resources. Example:",
 			"",
 			"    Create a static-type host:",
 			"",
-			`      $ boundary hosts create static -name prodops -description "For ProdOps usage"`,
+			`      $ dumpling hosts create static -name prodops -description "For ProdOps usage"`,
 			"",
 			"  Please see the typed subcommand help for detailed usage information.",
 		})
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary hosts update [type] [sub command] [options] [args]",
+			"Usage: dumpling hosts update [type] [sub command] [options] [args]",
 			"",
-			"  This command allows update operations on Boundary host resources. Example:",
+			"  This command allows update operations on Dumpling host resources. Example:",
 			"",
 			"    Update a static-type host:",
 			"",
-			`      $ boundary hosts update static -id hst_1234567890 -name devops -description "For DevOps usage"`,
+			`      $ dumpling hosts update static -id hst_1234567890 -name devops -description "For DevOps usage"`,
 			"",
 			"  Please see the typed subcommand help for detailed usage information.",
 		})

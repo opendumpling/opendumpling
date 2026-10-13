@@ -3,7 +3,7 @@
 
 package schema
 
-import "github.com/hashicorp/boundary/internal/db/schema/migration"
+import "github.com/opendumpling/opendumpling/internal/db/schema/migration"
 
 // RepairMigrations is a set of migration versions grouped by edition that
 // should have their coresponding repair functions run if the check function

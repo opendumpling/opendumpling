@@ -3,7 +3,7 @@
 
 package vault
 
-import "github.com/hashicorp/boundary/internal/credential"
+import "github.com/opendumpling/opendumpling/internal/credential"
 
 // getOpts - iterate the inbound Options and return a struct
 func getOpts(opt ...Option) options {

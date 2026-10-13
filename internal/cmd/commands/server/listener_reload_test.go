@@ -20,7 +20,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/cmd/config"
+	"github.com/opendumpling/opendumpling/internal/cmd/config"
 	"github.com/mitchellh/cli"
 	"github.com/stretchr/testify/require"
 )

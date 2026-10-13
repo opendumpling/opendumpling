@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/hostsets"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/cmd/common"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/hostsets"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/common"
 )
 
 func init() {
@@ -51,73 +51,73 @@ func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
 	switch c.Func {
 	case "":
 		return base.WrapForHelpText([]string{
-			"Usage: boundary host-sets [sub command] [options] [args]",
+			"Usage: dumpling host-sets [sub command] [options] [args]",
 			"",
-			"  This command allows operations on Boundary host set resources. Example:",
+			"  This command allows operations on Dumpling host set resources. Example:",
 			"",
 			"    Read a host set:",
 			"",
-			`      $ boundary host-sets read -id hsst_1234567890`,
+			`      $ dumpling host-sets read -id hsst_1234567890`,
 			"",
 			"  Please see the host-sets subcommand help for detailed usage information.",
 		})
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary host-sets create [type] [sub command] [options] [args]",
+			"Usage: dumpling host-sets create [type] [sub command] [options] [args]",
 			"",
-			"  This command allows create operations on Boundary host set resources. Example:",
+			"  This command allows create operations on Dumpling host set resources. Example:",
 			"",
 			"    Create a static-type host set:",
 			"",
-			`      $ boundary host-sets create static -name prodops -description "For ProdOps usage"`,
+			`      $ dumpling host-sets create static -name prodops -description "For ProdOps usage"`,
 			"",
 			"  Please see the typed subcommand help for detailed usage information.",
 		})
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary host-sets update [type] [sub command] [options] [args]",
+			"Usage: dumpling host-sets update [type] [sub command] [options] [args]",
 			"",
-			"  This command allows update operations on Boundary host set resources. Example:",
+			"  This command allows update operations on Dumpling host set resources. Example:",
 			"",
 			"    Update a static-type host set:",
 			"",
-			`      $ boundary host-sets update static -id hsst_1234567890 -name devops -description "For DevOps usage"`,
+			`      $ dumpling host-sets update static -id hsst_1234567890 -name devops -description "For DevOps usage"`,
 			"",
 			"  Please see the typed subcommand help for detailed usage information.",
 		})
 	case "add-hosts":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary host-sets add-hosts [sub command] [options] [args]",
+			"Usage: dumpling host-sets add-hosts [sub command] [options] [args]",
 			"",
 			"  This command allows adding hosts to host set resources, if the types match and the operation is allowed by the given host set type. Example:",
 			"",
 			"    Add static-type hosts to a static-type host set:",
 			"",
-			`      $ boundary host-sets add-hosts -id hsst_1234567890 -host hst_1234567890 -host hst_0987654321`,
+			`      $ dumpling host-sets add-hosts -id hsst_1234567890 -host hst_1234567890 -host hst_0987654321`,
 			"",
 			"",
 		})
 	case "remove-hosts":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary host-sets remove-hosts [sub command] [options] [args]",
+			"Usage: dumpling host-sets remove-hosts [sub command] [options] [args]",
 			"",
 			"  This command allows removing hosts from host set resources, if the types match and the operation is allowed by the given host set type. Example:",
 			"",
 			"    Remove static-type hosts from a static-type host set:",
 			"",
-			`      $ boundary host-sets remove-hosts -id hsst_1234567890 -host hst_0987654321`,
+			`      $ dumpling host-sets remove-hosts -id hsst_1234567890 -host hst_0987654321`,
 			"",
 			"",
 		})
 	case "set-hosts":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary host-sets set-hosts [sub command] [options] [args]",
+			"Usage: dumpling host-sets set-hosts [sub command] [options] [args]",
 			"",
 			"  This command allows setting the complete set of hosts on host set resources, if the types match and the operation is allowed by the given host set type. Example:",
 			"",
 			"    Set the complete set of static-type hosts on a static-type host set:",
 			"",
-			`      $ boundary host-sets remove-hosts -id hsst_1234567890 -host hst_1234567890`,
+			`      $ dumpling host-sets remove-hosts -id hsst_1234567890 -host hst_1234567890`,
 			"",
 			"",
 		})

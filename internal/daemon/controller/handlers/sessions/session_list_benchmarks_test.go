@@ -8,19 +8,19 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/auth/password"
-	"github.com/hashicorp/boundary/internal/authtoken"
-	"github.com/hashicorp/boundary/internal/daemon/controller/auth"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/sessions"
-	"github.com/hashicorp/boundary/internal/db"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/api/services"
-	authpb "github.com/hashicorp/boundary/internal/gen/controller/auth"
-	"github.com/hashicorp/boundary/internal/iam"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/server"
-	"github.com/hashicorp/boundary/internal/session"
-	"github.com/hashicorp/boundary/internal/types/scope"
-	"github.com/hashicorp/boundary/testing/dbtest"
+	"github.com/opendumpling/opendumpling/internal/auth/password"
+	"github.com/opendumpling/opendumpling/internal/authtoken"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/auth"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/sessions"
+	"github.com/opendumpling/opendumpling/internal/db"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/api/services"
+	authpb "github.com/opendumpling/opendumpling/internal/gen/controller/auth"
+	"github.com/opendumpling/opendumpling/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/server"
+	"github.com/opendumpling/opendumpling/internal/session"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
+	"github.com/opendumpling/opendumpling/testing/dbtest"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/sync/errgroup"
 )
@@ -37,37 +37,37 @@ func BenchmarkSessionList(b *testing.B) {
 	// an overview of the assumptions made when creating these template scenarios.
 	for _, template := range []template{
 		{
-			name:            dbtest.Boundary1000Sessions10ConnsPerSession10Template,
+			name:            dbtest.Dumpling1000Sessions10ConnsPerSession10Template,
 			sessions:        1000,
 			connsPerSession: 10,
 			users:           10,
 		},
 		{
-			name:            dbtest.Boundary1000Sessions10ConnsPerSession25Template,
+			name:            dbtest.Dumpling1000Sessions10ConnsPerSession25Template,
 			sessions:        1000,
 			connsPerSession: 10,
 			users:           25,
 		},
 		{
-			name:            dbtest.Boundary1000Sessions10ConnsPerSession50Template,
+			name:            dbtest.Dumpling1000Sessions10ConnsPerSession50Template,
 			sessions:        1000,
 			connsPerSession: 10,
 			users:           50,
 		},
 		{
-			name:            dbtest.Boundary1000Sessions10ConnsPerSession75Template,
+			name:            dbtest.Dumpling1000Sessions10ConnsPerSession75Template,
 			sessions:        1000,
 			connsPerSession: 10,
 			users:           75,
 		},
 		{
-			name:            dbtest.Boundary1000Sessions10ConnsPerSession100Template,
+			name:            dbtest.Dumpling1000Sessions10ConnsPerSession100Template,
 			sessions:        1000,
 			connsPerSession: 10,
 			users:           100,
 		},
 		{
-			name:            dbtest.Boundary1000Sessions10ConnsPerSession500Template,
+			name:            dbtest.Dumpling1000Sessions10ConnsPerSession500Template,
 			sessions:        1000,
 			connsPerSession: 10,
 			users:           500,
@@ -79,7 +79,7 @@ func BenchmarkSessionList(b *testing.B) {
 			rw := db.New(conn)
 			kmsThing, err := kms.New(ctx, rw, rw)
 			require.NoError(b, err)
-			wrap, err := dbtest.GetBoundaryBenchmarksRootKeyWrapper(ctx)
+			wrap, err := dbtest.GetDumplingBenchmarksRootKeyWrapper(ctx)
 			require.NoError(b, err)
 			err = kmsThing.AddExternalWrappers(ctx, kms.WithRootWrapper(wrap))
 			require.NoError(b, err)
@@ -126,7 +126,7 @@ func BenchmarkSessionList(b *testing.B) {
 				account, err := pwRepo.LookupAccount(ctx, accountIds[0])
 				require.NoError(b, err)
 				require.NotNil(b, account)
-				acct, err := pwRepo.Authenticate(ctx, u.ScopeId, account.AuthMethodId, u.Name, dbtest.BoundaryBenchmarksUserPassword)
+				acct, err := pwRepo.Authenticate(ctx, u.ScopeId, account.AuthMethodId, u.Name, dbtest.DumplingBenchmarksUserPassword)
 				require.NoError(b, err)
 				require.NotNil(b, acct)
 				tok, err := authTokenRepo.CreateAuthToken(ctx, u, acct.GetPublicId())

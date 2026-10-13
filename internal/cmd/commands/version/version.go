@@ -6,8 +6,8 @@ package version
 import (
 	"fmt"
 
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	ver "github.com/hashicorp/boundary/version"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	ver "github.com/opendumpling/opendumpling/version"
 	"github.com/mitchellh/cli"
 	"github.com/posener/complete"
 )
@@ -22,14 +22,14 @@ type Command struct {
 }
 
 func (c *Command) Synopsis() string {
-	return "Print the version of the local Boundary binary"
+	return "Print the version of the local Dumpling binary"
 }
 
 func (c *Command) Help() string {
 	return base.WrapForHelpText([]string{
-		"Usage: boundary version",
+		"Usage: dumpling version",
 		"",
-		"  This command displays the version of the local Boundary binary.",
+		"  This command displays the version of the local Dumpling binary.",
 	}) + c.Flags().Help()
 }
 

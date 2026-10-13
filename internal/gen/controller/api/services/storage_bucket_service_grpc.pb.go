@@ -28,18 +28,18 @@ type StorageBucketServiceClient interface {
 	// ID and if it is  missing, malformed, or references a non-existing resource
 	// an error is returned.
 	ListStorageBuckets(ctx context.Context, in *ListStorageBucketsRequest, opts ...grpc.CallOption) (*ListStorageBucketsResponse, error)
-	// CreateStorageBucket creates and stores a Storage Bucket in boundary.  The
+	// CreateStorageBucket creates and stores a Storage Bucket in dumpling.  The
 	// provided request must include the scope ID in which the Storage Bucket will be
 	// created. If any of these required fields are missing, malformed, or reference a
 	// non-existing parent resource an error is returned.
 	CreateStorageBucket(ctx context.Context, in *CreateStorageBucketRequest, opts ...grpc.CallOption) (*CreateStorageBucketResponse, error)
-	// UpdateStorageBucket updates an existing Storage Bucket in Boundary. The
+	// UpdateStorageBucket updates an existing Storage Bucket in Dumpling. The
 	// provided Storage Bucket must not have any read only fields set. The update
 	// mask must be provided and include at least 1 mutable field. To unset a
 	// field's value include that field name in the update mask and don't set the
 	// field in the Storage Bucket.
 	UpdateStorageBucket(ctx context.Context, in *UpdateStorageBucketRequest, opts ...grpc.CallOption) (*UpdateStorageBucketResponse, error)
-	// DeleteStorageBucket removes a Storage Bucket  from Boundary.
+	// DeleteStorageBucket removes a Storage Bucket  from Dumpling.
 	// If the provided Storage Bucket ID is malformed or not
 	// provided DeleteStorageBucket returns an error.
 	DeleteStorageBucket(ctx context.Context, in *DeleteStorageBucketRequest, opts ...grpc.CallOption) (*DeleteStorageBucketResponse, error)
@@ -112,18 +112,18 @@ type StorageBucketServiceServer interface {
 	// ID and if it is  missing, malformed, or references a non-existing resource
 	// an error is returned.
 	ListStorageBuckets(context.Context, *ListStorageBucketsRequest) (*ListStorageBucketsResponse, error)
-	// CreateStorageBucket creates and stores a Storage Bucket in boundary.  The
+	// CreateStorageBucket creates and stores a Storage Bucket in dumpling.  The
 	// provided request must include the scope ID in which the Storage Bucket will be
 	// created. If any of these required fields are missing, malformed, or reference a
 	// non-existing parent resource an error is returned.
 	CreateStorageBucket(context.Context, *CreateStorageBucketRequest) (*CreateStorageBucketResponse, error)
-	// UpdateStorageBucket updates an existing Storage Bucket in Boundary. The
+	// UpdateStorageBucket updates an existing Storage Bucket in Dumpling. The
 	// provided Storage Bucket must not have any read only fields set. The update
 	// mask must be provided and include at least 1 mutable field. To unset a
 	// field's value include that field name in the update mask and don't set the
 	// field in the Storage Bucket.
 	UpdateStorageBucket(context.Context, *UpdateStorageBucketRequest) (*UpdateStorageBucketResponse, error)
-	// DeleteStorageBucket removes a Storage Bucket  from Boundary.
+	// DeleteStorageBucket removes a Storage Bucket  from Dumpling.
 	// If the provided Storage Bucket ID is malformed or not
 	// provided DeleteStorageBucket returns an error.
 	DeleteStorageBucket(context.Context, *DeleteStorageBucketRequest) (*DeleteStorageBucketResponse, error)

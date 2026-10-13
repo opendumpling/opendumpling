@@ -3,7 +3,7 @@
 
 package schema
 
-import "github.com/hashicorp/boundary/internal/db/schema/internal/provider"
+import "github.com/opendumpling/opendumpling/internal/db/schema/internal/provider"
 
 const nilVersion = -1
 

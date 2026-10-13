@@ -8,10 +8,10 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/db/timestamp"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/host/static/store"
-	"github.com/hashicorp/boundary/internal/oplog"
+	"github.com/opendumpling/opendumpling/internal/db/timestamp"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/host/static/store"
+	"github.com/opendumpling/opendumpling/internal/oplog"
 	"google.golang.org/protobuf/proto"
 )
 

@@ -9,8 +9,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/bsr/internal/fstest"
-	"github.com/hashicorp/boundary/internal/storage"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/fstest"
+	"github.com/opendumpling/opendumpling/internal/storage"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

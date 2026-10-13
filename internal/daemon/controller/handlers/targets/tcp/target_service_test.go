@@ -17,40 +17,40 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/auth/ldap"
-	"github.com/hashicorp/boundary/internal/auth/oidc"
-	"github.com/hashicorp/boundary/internal/auth/password"
-	"github.com/hashicorp/boundary/internal/authtoken"
-	"github.com/hashicorp/boundary/internal/credential"
-	credstatic "github.com/hashicorp/boundary/internal/credential/static"
-	"github.com/hashicorp/boundary/internal/credential/vault"
-	"github.com/hashicorp/boundary/internal/daemon/controller/auth"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/credentiallibraries"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/credentials"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/targets"
-	"github.com/hashicorp/boundary/internal/db"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/api/services"
-	authpb "github.com/hashicorp/boundary/internal/gen/controller/auth"
-	hostplugin "github.com/hashicorp/boundary/internal/host/plugin"
-	"github.com/hashicorp/boundary/internal/host/static"
-	"github.com/hashicorp/boundary/internal/iam"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/plugin"
-	"github.com/hashicorp/boundary/internal/plugin/loopback"
-	"github.com/hashicorp/boundary/internal/requests"
-	"github.com/hashicorp/boundary/internal/scheduler"
-	"github.com/hashicorp/boundary/internal/server"
-	"github.com/hashicorp/boundary/internal/session"
-	"github.com/hashicorp/boundary/internal/target"
-	"github.com/hashicorp/boundary/internal/target/tcp"
-	"github.com/hashicorp/boundary/internal/types/scope"
-	credlibpb "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/credentiallibraries"
-	credpb "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/credentials"
-	"github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/scopes"
-	pb "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/targets"
-	plgpb "github.com/hashicorp/boundary/sdk/pbs/plugin"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/auth/ldap"
+	"github.com/opendumpling/opendumpling/internal/auth/oidc"
+	"github.com/opendumpling/opendumpling/internal/auth/password"
+	"github.com/opendumpling/opendumpling/internal/authtoken"
+	"github.com/opendumpling/opendumpling/internal/credential"
+	credstatic "github.com/opendumpling/opendumpling/internal/credential/static"
+	"github.com/opendumpling/opendumpling/internal/credential/vault"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/auth"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/credentiallibraries"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/credentials"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/targets"
+	"github.com/opendumpling/opendumpling/internal/db"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/api/services"
+	authpb "github.com/opendumpling/opendumpling/internal/gen/controller/auth"
+	hostplugin "github.com/opendumpling/opendumpling/internal/host/plugin"
+	"github.com/opendumpling/opendumpling/internal/host/static"
+	"github.com/opendumpling/opendumpling/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/plugin"
+	"github.com/opendumpling/opendumpling/internal/plugin/loopback"
+	"github.com/opendumpling/opendumpling/internal/requests"
+	"github.com/opendumpling/opendumpling/internal/scheduler"
+	"github.com/opendumpling/opendumpling/internal/server"
+	"github.com/opendumpling/opendumpling/internal/session"
+	"github.com/opendumpling/opendumpling/internal/target"
+	"github.com/opendumpling/opendumpling/internal/target/tcp"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
+	credlibpb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/credentiallibraries"
+	credpb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/credentials"
+	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/scopes"
+	pb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/targets"
+	plgpb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -64,7 +64,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 
-	_ "github.com/hashicorp/boundary/internal/daemon/controller/handlers/targets/tcp"
+	_ "github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/targets/tcp"
 )
 
 var testAuthorizedActions = []string{
@@ -2536,7 +2536,7 @@ func TestAuthorizeSession(t *testing.T) {
 
 	v := vault.NewTestVaultServer(t)
 	v.MountPKI(t, vault.WithTestMountPath("pki/"+userName))
-	sec, tok := v.CreateToken(t, vault.WithPolicies([]string{"default", "boundary-controller", "pki"}))
+	sec, tok := v.CreateToken(t, vault.WithPolicies([]string{"default", "dumpling-controller", "pki"}))
 
 	vaultStore := vault.TestCredentialStore(t, conn, wrapper, proj.GetPublicId(), v.Addr, tok, sec.Auth.Accessor)
 	credService, err := credentiallibraries.NewService(ctx, vaultCredRepoFn, iamRepoFn)
@@ -2549,13 +2549,13 @@ func TestAuthorizeSession(t *testing.T) {
 		Attrs: &credlibpb.CredentialLibrary_VaultCredentialLibraryAttributes{
 			VaultCredentialLibraryAttributes: &credlibpb.VaultCredentialLibraryAttributes{
 				Path: &wrapperspb.StringValue{
-					Value: path.Join("pki/{{ .User.Name}}", "issue", "boundary"),
+					Value: path.Join("pki/{{ .User.Name}}", "issue", "dumpling"),
 				},
 				HttpMethod: &wrapperspb.StringValue{
 					Value: "POST",
 				},
 				HttpRequestBody: &wrapperspb.StringValue{
-					Value: `{"common_name":"boundary.com", "alt_names": "{{.User.Name}},{{.Account.Name}},{{.Account.LoginName}},{{ truncateFrom .Account.LoginName "@" }}"}`,
+					Value: `{"common_name":"dumpling.com", "alt_names": "{{.User.Name}},{{.Account.Name}},{{.Account.LoginName}},{{ truncateFrom .Account.LoginName "@" }}"}`,
 				},
 			},
 		},
@@ -2774,7 +2774,7 @@ func TestAuthorizeSessionTypedCredentials(t *testing.T) {
 
 	v := vault.NewTestVaultServer(t)
 	v.AddKVPolicy(t)
-	sec, tok := v.CreateToken(t, vault.WithPolicies([]string{"default", "boundary-controller", "secret"}))
+	sec, tok := v.CreateToken(t, vault.WithPolicies([]string{"default", "dumpling-controller", "secret"}))
 
 	vaultStore := vault.TestCredentialStore(t, conn, wrapper, proj.GetPublicId(), v.Addr, tok, sec.Auth.Accessor)
 	credLibService, err := credentiallibraries.NewService(ctx, vaultCredRepoFn, iamRepoFn)

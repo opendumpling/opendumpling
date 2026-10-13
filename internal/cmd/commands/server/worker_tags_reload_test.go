@@ -21,7 +21,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/testing/controller"
+	"github.com/opendumpling/opendumpling/testing/controller"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	"github.com/hashicorp/go-kms-wrapping/v2/aead"
 	"github.com/mitchellh/cli"

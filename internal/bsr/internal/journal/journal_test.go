@@ -11,8 +11,8 @@ import (
 	"io/fs"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/bsr/internal/fstest"
-	"github.com/hashicorp/boundary/internal/bsr/internal/journal"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/fstest"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/journal"
 	"github.com/stretchr/testify/require"
 )
 

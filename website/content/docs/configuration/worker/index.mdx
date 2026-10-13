@@ -7,9 +7,9 @@ description: |-
 
 # Worker stanza
 
-The `worker` stanza configures Boundary worker-specific parameters.
+The `worker` stanza configures Dumpling worker-specific parameters.
 
-All workers within Boundary use certificates and encryption keys to identify
+All workers within Dumpling use certificates and encryption keys to identify
 themselves and protect data in transit. However, there are multiple different
 ways to register them so that registration of workers can fit into any workflow.
 Registration methods are referred to as `pki` and `kms` registration methods and
@@ -24,7 +24,7 @@ use for automatic scaling, and meaning they are not required to store
 credentials locally; each time they connect the KMS is used to reauthenticate
 them.
 
-~> Prior to version 0.13 of Boundary, workers had different properties and
+~> Prior to version 0.13 of Dumpling, workers had different properties and
 capabilities depending on the registration method. If you are using pre-0.13
 workers, with pre-0.13 upstreams please be sure to switch the documentation
 version to `0.12.x` for correct information. If you are using 0.13 workers with
@@ -50,7 +50,7 @@ worker {
     region = ["us-east-1"]
   }
 
-  # HCP Boundary only
+  # HCP Dumpling only
   # hcp_boundary_cluster_id = "....."
 }
 ```
@@ -82,9 +82,9 @@ worker {
   referring to a file on disk (`file://`) or an env var (`env://`).
 
 - `hcp_boundary_cluster_id` - A string that can be used to configure PKI workers
-  to connect to your HCP Boundary cluster rather than specifying
+  to connect to your HCP Dumpling cluster rather than specifying
   `initial_upstreams`. This is currently only valid for workers using the PKI
-  registration method and for workers directly connected to HCP Boundary.
+  registration method and for workers directly connected to HCP Dumpling.
 
 ## Signals
 
@@ -130,7 +130,7 @@ intermediary workers have the following requirements.
 #### Ingress worker requirements
 
 To proxy target connections, ingress workers require outbound access to the
-Boundary control plane and inbound access from clients.
+Dumpling control plane and inbound access from clients.
 
 #### Intermediary worker requirements
 
@@ -186,9 +186,9 @@ kms "aead" {
 
 ## Tutorials
 
-Refer to the [Self-Managed Worker Registration with HCP Boundary](/boundary/tutorials/hcp-administration/hcp-manage-workers) tutorial to learn how to register and manage PKI workers.
+Refer to the [Self-Managed Worker Registration with HCP Dumpling](/boundary/tutorials/hcp-administration/hcp-manage-workers) tutorial to learn how to register and manage PKI workers.
 
-Refer to the [Manage Multi-Hop Sessions with HCP Boundary](/boundary/tutorials/hcp-administration/hcp-manage-multi-hop) tutorial to learn how to configure a multi-hop session.
+Refer to the [Manage Multi-Hop Sessions with HCP Dumpling](/boundary/tutorials/hcp-administration/hcp-manage-multi-hop) tutorial to learn how to configure a multi-hop session.
 
 [kms workers]: /boundary/docs/configuration/worker/kms-worker
 [pki workers]: /boundary/docs/configuration/worker/pki-worker

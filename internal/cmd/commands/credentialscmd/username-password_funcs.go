@@ -7,8 +7,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/hashicorp/boundary/api/credentials"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api/credentials"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/hashicorp/go-secure-stdlib/parseutil"
 )
 
@@ -85,22 +85,22 @@ func (c *UsernamePasswordCommand) extraUsernamePasswordHelpFunc(_ map[string]fun
 	switch c.Func {
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary credentials create username-password -credential-store-id [options] [args]",
+			"Usage: dumpling credentials create username-password -credential-store-id [options] [args]",
 			"",
 			"  Create a username password credential. Example:",
 			"",
-			`    $ boundary credentials create username-password -credential-store-id csvlt_1234567890 -username user -password pass`,
+			`    $ dumpling credentials create username-password -credential-store-id csvlt_1234567890 -username user -password pass`,
 			"",
 			"",
 		})
 
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary credentials update username-password [options] [args]",
+			"Usage: dumpling credentials update username-password [options] [args]",
 			"",
 			"  Update a username password credential given its ID. Example:",
 			"",
-			`    $ boundary credentials update username-password -id clvlt_1234567890 -name devops -description "For DevOps usage"`,
+			`    $ dumpling credentials update username-password -id clvlt_1234567890 -name devops -description "For DevOps usage"`,
 			"",
 			"",
 		})

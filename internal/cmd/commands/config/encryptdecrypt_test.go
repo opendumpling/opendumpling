@@ -12,7 +12,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/mitchellh/cli"
 	"github.com/stretchr/testify/assert"
 )

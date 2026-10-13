@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/hashicorp/boundary/api/credentiallibraries"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/cmd/common"
+	"github.com/opendumpling/opendumpling/api/credentiallibraries"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/common"
 )
 
 func init() {
@@ -243,22 +243,22 @@ func (c *VaultSshCertificateCommand) extraVaultSshCertificateHelpFunc(_ map[stri
 	switch c.Func {
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary credential-libraries create vault-ssh-certificate -credential-store-id [options] [args]",
+			"Usage: dumpling credential-libraries create vault-ssh-certificate -credential-store-id [options] [args]",
 			"",
 			"  Create a vault-ssh-certificate-type credential library. Example:",
 			"",
-			`    $ boundary credential-libraries create vault-ssh-certificate -credential-store-id  csvlt_1234567890 -vault-path "/ssh/sign/role" -username user`,
+			`    $ dumpling credential-libraries create vault-ssh-certificate -credential-store-id  csvlt_1234567890 -vault-path "/ssh/sign/role" -username user`,
 			"",
 			"",
 		})
 
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary credential-libraries update vault-ssh-certificate [options] [args]",
+			"Usage: dumpling credential-libraries update vault-ssh-certificate [options] [args]",
 			"",
 			"  Update a vault-ssh-certificate-type credential library given its ID. Example:",
 			"",
-			`    $ boundary credential-libraries update vault-ssh-certificate -id clvsclt_1234567890 -name devops -description "For DevOps usage"`,
+			`    $ dumpling credential-libraries update vault-ssh-certificate -id clvsclt_1234567890 -name devops -description "For DevOps usage"`,
 			"",
 			"",
 		})

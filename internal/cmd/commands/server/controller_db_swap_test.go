@@ -11,11 +11,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/cmd/config"
-	"github.com/hashicorp/boundary/internal/daemon/controller"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/testing/dbtest"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/config"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/testing/dbtest"
 	"github.com/mitchellh/cli"
 	"github.com/stretchr/testify/require"
 )

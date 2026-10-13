@@ -9,10 +9,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/scheduler"
-	"github.com/hashicorp/boundary/internal/scheduler/cleaner"
-	"github.com/hashicorp/boundary/internal/scheduler/job"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/scheduler"
+	"github.com/opendumpling/opendumpling/internal/scheduler/cleaner"
+	"github.com/opendumpling/opendumpling/internal/scheduler/job"
 	"github.com/stretchr/testify/require"
 )
 

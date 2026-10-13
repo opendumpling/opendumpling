@@ -41,25 +41,25 @@ type options struct {
 func getDefaultOptions() (options, error) {
 	opts := options{}
 
-	sysEvents, err := parseutil.ParseBool(os.Getenv("BOUNDARY_ENABLE_TEST_SYS_EVENTS"))
+	sysEvents, err := parseutil.ParseBool(os.Getenv("DUMPLING_ENABLE_TEST_SYS_EVENTS"))
 	if err != nil {
 		return opts, err
 	}
 	opts.withSysEventsEnabled = sysEvents
 
-	auditEvents, err := parseutil.ParseBool(os.Getenv("BOUNDARY_ENABLE_TEST_AUDIT_EVENTS"))
+	auditEvents, err := parseutil.ParseBool(os.Getenv("DUMPLING_ENABLE_TEST_AUDIT_EVENTS"))
 	if err != nil {
 		return opts, err
 	}
 	opts.withAuditEventsEnabled = auditEvents
 
-	obs, err := parseutil.ParseBool(os.Getenv("BOUNDARY_ENABLE_TEST_OBSERVATIONS"))
+	obs, err := parseutil.ParseBool(os.Getenv("DUMPLING_ENABLE_TEST_OBSERVATIONS"))
 	if err != nil {
 		return opts, err
 	}
 	opts.withObservationsEnabled = obs
 
-	errEvents, err := parseutil.ParseBool(os.Getenv("BOUNDARY_ENABLE_TEST_ERROR_EVENTS"))
+	errEvents, err := parseutil.ParseBool(os.Getenv("DUMPLING_ENABLE_TEST_ERROR_EVENTS"))
 	if err != nil {
 		return opts, err
 	}

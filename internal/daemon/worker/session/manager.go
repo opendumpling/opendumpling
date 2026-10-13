@@ -10,8 +10,8 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/hashicorp/boundary/internal/errors"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/servers/services"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/servers/services"
 )
 
 // FIXME: This is really ugly -- but not as ugly as plumbing this value into the

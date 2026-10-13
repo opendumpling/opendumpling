@@ -15,17 +15,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/auth/password"
-	"github.com/hashicorp/boundary/internal/authtoken"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/host/static"
-	"github.com/hashicorp/boundary/internal/iam"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/server"
-	"github.com/hashicorp/boundary/internal/session"
-	"github.com/hashicorp/boundary/internal/target"
-	"github.com/hashicorp/boundary/internal/target/tcp"
-	"github.com/hashicorp/boundary/testing/dbtest"
+	"github.com/opendumpling/opendumpling/internal/auth/password"
+	"github.com/opendumpling/opendumpling/internal/authtoken"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/host/static"
+	"github.com/opendumpling/opendumpling/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/server"
+	"github.com/opendumpling/opendumpling/internal/session"
+	"github.com/opendumpling/opendumpling/internal/target"
+	"github.com/opendumpling/opendumpling/internal/target/tcp"
+	"github.com/opendumpling/opendumpling/testing/dbtest"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/sync/errgroup"
 )
@@ -43,8 +43,8 @@ import (
 // It is safe for users of these dumps to assume all of this, for the variables
 // N, M and P defined in the "scenarios" struct below.
 func TestGenerateSessionBenchmarkTemplateDumps(t *testing.T) {
-	if os.Getenv("BOUNDARY_DB_TEST_GENERATE_SESSION_BENCHMARK_TEMPLATE_DUMPS") == "" {
-		t.Skip("BOUNDARY_DB_TEST_GENERATE_SESSION_BENCHMARK_TEMPLATE_DUMPS is not set")
+	if os.Getenv("DUMPLING_DB_TEST_GENERATE_SESSION_BENCHMARK_TEMPLATE_DUMPS") == "" {
+		t.Skip("DUMPLING_DB_TEST_GENERATE_SESSION_BENCHMARK_TEMPLATE_DUMPS is not set")
 		return
 	}
 
@@ -120,7 +120,7 @@ func TestGenerateSessionBenchmarkTemplateDumps(t *testing.T) {
 			}
 			conn, dbURL := db.TestSetup(t, "postgres")
 			rw := db.New(conn)
-			wrap, err := dbtest.GetBoundaryBenchmarksRootKeyWrapper(ctx)
+			wrap, err := dbtest.GetDumplingBenchmarksRootKeyWrapper(ctx)
 			require.NoError(err)
 			kms := kms.TestKms(t, conn, wrap)
 
@@ -257,7 +257,7 @@ func newUser(t testing.TB, ctx context.Context, iamRepo *iam.Repository, authTok
 	am := password.TestAuthMethod(t, conn, o.GetPublicId())
 	acct, err := password.NewAccount(ctx, am.GetPublicId(), password.WithLoginName(name))
 	require.NoError(err)
-	acct, err = pwRepo.CreateAccount(ctx, o.PublicId, acct, password.WithPassword(dbtest.BoundaryBenchmarksUserPassword))
+	acct, err = pwRepo.CreateAccount(ctx, o.PublicId, acct, password.WithPassword(dbtest.DumplingBenchmarksUserPassword))
 	require.NoError(err)
 	u := iam.TestUser(t, iamRepo, o.GetPublicId(), iam.WithAccountIds(acct.PublicId), iam.WithName(name))
 	at, err := authTokenRepo.CreateAuthToken(ctx, u, acct.GetPublicId())

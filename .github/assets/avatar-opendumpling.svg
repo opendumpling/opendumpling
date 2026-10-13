@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="OpenDumpling">
+  <title>OpenDumpling</title>
+  <!-- Full-bleed background so it looks right when GitHub circle-crops the avatar -->
+  <rect width="256" height="256" fill="#17423B"/>
+  <g transform="translate(28 30) scale(0.78)">
+    <g fill="none" stroke="#7FD1BE" stroke-width="7" stroke-linecap="round" opacity="0.9">
+      <path d="M104 46 q-9 -13 0 -26"/>
+      <path d="M128 50 q-9 -15 0 -30"/>
+      <path d="M152 46 q-9 -13 0 -26"/>
+    </g>
+    <path d="M34 150 A94 94 0 0 0 222 150 Z" fill="#1E7A6A"/>
+    <path d="M68 148 C68 96 188 96 188 148 C188 161 161 170 128 170 C95 170 68 161 68 148 Z" fill="#FFF6E2"/>
+    <g fill="none" stroke="#C97F1E" stroke-width="6" stroke-linecap="round">
+      <path d="M90 128 q9 -12 19 -3"/>
+      <path d="M117 117 q11 -13 21 -3"/>
+      <path d="M146 128 q9 -12 19 -3"/>
+    </g>
+    <rect x="24" y="138" width="208" height="18" rx="9" fill="#0F332D"/>
+  </g>
+</svg>

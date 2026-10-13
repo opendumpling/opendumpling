@@ -7,8 +7,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/iam"
 )
 
 func TestClosedWith_validate(t *testing.T) {

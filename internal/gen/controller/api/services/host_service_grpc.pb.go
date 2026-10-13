@@ -28,13 +28,13 @@ type HostServiceClient interface {
 	// Hosts being listed.  If the id is missing, malformed, or reference a
 	// non-existing resource, an error is returned.
 	ListHosts(ctx context.Context, in *ListHostsRequest, opts ...grpc.CallOption) (*ListHostsResponse, error)
-	// CreateHost creates and stores a Host in boundary.  The provided
+	// CreateHost creates and stores a Host in dumpling.  The provided
 	// request must include the Host Catalog id in which the Host
 	// will be created.  If the Catalog id is missing, malformed or references a
 	// non-existing resource, an error is returned.  If a name is provided that
 	// is in use by another Host in the same Host Catalog, an error is returned.
 	CreateHost(ctx context.Context, in *CreateHostRequest, opts ...grpc.CallOption) (*CreateHostResponse, error)
-	// UpdateHost updates an existing Host in boundary.  The provided
+	// UpdateHost updates an existing Host in dumpling.  The provided
 	// Host must not have any read only fields set.  The update mask must be
 	// included in the request and contain at least 1 mutable field.  To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -43,7 +43,7 @@ type HostServiceClient interface {
 	// request attempts to update the name to one that is already in use in
 	// the same Host Catalog.
 	UpdateHost(ctx context.Context, in *UpdateHostRequest, opts ...grpc.CallOption) (*UpdateHostResponse, error)
-	// DeleteHost removes a Host from Boundary. If the provided Host ID
+	// DeleteHost removes a Host from Dumpling. If the provided Host ID
 	// is malformed or not provided an error is returned.
 	DeleteHost(ctx context.Context, in *DeleteHostRequest, opts ...grpc.CallOption) (*DeleteHostResponse, error)
 }
@@ -115,13 +115,13 @@ type HostServiceServer interface {
 	// Hosts being listed.  If the id is missing, malformed, or reference a
 	// non-existing resource, an error is returned.
 	ListHosts(context.Context, *ListHostsRequest) (*ListHostsResponse, error)
-	// CreateHost creates and stores a Host in boundary.  The provided
+	// CreateHost creates and stores a Host in dumpling.  The provided
 	// request must include the Host Catalog id in which the Host
 	// will be created.  If the Catalog id is missing, malformed or references a
 	// non-existing resource, an error is returned.  If a name is provided that
 	// is in use by another Host in the same Host Catalog, an error is returned.
 	CreateHost(context.Context, *CreateHostRequest) (*CreateHostResponse, error)
-	// UpdateHost updates an existing Host in boundary.  The provided
+	// UpdateHost updates an existing Host in dumpling.  The provided
 	// Host must not have any read only fields set.  The update mask must be
 	// included in the request and contain at least 1 mutable field.  To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -130,7 +130,7 @@ type HostServiceServer interface {
 	// request attempts to update the name to one that is already in use in
 	// the same Host Catalog.
 	UpdateHost(context.Context, *UpdateHostRequest) (*UpdateHostResponse, error)
-	// DeleteHost removes a Host from Boundary. If the provided Host ID
+	// DeleteHost removes a Host from Dumpling. If the provided Host ID
 	// is malformed or not provided an error is returned.
 	DeleteHost(context.Context, *DeleteHostRequest) (*DeleteHostResponse, error)
 	mustEmbedUnimplementedHostServiceServer()

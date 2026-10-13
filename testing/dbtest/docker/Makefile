@@ -9,7 +9,7 @@ TEST_IMAGE_NAME=postgres
 TEST_IMAGE_TAG ?= $(DOCKER_MIRROR)/$(REGISTRY_NAME)/$(TEST_IMAGE_NAME):12-alpine
 PG_OPTS ?=
 TEST_DB_PORT ?= 5432
-TEST_CONTAINER_NAME ?= boundary-sql-tests
+TEST_CONTAINER_NAME ?= dumpling-sql-tests
 
 # Generate targets from dockerfiles
 dockerfiles = $(wildcard Dockerfile.*)
@@ -42,7 +42,7 @@ database-up:
 		-p $(TEST_DB_PORT):5432 \
 		-e POSTGRES_PASSWORD=boundary \
 		-e POSTGRES_USER=boundary \
-		-e POSTGRES_DB=boundary \
+		-e POSTGRES_DB=dumpling \
 		-e PGDATA=/pgdata \
 		--mount type=tmpfs,destination=/pgdata \
 		-v "$(CWD)/../../../internal/db/schema/migrations":/migrations \
@@ -59,7 +59,7 @@ clean:
 	docker rm -v $(TEST_CONTAINER_NAME) || true
 
 generate-database-dumps:
-	BOUNDARY_DB_TEST_GENERATE_SESSION_BENCHMARK_TEMPLATE_DUMPS=1 go test \
+	DUMPLING_DB_TEST_GENERATE_SESSION_BENCHMARK_TEMPLATE_DUMPS=1 go test \
 		-v \
 		-run '^TestGenerateSessionBenchmarkTemplateDumps$$' \
 		--timeout=1000h \

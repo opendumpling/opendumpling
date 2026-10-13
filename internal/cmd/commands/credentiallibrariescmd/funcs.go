@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/credentiallibraries"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/credentiallibraries"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 )
 
 func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
@@ -17,37 +17,37 @@ func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
 	switch c.Func {
 	case "":
 		return base.WrapForHelpText([]string{
-			"Usage: boundary credential-libraries [sub command] [options] [args]",
+			"Usage: dumpling credential-libraries [sub command] [options] [args]",
 			"",
-			"  This command allows operations on Boundary credential library resources. Example:",
+			"  This command allows operations on Dumpling credential library resources. Example:",
 			"",
 			"    Read a credential library:",
 			"",
-			`      $ boundary credential-libraries read -id clvlt_1234567890`,
+			`      $ dumpling credential-libraries read -id clvlt_1234567890`,
 			"",
 			"  Please see the credential-libraries subcommand help for detailed usage information.",
 		})
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary credential-libraries create [type] [sub command] [options] [args]",
+			"Usage: dumpling credential-libraries create [type] [sub command] [options] [args]",
 			"",
-			"  This command allows create operations on Boundary credential library resources. Example:",
+			"  This command allows create operations on Dumpling credential library resources. Example:",
 			"",
 			"    Create a credential library:",
 			"",
-			`      $ boundary credential-libraries create vault -credential-store-id csvlt_1234567890 -vault-path "/some/path"`,
+			`      $ dumpling credential-libraries create vault -credential-store-id csvlt_1234567890 -vault-path "/some/path"`,
 			"",
 			"  Please see the typed subcommand help for detailed usage information.",
 		})
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary credential-libraries update [type] [sub command] [options] [args]",
+			"Usage: dumpling credential-libraries update [type] [sub command] [options] [args]",
 			"",
-			"  This command allows update operations on Boundary credential library resources. Example:",
+			"  This command allows update operations on Dumpling credential library resources. Example:",
 			"",
 			"    Update a vault-type credential library:",
 			"",
-			`      $ boundary credential-libraries update vault -id clvlt_1234567890 -name devops -description "For DevOps usage"`,
+			`      $ dumpling credential-libraries update vault -id clvlt_1234567890 -name devops -description "For DevOps usage"`,
 			"",
 			"  Please see the typed subcommand help for detailed usage information.",
 		})

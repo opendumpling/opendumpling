@@ -5,7 +5,7 @@ syntax = "proto3";
 
 package controller.api.v1;
 
-option go_package = "github.com/hashicorp/boundary/internal/gen/controller/api;api";
+option go_package = "github.com/opendumpling/opendumpling/internal/gen/controller/api;api";
 
 // Error information relevant to an error that was wrapped by the backend.
 message WrappedError {

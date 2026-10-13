@@ -1,0 +1,182 @@
+name: Release
+
+# Pushing a tag like "v0.13.1" builds every downloadable asset and pushes a
+# multi-arch container image to GHCR. Nothing else to do.
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  GO_VERSION: '1.23.x'
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Cross-compiled release archives. Mirrors the upstream Boundary v0.13.1
+  # asset list (same OS/arch set), as "dumpling_<version>_<os>_<arch>.zip".
+  # ---------------------------------------------------------------------------
+  binaries:
+    name: ${{ matrix.goos }}/${{ matrix.goarch }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {goos: darwin, goarch: amd64}
+          - {goos: darwin, goarch: arm64}
+          - {goos: freebsd, goarch: 386}
+          - {goos: freebsd, goarch: amd64}
+          - {goos: freebsd, goarch: arm}
+          - {goos: linux, goarch: 386}
+          - {goos: linux, goarch: amd64}
+          - {goos: linux, goarch: arm}
+          - {goos: linux, goarch: arm64}
+          - {goos: netbsd, goarch: 386}
+          - {goos: netbsd, goarch: amd64}
+          - {goos: netbsd, goarch: arm}
+          - {goos: openbsd, goarch: 386}
+          - {goos: openbsd, goarch: amd64}
+          - {goos: openbsd, goarch: arm}
+          - {goos: solaris, goarch: amd64}
+          - {goos: windows, goarch: 386}
+          - {goos: windows, goarch: amd64}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Determine version
+        id: version
+        run: |
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            version="${GITHUB_REF_NAME#v}"
+          else
+            version="$(cat version/VERSION)"
+          fi
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+
+      - name: Build
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: '0'
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          ext=""
+          if [ "${GOOS}" = "windows" ]; then ext=".exe"; fi
+          go build -trimpath -tags=dumpling \
+            -ldflags "-s -w \
+              -X github.com/opendumpling/opendumpling/version.GitCommit=${GITHUB_SHA} \
+              -X github.com/opendumpling/opendumpling/version.Version=${VERSION} \
+              -X github.com/opendumpling/opendumpling/version.BuildDate=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            -o "dumpling${ext}" ./cmd/dumpling
+
+      - name: Package
+        id: package
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          name="dumpling_${VERSION}_${{ matrix.goos }}_${{ matrix.goarch }}.zip"
+          if [ "${{ matrix.goos }}" = "windows" ]; then
+            zip -j "${name}" dumpling.exe
+          else
+            zip -j "${name}" dumpling
+          fi
+          echo "name=${name}" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dumpling_${{ matrix.goos }}_${{ matrix.goarch }}
+          path: ${{ steps.package.outputs.name }}
+          if-no-files-found: error
+          retention-days: 7
+
+  # ---------------------------------------------------------------------------
+  # Assemble checksums, publish the GitHub Release, and push the image to GHCR.
+  # ---------------------------------------------------------------------------
+  release:
+    needs: binaries
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine version
+        id: version
+        run: |
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            version="${GITHUB_REF_NAME#v}"
+          else
+            version="$(cat version/VERSION)"
+          fi
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Generate checksums
+        working-directory: dist
+        run: sha256sum ./*.zip > SHA256SUMS
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || format('v{0}', steps.version.outputs.version) }}
+          name: OpenDumpling ${{ steps.version.outputs.version }}
+          generate_release_notes: true
+          files: |
+            dist/*.zip
+            dist/SHA256SUMS
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  docker:
+    name: container image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine version
+        id: version
+        run: |
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            version="${GITHUB_REF_NAME#v}"
+          else
+            version="$(cat version/VERSION)"
+          fi
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          build-args: |
+            VERSION=${{ steps.version.outputs.version }}
+            GIT_COMMIT=${{ github.sha }}
+          tags: |
+            ghcr.io/opendumpling/opendumpling:${{ steps.version.outputs.version }}
+            ghcr.io/opendumpling/opendumpling:latest

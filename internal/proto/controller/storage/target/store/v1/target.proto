@@ -8,7 +8,7 @@ package controller.storage.target.store.v1;
 import "controller/custom_options/v1/options.proto";
 import "controller/storage/timestamp/v1/timestamp.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/target/store;store";
+option go_package = "github.com/opendumpling/opendumpling/internal/target/store;store";
 
 // TargetView is a view that contains all the target subtypes
 message TargetView {

@@ -1,37 +1,37 @@
 ---
 layout: docs
-page_title: Boundary health endpoints
+page_title: Dumpling health endpoints
 description: |-
-  Verify the Boundary controller server is up and able to receive requests
+  Verify the Dumpling controller server is up and able to receive requests
 ---
 
-# Boundary health endpoints
+# Dumpling health endpoints
 
-Boundary provides health monitoring through the `/health` path using a listener
+Dumpling provides health monitoring through the `/health` path using a listener
 with the `"ops"` purpose. By default, a listener with that purpose runs on port
 `9203`. See the [example configuration](#example-configuration) section for an
 example listener stanza in a `config.hcl` file.
 
 ## Requirements
 
-To enable the controller health endpoint, any Boundary instance must be
+To enable the controller health endpoint, any Dumpling instance must be
 started with a controller. That is, a `controller` block and a `purpose = "api"`
-listener must be defined in Boundary's configuration file. Additionally, a
-`purpose = "ops"` listener must also be defined in Boundary's configuration
+listener must be defined in Dumpling's configuration file. Additionally, a
+`purpose = "ops"` listener must also be defined in Dumpling's configuration
 file. Under these conditions, the `ops` server (which hosts the controller health
 api) will be exposed.
 
 ## Shutdown grace period
 
-Optionally, when the controller health endpoint is enabled, Boundary can be
+Optionally, when the controller health endpoint is enabled, Dumpling can be
 configured to change the controller health response to `503 Service Unavailable`
 upon receiving a shutdown signal, and wait a configurable amount of time before
 starting the shutdown process.
 
 This feature is designed to integrate with load balancers to reduce the risk of
-an outgoing Boundary instance causing disruption to incoming requests.
+an outgoing Dumpling instance causing disruption to incoming requests.
 
-In this state, Boundary is still capable of processing requests as normal, but
+In this state, Dumpling is still capable of processing requests as normal, but
 will report as unhealthy through the controller health endpoint. In
 load-balanced environments, this would cause this "unhealthy" instance to be
 removed from the pool of instances eligible to handle requests, and thereby, reducing the
@@ -39,7 +39,7 @@ likelihood that it will receive a request to handle during shutdown.
 
 This feature is disabled by default, even if the controller health endpoint is
 enabled. You can set it up by defining `graceful_shutdown_wait_duration` in the
-`controller` block of Boundary's configuration file. The value should be set to
+`controller` block of Dumpling's configuration file. The value should be set to
 a string that is parseable by
 [ParseDuration](https://pkg.go.dev/time#ParseDuration).
 
@@ -89,7 +89,7 @@ wait duration:
 controller {
   name = "boundary-controller"
   database {
-      url = "env://BOUNDARY_PG_URL"
+      url = "env://DUMPLING_PG_URL"
   }
   graceful_shutdown_wait_duration = "10s"
 }

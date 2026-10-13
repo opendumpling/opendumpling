@@ -2,12 +2,12 @@
 layout: docs
 page_title: Controller/worker - events - file sink - configuration
 description: |-
-  The file sink configures Boundary to send events to a file.
+  The file sink configures Dumpling to send events to a file.
 ---
 
 # `file` sink
 
-The file sink configures Boundary to send events to a file.
+The file sink configures Dumpling to send events to a file.
 
 ```hcl
 sink {
@@ -22,7 +22,7 @@ sink {
   }
 ```
 
-The `sink` stanza may be specified more than once to make Boundary send events
+The `sink` stanza may be specified more than once to make Dumpling send events
 to multiple sinks; however, each file sink must have a unique `path` +
 `file_name`.
 

@@ -12,7 +12,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	pb "github.com/hashicorp/boundary/sdk/pbs/plugin"
+	pb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
 	"github.com/hashicorp/go-plugin"
 	"google.golang.org/grpc"
 )
@@ -25,7 +25,7 @@ const (
 // HandshakeConfig is a shared config that can be used regardless of plugin, to
 // avoid having to know type-specific things about each plugin
 var HandshakeConfig = plugin.HandshakeConfig{
-	MagicCookieKey:   "HASHICORP_BOUNDARY_PLUGIN",
+	MagicCookieKey:   "HASHICORP_DUMPLING_PLUGIN",
 	MagicCookieValue: "boundary-plugin",
 }
 

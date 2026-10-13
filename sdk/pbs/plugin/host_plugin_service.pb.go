@@ -10,8 +10,8 @@
 package plugin
 
 import (
-	hostcatalogs "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/hostcatalogs"
-	hostsets "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/hostsets"
+	hostcatalogs "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/hostcatalogs"
+	hostsets "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/hostsets"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	structpb "google.golang.org/protobuf/types/known/structpb"
@@ -178,7 +178,7 @@ type OnCreateCatalogResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Secret data to persist encrypted within Boundary. This should be used to
+	// Secret data to persist encrypted within Dumpling. This should be used to
 	// store authentication data and other necessary configuration to be used in
 	// later hooks and calls. Returning an error from the call will cause this
 	// data to not be persisted. If this is nil, nothing is written.
@@ -297,7 +297,7 @@ type OnUpdateCatalogResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The updated secret data to persist encrypted within Boundary. If an error
+	// The updated secret data to persist encrypted within Dumpling. If an error
 	// is returned, the update of the persisted data is aborted. If this is nil,
 	// no changes are written. To remove all values, simply return an allocated
 	// but empty map.
@@ -986,12 +986,12 @@ type ListHostsResponseHost struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Required. A stable identifier for this host. This field is used
-	// to generate a stable ID for the host within Boundary and is
+	// to generate a stable ID for the host within Dumpling and is
 	// included in audit logs. It should be set to something unique and
 	// useful, ie: a compute instance ID.
 	ExternalId string `protobuf:"bytes,10,opt,name=external_id,json=externalId,proto3" json:"external_id,omitempty"`
 	// If supplied, will be set as the external name of the host and will be
-	// available on Boundary's host listing and reading API.
+	// available on Dumpling's host listing and reading API.
 	ExternalName string `protobuf:"bytes,70,opt,name=external_name,json=externalName,proto3" json:"external_name,omitempty"`
 	// If supplied, will be set as the managed name of the host
 	Name string `protobuf:"bytes,20,opt,name=name,proto3" json:"name,omitempty"`
@@ -1102,7 +1102,7 @@ func (x *ListHostsResponseHost) GetAttributes() *structpb.Struct {
 // Its intended purpose is to store authentication data required by the plugin
 // to make calls to its respective cloud API.
 //
-// The secrets stored in this message are encrypted at-rest by Boundary and
+// The secrets stored in this message are encrypted at-rest by Dumpling and
 // never returned to the end user.
 //
 // TODO: Add a size limit to this data before we export the plugin SDK.

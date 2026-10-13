@@ -14,10 +14,10 @@ import (
 	"net"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/observability/event"
-	"github.com/hashicorp/boundary/internal/server"
-	"github.com/hashicorp/boundary/version"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
+	"github.com/opendumpling/opendumpling/internal/server"
+	"github.com/opendumpling/opendumpling/version"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	"google.golang.org/protobuf/proto"
 )
@@ -108,7 +108,7 @@ func (c Controller) v1WorkerAuthConfig(protos []string) (*tls.Config, *base.Work
 		return nil, nil, err
 	}
 	if version.Get().VersionMetadata != "" {
-		incomingVer := version.FromVersionString(info.BoundaryVersion)
+		incomingVer := version.FromVersionString(info.DumplingVersion)
 		if (incomingVer == nil || incomingVer.VersionMetadata == "") && version.SupportsFeature(version.Binary, version.RequireVersionInWorkerInfo) {
 			err := errors.New("build contains version with metadata, incoming worker version is nil or has mismatched metadata")
 			event.WriteError(c.baseContext, op, err)

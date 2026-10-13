@@ -6,7 +6,7 @@ package schema
 import (
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/db/schema/internal/edition"
+	"github.com/opendumpling/opendumpling/internal/db/schema/internal/edition"
 )
 
 const NilVersion = nilVersion

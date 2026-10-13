@@ -17,11 +17,11 @@ import (
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
-	"github.com/hashicorp/boundary/api/credentials"
-	"github.com/hashicorp/boundary/api/scopes"
-	"github.com/hashicorp/boundary/api/targets"
-	"github.com/hashicorp/boundary/testing/internal/e2e"
-	"github.com/hashicorp/boundary/testing/internal/e2e/boundary"
+	"github.com/opendumpling/opendumpling/api/credentials"
+	"github.com/opendumpling/opendumpling/api/scopes"
+	"github.com/opendumpling/opendumpling/api/targets"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e/dumpling"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -39,21 +39,21 @@ func TestCliStaticCredentialStore(t *testing.T) {
 	require.NoError(t, err)
 
 	ctx := context.Background()
-	boundary.AuthenticateAdminCli(t, ctx)
-	newOrgId := boundary.CreateNewOrgCli(t, ctx)
+	dumpling.AuthenticateAdminCli(t, ctx)
+	newOrgId := dumpling.CreateNewOrgCli(t, ctx)
 	t.Cleanup(func() {
 		ctx := context.Background()
-		boundary.AuthenticateAdminCli(t, ctx)
-		output := e2e.RunCommand(ctx, "boundary", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
+		dumpling.AuthenticateAdminCli(t, ctx)
+		output := e2e.RunCommand(ctx, "dumpling", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
 		require.NoError(t, output.Err, string(output.Stderr))
 	})
-	newProjectId := boundary.CreateNewProjectCli(t, ctx, newOrgId)
-	newHostCatalogId := boundary.CreateNewHostCatalogCli(t, ctx, newProjectId)
-	newHostSetId := boundary.CreateNewHostSetCli(t, ctx, newHostCatalogId)
-	newHostId := boundary.CreateNewHostCli(t, ctx, newHostCatalogId, c.TargetIp)
-	boundary.AddHostToHostSetCli(t, ctx, newHostSetId, newHostId)
-	newTargetId := boundary.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort)
-	boundary.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
+	newProjectId := dumpling.CreateNewProjectCli(t, ctx, newOrgId)
+	newHostCatalogId := dumpling.CreateNewHostCatalogCli(t, ctx, newProjectId)
+	newHostSetId := dumpling.CreateNewHostSetCli(t, ctx, newHostCatalogId)
+	newHostId := dumpling.CreateNewHostCli(t, ctx, newHostCatalogId, c.TargetIp)
+	dumpling.AddHostToHostSetCli(t, ctx, newHostSetId, newHostId)
+	newTargetId := dumpling.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort)
+	dumpling.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
 
 	err = createPrivateKeyPemFile(testPemFile)
 	require.NoError(t, err)
@@ -63,13 +63,13 @@ func TestCliStaticCredentialStore(t *testing.T) {
 	})
 
 	// Create static credentials
-	newCredentialStoreId := boundary.CreateNewCredentialStoreStaticCli(t, ctx, newProjectId)
-	privateKeyCredentialsId := boundary.CreateNewStaticCredentialPrivateKeyCli(t, ctx, newCredentialStoreId, c.TargetSshUser, testPemFile)
-	pwCredentialsId := boundary.CreateNewStaticCredentialPasswordCli(t, ctx, newCredentialStoreId, c.TargetSshUser, testPassword)
-	jsonCredentialsId := boundary.CreateNewStaticCredentialJsonCli(t, ctx, newCredentialStoreId, testCredentialsFile)
+	newCredentialStoreId := dumpling.CreateNewCredentialStoreStaticCli(t, ctx, newProjectId)
+	privateKeyCredentialsId := dumpling.CreateNewStaticCredentialPrivateKeyCli(t, ctx, newCredentialStoreId, c.TargetSshUser, testPemFile)
+	pwCredentialsId := dumpling.CreateNewStaticCredentialPasswordCli(t, ctx, newCredentialStoreId, c.TargetSshUser, testPassword)
+	jsonCredentialsId := dumpling.CreateNewStaticCredentialJsonCli(t, ctx, newCredentialStoreId, testCredentialsFile)
 
 	// Get credentials for target (expect empty)
-	output := e2e.RunCommand(ctx, "boundary",
+	output := e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs("targets", "authorize-session", "-id", newTargetId, "-format", "json"),
 	)
 	require.NoError(t, output.Err, string(output.Stderr))
@@ -79,12 +79,12 @@ func TestCliStaticCredentialStore(t *testing.T) {
 	require.True(t, newSessionAuthorizationResult.Item.Credentials == nil)
 
 	// Add credentials to target
-	boundary.AddBrokeredCredentialSourceToTargetCli(t, ctx, newTargetId, privateKeyCredentialsId)
-	boundary.AddBrokeredCredentialSourceToTargetCli(t, ctx, newTargetId, jsonCredentialsId)
-	boundary.AddBrokeredCredentialSourceToTargetCli(t, ctx, newTargetId, pwCredentialsId)
+	dumpling.AddBrokeredCredentialSourceToTargetCli(t, ctx, newTargetId, privateKeyCredentialsId)
+	dumpling.AddBrokeredCredentialSourceToTargetCli(t, ctx, newTargetId, jsonCredentialsId)
+	dumpling.AddBrokeredCredentialSourceToTargetCli(t, ctx, newTargetId, pwCredentialsId)
 
 	// Get credentials for target
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs("targets", "authorize-session", "-id", newTargetId, "-format", "json"),
 	)
 	require.NoError(t, output.Err, string(output.Stderr))
@@ -116,21 +116,21 @@ func TestCliStaticCredentialStore(t *testing.T) {
 	assert.ElementsMatch(t, expectedCredentials, brokeredCredentials)
 
 	// Delete credential store
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs("credential-stores", "delete", "-id", newCredentialStoreId),
 	)
 	require.NoError(t, output.Err, string(output.Stderr))
 	t.Log("Waiting for credential store to be deleted...")
 	err = backoff.RetryNotify(
 		func() error {
-			output := e2e.RunCommand(ctx, "boundary",
+			output := e2e.RunCommand(ctx, "dumpling",
 				e2e.WithArgs("credential-stores", "read", "-id", newCredentialStoreId, "-format", "json"),
 			)
 			if output.Err == nil {
 				return fmt.Errorf("Deleted credential can still be read: '%s'", output.Stdout)
 			}
 
-			var response boundary.CliError
+			var response dumpling.CliError
 			err := json.Unmarshal(output.Stderr, &response)
 			require.NoError(t, err)
 			statusCode := response.Status
@@ -178,24 +178,24 @@ func TestApiStaticCredentialStore(t *testing.T) {
 	c, err := loadTestConfig()
 	require.NoError(t, err)
 
-	client, err := boundary.NewApiClient()
+	client, err := dumpling.NewApiClient()
 	require.NoError(t, err)
 	ctx := context.Background()
 
-	newOrgId := boundary.CreateNewOrgApi(t, ctx, client)
+	newOrgId := dumpling.CreateNewOrgApi(t, ctx, client)
 	t.Cleanup(func() {
 		scopeClient := scopes.NewClient(client)
 		_, err := scopeClient.Delete(ctx, newOrgId)
 		require.NoError(t, err)
 	})
-	newProjectId := boundary.CreateNewProjectApi(t, ctx, client, newOrgId)
-	newHostCatalogId := boundary.CreateNewHostCatalogApi(t, ctx, client, newProjectId)
-	newHostSetId := boundary.CreateNewHostSetApi(t, ctx, client, newHostCatalogId)
-	newHostId := boundary.CreateNewHostApi(t, ctx, client, newHostCatalogId, c.TargetIp)
-	boundary.AddHostToHostSetApi(t, ctx, client, newHostSetId, newHostId)
-	newTargetId := boundary.CreateNewTargetApi(t, ctx, client, newProjectId, c.TargetPort)
-	boundary.AddHostSourceToTargetApi(t, ctx, client, newTargetId, newHostSetId)
-	newCredentialStoreId := boundary.CreateNewCredentialStoreStaticApi(t, ctx, client, newProjectId)
+	newProjectId := dumpling.CreateNewProjectApi(t, ctx, client, newOrgId)
+	newHostCatalogId := dumpling.CreateNewHostCatalogApi(t, ctx, client, newProjectId)
+	newHostSetId := dumpling.CreateNewHostSetApi(t, ctx, client, newHostCatalogId)
+	newHostId := dumpling.CreateNewHostApi(t, ctx, client, newHostCatalogId, c.TargetIp)
+	dumpling.AddHostToHostSetApi(t, ctx, client, newHostSetId, newHostId)
+	newTargetId := dumpling.CreateNewTargetApi(t, ctx, client, newProjectId, c.TargetPort)
+	dumpling.AddHostSourceToTargetApi(t, ctx, client, newTargetId, newHostSetId)
+	newCredentialStoreId := dumpling.CreateNewCredentialStoreStaticApi(t, ctx, client, newProjectId)
 
 	// Create credentials
 	cClient := credentials.NewClient(client)

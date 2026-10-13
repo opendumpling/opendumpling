@@ -8,7 +8,7 @@ package controller.storage.auth.oidc.request.v1;
 
 import "controller/storage/timestamp/v1/timestamp.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/auth/oidc/request;request";
+option go_package = "github.com/opendumpling/opendumpling/internal/auth/oidc/request;request";
 
 // State represents an oidc request state.  State will be marshaled and then
 // wrapped with an EncryptedState before that's marshaled and encrypted.
@@ -17,13 +17,13 @@ option go_package = "github.com/hashicorp/boundary/internal/auth/oidc/request;re
 // First, State is used in constructing the authorization URL, in the first
 // leg of the authen flow. State represents the unique data used to construct
 // an oidc.Request (see: https://github.com/hashicorp/cap/blob/main/oidc/request.go).
-// State needs enough information, that when combined with a Boundary oidc auth method,
+// State needs enough information, that when combined with a Dumpling oidc auth method,
 // a proper oidc.Request can be recreated during the second leg of the authen flow.  State
 // also needs the provider.ConfigHash() used to from the first leg, so it can verify
-// the Boundary's oidc auth method configuration hasn't changed since the authen flow
+// the Dumpling's oidc auth method configuration hasn't changed since the authen flow
 // began.
 message State {
-  // token_request_id is the id. This id is used by the client to poll for a Boundary
+  // token_request_id is the id. This id is used by the client to poll for a Dumpling
   // token, once the final leg of the authen flow is compeleted.  The Callback uses this
   // id to create a "pending" token for that polling process.
   string token_request_id = 10;
@@ -60,7 +60,7 @@ message Token {
 }
 
 // Wrapper wraps an encrypted cipher text with non-sensitive info
-// which allows Boundary to determine how to decrypt
+// which allows Dumpling to determine how to decrypt
 // the wrappered cipher text (ct) field.
 message Wrapper {
   // auth_method_id is the auth method of the oidc request

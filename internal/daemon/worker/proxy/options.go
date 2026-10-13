@@ -6,7 +6,7 @@ package proxy
 import (
 	"net"
 
-	serverpb "github.com/hashicorp/boundary/internal/gen/controller/servers/services"
+	serverpb "github.com/opendumpling/opendumpling/internal/gen/controller/servers/services"
 )
 
 // Option - how Options are passed as arguments.

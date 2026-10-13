@@ -189,7 +189,7 @@ begin;
   comment on view credential_vault_store_client is
     'credential_vault_store_client is a view where each row contains a credential store and the credential store''s data needed to connect to Vault. '
     'The view returns the current token for the store, if the Vault token has expired this view will return an empty token_hmac and a token_status of ''expired''  '
-    'Each row may contain encrypted data. This view should not be used to retrieve data which will be returned external to boundary.';
+    'Each row may contain encrypted data. This view should not be used to retrieve data which will be returned external to dumpling.';
 
   -- Replaced in 63/02_add_ssh_cert_to_vault_cred_library_view.up.sql
   create view credential_vault_library_issue_credentials as
@@ -247,7 +247,7 @@ begin;
   comment on view credential_vault_library_issue_credentials is
     'credential_vault_library_issue_credentials is a view where each row contains a credential library and the credential library''s data needed to connect to Vault. '
     'This view should only be used when issuing credentials from a Vault credential library. Each row may contain encrypted data. '
-    'This view should not be used to retrieve data which will be returned external to boundary.';
+    'This view should not be used to retrieve data which will be returned external to dumpling.';
 
   create view credential_vault_token_renewal_revocation as
   with
@@ -287,7 +287,7 @@ begin;
   comment on view credential_vault_token_renewal_revocation is
     'credential_vault_token_renewal_revocation is a view where each row contains a credential store and the credential store''s data needed to connect to Vault. '
     'The view returns a separate row for each active token in Vault (current, maintaining and revoke tokens); this view should only be used for token renewal and revocation. '
-    'Each row may contain encrypted data. This view should not be used to retrieve data which will be returned external to boundary.';
+    'Each row may contain encrypted data. This view should not be used to retrieve data which will be returned external to dumpling.';
     
   create view credential_vault_credential_private as
      select credential.public_id         as public_id,
@@ -331,6 +331,6 @@ begin;
   comment on view credential_vault_credential_private is
     'credential_vault_credential_private is a view where each row contains a credential, '
     'the vault token used to issue the credential, and the credential store data needed to connect to Vault. '
-    'Each row may contain encrypted data. This view should not be used to retrieve data which will be returned external to boundary.';
+    'Each row may contain encrypted data. This view should not be used to retrieve data which will be returned external to dumpling.';
 
 commit;

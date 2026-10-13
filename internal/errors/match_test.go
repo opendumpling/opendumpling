@@ -295,7 +295,7 @@ func TestMatch(t *testing.T) {
 			want:     true,
 		},
 		{
-			name:     "match on go multi error both boundary errors",
+			name:     "match on go multi error both dumpling errors",
 			template: T(errInvalidFieldMask),
 			err:      stderrors.Join(errNotUnique, errInvalidFieldMask),
 			want:     true,

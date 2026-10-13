@@ -14,8 +14,8 @@ import (
 	"testing"
 	"time"
 
-	pbs "github.com/hashicorp/boundary/internal/gen/testing/event"
-	"github.com/hashicorp/boundary/internal/observability/event"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/testing/event"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
 	"github.com/hashicorp/eventlogger/filters/encrypt"
 	"github.com/hashicorp/eventlogger/formatter_filters/cloudevents"
 	"github.com/hashicorp/go-hclog"

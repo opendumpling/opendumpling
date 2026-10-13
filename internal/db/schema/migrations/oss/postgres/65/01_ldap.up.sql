@@ -333,7 +333,7 @@ create table auth_ldap_bind_credential (
       on update cascade
 );
 comment on table auth_ldap_bind_credential is 
-'auth_ldap_bind_credential entries allow Boundary to bind (aka authenticate) using '
+'auth_ldap_bind_credential entries allow Dumpling to bind (aka authenticate) using '
 'the provided credentials when searching for the user entry used to authenticate.';
 
 -- auth_ldap_account_attribute_map entries are the optional attribute maps from custom

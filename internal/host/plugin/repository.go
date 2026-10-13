@@ -9,12 +9,12 @@ package plugin
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/host"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/scheduler"
-	plgpb "github.com/hashicorp/boundary/sdk/pbs/plugin"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/host"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/scheduler"
+	plgpb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
 )
 
 // A Repository stores and retrieves the persistent types in the plugin
@@ -56,7 +56,7 @@ func NewRepository(ctx context.Context, r db.Reader, w db.Writer, kms *kms.Kms, 
 		return nil, errors.Wrap(ctx, err, op)
 	}
 	if opts.WithLimit == 0 {
-		// zero signals the boundary defaults should be used.
+		// zero signals the dumpling defaults should be used.
 		opts.WithLimit = db.DefaultLimit
 	}
 

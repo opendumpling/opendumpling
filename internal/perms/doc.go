@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 /*
-Package perms provides the boundary permissions engine using grants which are
+Package perms provides the dumpling permissions engine using grants which are
 tied to IAM Roles within a Scope.
 
 A really useful page to be aware of when looking at ACLs is

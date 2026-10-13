@@ -8,7 +8,7 @@ package controller.storage.auth.password.store.v1;
 
 import "controller/storage/timestamp/v1/timestamp.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/auth/password/store;store";
+option go_package = "github.com/opendumpling/opendumpling/internal/auth/password/store;store";
 
 // Argon2Configuration is a configuration for using the argon2id key
 // derivation function. It is owned by an AuthMethod.

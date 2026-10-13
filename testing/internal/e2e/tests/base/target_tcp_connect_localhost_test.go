@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/testing/internal/e2e"
-	"github.com/hashicorp/boundary/testing/internal/e2e/boundary"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e/dumpling"
 	"github.com/stretchr/testify/require"
 )
 
@@ -22,21 +22,21 @@ func TestCliTcpTargetConnectTargetWithLocalhost(t *testing.T) {
 	require.NoError(t, err)
 
 	ctx := context.Background()
-	boundary.AuthenticateAdminCli(t, ctx)
-	newOrgId := boundary.CreateNewOrgCli(t, ctx)
+	dumpling.AuthenticateAdminCli(t, ctx)
+	newOrgId := dumpling.CreateNewOrgCli(t, ctx)
 	t.Cleanup(func() {
 		ctx := context.Background()
-		boundary.AuthenticateAdminCli(t, ctx)
-		output := e2e.RunCommand(ctx, "boundary", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
+		dumpling.AuthenticateAdminCli(t, ctx)
+		output := e2e.RunCommand(ctx, "dumpling", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
 		require.NoError(t, output.Err, string(output.Stderr))
 	})
-	newProjectId := boundary.CreateNewProjectCli(t, ctx, newOrgId)
-	newHostCatalogId := boundary.CreateNewHostCatalogCli(t, ctx, newProjectId)
-	newHostSetId := boundary.CreateNewHostSetCli(t, ctx, newHostCatalogId)
-	newHostId := boundary.CreateNewHostCli(t, ctx, newHostCatalogId, c.TargetIp)
-	boundary.AddHostToHostSetCli(t, ctx, newHostSetId, newHostId)
-	newTargetId := boundary.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort)
-	boundary.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
+	newProjectId := dumpling.CreateNewProjectCli(t, ctx, newOrgId)
+	newHostCatalogId := dumpling.CreateNewHostCatalogCli(t, ctx, newProjectId)
+	newHostSetId := dumpling.CreateNewHostSetCli(t, ctx, newHostCatalogId)
+	newHostId := dumpling.CreateNewHostCli(t, ctx, newHostCatalogId, c.TargetIp)
+	dumpling.AddHostToHostSetCli(t, ctx, newHostSetId, newHostId)
+	newTargetId := dumpling.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort)
+	dumpling.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
 
 	// Start a session
 	ctxCancel, cancel := context.WithCancel(context.Background())
@@ -44,7 +44,7 @@ func TestCliTcpTargetConnectTargetWithLocalhost(t *testing.T) {
 	cmdChan := make(chan *e2e.CommandResult)
 	go func() {
 		t.Log("Starting session...")
-		cmdChan <- e2e.RunCommand(ctxCancel, "boundary",
+		cmdChan <- e2e.RunCommand(ctxCancel, "dumpling",
 			e2e.WithArgs(
 				"connect",
 				"-target-id", newTargetId,
@@ -55,7 +55,7 @@ func TestCliTcpTargetConnectTargetWithLocalhost(t *testing.T) {
 	}()
 	t.Cleanup(cancel)
 
-	boundary.WaitForSessionCli(t, ctx, newProjectId)
+	dumpling.WaitForSessionCli(t, ctx, newProjectId)
 
 	// Connect to target and print host's IP address
 	output := e2e.RunCommand(ctx, "ssh",

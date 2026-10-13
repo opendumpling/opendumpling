@@ -6,6 +6,6 @@ controller {
   description = "A controller but duplicated"
 
   database {
-    url = "env://LOAD_TEST_BOUNDARY_POSTGRES_URL"
+    url = "env://LOAD_TEST_DUMPLING_POSTGRES_URL"
   }
 }

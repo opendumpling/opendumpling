@@ -9,7 +9,7 @@ import (
 	"io"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/bsr"
+	"github.com/opendumpling/opendumpling/internal/bsr"
 	"github.com/stretchr/testify/assert"
 )
 

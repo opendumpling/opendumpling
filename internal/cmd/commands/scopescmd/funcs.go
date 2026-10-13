@@ -8,9 +8,9 @@ import (
 	"sort"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/scopes"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/scopes"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 )
 
 const (

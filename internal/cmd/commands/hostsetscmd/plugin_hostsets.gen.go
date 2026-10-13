@@ -8,10 +8,10 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/hostsets"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/cmd/common"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/hostsets"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/common"
 	"github.com/hashicorp/go-secure-stdlib/strutil"
 	"github.com/mitchellh/cli"
 	"github.com/posener/complete"
@@ -153,7 +153,7 @@ func (c *PluginCommand) Run(args []string) int {
 
 		case "create":
 			if c.FlagHostCatalogId == "" {
-				c.PrintCliError(errors.New("HostCatalog ID must be passed in via -host-catalog-id or BOUNDARY_HOST_CATALOG_ID"))
+				c.PrintCliError(errors.New("HostCatalog ID must be passed in via -host-catalog-id or DUMPLING_HOST_CATALOG_ID"))
 				return base.CommandUserError
 			}
 

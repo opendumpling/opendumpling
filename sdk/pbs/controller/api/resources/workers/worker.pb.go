@@ -10,8 +10,8 @@
 package workers
 
 import (
-	scopes "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/scopes"
-	_ "github.com/hashicorp/boundary/sdk/pbs/controller/protooptions"
+	scopes "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/scopes"
+	_ "github.com/opendumpling/opendumpling/sdk/pbs/controller/protooptions"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	structpb "google.golang.org/protobuf/types/known/structpb"
@@ -79,7 +79,7 @@ type Worker struct {
 	Type string `protobuf:"bytes,170,opt,name=type,proto3" json:"type,omitempty"`
 	// Output only. The api tags set for the worker.
 	ApiTags map[string]*structpb.ListValue `protobuf:"bytes,180,rep,name=api_tags,proto3" json:"api_tags,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3" class:"public"` // @gotags: `class:"public"`
-	// Output only. The version of the Boundary binary the worker is running.
+	// Output only. The version of the Dumpling binary the worker is running.
 	ReleaseVersion string `protobuf:"bytes,190,opt,name=release_version,proto3" json:"release_version,omitempty" class:"public"` // @gotags: `class:"public"`
 	// Output only. The ids of the workers directly connected to this worker.
 	DirectlyConnectedDownstreamWorkers []string `protobuf:"bytes,200,rep,name=directly_connected_downstream_workers,proto3" json:"directly_connected_downstream_workers,omitempty" class:"public"` // @gotags: `class:"public"`

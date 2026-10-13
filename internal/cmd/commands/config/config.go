@@ -4,7 +4,7 @@
 package config
 
 import (
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/mitchellh/cli"
 )
 
@@ -15,26 +15,26 @@ type Command struct {
 }
 
 func (c *Command) Synopsis() string {
-	return "Manage resources related to Boundary's local configuration"
+	return "Manage resources related to Dumpling's local configuration"
 }
 
 func (c *Command) Help() string {
 	return base.WrapForHelpText([]string{
-		"Usage: boundary config <subcommand> [options] [args]",
+		"Usage: dumpling config <subcommand> [options] [args]",
 		"",
-		"  This command groups subcommands for operators interacting with Boundary's config files. Here are a few examples of config commands:",
+		"  This command groups subcommands for operators interacting with Dumpling's config files. Here are a few examples of config commands:",
 		"",
 		"    Encrypt sensitive values in a config file:",
 		"",
-		"      $ boundary config encrypt config.hcl",
+		"      $ dumpling config encrypt config.hcl",
 		"",
 		"    Decrypt sensitive values in a config file:",
 		"",
-		"      $ boundary config decrypt config.hcl",
+		"      $ dumpling config decrypt config.hcl",
 		"",
 		"    Read a stored token out:",
 		"",
-		"      $ boundary config get-token",
+		"      $ dumpling config get-token",
 		"",
 		"  Please see the individual subcommand help for detailed usage information.",
 	})

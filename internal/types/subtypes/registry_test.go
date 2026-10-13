@@ -7,7 +7,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/types/subtypes"
+	"github.com/opendumpling/opendumpling/internal/types/subtypes"
 	"github.com/stretchr/testify/assert"
 )
 

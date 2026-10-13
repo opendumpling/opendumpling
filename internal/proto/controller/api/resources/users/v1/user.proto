@@ -10,7 +10,7 @@ import "controller/custom_options/v1/options.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
-option go_package = "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/users;users";
+option go_package = "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/users;users";
 
 message Account {
   // Output only. The ID of the Account.

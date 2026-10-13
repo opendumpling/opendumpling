@@ -9,10 +9,10 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/users"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/cmd/common"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/users"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/common"
 	"github.com/hashicorp/go-secure-stdlib/strutil"
 	"github.com/mitchellh/cli"
 	"github.com/posener/complete"
@@ -157,13 +157,13 @@ func (c *Command) Run(args []string) int {
 
 		case "create":
 			if c.FlagScopeId == "" {
-				c.PrintCliError(errors.New("Scope ID must be passed in via -scope-id or BOUNDARY_SCOPE_ID"))
+				c.PrintCliError(errors.New("Scope ID must be passed in via -scope-id or DUMPLING_SCOPE_ID"))
 				return base.CommandUserError
 			}
 
 		case "list":
 			if c.FlagScopeId == "" {
-				c.PrintCliError(errors.New("Scope ID must be passed in via -scope-id or BOUNDARY_SCOPE_ID"))
+				c.PrintCliError(errors.New("Scope ID must be passed in via -scope-id or DUMPLING_SCOPE_ID"))
 				return base.CommandUserError
 			}
 

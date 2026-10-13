@@ -27,7 +27,7 @@ type AuthTokenServiceClient interface {
 	// the Auth Tokens being listed.  If the scope id is missing, malformed, or
 	// referencing a non existing resource, an error is returned.
 	ListAuthTokens(ctx context.Context, in *ListAuthTokensRequest, opts ...grpc.CallOption) (*ListAuthTokensResponse, error)
-	// DeleteAuthToken removes a Auth Token from Boundary. If the provided
+	// DeleteAuthToken removes a Auth Token from Dumpling. If the provided
 	// Auth Token id is malformed or not provided an error is returned.
 	DeleteAuthToken(ctx context.Context, in *DeleteAuthTokenRequest, opts ...grpc.CallOption) (*DeleteAuthTokenResponse, error)
 }
@@ -80,7 +80,7 @@ type AuthTokenServiceServer interface {
 	// the Auth Tokens being listed.  If the scope id is missing, malformed, or
 	// referencing a non existing resource, an error is returned.
 	ListAuthTokens(context.Context, *ListAuthTokensRequest) (*ListAuthTokensResponse, error)
-	// DeleteAuthToken removes a Auth Token from Boundary. If the provided
+	// DeleteAuthToken removes a Auth Token from Dumpling. If the provided
 	// Auth Token id is malformed or not provided an error is returned.
 	DeleteAuthToken(context.Context, *DeleteAuthTokenRequest) (*DeleteAuthTokenResponse, error)
 	mustEmbedUnimplementedAuthTokenServiceServer()

@@ -18,7 +18,7 @@ import (
 )
 
 // TestWsConn creates a websocket client and handler simulating the local websocket proxy
-// created during Boundary connect. The proxyConn returned should be used as the connection
+// created during Dumpling connect. The proxyConn returned should be used as the connection
 // passed into the worker proxy handler, while the clientConn can be used to simulate
 // the local end user connection.
 func TestWsConn(t testing.TB, ctx context.Context) (clientConn, proxyConn *websocket.Conn) {

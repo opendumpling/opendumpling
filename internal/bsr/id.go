@@ -6,7 +6,7 @@ package bsr
 import (
 	"fmt"
 
-	"github.com/hashicorp/boundary/globals"
+	"github.com/opendumpling/opendumpling/globals"
 	"github.com/hashicorp/go-secure-stdlib/base62"
 )
 

@@ -6,10 +6,10 @@ package ldap
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/util"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/util"
 )
 
 // RepoFactory is a factory function that returns a repository and any error
@@ -43,7 +43,7 @@ func NewRepository(ctx context.Context, r db.Reader, w db.Writer, kms kms.GetWra
 		return nil, errors.Wrap(ctx, err, op)
 	}
 	if opts.withLimit == 0 {
-		// zero signals the boundary defaults should be used.
+		// zero signals the dumpling defaults should be used.
 		opts.withLimit = db.DefaultLimit
 	}
 	return &Repository{

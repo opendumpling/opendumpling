@@ -6,10 +6,10 @@ package auth
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/daemon/controller/common"
-	authpb "github.com/hashicorp/boundary/internal/gen/controller/auth"
-	"github.com/hashicorp/boundary/internal/requests"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/common"
+	authpb "github.com/opendumpling/opendumpling/internal/gen/controller/auth"
+	"github.com/opendumpling/opendumpling/internal/requests"
 )
 
 // DisabledAuthTestContext is meant for testing, and uses a context that has

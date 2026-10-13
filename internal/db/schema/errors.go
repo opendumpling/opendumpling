@@ -6,7 +6,7 @@ package schema
 import (
 	"fmt"
 
-	"github.com/hashicorp/boundary/internal/db/schema/migration"
+	"github.com/opendumpling/opendumpling/internal/db/schema/migration"
 )
 
 // MigrationCheckError is an error returned when a migration hook check function

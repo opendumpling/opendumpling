@@ -9,10 +9,10 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/auth/oidc/request"
-	"github.com/hashicorp/boundary/internal/authtoken"
-	"github.com/hashicorp/boundary/internal/db/timestamp"
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/auth/oidc/request"
+	"github.com/opendumpling/opendumpling/internal/authtoken"
+	"github.com/opendumpling/opendumpling/internal/db/timestamp"
+	"github.com/opendumpling/opendumpling/internal/errors"
 	"github.com/hashicorp/cap/oidc"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )

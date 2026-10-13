@@ -6,7 +6,7 @@ package loopback
 import (
 	"context"
 
-	plgpb "github.com/hashicorp/boundary/sdk/pbs/plugin"
+	plgpb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
 	"google.golang.org/grpc"
 )
 

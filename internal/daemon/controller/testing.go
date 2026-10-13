@@ -17,24 +17,24 @@ import (
 	"time"
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/authmethods"
-	"github.com/hashicorp/boundary/api/authtokens"
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/authtoken"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/cmd/config"
-	"github.com/hashicorp/boundary/internal/credential/vault"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/db/schema"
-	"github.com/hashicorp/boundary/internal/gen/testing/interceptor"
-	"github.com/hashicorp/boundary/internal/host/plugin"
-	"github.com/hashicorp/boundary/internal/iam"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/observability/event"
-	"github.com/hashicorp/boundary/internal/scheduler"
-	"github.com/hashicorp/boundary/internal/server"
-	"github.com/hashicorp/boundary/internal/session"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/authmethods"
+	"github.com/opendumpling/opendumpling/api/authtokens"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/authtoken"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/config"
+	"github.com/opendumpling/opendumpling/internal/credential/vault"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/db/schema"
+	"github.com/opendumpling/opendumpling/internal/gen/testing/interceptor"
+	"github.com/opendumpling/opendumpling/internal/host/plugin"
+	"github.com/opendumpling/opendumpling/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
+	"github.com/opendumpling/opendumpling/internal/scheduler"
+	"github.com/opendumpling/opendumpling/internal/server"
+	"github.com/opendumpling/opendumpling/internal/session"
 	"github.com/hashicorp/go-hclog"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	"github.com/hashicorp/go-kms-wrapping/v2/extras/multi"
@@ -774,7 +774,7 @@ func TestControllerConfig(t testing.TB, ctx context.Context, tc *TestController,
 			createOpts = append(createOpts, base.WithSkipLdapAuthMethodCreation())
 		}
 		if !opts.DisableDatabaseTemplate {
-			createOpts = append(createOpts, base.WithDatabaseTemplate("boundary_template"))
+			createOpts = append(createOpts, base.WithDatabaseTemplate("dumpling_template"))
 		}
 		if err := tc.b.CreateDevDatabase(ctx, createOpts...); err != nil {
 			t.Fatal(err)

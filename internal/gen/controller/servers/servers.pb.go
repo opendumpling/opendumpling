@@ -97,7 +97,7 @@ type ServerWorkerStatus struct {
 	Tags []*TagPair `protobuf:"bytes,40,rep,name=tags,proto3" json:"tags,omitempty"`
 	// The key id for this worker, if applicable (optional)
 	KeyId string `protobuf:"bytes,50,opt,name=key_id,json=keyId,proto3" json:"key_id,omitempty" class:"public"` // @gotags: `class:"public"`
-	// The version of Boundary the worker binary is running
+	// The version of Dumpling the worker binary is running
 	ReleaseVersion string `protobuf:"bytes,60,opt,name=release_version,proto3" json:"release_version,omitempty" class:"public"` // @gotags: `class:"public"`
 	// The state of the worker, to indicate if the worker is active or in shutdown.
 	OperationalState string `protobuf:"bytes,70,opt,name=operational_state,json=operationalState,proto3" json:"operational_state,omitempty" class:"public"` // @gotags: `class:"public"`

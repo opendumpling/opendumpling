@@ -9,14 +9,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/credential"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/iam"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/scheduler"
-	"github.com/hashicorp/boundary/internal/util"
-	"github.com/hashicorp/boundary/internal/util/template"
+	"github.com/opendumpling/opendumpling/internal/credential"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/scheduler"
+	"github.com/opendumpling/opendumpling/internal/util"
+	"github.com/opendumpling/opendumpling/internal/util/template"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -110,7 +110,7 @@ func TestRepository_getPrivateLibraries(t *testing.T) {
 				requests = append(requests, req)
 			}
 			{
-				libIn, err := NewCredentialLibrary(origStore.GetPublicId(), "/vault/path", WithMethod(MethodPost), WithRequestBody([]byte(`{"common_name":"boundary.com"}`)))
+				libIn, err := NewCredentialLibrary(origStore.GetPublicId(), "/vault/path", WithMethod(MethodPost), WithRequestBody([]byte(`{"common_name":"dumpling.com"}`)))
 				assert.NoError(err)
 				require.NotNil(libIn)
 				lib, err := repo.CreateCredentialLibrary(ctx, prj.GetPublicId(), libIn)
@@ -1253,7 +1253,7 @@ func TestRepository_sshCertIssuingCredentialLibrary_retrieveCredential(t *testin
 	rw := db.New(conn)
 	wrapper := db.TestWrapper(t)
 	_, prj := iam.TestScopes(t, iam.TestRepo(t, conn, wrapper))
-	sec, token := v.CreateToken(t, WithPolicies([]string{"default", "boundary-controller", "ssh"}), WithTokenPeriod(time.Hour))
+	sec, token := v.CreateToken(t, WithPolicies([]string{"default", "dumpling-controller", "ssh"}), WithTokenPeriod(time.Hour))
 
 	sche := scheduler.TestScheduler(t, conn, wrapper)
 	kms := kms.TestKms(t, conn, wrapper)
@@ -1272,19 +1272,19 @@ func TestRepository_sshCertIssuingCredentialLibrary_retrieveCredential(t *testin
 		expected   map[string]string
 	}{
 		{
-			name:       "vault sign boundary ed25519 key",
+			name:       "vault sign dumpling ed25519 key",
 			username:   "username",
 			vaulthPath: "ssh/sign/boundary",
 			opts:       []Option{WithKeyType(KeyTypeEd25519)},
 		},
 		{
-			name:       "vault sign boundary rsa(4096) key",
+			name:       "vault sign dumpling rsa(4096) key",
 			username:   "username-2-electric-boogaloo",
 			vaulthPath: "ssh/sign/boundary",
 			opts:       []Option{WithKeyType(KeyTypeRsa), WithKeyBits(4096)},
 		},
 		{
-			name:       "vault sign boundary ec(521) key",
+			name:       "vault sign dumpling ec(521) key",
 			username:   "username-3-the-namening",
 			vaulthPath: "ssh/sign/boundary",
 			opts:       []Option{WithKeyType(KeyTypeEcdsa), WithKeyBits(521)},
@@ -1314,7 +1314,7 @@ func TestRepository_sshCertIssuingCredentialLibrary_retrieveCredential(t *testin
 			opts:       []Option{WithKeyType(KeyTypeRsa), WithKeyBits(2048), WithCriticalOptions("{ \"force-commnad\": \"/bin/some-script\" }"), WithExtensions("{ \"permit-pty\": \"\" }")},
 		},
 		{
-			name:       "vault sign boundary rsa(3072) key with critical options and extensions",
+			name:       "vault sign dumpling rsa(3072) key with critical options and extensions",
 			username:   "username-7-because-789",
 			vaulthPath: "ssh/sign/boundary",
 			opts:       []Option{WithKeyType(KeyTypeRsa), WithKeyBits(3072), WithCriticalOptions("{ \"force-commnad\": \"/bin/some-script\" }"), WithExtensions("{ \"permit-pty\": \"\" }")},

@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/errors"
 	vault "github.com/hashicorp/vault/api"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -170,10 +170,10 @@ func TestClient_Post(t *testing.T) {
 	v := NewTestVaultServer(t, WithTestVaultTLS(TestServerTLS))
 	v.MountPKI(t)
 	client := v.client(t)
-	credPath := path.Join("pki", "issue", "boundary")
+	credPath := path.Join("pki", "issue", "dumpling")
 	t.Run("post-body", func(t *testing.T) {
 		assert := assert.New(t)
-		credData := []byte(`{"common_name":"boundary.com"}`)
+		credData := []byte(`{"common_name":"dumpling.com"}`)
 		cred, err := client.post(ctx, credPath, credData)
 		assert.NoError(err)
 		assert.NotNil(cred)
@@ -194,7 +194,7 @@ func TestClient_RenewLease(t *testing.T) {
 	v := NewTestVaultServer(t, WithDockerNetwork(true))
 	v.MountDatabase(t)
 
-	_, token := v.CreateToken(t, WithPolicies([]string{"boundary-controller", "database"}))
+	_, token := v.CreateToken(t, WithPolicies([]string{"dumpling-controller", "database"}))
 	client := v.ClientUsingToken(t, token)
 
 	// Create secret
@@ -239,11 +239,11 @@ func TestClient_capabilities(t *testing.T) {
 			wantMissing: pathCapabilities{"sys/leases/revoke": updateCapability},
 		},
 		{
-			polices: []string{"default", "boundary-controller"},
+			polices: []string{"default", "dumpling-controller"},
 			require: requiredCapabilities,
 		},
 		{
-			polices: []string{"boundary-controller"},
+			polices: []string{"dumpling-controller"},
 			require: requiredCapabilities,
 		},
 	}
@@ -272,7 +272,7 @@ func TestClient_revokeLease(t *testing.T) {
 	v := NewTestVaultServer(t, WithDockerNetwork(true), WithTestVaultTLS(TestClientTLS))
 	testDatabase := v.MountDatabase(t)
 
-	_, token := v.CreateToken(t, WithPolicies([]string{"boundary-controller", "database"}))
+	_, token := v.CreateToken(t, WithPolicies([]string{"dumpling-controller", "database"}))
 	client := v.ClientUsingToken(t, token)
 
 	cred, err := client.get(ctx, path.Join("database", "creds", "opened"))

@@ -23,13 +23,13 @@ import (
 
 	"github.com/golang/protobuf/jsonpb"
 	"github.com/google/go-cmp/cmp"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/daemon/controller"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/health"
-	"github.com/hashicorp/boundary/internal/daemon/worker"
-	pbs "github.com/hashicorp/boundary/internal/gen/ops/services"
-	pbhealth "github.com/hashicorp/boundary/internal/gen/worker/health"
-	"github.com/hashicorp/boundary/internal/server"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/health"
+	"github.com/opendumpling/opendumpling/internal/daemon/worker"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/ops/services"
+	pbhealth "github.com/opendumpling/opendumpling/internal/gen/worker/health"
+	"github.com/opendumpling/opendumpling/internal/server"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-secure-stdlib/base62"
 	"github.com/hashicorp/go-secure-stdlib/configutil/v2"
@@ -178,7 +178,7 @@ func TestNewServerIntegration(t *testing.T) {
 				{
 					Type:       "unix",
 					Purpose:    []string{"ops"},
-					Address:    fmt.Sprintf("/tmp/boundary-opslistener-test-%s.sock", base62.MustRandom(5)),
+					Address:    fmt.Sprintf("/tmp/dumpling-opslistener-test-%s.sock", base62.MustRandom(5)),
 					TLSDisable: true,
 				},
 			},
@@ -203,13 +203,13 @@ func TestNewServerIntegration(t *testing.T) {
 				{
 					Type:       "unix",
 					Purpose:    []string{"ops"},
-					Address:    fmt.Sprintf("/tmp/boundary-opslistener-test-%s.sock", base62.MustRandom(5)),
+					Address:    fmt.Sprintf("/tmp/dumpling-opslistener-test-%s.sock", base62.MustRandom(5)),
 					TLSDisable: true,
 				},
 				{
 					Type:       "unix",
 					Purpose:    []string{"ops"},
-					Address:    fmt.Sprintf("/tmp/boundary-opslistener-test-%s.sock", base62.MustRandom(5)),
+					Address:    fmt.Sprintf("/tmp/dumpling-opslistener-test-%s.sock", base62.MustRandom(5)),
 					TLSDisable: true,
 				},
 			},
@@ -233,31 +233,31 @@ func TestNewServerIntegration(t *testing.T) {
 		{
 			name: "multiple tcp ops listeners (tls)",
 			setup: func(t *testing.T) {
-				testTlsSetup(t, "./boundary-opslistener-cert1.cert", "./boundary-opslistener-pk1.key")
-				testTlsSetup(t, "./boundary-opslistener-cert2.cert", "./boundary-opslistener-pk2.key")
+				testTlsSetup(t, "./dumpling-opslistener-cert1.cert", "./dumpling-opslistener-pk1.key")
+				testTlsSetup(t, "./dumpling-opslistener-cert2.cert", "./dumpling-opslistener-pk2.key")
 			},
 			listeners: []*listenerutil.ListenerConfig{
 				{
 					Type:        "tcp",
 					Purpose:     []string{"ops"},
 					Address:     "127.0.0.1:0",
-					TLSKeyFile:  "./boundary-opslistener-pk1.key",
-					TLSCertFile: "./boundary-opslistener-cert1.cert",
+					TLSKeyFile:  "./dumpling-opslistener-pk1.key",
+					TLSCertFile: "./dumpling-opslistener-cert1.cert",
 				},
 				{
 					Type:        "tcp",
 					Purpose:     []string{"ops"},
 					Address:     "127.0.0.1:0",
-					TLSKeyFile:  "./boundary-opslistener-pk2.key",
-					TLSCertFile: "./boundary-opslistener-cert2.cert",
+					TLSKeyFile:  "./dumpling-opslistener-pk2.key",
+					TLSCertFile: "./dumpling-opslistener-cert2.cert",
 				},
 			},
 			assertions: func(t *testing.T, addrs []string) {
-				cl := testTlsHttpClient(t, "./boundary-opslistener-cert1.cert")
+				cl := testTlsHttpClient(t, "./dumpling-opslistener-cert1.cert")
 				_, err := cl.Get("https://" + addrs[0])
 				require.NoError(t, err)
 
-				cl = testTlsHttpClient(t, "./boundary-opslistener-cert2.cert")
+				cl = testTlsHttpClient(t, "./dumpling-opslistener-cert2.cert")
 				_, err = cl.Get("https://" + addrs[1])
 				require.NoError(t, err)
 			},
@@ -945,7 +945,7 @@ func createTestCert(t *testing.T) ([]byte, ed25519.PublicKey, ed25519.PrivateKey
 		BasicConstraintsValid: true,
 		IsCA:                  true,
 		IPAddresses:           []net.IP{net.ParseIP("127.0.0.1")},
-		DNSNames:              []string{"/tmp/boundary-opslistener-test0.sock", "/tmp/boundary-opslistener-test1.sock"},
+		DNSNames:              []string{"/tmp/dumpling-opslistener-test0.sock", "/tmp/dumpling-opslistener-test1.sock"},
 	}
 
 	certBytes, err := x509.CreateCertificate(rand.Reader, template, template, pub, priv)

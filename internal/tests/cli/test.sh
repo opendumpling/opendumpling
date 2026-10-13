@@ -17,13 +17,13 @@ which jq       || die "missing jq"
 which bats     || die "missing bats"
 which nc       || die "missing nc"
 
-echo "starting boundary dev in background"
-boundary dev --create-loopback-plugin &>/dev/null &
+echo "starting dumpling dev in background"
+dumpling dev --create-loopback-plugin &>/dev/null &
 boundary_pid=$!
 
 function cleanup {
     rv=$?
-    echo "stopping boundary dev"
+    echo "stopping dumpling dev"
     if [[ -n ${boundary_pid} ]]; then
         kill ${boundary_pid}
     fi
@@ -44,4 +44,4 @@ until boundary scopes list; do
 done
 
 echo "running bats tests"
-bats -p ./boundary
+bats -p ./dumpling

@@ -4,7 +4,7 @@
 package database
 
 import (
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/mitchellh/cli"
 	"github.com/posener/complete"
 )
@@ -19,18 +19,18 @@ type Command struct {
 }
 
 func (c *Command) Synopsis() string {
-	return "Manage Boundary's database"
+	return "Manage Dumpling's database"
 }
 
 func (c *Command) Help() string {
 	return base.WrapForHelpText([]string{
-		"Usage: boundary database [sub command] [options] [args]",
+		"Usage: dumpling database [sub command] [options] [args]",
 		"",
-		"  This command allows operations on Boundary's database. Example:",
+		"  This command allows operations on Dumpling's database. Example:",
 		"",
 		"    Initialize the database:",
 		"",
-		`      $ boundary database init`,
+		`      $ dumpling database init`,
 		"",
 		"  Please see the database subcommand help for detailed usage information.",
 	})

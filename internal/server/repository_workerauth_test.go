@@ -13,11 +13,11 @@ import (
 	"time"
 
 	"github.com/fatih/structs"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/server/store"
-	"github.com/hashicorp/boundary/internal/types/scope"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/server/store"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	"github.com/hashicorp/nodeenrollment"
 	nodee "github.com/hashicorp/nodeenrollment"
@@ -362,7 +362,7 @@ func TestStoreNodeInformationTx(t *testing.T) {
 		wci, err := structpb.NewStruct(map[string]any{
 			"name":             "regflow-worker-name",
 			"description":      "regflow-worker-description",
-			"boundary_version": "0.13.0",
+			"dumpling_version": "0.13.0",
 		})
 		require.NoError(t, err)
 		ni.WrappingRegistrationFlowInfo = &types.WrappingRegistrationFlowInfo{
@@ -484,7 +484,7 @@ func TestStoreNodeInformationTx(t *testing.T) {
 			kms:    kmsCache,
 			node: func() *types.NodeInformation {
 				ni := wrappingRegFlowNodeInfoFn()
-				ni.WrappingRegistrationFlowInfo.ApplicationSpecificParams.Fields["boundary_version"] = nil
+				ni.WrappingRegistrationFlowInfo.ApplicationSpecificParams.Fields["dumpling_version"] = nil
 				ni.CertificatePublicKeyPkix = wrappingRegFlowNodeCreds.CertificatePublicKeyPkix
 				keyId, err := nodeenrollment.KeyIdFromPkix(ni.CertificatePublicKeyPkix)
 				require.NoError(t, err)
@@ -492,7 +492,7 @@ func TestStoreNodeInformationTx(t *testing.T) {
 				return ni
 			}(),
 			wantErr:         true,
-			wantErrContains: "in wrapping registration flow but boundary version not provided",
+			wantErrContains: "in wrapping registration flow but dumpling version not provided",
 		},
 		{
 			name:   "success",

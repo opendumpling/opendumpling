@@ -10,8 +10,8 @@
 package credentialstores
 
 import (
-	scopes "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/scopes"
-	_ "github.com/hashicorp/boundary/sdk/pbs/controller/protooptions"
+	scopes "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/scopes"
+	_ "github.com/opendumpling/opendumpling/sdk/pbs/controller/protooptions"
 	_ "google.golang.org/genproto/googleapis/api/visibility"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"

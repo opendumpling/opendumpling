@@ -7,8 +7,8 @@ import (
 	"context"
 	"crypto/ed25519"
 
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/libs/crypto"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/libs/crypto"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 )
 

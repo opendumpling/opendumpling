@@ -12,10 +12,10 @@ import (
 	"os"
 	"strings"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	kms_plugin_assets "github.com/hashicorp/boundary/plugins/kms"
-	"github.com/hashicorp/boundary/sdk/wrapper"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	kms_plugin_assets "github.com/opendumpling/opendumpling/plugins/kms"
+	"github.com/opendumpling/opendumpling/sdk/wrapper"
 	"github.com/hashicorp/go-hclog"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	configutil "github.com/hashicorp/go-secure-stdlib/configutil/v2"
@@ -40,21 +40,21 @@ type EncryptDecryptCommand struct {
 }
 
 func (c *EncryptDecryptCommand) Synopsis() string {
-	return fmt.Sprintf("%s sensitive values in Boundary's configuration file", textproto.CanonicalMIMEHeaderKey(c.Func))
+	return fmt.Sprintf("%s sensitive values in Dumpling's configuration file", textproto.CanonicalMIMEHeaderKey(c.Func))
 }
 
 func (c *EncryptDecryptCommand) Help() string {
 	var args []string
 	args = append(args,
-		"Usage: boundary config {{func}} [options] [args]",
+		"Usage: dumpling config {{func}} [options] [args]",
 		"",
-		"  {{upperfunc}} sensitive values in a Boundary's configuration file. These values must be marked with {{{{func}}()}} as appropriate. Example:",
+		"  {{upperfunc}} sensitive values in a Dumpling's configuration file. These values must be marked with {{{{func}}()}} as appropriate. Example:",
 		"",
 		`    foo = "{{encrypt(bar)}}"`,
 		"",
 		"  By default this will print out the new configuration. To overwrite into the same file use the -overwrite flag.",
 		"",
-		"    $ boundary config {{func}} -overwrite config.hcl",
+		"    $ dumpling config {{func}} -overwrite config.hcl",
 		"",
 		`  In order for this command to perform its task, a "kms" block must be defined within a configuration file. Example:`,
 		"",

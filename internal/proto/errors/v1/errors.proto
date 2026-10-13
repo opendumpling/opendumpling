@@ -7,7 +7,7 @@ package errors.v1;
 
 import "controller/api/v1/error.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/gen/errors;errors";
+option go_package = "github.com/opendumpling/opendumpling/internal/gen/errors;errors";
 
 // Err is a protobuf representation of a domain error
 message Err {

@@ -9,8 +9,8 @@ package provider
 import (
 	"sort"
 
-	"github.com/hashicorp/boundary/internal/db/schema/internal/edition"
-	"github.com/hashicorp/boundary/internal/db/schema/migration"
+	"github.com/opendumpling/opendumpling/internal/db/schema/internal/edition"
+	"github.com/opendumpling/opendumpling/internal/db/schema/migration"
 )
 
 const nilVersion = -1

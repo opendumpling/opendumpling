@@ -9,7 +9,7 @@ import (
 	"sync"
 	"testing"
 
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/servers/services"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/servers/services"
 	"github.com/hashicorp/nodeenrollment"
 	"github.com/hashicorp/nodeenrollment/registration"
 	"github.com/hashicorp/nodeenrollment/rotation"

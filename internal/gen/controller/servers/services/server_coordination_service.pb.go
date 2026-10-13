@@ -10,7 +10,7 @@
 package services
 
 import (
-	servers "github.com/hashicorp/boundary/internal/gen/controller/servers"
+	servers "github.com/opendumpling/opendumpling/internal/gen/controller/servers"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -1153,7 +1153,7 @@ func (x *WorkerInfo) GetAddress() string {
 	return ""
 }
 
-// A HCP Boundary workers request. Empty for now.
+// A HCP Dumpling workers request. Empty for now.
 type ListHcpbWorkersRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

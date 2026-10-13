@@ -10,10 +10,10 @@ import (
 	"io"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/bsr"
-	"github.com/hashicorp/boundary/internal/bsr/convert/internal/asciicast"
-	"github.com/hashicorp/boundary/internal/bsr/internal/is"
-	"github.com/hashicorp/boundary/internal/bsr/ssh"
+	"github.com/opendumpling/opendumpling/internal/bsr"
+	"github.com/opendumpling/opendumpling/internal/bsr/convert/internal/asciicast"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/is"
+	"github.com/opendumpling/opendumpling/internal/bsr/ssh"
 )
 
 // sshChannelToAsciicast will convert a recording of an ssh channel from a BSR

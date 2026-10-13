@@ -9,9 +9,9 @@ import (
 	"embed"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/db/schema"
-	"github.com/hashicorp/boundary/internal/db/schema/internal/edition"
-	"github.com/hashicorp/boundary/internal/db/schema/migration"
+	"github.com/opendumpling/opendumpling/internal/db/schema"
+	"github.com/opendumpling/opendumpling/internal/db/schema/internal/edition"
+	"github.com/opendumpling/opendumpling/internal/db/schema/migration"
 	"github.com/stretchr/testify/assert"
 )
 

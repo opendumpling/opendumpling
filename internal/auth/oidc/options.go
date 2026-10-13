@@ -7,7 +7,7 @@ import (
 	"crypto/x509"
 	"net/url"
 
-	"github.com/hashicorp/boundary/internal/db"
+	"github.com/opendumpling/opendumpling/internal/db"
 )
 
 // getOpts - iterate the inbound Options and return a struct.

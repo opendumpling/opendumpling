@@ -7,9 +7,9 @@ import (
 	"net"
 	"time"
 
-	intglobals "github.com/hashicorp/boundary/internal/globals"
-	"github.com/hashicorp/boundary/internal/perms"
-	"github.com/hashicorp/boundary/internal/types/subtypes"
+	intglobals "github.com/opendumpling/opendumpling/internal/globals"
+	"github.com/opendumpling/opendumpling/internal/perms"
+	"github.com/opendumpling/opendumpling/internal/types/subtypes"
 )
 
 // GetOpts - iterate the inbound Options and return a struct

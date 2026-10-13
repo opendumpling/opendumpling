@@ -14,9 +14,9 @@ const (
 
 // Queries for interacting with the schema version table
 const (
-	schemaVersionTable = `boundary_schema_version`
+	schemaVersionTable = `dumpling_schema_version`
 	upsertVersion      = `
-insert into boundary_schema_version
+insert into dumpling_schema_version
 	(edition, version)
 values
 	($1, $2)
@@ -27,7 +27,7 @@ do update set
 
 	selectVersion = `
 select version
-  from boundary_schema_version
+  from dumpling_schema_version
  where edition = $1
 ;`
 
@@ -36,20 +36,20 @@ select version from schema_migrations;
 `
 
 	selectPreEditionVersion = `
-select max(version) from boundary_schema_version;
+select max(version) from dumpling_schema_version;
 `
 
 	tablesExist = `
 select table_name from information_schema.tables
  where table_schema =  (select current_schema())
-   and table_name   in ('schema_migrations', 'boundary_schema_version')
+   and table_name   in ('schema_migrations', 'dumpling_schema_version')
 ;`
 
 	tableExists = `
 select exists (
 	select 1 from information_schema.tables
 	 where table_schema = (select current_schema())
-	   and table_name   = 'boundary_schema_version'
+	   and table_name   = 'dumpling_schema_version'
 );`
 
 	oldTableExists = `
@@ -61,26 +61,26 @@ select exists (
 
 	updateTableName = `
 alter table if exists schema_migrations
-	rename to boundary_schema_version
+	rename to dumpling_schema_version
 ;`
 
 	dropDirtyColumn = `
-alter table boundary_schema_version
+alter table dumpling_schema_version
 	drop column if exists dirty
 ;`
 
 	addEditionColumn = `
-alter table boundary_schema_version
+alter table dumpling_schema_version
 	add column if not exists
 	edition text default 'oss';
-alter table boundary_schema_version
+alter table dumpling_schema_version
 	alter column edition drop default;
-alter table boundary_schema_version drop constraint if exists schema_migrations_pkey;
-alter table boundary_schema_version drop constraint if exists boundary_schema_version_pkey;
-alter table boundary_schema_version add primary key (edition);
+alter table dumpling_schema_version drop constraint if exists schema_migrations_pkey;
+alter table dumpling_schema_version drop constraint if exists dumpling_schema_version_pkey;
+alter table dumpling_schema_version add primary key (edition);
 `
 	setVersionNotNull = `
-alter table boundary_schema_version
+alter table dumpling_schema_version
 	alter column version set not null;
 `
 )
@@ -100,7 +100,7 @@ select
  from log_migration
 where
   migration_version in (
-    select max(version) from boundary_schema_version
+    select max(version) from dumpling_schema_version
   );`
 
 	truncateMigrationLogs = `truncate log_migration;`
@@ -128,7 +128,7 @@ as $$
   declare current_version bigint;
   begin
     select max(version)
-	  from boundary_schema_version into current_version
+	  from dumpling_schema_version into current_version
 	 where edition = new.edition;
     new.migration_version = current_version;
     return new;

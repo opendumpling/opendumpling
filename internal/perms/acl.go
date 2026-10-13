@@ -6,10 +6,10 @@ package perms
 import (
 	"strings"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/types/action"
-	"github.com/hashicorp/boundary/internal/types/resource"
-	"github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/scopes"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/types/action"
+	"github.com/opendumpling/opendumpling/internal/types/resource"
+	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/scopes"
 )
 
 // AclGrant is used to decouple API-based grants from those we utilize for ACLs.

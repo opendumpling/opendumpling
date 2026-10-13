@@ -7,9 +7,9 @@ import (
 	"context"
 	"sort"
 
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/host"
-	plgpb "github.com/hashicorp/boundary/sdk/pbs/plugin"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/host"
+	plgpb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
 	"github.com/hashicorp/go-secure-stdlib/strutil"
 )
 

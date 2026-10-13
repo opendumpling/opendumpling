@@ -11,10 +11,10 @@ import (
 	"os"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/daemon/cluster/handlers"
-	"github.com/hashicorp/boundary/internal/daemon/worker/session"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/servers/services"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/daemon/cluster/handlers"
+	"github.com/opendumpling/opendumpling/internal/daemon/worker/session"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/servers/services"
 	"github.com/hashicorp/go-secure-stdlib/listenerutil"
 	"github.com/stretchr/testify/require"
 )

@@ -4,8 +4,8 @@
 package credentiallibrariescmd
 
 import (
-	"github.com/hashicorp/boundary/api/credentiallibraries"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api/credentiallibraries"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/hashicorp/go-secure-stdlib/parseutil"
 )
 
@@ -124,24 +124,24 @@ func (c *VaultCommand) extraVaultHelpFunc(_ map[string]func() string) string {
 	switch c.Func {
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Deprecated: use 'boundary credential-libraries create vault-generic' instead.",
-			"Usage: boundary credential-libraries create vault -credential-store-id [options] [args]",
+			"Deprecated: use 'dumpling credential-libraries create vault-generic' instead.",
+			"Usage: dumpling credential-libraries create vault -credential-store-id [options] [args]",
 			"",
 			"  Create a vault-type credential library. Example:",
 			"",
-			`    $ boundary credential-libraries create vault -credential-store-id csvlt_1234567890 -vault-path "/some/path"`,
+			`    $ dumpling credential-libraries create vault -credential-store-id csvlt_1234567890 -vault-path "/some/path"`,
 			"",
 			"",
 		})
 
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Deprecated: use 'boundary credential-libraries update vault-generic' instead.",
-			"Usage: boundary credential-libraries update vault [options] [args]",
+			"Deprecated: use 'dumpling credential-libraries update vault-generic' instead.",
+			"Usage: dumpling credential-libraries update vault [options] [args]",
 			"",
 			"  Update a vault-type credential library given its ID. Example:",
 			"",
-			`    $ boundary credential-libraries update vault -id clvlt_1234567890 -name devops -description "For DevOps usage"`,
+			`    $ dumpling credential-libraries update vault -id clvlt_1234567890 -name devops -description "For DevOps usage"`,
 			"",
 			"",
 		})

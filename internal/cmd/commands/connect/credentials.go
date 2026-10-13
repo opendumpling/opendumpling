@@ -6,8 +6,8 @@ package connect
 import (
 	"errors"
 
-	"github.com/hashicorp/boundary/api/targets"
-	"github.com/hashicorp/boundary/internal/credential"
+	"github.com/opendumpling/opendumpling/api/targets"
+	"github.com/opendumpling/opendumpling/internal/credential"
 	"github.com/mitchellh/mapstructure"
 )
 

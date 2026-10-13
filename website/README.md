@@ -1,6 +1,6 @@
-# Boundary Documentation Website
+# Dumpling Documentation Website
 
-This subdirectory contains the content for the [Boundary Website](https://boundaryproject.io/).
+This subdirectory contains the content for the [Dumpling Website](https://boundaryproject.io/).
 
 <!--
   This readme file contains several blocks of generated text, to make it easier to share common information
@@ -13,7 +13,7 @@ This subdirectory contains the content for the [Boundary Website](https://bounda
 
 ## Table of Contents
 
-- [Boundary Documentation Website](#boundary-documentation-website)
+- [Dumpling Documentation Website](#boundary-documentation-website)
   - [Table of Contents](#table-of-contents)
   - [Contributions Welcome!](#contributions-welcome)
   - [Running the Site Locally](#running-the-site-locally)

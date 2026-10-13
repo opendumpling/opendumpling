@@ -12,10 +12,10 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/plugins"
-	"github.com/hashicorp/boundary/api/scopes"
-	"github.com/hashicorp/boundary/version"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/plugins"
+	"github.com/opendumpling/opendumpling/api/scopes"
+	"github.com/opendumpling/opendumpling/version"
 	"github.com/mitchellh/cli"
 	"github.com/mitchellh/go-wordwrap"
 	"github.com/pkg/errors"
@@ -372,11 +372,11 @@ func (j JsonFormatter) Format(data any) ([]byte, error) {
 
 func Format(ui cli.Ui) string {
 	switch t := ui.(type) {
-	case *BoundaryUI:
+	case *DumplingUI:
 		return t.Format
 	}
 
-	format := os.Getenv(EnvBoundaryCLIFormat)
+	format := os.Getenv(EnvDumplingCLIFormat)
 	if format == "" {
 		format = "table"
 	}

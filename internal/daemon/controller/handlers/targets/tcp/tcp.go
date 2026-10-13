@@ -8,14 +8,14 @@ import (
 	"math"
 
 	"github.com/golang/protobuf/ptypes/wrappers"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/targets"
-	"github.com/hashicorp/boundary/internal/session"
-	"github.com/hashicorp/boundary/internal/target"
-	"github.com/hashicorp/boundary/internal/target/store"
-	"github.com/hashicorp/boundary/internal/target/tcp"
-	tcpStore "github.com/hashicorp/boundary/internal/target/tcp/store"
-	pb "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/targets"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/targets"
+	"github.com/opendumpling/opendumpling/internal/session"
+	"github.com/opendumpling/opendumpling/internal/target"
+	"github.com/opendumpling/opendumpling/internal/target/store"
+	"github.com/opendumpling/opendumpling/internal/target/tcp"
+	tcpStore "github.com/opendumpling/opendumpling/internal/target/tcp/store"
+	pb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/targets"
 )
 
 const (

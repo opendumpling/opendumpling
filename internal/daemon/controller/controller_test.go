@@ -10,12 +10,12 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/cmd/config"
-	"github.com/hashicorp/boundary/internal/iam"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/types/scope"
-	boundary_plugin_assets "github.com/hashicorp/boundary/plugins/boundary"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/config"
+	"github.com/opendumpling/opendumpling/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
+	dumpling_plugin_assets "github.com/opendumpling/opendumpling/plugins/dumpling"
 	"github.com/hashicorp/go-secure-stdlib/listenerutil"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -271,8 +271,8 @@ func TestController_NewPluginsConfig(t *testing.T) {
 		// Remove random chars and hyphen
 		name = name[0 : len(name)-6]
 		switch name {
-		case boundary_plugin_assets.PluginPrefix + "aws",
-			boundary_plugin_assets.PluginPrefix + "azure":
+		case dumpling_plugin_assets.PluginPrefix + "aws",
+			dumpling_plugin_assets.PluginPrefix + "azure":
 		default:
 			require.Fail("unexpected name", name)
 		}

@@ -4,9 +4,9 @@
 package vault
 
 import (
-	"github.com/hashicorp/boundary/internal/credential"
-	"github.com/hashicorp/boundary/internal/credential/vault/store"
-	"github.com/hashicorp/boundary/internal/oplog"
+	"github.com/opendumpling/opendumpling/internal/credential"
+	"github.com/opendumpling/opendumpling/internal/credential/vault/store"
+	"github.com/opendumpling/opendumpling/internal/oplog"
 	"google.golang.org/protobuf/proto"
 )
 

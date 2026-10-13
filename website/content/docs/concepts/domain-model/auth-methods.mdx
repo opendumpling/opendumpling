@@ -2,13 +2,13 @@
 layout: docs
 page_title: Domain model - auth methods
 description: |-
-  The anatomy of a Boundary auth method
+  The anatomy of a Dumpling auth method
 ---
 
 # Auth methods
 
 An auth method is a resource that provides a mechanism for [users][] to
-authenticate to Boundary. An auth method contains [accounts][] which link an
+authenticate to Dumpling. An auth method contains [accounts][] which link an
 individual user to a set of credentials and [managed groups][] which groups
 [accounts][] that satisfy criteria and can be used as principals in [roles][].
 Auth methods can be defined at either a [Global][] or [Organization][]
@@ -53,7 +53,7 @@ The ldap auth method has the following additional attributes:
 
 - `upn_domain` - (optional) If set, the `userPrincipalDomain` is used to construct
   the UPN string for the authenticating user. The constructed UPN appears as
-  `[username]@UPNDomain`. Example: `example.com`, which causes Boundary to
+  `[username]@UPNDomain`. Example: `example.com`, which causes Dumpling to
   bind as `username@example.com` when it authenticates the user.
 
 - `urls` - (required) The LDAP URLS that specify LDAP servers to connect to.

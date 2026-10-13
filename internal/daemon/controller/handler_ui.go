@@ -10,14 +10,14 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/ui"
+	"github.com/opendumpling/opendumpling/internal/ui"
 )
 
 func init() {
 	handleUi = handleUiWithAssets
 }
 
-// serveMetadata provides controller metadata to the UI for licensed versions of Boundary.
+// serveMetadata provides controller metadata to the UI for licensed versions of Dumpling.
 var serveMetadata = func(ctx context.Context, w http.ResponseWriter) {}
 
 func handleUiWithAssets(c *Controller) http.Handler {

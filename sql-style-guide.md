@@ -1,6 +1,6 @@
 # SQL Style Guide
 
-This guide establishes the standards for SQL in Boundary.
+This guide establishes the standards for SQL in Dumpling.
 
 ## Purpose
 
@@ -59,6 +59,7 @@ For `create table` statements:
 - Put constraints for a single column on a new line indented under the column declaration.
 
 **Constraints**:
+
 - Name all constraints.
 - Give `check` constraints a name that describes what rule the constraint is enforcing.
 - The naming pattern for foreign key constraints is `reftable_fkey` where
@@ -95,6 +96,7 @@ create trigger update_version_column after update of version, termination_reason
 ```
 
 For `create trigger` statements:
+
 - Keep the `create trigger` statement, trigger name, `before | after`, event
   name, and `on table_name` statement on the same line.
 - Put the remaining statements on a new indented line.
@@ -111,6 +113,7 @@ comment on domain wt_private_id is
 ```
 
 For `create domain` statements:
+
 - Keep the `create domain` statement, domain name, `as data_type`, `not null`
   (if applicable), and default value (if applicable) on the same line.
 - Put check constraints on new lines.

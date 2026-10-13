@@ -3,7 +3,7 @@
     "title": "Introduction",
     "routes": [
       {
-        "title": "What is Boundary?",
+        "title": "What is Dumpling?",
         "path": "overview/what-is-boundary"
       },
       {
@@ -11,7 +11,7 @@
         "path": "overview/use-cases"
       },
       {
-        "title": "Boundary vs. other software",
+        "title": "Dumpling vs. other software",
         "routes": [
           {
             "title": "Overview",
@@ -53,11 +53,11 @@
         "path": "getting-started"
       },
       {
-        "title": "Self-managed Boundary quick start",
+        "title": "Self-managed Dumpling quick start",
         "href": "https://developer.hashicorp.com/boundary/tutorials/oss-getting-started/"
       },
       {
-        "title": "HCP Boundary quick start",
+        "title": "HCP Dumpling quick start",
         "href": "https://developer.hashicorp.com/boundary/tutorials/hcp-getting-started/"
       },
       {
@@ -80,7 +80,7 @@
     ]
   },
   {
-    "title": "Install Boundary",
+    "title": "Install Dumpling",
     "routes": [
       {
         "title": "Overview",
@@ -99,7 +99,7 @@
         "path": "install-boundary/fault-tolerance"
       },
       {
-        "title": "Install Boundary",
+        "title": "Install Dumpling",
         "path": "install-boundary/install"
       },
       {
@@ -523,14 +523,14 @@
     ]
   },
   {
-    "title": "Develop Boundary",
+    "title": "Develop Dumpling",
     "routes": [
       {
         "title": "Overview",
         "path": "developing"
       },
       {
-        "title": "Build Boundary",
+        "title": "Build Dumpling",
         "path": "developing/building"
       },
       {
@@ -543,7 +543,7 @@
     "divider": true
   },
   {
-    "title": "Boundary OSS",
+    "title": "Dumpling OSS",
     "hidden": true,
     "routes": [
       {
@@ -553,7 +553,7 @@
     ]
   },
   {
-    "title": "HCP Boundary",
+    "title": "HCP Dumpling",
     "routes": [
       {
         "title": "Overview",
@@ -582,7 +582,7 @@
     "divider": true
   },
   {
-    "title": "Boundary Enterprise",
+    "title": "Dumpling Enterprise",
     "routes": [
       {
         "title": "Overview",

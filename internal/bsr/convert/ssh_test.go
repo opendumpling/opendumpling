@@ -12,9 +12,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/bsr"
-	sshv1 "github.com/hashicorp/boundary/internal/bsr/gen/ssh/v1"
-	"github.com/hashicorp/boundary/internal/bsr/ssh"
+	"github.com/opendumpling/opendumpling/internal/bsr"
+	sshv1 "github.com/opendumpling/opendumpling/internal/bsr/gen/ssh/v1"
+	"github.com/opendumpling/opendumpling/internal/bsr/ssh"
 	"github.com/stretchr/testify/require"
 )
 

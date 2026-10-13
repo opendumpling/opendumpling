@@ -12,7 +12,7 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
-option go_package = "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/hostsets;hostsets";
+option go_package = "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/hostsets;hostsets";
 
 // HostSet is a collection of Hosts created and managed by a Host Catalog
 message HostSet {
@@ -81,7 +81,7 @@ message HostSet {
   // elapse between syncs of the host set. The interval will be applied to the
   // end of the previous sync operation, not the start. Setting to -1 will
   // disable syncing for that host set; setting to zero will cause the set to
-  // use Boundary's default. The default may change between releases. May not
+  // use Dumpling's default. The default may change between releases. May not
   // be valid for all plugin types.
   google.protobuf.Int32Value sync_interval_seconds = 102 [
     json_name = "sync_interval_seconds",

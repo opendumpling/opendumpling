@@ -13,7 +13,7 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
-option go_package = "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/hosts;hosts";
+option go_package = "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/hosts;hosts";
 
 // Host contains all fields related to a Host resource
 message Host {

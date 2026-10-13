@@ -12,7 +12,7 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
-option go_package = "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/accounts;accounts";
+option go_package = "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/accounts;accounts";
 
 // Account contains all fields related to an Account resource
 message Account {

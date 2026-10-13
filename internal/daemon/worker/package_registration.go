@@ -4,5 +4,5 @@
 package worker
 
 import (
-	_ "github.com/hashicorp/boundary/internal/daemon/worker/proxy/tcp"
+	_ "github.com/opendumpling/opendumpling/internal/daemon/worker/proxy/tcp"
 )

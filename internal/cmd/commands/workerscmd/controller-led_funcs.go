@@ -4,9 +4,9 @@
 package workerscmd
 
 import (
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/workers"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/workers"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 )
 
 func init() {
@@ -18,11 +18,11 @@ func (c *ControllerLedCommand) extraControllerLedHelpFunc(helpMap map[string]fun
 	switch c.Func {
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary workers create controller-led [options] [args]",
+			"Usage: dumpling workers create controller-led [options] [args]",
 			"",
 			"  Create a worker using the controller-led approach, receiving an activation token for a worker. Example:",
 			"",
-			`    $ boundary workers create controller-led -name us-east-1-1`,
+			`    $ dumpling workers create controller-led -name us-east-1-1`,
 			"",
 			"",
 		})

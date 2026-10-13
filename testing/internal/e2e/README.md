@@ -1,7 +1,7 @@
 # boundary-e2e-tests
 
-This test suite tests Boundary in an end-to-end setting, utilizing both the Boundary CLI and the
-Boundary Go API to exercise Boundary through various user workflows. It was designed to be run in a
+This test suite tests Dumpling in an end-to-end setting, utilizing both the Dumpling CLI and the
+Dumpling Go API to exercise Dumpling through various user workflows. It was designed to be run in a
 variety of environments as long as the appropriate environment variables are set. The test suite
 itself uses the standard [go test](https://pkg.go.dev/testing) library.
 
@@ -38,7 +38,7 @@ Set the appropriate environment variables...
 export E2E_TESTS=true  # This is needed for any e2e test. Otherwise, the test is skipped
 
 # For e2e/tests/base
-export BOUNDARY_ADDR=  # e.g. http://127.0.0.1:9200
+export DUMPLING_ADDR=  # e.g. http://127.0.0.1:9200
 export E2E_PASSWORD_AUTH_METHOD_ID=  # e.g. ampw_1234567890
 export E2E_PASSWORD_ADMIN_LOGIN_NAME=  # e.g. "admin"
 export E2E_PASSWORD_ADMIN_PASSWORD=  # e.g. "password"
@@ -48,7 +48,7 @@ export E2E_SSH_KEY_PATH=  # e.g. /Users/username/key.pem
 export E2E_SSH_USER=  # e.g. ubuntu
 
 # For e2e/tests/base_with_vault
-export BOUNDARY_ADDR=  # e.g. http://127.0.0.1:9200
+export DUMPLING_ADDR=  # e.g. http://127.0.0.1:9200
 export E2E_PASSWORD_AUTH_METHOD_ID=  # e.g. ampw_1234567890
 export E2E_PASSWORD_ADMIN_LOGIN_NAME=  # e.g. "admin"
 export E2E_PASSWORD_ADMIN_PASSWORD=  # e.g. "password"
@@ -60,7 +60,7 @@ export E2E_SSH_KEY_PATH=  # e.g. /Users/username/key.pem
 export E2E_SSH_USER=  # e.g. ubuntu
 
 # For e2e/tests/aws
-export BOUNDARY_ADDR=  # e.g. http://127.0.0.1:9200
+export DUMPLING_ADDR=  # e.g. http://127.0.0.1:9200
 export E2E_PASSWORD_AUTH_METHOD_ID=  # e.g. ampw_1234567890
 export E2E_PASSWORD_ADMIN_LOGIN_NAME=  # e.g. "admin"
 export E2E_PASSWORD_ADMIN_PASSWORD=  # e.g. "password"
@@ -84,10 +84,10 @@ export VAULT_TOKEN=
 
 Then, run...
 ```shell
-go test github.com/hashicorp/boundary/testing/internal/e2e/tests/base
+go test github.com/opendumpling/opendumpling/testing/internal/e2e/tests/base
 go test ./target/ // run target tests if running from this directory
-go test github.com/hashicorp/boundary/testing/internal/e2e/tests/base -v // verbose
-go test github.com/hashicorp/boundary/testing/internal/e2e/tests/base -v -run '^TestCreateTargetApi$' // run a specific test
+go test github.com/opendumpling/opendumpling/testing/internal/e2e/tests/base -v // verbose
+go test github.com/opendumpling/opendumpling/testing/internal/e2e/tests/base -v -run '^TestCreateTargetApi$' // run a specific test
 ```
 
 ## Adding Tests
@@ -115,7 +115,7 @@ bash scripts/test_e2e_env.sh
 
 Take the printed environment variable information and export them into another terminal session
 ```
-export BOUNDARY_ADDR=
+export DUMPLING_ADDR=
 export E2E_PASSWORD_AUTH_METHOD_ID=
 ...
 ```

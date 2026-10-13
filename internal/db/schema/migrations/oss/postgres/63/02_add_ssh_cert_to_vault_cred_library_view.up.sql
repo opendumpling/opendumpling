@@ -109,6 +109,6 @@ begin;
   comment on view credential_vault_library_issue_credentials is
     'credential_vault_library_issue_credentials is a view where each row contains a credential library and the credential library''s data needed to connect to Vault. '
     'This view should only be used when issuing credentials from a Vault credential library. Each row may contain encrypted data. '
-    'This view should not be used to retrieve data which will be returned external to boundary.';
+    'This view should not be used to retrieve data which will be returned external to dumpling.';
 
 commit;

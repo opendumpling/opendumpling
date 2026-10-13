@@ -8,7 +8,7 @@ package controller.api.resources.sessions.v1;
 import "controller/api/resources/scopes/v1/scope.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/sessions;sessions";
+option go_package = "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/sessions;sessions";
 
 message SessionState {
   // The status of the Session, e.g. "pending", "active", "canceling", "terminated".

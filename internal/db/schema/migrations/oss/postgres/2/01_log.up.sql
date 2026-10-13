@@ -5,7 +5,7 @@ begin;
 
 -- management of the log_migation table is moved into
 -- the schema.Manager prior to migrations running
--- since it interacts with the boundary_schema_version table
+-- since it interacts with the dumpling_schema_version table
 
 -- log_migration entries represent logs generated during migrations
 -- create table log_migration(
@@ -40,7 +40,7 @@ begin;
 -- as $$
 --   declare current_version bigint;
 --   begin
---     select max(version) from boundary_schema_version into current_version;
+--     select max(version) from dumpling_schema_version into current_version;
 --     new.migration_version = current_version;
 --     return new;
 --   end;

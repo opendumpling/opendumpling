@@ -2,13 +2,13 @@
 layout: docs
 page_title: Create a storage bucket
 description: |-
-  How to enable session recording on a target in Boundary
+  How to enable session recording on a target in Dumpling
 ---
 
 # Enable session recording on a target
 
 You must enable session recording for any targets that you want to record sessions on.
-When you [create a storage bucket](/boundary/docs/configuration/session-recording/create-storage-bucket), Boundary provides you with an ID.
+When you [create a storage bucket](/boundary/docs/configuration/session-recording/create-storage-bucket), Dumpling provides you with an ID.
 You use the storage bucket's ID to associate a target with the storage bucket.
 
 **Requirements**:
@@ -27,7 +27,7 @@ Complete the following steps to enable session recording on a target.
 <Tabs>
 <Tab heading="CLI">
 
-1. Log in to Boundary.
+1. Log in to Dumpling.
 1. Do one of the following:
 
    - To enable an existing SSH target for session recording, run the following commmand:
@@ -49,13 +49,13 @@ Complete the following steps to enable session recording on a target.
       Add the `-storage-bucket-id ID` for the storage bucket you want to associate with this target.
       You can configure any other [target attributes](/boundary/docs/concepts/domain-model/targets).
 
-      You can now view the target from the **Targets** page in the Boundary console.
+      You can now view the target from the **Targets** page in the Dumpling console.
 
 </Tab>
 
 <Tab heading="UI">
 
-1. Log in to Boundary.
+1. Log in to Dumpling.
 1. Select **Orgs** in the navigation pane.
 1. Select the org that contains the target you want to enable for session recording.
 1. Select the project that contains the target you want to enable for session recording.

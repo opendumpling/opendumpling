@@ -8,23 +8,23 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/auth"
-	"github.com/hashicorp/boundary/internal/auth/ldap"
-	ldapstore "github.com/hashicorp/boundary/internal/auth/ldap/store"
-	"github.com/hashicorp/boundary/internal/auth/oidc"
-	oidcstore "github.com/hashicorp/boundary/internal/auth/oidc/store"
-	requestauth "github.com/hashicorp/boundary/internal/daemon/controller/auth"
-	"github.com/hashicorp/boundary/internal/daemon/controller/common"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers"
-	"github.com/hashicorp/boundary/internal/errors"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/api/services"
-	"github.com/hashicorp/boundary/internal/perms"
-	"github.com/hashicorp/boundary/internal/requests"
-	"github.com/hashicorp/boundary/internal/types/action"
-	"github.com/hashicorp/boundary/internal/types/resource"
-	"github.com/hashicorp/boundary/internal/types/subtypes"
-	pb "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/managedgroups"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/auth"
+	"github.com/opendumpling/opendumpling/internal/auth/ldap"
+	ldapstore "github.com/opendumpling/opendumpling/internal/auth/ldap/store"
+	"github.com/opendumpling/opendumpling/internal/auth/oidc"
+	oidcstore "github.com/opendumpling/opendumpling/internal/auth/oidc/store"
+	requestauth "github.com/opendumpling/opendumpling/internal/daemon/controller/auth"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/common"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/api/services"
+	"github.com/opendumpling/opendumpling/internal/perms"
+	"github.com/opendumpling/opendumpling/internal/requests"
+	"github.com/opendumpling/opendumpling/internal/types/action"
+	"github.com/opendumpling/opendumpling/internal/types/resource"
+	"github.com/opendumpling/opendumpling/internal/types/subtypes"
+	pb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/managedgroups"
 	"github.com/hashicorp/go-bexpr"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/protobuf/types/known/wrapperspb"
@@ -95,7 +95,7 @@ type Service struct {
 
 var _ pbs.ManagedGroupServiceServer = (*Service)(nil)
 
-// NewService returns a managed group service which handles managed group related requests to boundary.
+// NewService returns a managed group service which handles managed group related requests to dumpling.
 func NewService(ctx context.Context, oidcRepo common.OidcAuthRepoFactory, ldapRepo common.LdapAuthRepoFactory) (Service, error) {
 	const op = "managed_groups.NewService"
 	switch {

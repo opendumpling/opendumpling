@@ -8,9 +8,9 @@ import (
 	"crypto/rand"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/auth/password/store"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/oplog"
+	"github.com/opendumpling/opendumpling/internal/auth/password/store"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/oplog"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	"github.com/hashicorp/go-kms-wrapping/v2/extras/structwrapping"
 	"golang.org/x/crypto/argon2"

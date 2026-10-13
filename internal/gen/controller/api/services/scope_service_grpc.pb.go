@@ -26,13 +26,13 @@ type ScopeServiceClient interface {
 	// ListScopes returns a list of stored Scopes which exist inside the provided
 	// parent Scope id.
 	ListScopes(ctx context.Context, in *ListScopesRequest, opts ...grpc.CallOption) (*ListScopesResponse, error)
-	// CreateScope creates and stores a Scope in boundary.  The provided request
+	// CreateScope creates and stores a Scope in dumpling.  The provided request
 	// must include the Scope ID in which the new scope will be created. If the Scope
 	// ID is missing, malformed or references a non existing scope, an error is
 	// returned. If a name is provided that is in use in another Scope in the same
 	// parent scope, an error is returned.
 	CreateScope(ctx context.Context, in *CreateScopeRequest, opts ...grpc.CallOption) (*CreateScopeResponse, error)
-	// UpdateScope updates an existing Scope in boundary.  The provided
+	// UpdateScope updates an existing Scope in dumpling.  The provided
 	// Scope must not have any read only fields set.  The update mask must be
 	// included in the request and contain at least 1 mutable field.  To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -41,7 +41,7 @@ type ScopeServiceClient interface {
 	// is also returned if the request attempts to update the name to one that is
 	// already in use by another scope in the parent scope.
 	UpdateScope(ctx context.Context, in *UpdateScopeRequest, opts ...grpc.CallOption) (*UpdateScopeResponse, error)
-	// DeleteScope remotes a Scope and all child resources from Boundary. If the
+	// DeleteScope remotes a Scope and all child resources from Dumpling. If the
 	// provided Scope IDs are malformed or not provided an error is returned.
 	DeleteScope(ctx context.Context, in *DeleteScopeRequest, opts ...grpc.CallOption) (*DeleteScopeResponse, error)
 	// ListKeys lists all the keys found in the scope specified. If the scope
@@ -160,13 +160,13 @@ type ScopeServiceServer interface {
 	// ListScopes returns a list of stored Scopes which exist inside the provided
 	// parent Scope id.
 	ListScopes(context.Context, *ListScopesRequest) (*ListScopesResponse, error)
-	// CreateScope creates and stores a Scope in boundary.  The provided request
+	// CreateScope creates and stores a Scope in dumpling.  The provided request
 	// must include the Scope ID in which the new scope will be created. If the Scope
 	// ID is missing, malformed or references a non existing scope, an error is
 	// returned. If a name is provided that is in use in another Scope in the same
 	// parent scope, an error is returned.
 	CreateScope(context.Context, *CreateScopeRequest) (*CreateScopeResponse, error)
-	// UpdateScope updates an existing Scope in boundary.  The provided
+	// UpdateScope updates an existing Scope in dumpling.  The provided
 	// Scope must not have any read only fields set.  The update mask must be
 	// included in the request and contain at least 1 mutable field.  To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -175,7 +175,7 @@ type ScopeServiceServer interface {
 	// is also returned if the request attempts to update the name to one that is
 	// already in use by another scope in the parent scope.
 	UpdateScope(context.Context, *UpdateScopeRequest) (*UpdateScopeResponse, error)
-	// DeleteScope remotes a Scope and all child resources from Boundary. If the
+	// DeleteScope remotes a Scope and all child resources from Dumpling. If the
 	// provided Scope IDs are malformed or not provided an error is returned.
 	DeleteScope(context.Context, *DeleteScopeRequest) (*DeleteScopeResponse, error)
 	// ListKeys lists all the keys found in the scope specified. If the scope

@@ -8,7 +8,7 @@ import (
 	"encoding/pem"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/credential/vault"
+	"github.com/opendumpling/opendumpling/internal/credential/vault"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

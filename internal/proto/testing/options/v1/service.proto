@@ -7,7 +7,7 @@ package testing.options.v1;
 
 import "google/api/annotations.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/gen/testing/protooptions;protooptions";
+option go_package = "github.com/opendumpling/opendumpling/internal/gen/testing/protooptions;protooptions";
 
 // The test service definition.  This is just a service that can be used to
 // test options applied to services.

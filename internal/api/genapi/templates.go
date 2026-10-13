@@ -606,8 +606,8 @@ import (
 
 	"github.com/kr/pretty"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/scopes"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/scopes"
 )
 
 type {{ .Name }} struct { {{ range .Fields }}
@@ -700,7 +700,7 @@ package {{ .Package }}
 import (
 	"strconv"
 
-	"github.com/hashicorp/boundary/api"
+	"github.com/opendumpling/opendumpling/api"
 )
 
 // Option is a func that sets optional attributes for a call. This does not need

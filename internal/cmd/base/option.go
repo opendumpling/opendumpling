@@ -4,8 +4,8 @@
 package base
 
 import (
-	"github.com/hashicorp/boundary/internal/observability/event"
-	"github.com/hashicorp/boundary/sdk/pbs/plugin"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
+	"github.com/opendumpling/opendumpling/sdk/pbs/plugin"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 )
 
@@ -177,7 +177,7 @@ func WithStatusCode(statusCode int) Option {
 }
 
 // WithDatabaseTemplate allows for using an existing database template for
-// initializing the boundary database.
+// initializing the dumpling database.
 func WithDatabaseTemplate(template string) Option {
 	return func(o *Options) {
 		o.withDatabaseTemplate = template

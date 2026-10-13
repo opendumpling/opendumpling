@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/posener/complete"
 )
 
@@ -22,7 +22,7 @@ func rdpOptions(c *Command, set *base.FlagSets) {
 	f.StringVar(&base.StringVar{
 		Name:       "style",
 		Target:     &c.flagRdpStyle,
-		EnvVar:     "BOUNDARY_CONNECT_RDP_STYLE",
+		EnvVar:     "DUMPLING_CONNECT_RDP_STYLE",
 		Completion: complete.PredictSet("mstsc", "open"),
 		Usage:      `Specifies how the CLI will attempt to invoke an RDP client. This will also set a suitable default for -exec if a value was not specified. Currently-understood values are "mstsc", which is the default on Windows and launches the Windows client, and "open", which is the default on Mac and launches via an rdp:// URL.`,
 	})

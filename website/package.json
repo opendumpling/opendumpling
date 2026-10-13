@@ -1,6 +1,6 @@
 {
   "name": "boundary-docs",
-  "description": "Documentation website for Boundary",
+  "description": "Documentation website for Dumpling",
   "version": "1.0.0",
   "author": "HashiCorp",
   "engines": {

@@ -22,7 +22,7 @@ type ServerCoordinationServiceClient interface {
 	// returns the status response which includes the changes the controller would like to make to
 	// jobs as well as provide a list of the controllers in the system.
 	Status(ctx context.Context, in *StatusRequest, opts ...grpc.CallOption) (*StatusResponse, error)
-	// Returns the addresses of HCP Boundary workers, if any
+	// Returns the addresses of HCP Dumpling workers, if any
 	ListHcpbWorkers(ctx context.Context, in *ListHcpbWorkersRequest, opts ...grpc.CallOption) (*ListHcpbWorkersResponse, error)
 }
 
@@ -60,7 +60,7 @@ type ServerCoordinationServiceServer interface {
 	// returns the status response which includes the changes the controller would like to make to
 	// jobs as well as provide a list of the controllers in the system.
 	Status(context.Context, *StatusRequest) (*StatusResponse, error)
-	// Returns the addresses of HCP Boundary workers, if any
+	// Returns the addresses of HCP Dumpling workers, if any
 	ListHcpbWorkers(context.Context, *ListHcpbWorkersRequest) (*ListHcpbWorkersResponse, error)
 	mustEmbedUnimplementedServerCoordinationServiceServer()
 }

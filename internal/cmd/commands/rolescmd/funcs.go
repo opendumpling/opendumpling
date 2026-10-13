@@ -8,12 +8,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/roles"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/perms"
-	"github.com/hashicorp/boundary/internal/types/scope"
-	"github.com/hashicorp/boundary/version"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/roles"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/perms"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
+	"github.com/opendumpling/opendumpling/version"
 	"github.com/mitchellh/go-wordwrap"
 )
 
@@ -77,66 +77,66 @@ func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
 	switch c.Func {
 	case "add-principals":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary roles add-principals [options] [args]",
+			"Usage: dumpling roles add-principals [options] [args]",
 			"",
 			`  Adds principals (users, groups) to a role given its ID. The "principal" flag can be specified multiple times. Example:`,
 			"",
-			`    $ boundary roles add-principals -id r_1234567890 -principal u_1234567890`,
+			`    $ dumpling roles add-principals -id r_1234567890 -principal u_1234567890`,
 			"",
 			"",
 		})
 
 	case "set-principals":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary roles set-principals [options] [args]",
+			"Usage: dumpling roles set-principals [options] [args]",
 			"",
 			`  Sets the complete set of principals (users, groups) on a role given its ID. The "principal" flag can be specified multiple times. Example:`,
 			"",
-			`    $ boundary roles set-principals -id r_1234567890 -principal u_anon -principal sg_1234567890`,
+			`    $ dumpling roles set-principals -id r_1234567890 -principal u_anon -principal sg_1234567890`,
 			"",
 			"",
 		})
 
 	case "remove-principals":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary roles remove-principals [options] [args]",
+			"Usage: dumpling roles remove-principals [options] [args]",
 			"",
 			`  Removes principals (users, groups) from a role given its ID. The "principal" flags can be specified multiple times. Example:`,
 			"",
-			`    $ boundary roles remove-principals -id r_1234567890 -principal sg_1234567890`,
+			`    $ dumpling roles remove-principals -id r_1234567890 -principal sg_1234567890`,
 			"",
 			"",
 		})
 
 	case "add-grants":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary roles add-grants [options] [args]",
+			"Usage: dumpling roles add-grants [options] [args]",
 			"",
 			`  Adds grants to a role given its ID. The "grant" flag can be specified multiple times. Example:`,
 			"",
-			`    $ boundary roles add-grants -id r_1234567890 -grant "id=*;type=*;actions=read"`,
+			`    $ dumpling roles add-grants -id r_1234567890 -grant "id=*;type=*;actions=read"`,
 			"",
 			"",
 		})
 
 	case "set-grants":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary roles set-grants [options] [args]",
+			"Usage: dumpling roles set-grants [options] [args]",
 			"",
 			`  Sets the complete set of grants on a role given its ID. The "grant" flag can be specified multiple times. Example:`,
 			"",
-			`    $ boundary roles set-grants -id r_1234567890 -grant "id=*;type=*;actions=read" -grant "id=*;type=*;actions=list"`,
+			`    $ dumpling roles set-grants -id r_1234567890 -grant "id=*;type=*;actions=read" -grant "id=*;type=*;actions=list"`,
 			"",
 			"",
 		})
 
 	case "remove-grants":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary roles remove-grants [options] [args]",
+			"Usage: dumpling roles remove-grants [options] [args]",
 			"",
 			`  Removes grants from a role given its ID. The "grant" flags can be specified multiple times. Example:`,
 			"",
-			`    $ boundary roles remove-grants -id r_1234567890 -grant "id=*;type=*;actions=read"`,
+			`    $ dumpling roles remove-grants -id r_1234567890 -grant "id=*;type=*;actions=read"`,
 			"",
 			"",
 		})

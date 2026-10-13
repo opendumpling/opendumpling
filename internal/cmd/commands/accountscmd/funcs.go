@@ -10,9 +10,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/accounts"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/accounts"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/hashicorp/go-secure-stdlib/parseutil"
 	"github.com/hashicorp/go-secure-stdlib/password"
 	"github.com/hashicorp/go-secure-stdlib/strutil"
@@ -57,37 +57,37 @@ func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
 	switch c.Func {
 	case "":
 		return base.WrapForHelpText([]string{
-			"Usage: boundary accounts [sub command] [options] [args]",
+			"Usage: dumpling accounts [sub command] [options] [args]",
 			"",
-			"  This command allows operations on Boundary account resources. Example:",
+			"  This command allows operations on Dumpling account resources. Example:",
 			"",
 			"    Read a account:",
 			"",
-			`      $ boundary accounts read -id acctpw_1234567890`,
+			`      $ dumpling accounts read -id acctpw_1234567890`,
 			"",
 			"  Please see the accounts subcommand help for detailed usage information.",
 		})
 	case "change-password":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary accounts change-password [options] [args]",
+			"Usage: dumpling accounts change-password [options] [args]",
 			"",
 			"  This command allows changing the password (with verification of the current password) on account-type resources, if the types match and the operation is allowed by the given account type. Example:",
 			"",
 			"    Change the password on a password-type account:",
 			"",
-			`      $ boundary accounts change-password -id acctpw_1234567890 -current-password <empty, to be read by stdin> -new-password <empty, to be read by stdin>`,
+			`      $ dumpling accounts change-password -id acctpw_1234567890 -current-password <empty, to be read by stdin> -new-password <empty, to be read by stdin>`,
 			"",
 			"",
 		})
 	case "set-password":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary accounts set-password [options] [args]",
+			"Usage: dumpling accounts set-password [options] [args]",
 			"",
 			"  This command allows setting the password on account-type resources, if the types match and the operation is allowed by the given account type. Example:",
 			"",
 			"    Set the password on a password-type account:",
 			"",
-			`      $ boundary accounts set-password -id acctpw_1234567890 -password <empty, to be read by stdin>`,
+			`      $ dumpling accounts set-password -id acctpw_1234567890 -password <empty, to be read by stdin>`,
 			"",
 			"",
 		})

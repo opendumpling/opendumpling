@@ -15,17 +15,17 @@ import (
 	atm "sync/atomic"
 	"time"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/cmd/config"
-	"github.com/hashicorp/boundary/internal/cmd/ops"
-	"github.com/hashicorp/boundary/internal/daemon/controller"
-	"github.com/hashicorp/boundary/internal/daemon/worker"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/db/schema"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/observability/event"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/config"
+	"github.com/opendumpling/opendumpling/internal/cmd/ops"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller"
+	"github.com/opendumpling/opendumpling/internal/daemon/worker"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/db/schema"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-multierror"
 	"github.com/hashicorp/go-secure-stdlib/mlock"
@@ -70,16 +70,16 @@ type Command struct {
 }
 
 func (c *Command) Synopsis() string {
-	return "Start a Boundary server"
+	return "Start a Dumpling server"
 }
 
 func (c *Command) Help() string {
 	helpText := `
-Usage: boundary server [options]
+Usage: dumpling server [options]
 
   Start a server (controller, worker, or both) with a configuration file:
 
-      $ boundary server -config=/etc/boundary/controller.hcl
+      $ dumpling server -config=/etc/dumpling/controller.hcl
 
   For a full list of examples, please see the documentation.
 
@@ -109,13 +109,13 @@ func (c *Command) Flags() *base.FlagSets {
 			complete.PredictFiles("*.hcl"),
 			complete.PredictFiles("*.json"),
 		),
-		Usage: `Path to a configuration file containing a "kms" block marked for "config" purpose, to perform decryption of the main configuration file. If not set, will look for such a block in the main configuration file, which has some drawbacks; see the help output for "boundary config encrypt -h" for details.`,
+		Usage: `Path to a configuration file containing a "kms" block marked for "config" purpose, to perform decryption of the main configuration file. If not set, will look for such a block in the main configuration file, which has some drawbacks; see the help output for "dumpling config encrypt -h" for details.`,
 	})
 
 	f.StringVar(&base.StringVar{
 		Name:       "log-level",
 		Target:     &c.flagLogLevel,
-		EnvVar:     "BOUNDARY_LOG_LEVEL",
+		EnvVar:     "DUMPLING_LOG_LEVEL",
 		Completion: complete.PredictSet("trace", "debug", "info", "warn", "err"),
 		Usage: "Log verbosity level, mostly as a fallback for events. Supported values (in order of more detail to less) are " +
 			"\"trace\", \"debug\", \"info\", \"warn\", and \"err\".",
@@ -245,14 +245,14 @@ func (c *Command) Run(args []string) int {
 	}
 
 	// If mlockall(2) isn't supported, show a warning. We disable this in dev
-	// because it is quite scary to see when first using Boundary. We also disable
+	// because it is quite scary to see when first using Dumpling. We also disable
 	// this if the user has explicitly disabled mlock in configuration.
 	if !c.Config.DisableMlock && !mlock.Supported() {
 		c.UI.Warn(base.WrapAtLength(
 			"WARNING! mlock is not supported on this system! An mlockall(2)-like " +
 				"syscall to prevent memory from being swapped to disk is not " +
-				"supported on this system. For better security, only run Boundary on " +
-				"systems where this call is supported. If you are running Boundary" +
+				"supported on this system. For better security, only run Dumpling on " +
+				"systems where this call is supported. If you are running Dumpling" +
 				"in a Docker container, provide the IPC_LOCK cap to the container."))
 	}
 
@@ -369,7 +369,7 @@ func (c *Command) Run(args []string) int {
 			}
 			_, err := uuid.ParseUUID(clusterId)
 			if err != nil {
-				c.UI.Error(fmt.Errorf("Invalid HCP Boundary cluster ID %q: %w", clusterId, err).Error())
+				c.UI.Error(fmt.Errorf("Invalid HCP Dumpling cluster ID %q: %w", clusterId, err).Error())
 				return base.CommandUserError
 			}
 		}
@@ -693,10 +693,10 @@ func (c *Command) WaitForInterrupt() int {
 				}
 
 				if c.Config.Worker != nil {
-					c.UI.Output("==> Boundary server graceful shutdown triggered, interrupt again to enter shutdown")
+					c.UI.Output("==> Dumpling server graceful shutdown triggered, interrupt again to enter shutdown")
 					workerGracefulShutdownFunc()
 				} else {
-					c.UI.Output("==> Boundary server shutdown triggered, interrupt again to force")
+					c.UI.Output("==> Dumpling server shutdown triggered, interrupt again to force")
 				}
 
 				if c.Config.Controller != nil {
@@ -729,7 +729,7 @@ func (c *Command) WaitForInterrupt() int {
 	for !shutdownCompleted.Load() {
 		select {
 		case <-c.ServerSideShutdownCh:
-			c.UI.Output("==> Boundary server self-terminating")
+			c.UI.Output("==> Dumpling server self-terminating")
 			shutdownTriggerCount++
 			runShutdownLogic()
 
@@ -738,7 +738,7 @@ func (c *Command) WaitForInterrupt() int {
 			runShutdownLogic()
 
 		case <-c.SighupCh:
-			c.UI.Output("==> Boundary server reload triggered")
+			c.UI.Output("==> Dumpling server reload triggered")
 
 			// Check for new log level
 			var level hclog.Level
@@ -973,20 +973,20 @@ func verifyDatabaseState(ctx context.Context, db *db.DB, schemaManager *schema.M
 	}
 	if !s.Initialized {
 		return fmt.Errorf("The database has not been initialized. Please ensure your database user " +
-			"has access to all Boundary tables, or run 'boundary database init' if you haven't initialized " +
-			"your database for Boundary.")
+			"has access to all Dumpling tables, or run 'dumpling database init' if you haven't initialized " +
+			"your database for Dumpling.")
 	}
 	if !s.MigrationsApplied() {
 		for _, e := range s.Editions {
 			if e.DatabaseSchemaState == schema.Ahead {
 				return fmt.Errorf("Newer schema version (%s %d) "+
-					"than this binary expects. Please use a newer version of the boundary "+
+					"than this binary expects. Please use a newer version of the dumpling "+
 					"binary.", e.Name, e.DatabaseSchemaVersion)
 			}
 		}
 		return fmt.Errorf("Database schema must be updated to use this version. " +
-			"Run 'boundary database migrate' to update the database. " +
-			"NOTE: Boundary does not currently support live migration; " +
+			"Run 'dumpling database migrate' to update the database. " +
+			"NOTE: Dumpling does not currently support live migration; " +
 			"Ensure all controllers are shut down before running the migration command.")
 	}
 

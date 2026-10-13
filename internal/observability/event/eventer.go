@@ -140,7 +140,7 @@ func InitFallbackLogger(l hclog.Logger) error {
 }
 
 // InitSysEventer provides a mechanism to initialize a "system wide" eventer
-// singleton for Boundary.  Support the options of: WithEventer(...) and
+// singleton for Dumpling.  Support the options of: WithEventer(...) and
 // WithEventerConfig(...)
 //
 // IMPORTANT: Eventers cannot share file sinks, which likely means that each
@@ -186,7 +186,7 @@ func InitSysEventer(log hclog.Logger, serializationLock *sync.Mutex, serverName 
 	return nil
 }
 
-// SysEventer returns the "system wide" eventer for Boundary and can/will return
+// SysEventer returns the "system wide" eventer for Dumpling and can/will return
 // a nil Eventer
 func SysEventer() *Eventer {
 	sysEventerLock.RLock()
@@ -746,7 +746,7 @@ func (e *Eventer) Reopen() error {
 }
 
 // FlushNodes will flush any of the eventer's flushable nodes.  This
-// needs to be called whenever Boundary is stopping (aka shutting down).
+// needs to be called whenever Dumpling is stopping (aka shutting down).
 func (e *Eventer) FlushNodes(ctx context.Context) error {
 	const op = "event.(Eventer).FlushNodes"
 	for _, n := range e.flushableNodes {

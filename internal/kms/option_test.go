@@ -6,7 +6,7 @@ package kms
 import (
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/db"
+	"github.com/opendumpling/opendumpling/internal/db"
 	"github.com/stretchr/testify/assert"
 )
 

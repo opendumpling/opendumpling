@@ -8,7 +8,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/posener/complete"
 )
 
@@ -22,7 +22,7 @@ func httpOptions(c *Command, set *base.FlagSets) {
 	f.StringVar(&base.StringVar{
 		Name:       "style",
 		Target:     &c.flagHttpStyle,
-		EnvVar:     "BOUNDARY_CONNECT_HTTP_STYLE",
+		EnvVar:     "DUMPLING_CONNECT_HTTP_STYLE",
 		Completion: complete.PredictSet("curl"),
 		Default:    "curl",
 		Usage:      `Specifies how the CLI will attempt to invoke an HTTP client. This will also set a suitable default for -exec if a value was not specified. Currently-understood values are "curl".`,
@@ -31,7 +31,7 @@ func httpOptions(c *Command, set *base.FlagSets) {
 	f.StringVar(&base.StringVar{
 		Name:       "host",
 		Target:     &c.flagHttpHost,
-		EnvVar:     "BOUNDARY_CONNECT_HTTP_HOST",
+		EnvVar:     "DUMPLING_CONNECT_HTTP_HOST",
 		Completion: complete.PredictNothing,
 		Usage:      `Specifies the host value to use, overriding the endpoint address from the session information. The specified hostname will be passed through to the client (if supported) for use in the Host header and TLS SNI value.`,
 	})
@@ -39,7 +39,7 @@ func httpOptions(c *Command, set *base.FlagSets) {
 	f.StringVar(&base.StringVar{
 		Name:       "path",
 		Target:     &c.flagHttpPath,
-		EnvVar:     "BOUNDARY_CONNECT_HTTP_PATH",
+		EnvVar:     "DUMPLING_CONNECT_HTTP_PATH",
 		Completion: complete.PredictNothing,
 		Usage:      `Specifies a path that will be appended to the generated URL.`,
 	})
@@ -47,7 +47,7 @@ func httpOptions(c *Command, set *base.FlagSets) {
 	f.StringVar(&base.StringVar{
 		Name:       "method",
 		Target:     &c.flagHttpMethod,
-		EnvVar:     "BOUNDARY_CONNECT_HTTP_METHOD",
+		EnvVar:     "DUMPLING_CONNECT_HTTP_METHOD",
 		Completion: complete.PredictNothing,
 		Usage:      `Specifies the method to use. If not set, will use the client's default.`,
 	})
@@ -56,7 +56,7 @@ func httpOptions(c *Command, set *base.FlagSets) {
 		Name:       "scheme",
 		Target:     &c.flagHttpScheme,
 		Default:    "https",
-		EnvVar:     "BOUNDARY_CONNECT_HTTP_SCHEME",
+		EnvVar:     "DUMPLING_CONNECT_HTTP_SCHEME",
 		Completion: complete.PredictNothing,
 		Usage:      `Specifies the scheme to use.`,
 	})

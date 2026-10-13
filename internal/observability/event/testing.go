@@ -12,8 +12,8 @@ import (
 	"testing"
 	"time"
 
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/api/services"
-	"github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/groups"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/api/services"
+	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/groups"
 	"github.com/hashicorp/eventlogger"
 	"github.com/hashicorp/eventlogger/formatter_filters/cloudevents"
 	"github.com/hashicorp/go-hclog"

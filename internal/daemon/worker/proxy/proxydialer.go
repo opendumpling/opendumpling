@@ -9,7 +9,7 @@ import (
 	"net"
 	"sync/atomic"
 
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/errors"
 	"google.golang.org/protobuf/proto"
 )
 

@@ -26,13 +26,13 @@ type CredentialLibraryServiceClient interface {
 	// provided scope. The request must include the Credential Store id and if missing,
 	// malformed, or referencing a non existing scope, an error is returned.
 	ListCredentialLibraries(ctx context.Context, in *ListCredentialLibrariesRequest, opts ...grpc.CallOption) (*ListCredentialLibrariesResponse, error)
-	// CreateCredentialLibrary creates and stores an Credential Library in boundary.  The
+	// CreateCredentialLibrary creates and stores an Credential Library in dumpling.  The
 	// provided request must include the scope in which the Credential Library will be
 	// created. If the scope id is missing, malformed or referencing a
 	// non existing resource an error is returned.  If a name is provided that is
 	// in use in another Credential Library in the same scope, an error is returned.
 	CreateCredentialLibrary(ctx context.Context, in *CreateCredentialLibraryRequest, opts ...grpc.CallOption) (*CreateCredentialLibraryResponse, error)
-	// UpdateCredentialLibrary updates an existing Credential Library in boundary.  The provided
+	// UpdateCredentialLibrary updates an existing Credential Library in dumpling.  The provided
 	// Credential Library must not have any read only fields set.  The update mask must be
 	// included in the request and contain at least 1 mutable field.  To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -41,7 +41,7 @@ type CredentialLibraryServiceClient interface {
 	// request attempts to update the name to one that is already in use by
 	// another Credential Library in the parent scope.
 	UpdateCredentialLibrary(ctx context.Context, in *UpdateCredentialLibraryRequest, opts ...grpc.CallOption) (*UpdateCredentialLibraryResponse, error)
-	// DeleteCredentialLibrary removes an Credential Library from Boundary. If the Credential Library id
+	// DeleteCredentialLibrary removes an Credential Library from Dumpling. If the Credential Library id
 	// is malformed or not provided an error is returned.
 	DeleteCredentialLibrary(ctx context.Context, in *DeleteCredentialLibraryRequest, opts ...grpc.CallOption) (*DeleteCredentialLibraryResponse, error)
 }
@@ -111,13 +111,13 @@ type CredentialLibraryServiceServer interface {
 	// provided scope. The request must include the Credential Store id and if missing,
 	// malformed, or referencing a non existing scope, an error is returned.
 	ListCredentialLibraries(context.Context, *ListCredentialLibrariesRequest) (*ListCredentialLibrariesResponse, error)
-	// CreateCredentialLibrary creates and stores an Credential Library in boundary.  The
+	// CreateCredentialLibrary creates and stores an Credential Library in dumpling.  The
 	// provided request must include the scope in which the Credential Library will be
 	// created. If the scope id is missing, malformed or referencing a
 	// non existing resource an error is returned.  If a name is provided that is
 	// in use in another Credential Library in the same scope, an error is returned.
 	CreateCredentialLibrary(context.Context, *CreateCredentialLibraryRequest) (*CreateCredentialLibraryResponse, error)
-	// UpdateCredentialLibrary updates an existing Credential Library in boundary.  The provided
+	// UpdateCredentialLibrary updates an existing Credential Library in dumpling.  The provided
 	// Credential Library must not have any read only fields set.  The update mask must be
 	// included in the request and contain at least 1 mutable field.  To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -126,7 +126,7 @@ type CredentialLibraryServiceServer interface {
 	// request attempts to update the name to one that is already in use by
 	// another Credential Library in the parent scope.
 	UpdateCredentialLibrary(context.Context, *UpdateCredentialLibraryRequest) (*UpdateCredentialLibraryResponse, error)
-	// DeleteCredentialLibrary removes an Credential Library from Boundary. If the Credential Library id
+	// DeleteCredentialLibrary removes an Credential Library from Dumpling. If the Credential Library id
 	// is malformed or not provided an error is returned.
 	DeleteCredentialLibrary(context.Context, *DeleteCredentialLibraryRequest) (*DeleteCredentialLibraryResponse, error)
 	mustEmbedUnimplementedCredentialLibraryServiceServer()

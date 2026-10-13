@@ -10,9 +10,9 @@ import (
 	"io"
 
 	"github.com/golang/protobuf/ptypes/wrappers"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/oplog/store"
-	"github.com/hashicorp/boundary/internal/util"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/oplog/store"
+	"github.com/opendumpling/opendumpling/internal/util"
 	"github.com/hashicorp/go-dbw"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	"github.com/hashicorp/go-kms-wrapping/v2/extras/structwrapping"
@@ -432,7 +432,7 @@ func (e *Entry) Replay(ctx context.Context, tx *Writer, types *TypeCatalog, tabl
 			It may be a better choice to just create separate schemas for replay
 			named blue and green since we need at min of two replay tables
 			definitions. if we went with separate schemas they could be create
-			with a boundary cli cmd that had appropriate privs (reducing
+			with a dumpling cli cmd that had appropriate privs (reducing
 			security issues) and the separate schemas wouldn't have the fk
 			reference issues mentioned above.
 

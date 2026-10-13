@@ -6,9 +6,9 @@ package hostsetscmd
 import (
 	"fmt"
 
-	"github.com/hashicorp/boundary/api/hostsets"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/libs/endpoint"
+	"github.com/opendumpling/opendumpling/api/hostsets"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/libs/endpoint"
 	"github.com/hashicorp/go-secure-stdlib/parseutil"
 )
 
@@ -35,22 +35,22 @@ func (c *PluginCommand) extraPluginHelpFunc(helpMap map[string]func() string) st
 	switch c.Func {
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary host-sets create plugin [options] [args]",
+			"Usage: dumpling host-sets create plugin [options] [args]",
 			"",
 			"  Create a host set of a type provided by a plugin. Example:",
 			"",
-			`    $ boundary host-sets create plugin -host-catalog-id hcst_1234567890 -name prodops -description "Plugin host-set for ProdOps"`,
+			`    $ dumpling host-sets create plugin -host-catalog-id hcst_1234567890 -name prodops -description "Plugin host-set for ProdOps"`,
 			"",
 			"",
 		})
 
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary host-sets update plugin [options] [args]",
+			"Usage: dumpling host-sets update plugin [options] [args]",
 			"",
 			"  Update a host set of a type provided by a plugin given its ID. Example:",
 			"",
-			`    $ boundary host-sets update plugin -id hsplg_1234567890 -name "devops" -description "Plugin host-set for DevOps"`,
+			`    $ dumpling host-sets update plugin -id hsplg_1234567890 -name "devops" -description "Plugin host-set for DevOps"`,
 			"",
 			"",
 		})
@@ -85,7 +85,7 @@ func extraPluginFlagsFuncImpl(c *PluginCommand, set *base.FlagSets, f *base.Flag
 					"indicating the amount of time that should elapse between syncs of the host set. " +
 					"The interval will be applied to the end of the previous sync operation, not the start. " +
 					"Setting to any negative value will disable syncing for that host set; setting to null " +
-					"will cause the set to use Boundary's default. The default may change between releases.",
+					"will cause the set to use Dumpling's default. The default may change between releases.",
 			})
 		}
 	}

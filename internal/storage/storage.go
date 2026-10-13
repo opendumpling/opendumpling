@@ -8,9 +8,9 @@ import (
 	"io"
 	"io/fs"
 
-	"github.com/hashicorp/boundary/internal/boundary"
-	"github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/storagebuckets"
-	plgpb "github.com/hashicorp/boundary/sdk/pbs/plugin"
+	"github.com/opendumpling/opendumpling/internal/dumpling"
+	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/storagebuckets"
+	plgpb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
 )
 
 // RecordingStorage can be used to create an FS usable for session recording.
@@ -31,7 +31,7 @@ type RecordingStorage interface {
 
 // Bucket is a resource that represents a bucket in an external object store
 type Bucket interface {
-	boundary.Resource
+	dumpling.Resource
 	GetScopeId() string
 	GetBucketName() string
 	GetBucketPrefix() string

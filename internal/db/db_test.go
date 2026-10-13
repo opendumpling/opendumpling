@@ -8,7 +8,7 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/hashicorp/boundary/testing/dbtest"
+	"github.com/opendumpling/opendumpling/testing/dbtest"
 	"github.com/hashicorp/go-dbw"
 	"github.com/stretchr/testify/require"
 )

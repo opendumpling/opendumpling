@@ -13,7 +13,7 @@ import (
 	"io"
 	"io/fs"
 
-	"github.com/hashicorp/boundary/internal/bsr/internal/is"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/is"
 	"github.com/hashicorp/go-kms-wrapping/v2/extras/crypto"
 	"github.com/hashicorp/go-multierror"
 )

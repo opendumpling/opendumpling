@@ -6,7 +6,7 @@ package job
 import (
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/scheduler/job/store"
+	"github.com/opendumpling/opendumpling/internal/scheduler/job/store"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

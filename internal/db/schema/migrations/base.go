@@ -42,9 +42,9 @@ func stripBeginCommit(c []byte) string {
 }
 
 func newBase(root string, m embed.FS) base {
-	schemaVersion, err := m.ReadFile(fmt.Sprintf("%s/%s", root, "01_boundary_schema_version.up.sql"))
+	schemaVersion, err := m.ReadFile(fmt.Sprintf("%s/%s", root, "01_dumpling_schema_version.up.sql"))
 	if err != nil {
-		panic("missing base migration file 01_boundary_schema_version.up.sql")
+		panic("missing base migration file 01_dumpling_schema_version.up.sql")
 	}
 
 	logMigration, err := m.ReadFile(fmt.Sprintf("%s/%s", root, "02_log_migration.up.sql"))

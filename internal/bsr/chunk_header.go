@@ -7,7 +7,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hashicorp/boundary/internal/bsr/internal/is"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/is"
 )
 
 // HeaderChunk is the first chunk in a BSR data file.

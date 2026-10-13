@@ -12,9 +12,9 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/daemon/metric"
-	"github.com/hashicorp/boundary/internal/gen/controller/api/services"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/daemon/metric"
+	"github.com/opendumpling/opendumpling/internal/gen/controller/api/services"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	grpcpb "google.golang.org/genproto/googleapis/api/annotations"

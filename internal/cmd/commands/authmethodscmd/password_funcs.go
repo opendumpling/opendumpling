@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/hashicorp/boundary/api/authmethods"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api/authmethods"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 )
 
 func init() {
@@ -34,22 +34,22 @@ func (c *PasswordCommand) extraPasswordHelpFunc(helpMap map[string]func() string
 	switch c.Func {
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary auth-methods create password [options] [args]",
+			"Usage: dumpling auth-methods create password [options] [args]",
 			"",
 			"  Create a password-type auth method. Example:",
 			"",
-			`    $ boundary auth-methods create password -name prodops -description "Password auth-method for ProdOps"`,
+			`    $ dumpling auth-methods create password -name prodops -description "Password auth-method for ProdOps"`,
 			"",
 			"",
 		})
 
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary auth-methods update password [options] [args]",
+			"Usage: dumpling auth-methods update password [options] [args]",
 			"",
 			"  Update a password-type auth method given its ID. Example:",
 			"",
-			`    $ boundary auth-methods update password -id ampw_1234567890 -name "devops" -description "Password auth-method for DevOps"`,
+			`    $ dumpling auth-methods update password -id ampw_1234567890 -name "devops" -description "Password auth-method for DevOps"`,
 			"",
 			"",
 		})

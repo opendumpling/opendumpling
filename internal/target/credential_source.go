@@ -4,8 +4,8 @@
 package target
 
 import (
-	"github.com/hashicorp/boundary/internal/credential"
-	"github.com/hashicorp/boundary/internal/target/store"
+	"github.com/opendumpling/opendumpling/internal/credential"
+	"github.com/opendumpling/opendumpling/internal/target/store"
 )
 
 // CredentialSourceType is the type of credential source.

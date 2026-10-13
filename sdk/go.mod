@@ -1,4 +1,4 @@
-module github.com/hashicorp/boundary/sdk
+module github.com/opendumpling/opendumpling/sdk
 
 go 1.19
 

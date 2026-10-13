@@ -13,8 +13,8 @@
 package store
 
 import (
-	timestamp "github.com/hashicorp/boundary/internal/db/timestamp"
-	_ "github.com/hashicorp/boundary/sdk/pbs/controller/protooptions"
+	timestamp "github.com/opendumpling/opendumpling/internal/db/timestamp"
+	_ "github.com/opendumpling/opendumpling/sdk/pbs/controller/protooptions"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"

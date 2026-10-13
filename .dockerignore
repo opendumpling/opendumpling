@@ -1,4 +1,8 @@
-**
-!bin/**
-!dist/**
-!.release/docker/**
+.git
+.github
+website
+dist
+bin
+out
+node_modules
+*.zip

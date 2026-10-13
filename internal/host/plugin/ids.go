@@ -6,11 +6,11 @@ package plugin
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/host"
-	"github.com/hashicorp/boundary/internal/types/subtypes"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/host"
+	"github.com/opendumpling/opendumpling/internal/types/subtypes"
 )
 
 func init() {

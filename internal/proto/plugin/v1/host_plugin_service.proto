@@ -9,7 +9,7 @@ import "controller/api/resources/hostcatalogs/v1/host_catalog.proto";
 import "controller/api/resources/hostsets/v1/host_set.proto";
 import "google/protobuf/struct.proto";
 
-option go_package = "github.com/hashicorp/boundary/sdk/pbs/plugin;plugin";
+option go_package = "github.com/opendumpling/opendumpling/sdk/pbs/plugin;plugin";
 
 // HostPluginService describes the service for host plugins.
 service HostPluginService {
@@ -22,14 +22,14 @@ service HostPluginService {
   // during migration of values.
   //
   // NormalizeCatalogData is called before the values of attributes are persisted.
-  // All normalized values will be persisted in Boundary and returned
+  // All normalized values will be persisted in Dumpling and returned
   // to all clients.
   //
   // NormalizeCatalogData could affect other clients. For example, on Terraform,
-  // if data is passed to Boundary and then normalized into a new data
+  // if data is passed to Dumpling and then normalized into a new data
   // structure, it could cause diffs in Terraform for unchanged values.
   // This is because, the data structure in Terraform's state will now be
-  // different from the normalized data structure returned from Boundary.
+  // different from the normalized data structure returned from Dumpling.
   //
   // NormalizeCatalogData is called before:
   // * OnCreateCatalog
@@ -57,14 +57,14 @@ service HostPluginService {
   // during migration of values.
   //
   // NormalizeSetData is called before the values of attributes are persisted.
-  // All normalized values will be persisted in Boundary and returned
+  // All normalized values will be persisted in Dumpling and returned
   // to all clients.
   //
   // NormalizeSetData could affect other clients. For example, on Terraform,
-  // if data is passed to Boundary and then normalized into a new data
+  // if data is passed to Dumpling and then normalized into a new data
   // structure, it could cause diffs in Terraform for unchanged values.
   // This is because, the data structure in Terraform's state will now be
-  // different from the normalized data structure returned from Boundary.
+  // different from the normalized data structure returned from Dumpling.
   //
   // NormalizeSetData is called before:
   // * OnCreateSet
@@ -103,7 +103,7 @@ message OnCreateCatalogRequest {
 }
 
 message OnCreateCatalogResponse {
-  // Secret data to persist encrypted within Boundary. This should be used to
+  // Secret data to persist encrypted within Dumpling. This should be used to
   // store authentication data and other necessary configuration to be used in
   // later hooks and calls. Returning an error from the call will cause this
   // data to not be persisted. If this is nil, nothing is written.
@@ -124,7 +124,7 @@ message OnUpdateCatalogRequest {
 }
 
 message OnUpdateCatalogResponse {
-  // The updated secret data to persist encrypted within Boundary. If an error
+  // The updated secret data to persist encrypted within Dumpling. If an error
   // is returned, the update of the persisted data is aborted. If this is nil,
   // no changes are written. To remove all values, simply return an allocated
   // but empty map.
@@ -216,13 +216,13 @@ message ListHostsResponse {
 
 message ListHostsResponseHost {
   // Required. A stable identifier for this host. This field is used
-  // to generate a stable ID for the host within Boundary and is
+  // to generate a stable ID for the host within Dumpling and is
   // included in audit logs. It should be set to something unique and
   // useful, ie: a compute instance ID.
   string external_id = 10;
 
   // If supplied, will be set as the external name of the host and will be
-  // available on Boundary's host listing and reading API.
+  // available on Dumpling's host listing and reading API.
   string external_name = 70;
 
   // If supplied, will be set as the managed name of the host
@@ -251,7 +251,7 @@ message ListHostsResponseHost {
 // Its intended purpose is to store authentication data required by the plugin
 // to make calls to its respective cloud API.
 //
-// The secrets stored in this message are encrypted at-rest by Boundary and
+// The secrets stored in this message are encrypted at-rest by Dumpling and
 // never returned to the end user.
 //
 // TODO: Add a size limit to this data before we export the plugin SDK.

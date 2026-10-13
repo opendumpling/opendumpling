@@ -33,7 +33,7 @@ type RoleServiceClient interface {
 	// name is provided that is in use in another Role in the same scope, an error
 	// is returned.
 	CreateRole(ctx context.Context, in *CreateRoleRequest, opts ...grpc.CallOption) (*CreateRoleResponse, error)
-	// UpdateRole updates an existing Role in boundary.  The provided
+	// UpdateRole updates an existing Role in dumpling.  The provided
 	// Role must not have any read-only fields set. The update mask must be
 	// included in the request and contain at least 1 mutable field. To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -42,7 +42,7 @@ type RoleServiceClient interface {
 	// is also returned if the request attempts to update the name to one that is
 	// already in use in the same scope.
 	UpdateRole(ctx context.Context, in *UpdateRoleRequest, opts ...grpc.CallOption) (*UpdateRoleResponse, error)
-	// DeleteRole removes a Role from Boundary. If the provided scope or Role IDs
+	// DeleteRole removes a Role from Dumpling. If the provided scope or Role IDs
 	// are malformed, or not provided an error is returned.
 	DeleteRole(ctx context.Context, in *DeleteRoleRequest, opts ...grpc.CallOption) (*DeleteRoleResponse, error)
 	// AddRolePrincipals adds users and/or groups to a Role. The provided request
@@ -207,7 +207,7 @@ type RoleServiceServer interface {
 	// name is provided that is in use in another Role in the same scope, an error
 	// is returned.
 	CreateRole(context.Context, *CreateRoleRequest) (*CreateRoleResponse, error)
-	// UpdateRole updates an existing Role in boundary.  The provided
+	// UpdateRole updates an existing Role in dumpling.  The provided
 	// Role must not have any read-only fields set. The update mask must be
 	// included in the request and contain at least 1 mutable field. To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -216,7 +216,7 @@ type RoleServiceServer interface {
 	// is also returned if the request attempts to update the name to one that is
 	// already in use in the same scope.
 	UpdateRole(context.Context, *UpdateRoleRequest) (*UpdateRoleResponse, error)
-	// DeleteRole removes a Role from Boundary. If the provided scope or Role IDs
+	// DeleteRole removes a Role from Dumpling. If the provided scope or Role IDs
 	// are malformed, or not provided an error is returned.
 	DeleteRole(context.Context, *DeleteRoleRequest) (*DeleteRoleResponse, error)
 	// AddRolePrincipals adds users and/or groups to a Role. The provided request

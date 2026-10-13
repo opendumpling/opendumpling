@@ -12,7 +12,7 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
-option go_package = "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/storagebuckets;storagebuckets";
+option go_package = "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/storagebuckets;storagebuckets";
 
 // StorageBucket manages external object stores
 message StorageBucket {
@@ -108,7 +108,7 @@ message StorageBucketPersisted {
   // credentials, rotated secrets, or configuration data.
   // Data can be anything that may need to be provided to
   // a series of different method calls.
-  // Data is encrypted at-rest by Boundary.
+  // Data is encrypted at-rest by Dumpling.
   // Data is never returned to the end user.
   google.protobuf.Struct data = 10;
 }

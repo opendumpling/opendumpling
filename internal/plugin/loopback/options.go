@@ -4,8 +4,8 @@
 package loopback
 
 import (
-	"github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/storagebuckets"
-	plgpb "github.com/hashicorp/boundary/sdk/pbs/plugin"
+	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/storagebuckets"
+	plgpb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
 	"google.golang.org/grpc/codes"
 )
 

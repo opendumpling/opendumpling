@@ -9,20 +9,20 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/hashicorp/boundary/internal/credential"
-	credstatic "github.com/hashicorp/boundary/internal/credential/static"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers"
-	"github.com/hashicorp/boundary/internal/errors"
-	serverpb "github.com/hashicorp/boundary/internal/gen/controller/servers/services"
-	"github.com/hashicorp/boundary/internal/session"
-	"github.com/hashicorp/boundary/internal/types/subtypes"
-	pb "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/targets"
+	"github.com/opendumpling/opendumpling/internal/credential"
+	credstatic "github.com/opendumpling/opendumpling/internal/credential/static"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	serverpb "github.com/opendumpling/opendumpling/internal/gen/controller/servers/services"
+	"github.com/opendumpling/opendumpling/internal/session"
+	"github.com/opendumpling/opendumpling/internal/types/subtypes"
+	pb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/targets"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/structpb"
 )
 
 // dynamicToWorkerCredential converts the strongly typed credential.Dynamic into
-// a session.Credential suitable for passing to a Boundary worker.
+// a session.Credential suitable for passing to a Dumpling worker.
 func dynamicToWorkerCredential(ctx context.Context, cred credential.Dynamic) (session.Credential, error) {
 	const op = "targets.dynamicToWorkerCredential"
 	var workerCred *serverpb.Credential
@@ -148,7 +148,7 @@ func dynamicToSessionCredential(ctx context.Context, cred credential.Dynamic) (*
 }
 
 // staticToWorkerCredential converts the credential.Static into
-// a session.Credential suitable for passing to a Boundary worker.
+// a session.Credential suitable for passing to a Dumpling worker.
 func staticToWorkerCredential(ctx context.Context, cred credential.Static) (session.Credential, error) {
 	const op = "targets.staticToWorkerCredential"
 	var workerCred *serverpb.Credential

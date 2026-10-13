@@ -12,7 +12,7 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
-option go_package = "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/hostcatalogs;hostcatalogs";
+option go_package = "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/hostcatalogs;hostcatalogs";
 
 // HostCatalog manages Hosts and Host Sets
 message HostCatalog {

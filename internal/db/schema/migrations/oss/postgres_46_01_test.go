@@ -9,12 +9,12 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/db/common"
-	"github.com/hashicorp/boundary/internal/db/schema"
-	"github.com/hashicorp/boundary/internal/db/schema/migration"
-	"github.com/hashicorp/boundary/internal/db/schema/migrations/oss/internal/hook46001"
-	"github.com/hashicorp/boundary/testing/dbtest"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/db/common"
+	"github.com/opendumpling/opendumpling/internal/db/schema"
+	"github.com/opendumpling/opendumpling/internal/db/schema/migration"
+	"github.com/opendumpling/opendumpling/internal/db/schema/migrations/oss/internal/hook46001"
+	"github.com/opendumpling/opendumpling/testing/dbtest"
 	"github.com/stretchr/testify/require"
 )
 

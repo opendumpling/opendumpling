@@ -6,7 +6,7 @@ package config
 import (
 	"fmt"
 
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/mitchellh/cli"
 )
 
@@ -27,7 +27,7 @@ func (c *AutocompleteCommand) Synopsis() string {
 		verb = "Install or uninstall"
 	}
 
-	return fmt.Sprintf("%s autocompletion for Boundary's CLI", verb)
+	return fmt.Sprintf("%s autocompletion for Dumpling's CLI", verb)
 }
 
 func (c *AutocompleteCommand) Help() string {
@@ -47,9 +47,9 @@ func (c *AutocompleteCommand) Help() string {
 		subcmd = " install"
 	}
 	return base.WrapForHelpText([]string{
-		fmt.Sprintf("Usage: boundary config autocomplete%s [options] [args]", subcmd),
+		fmt.Sprintf("Usage: dumpling config autocomplete%s [options] [args]", subcmd),
 		"",
-		fmt.Sprintf("  This command %s autocompletion support for Boundary's CLI", verb),
+		fmt.Sprintf("  This command %s autocompletion support for Dumpling's CLI", verb),
 	})
 }
 

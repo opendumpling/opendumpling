@@ -8,7 +8,7 @@ package controller.api.resources.authtokens.v1;
 import "controller/api/resources/scopes/v1/scope.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/authtokens;authtokens";
+option go_package = "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/authtokens;authtokens";
 
 // AuthToken contains all fields related to an Auth Token resource
 message AuthToken {

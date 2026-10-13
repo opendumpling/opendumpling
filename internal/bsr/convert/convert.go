@@ -8,10 +8,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/hashicorp/boundary/internal/bsr"
-	"github.com/hashicorp/boundary/internal/bsr/internal/is"
-	"github.com/hashicorp/boundary/internal/bsr/ssh"
-	"github.com/hashicorp/boundary/internal/storage"
+	"github.com/opendumpling/opendumpling/internal/bsr"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/is"
+	"github.com/opendumpling/opendumpling/internal/bsr/ssh"
+	"github.com/opendumpling/opendumpling/internal/storage"
 )
 
 // ToAsciicast accepts a bsr.Session and will convert the underlying BSR connection or channel file to an asciinema file.

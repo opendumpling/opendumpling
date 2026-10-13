@@ -1,4 +1,4 @@
-module github.com/hashicorp/boundary/plugins/kms/mains/transit
+module github.com/opendumpling/opendumpling/plugins/kms/mains/transit
 
 go 1.20
 

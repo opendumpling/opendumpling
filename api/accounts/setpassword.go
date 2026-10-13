@@ -8,7 +8,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/hashicorp/boundary/api"
+	"github.com/opendumpling/opendumpling/api"
 )
 
 func (c *Client) SetPassword(ctx context.Context, accountId, password string, version uint32, opt ...Option) (*AccountUpdateResult, error) {

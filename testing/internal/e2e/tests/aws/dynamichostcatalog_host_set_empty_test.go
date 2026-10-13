@@ -11,10 +11,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/api/hostcatalogs"
-	"github.com/hashicorp/boundary/api/hostsets"
-	"github.com/hashicorp/boundary/testing/internal/e2e"
-	"github.com/hashicorp/boundary/testing/internal/e2e/boundary"
+	"github.com/opendumpling/opendumpling/api/hostcatalogs"
+	"github.com/opendumpling/opendumpling/api/hostsets"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e/dumpling"
 	"github.com/stretchr/testify/require"
 )
 
@@ -27,19 +27,19 @@ func TestCliCreateAwsDynamicHostCatalogWithEmptyHostSet(t *testing.T) {
 	require.NoError(t, err)
 
 	ctx := context.Background()
-	boundary.AuthenticateAdminCli(t, ctx)
-	newOrgId := boundary.CreateNewOrgCli(t, ctx)
+	dumpling.AuthenticateAdminCli(t, ctx)
+	newOrgId := dumpling.CreateNewOrgCli(t, ctx)
 	t.Cleanup(func() {
 		ctx := context.Background()
-		boundary.AuthenticateAdminCli(t, ctx)
-		output := e2e.RunCommand(ctx, "boundary", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
+		dumpling.AuthenticateAdminCli(t, ctx)
+		output := e2e.RunCommand(ctx, "dumpling", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
 		require.NoError(t, output.Err, string(output.Stderr))
 	})
-	newProjectId := boundary.CreateNewProjectCli(t, ctx, newOrgId)
-	newHostCatalogId := boundary.CreateNewAwsHostCatalogCli(t, ctx, newProjectId, c.AwsAccessKeyId, c.AwsSecretAccessKey)
+	newProjectId := dumpling.CreateNewProjectCli(t, ctx, newOrgId)
+	newHostCatalogId := dumpling.CreateNewAwsHostCatalogCli(t, ctx, newProjectId, c.AwsAccessKeyId, c.AwsSecretAccessKey)
 
 	// Set up a host set
-	newHostSetId := boundary.CreateNewAwsHostSetCli(t, ctx, newHostCatalogId, "tag:empty_test=true")
+	newHostSetId := dumpling.CreateNewAwsHostSetCli(t, ctx, newHostCatalogId, "tag:empty_test=true")
 
 	// Check that there are no hosts in the host set
 	t.Logf("Looking for items in the host set...")
@@ -49,7 +49,7 @@ func TestCliCreateAwsDynamicHostCatalogWithEmptyHostSet(t *testing.T) {
 			time.Sleep(3 * time.Second)
 		}
 
-		output := e2e.RunCommand(ctx, "boundary",
+		output := e2e.RunCommand(ctx, "dumpling",
 			e2e.WithArgs(
 				"host-sets", "read",
 				"-id", newHostSetId,
@@ -76,7 +76,7 @@ func TestCliCreateAwsDynamicHostCatalogWithEmptyHostSet(t *testing.T) {
 			time.Sleep(3 * time.Second)
 		}
 
-		output := e2e.RunCommand(ctx, "boundary",
+		output := e2e.RunCommand(ctx, "dumpling",
 			e2e.WithArgs("hosts", "list", "-host-catalog-id", newHostCatalogId, "-format", "json"),
 		)
 		require.NoError(t, output.Err, string(output.Stderr))
@@ -92,11 +92,11 @@ func TestCliCreateAwsDynamicHostCatalogWithEmptyHostSet(t *testing.T) {
 	t.Log("Successfully detected zero hosts in the host catalog")
 
 	// Create target
-	newTargetId := boundary.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort)
-	boundary.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
+	newTargetId := dumpling.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort)
+	dumpling.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
 
 	// Attempt to connect to target
-	output := e2e.RunCommand(ctx, "boundary",
+	output := e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"connect",
 			"-target-id", newTargetId,
@@ -107,12 +107,12 @@ func TestCliCreateAwsDynamicHostCatalogWithEmptyHostSet(t *testing.T) {
 			"-o", "UserKnownHostsFile=/dev/null",
 			"-o", "StrictHostKeyChecking=no",
 			"-o", "IdentitiesOnly=yes", // forces the use of the provided key
-			"-p", "{{boundary.port}}", // this is provided by boundary
-			"{{boundary.ip}}",
+			"-p", "{{dumpling.port}}", // this is provided by boundary
+			"{{dumpling.ip}}",
 			"hostname", "-i",
 		),
 	)
-	var response boundary.CliError
+	var response dumpling.CliError
 	err = json.Unmarshal(output.Stderr, &response)
 	require.NoError(t, err)
 	require.Equal(t, http.StatusNotFound, response.Status, "Expected to error when connecting to a target with zero hosts")

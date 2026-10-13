@@ -6,7 +6,7 @@ package sshprivatekey
 import (
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/credential"
+	"github.com/opendumpling/opendumpling/internal/credential"
 	"github.com/stretchr/testify/assert"
 	"golang.org/x/crypto/ssh/testdata"
 )

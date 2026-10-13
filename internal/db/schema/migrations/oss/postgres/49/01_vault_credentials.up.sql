@@ -48,7 +48,7 @@ begin;
   comment on view credential_vault_token_renewal_revocation is
     'credential_vault_token_renewal_revocation is a view where each row contains a credential store and the credential store''s data needed to connect to Vault. '
     'The view returns a separate row for each active token in Vault (current, maintaining and revoke tokens); this view should only be used for token renewal and revocation. '
-    'Each row may contain encrypted data. This view should not be used to retrieve data which will be returned external to boundary.';
+    'Each row may contain encrypted data. This view should not be used to retrieve data which will be returned external to dumpling.';
 
   create view credential_vault_store_list_lookup as
   select store.public_id                   as public_id,
@@ -79,7 +79,7 @@ begin;
   comment on view credential_vault_store_list_lookup is
     'credential_vault_store_list_lookup is a view where each row contains a credential store. '
     'If the Vault token has expired this view will return an empty token_hmac and a token_status of ''expired'' '
-    'No encrypted data is returned. This view can be used to retrieve data which will be returned external to boundary.';
+    'No encrypted data is returned. This view can be used to retrieve data which will be returned external to dumpling.';
 
   -- Recreated in 56/02_add_data_key_foreign_key_references.up.sql
   create view credential_vault_store_client as
@@ -108,7 +108,7 @@ begin;
   comment on view credential_vault_store_client is
     'credential_vault_store_client is a view where each row contains a credential store and the credential store''s data needed to connect to Vault. '
     'The view returns the current token for the store, if the Vault token has expired this view will return an empty token_hmac and a token_status of ''expired''  '
-    'Each row may contain encrypted data. This view should not be used to retrieve data which will be returned external to boundary.';
+    'Each row may contain encrypted data. This view should not be used to retrieve data which will be returned external to dumpling.';
 
   -- Recreated in 56/02_add_data_key_foreign_key_references.up.sql
   create view credential_vault_library_issue_credentials as
@@ -166,7 +166,7 @@ begin;
   comment on view credential_vault_library_issue_credentials is
     'credential_vault_library_issue_credentials is a view where each row contains a credential library and the credential library''s data needed to connect to Vault. '
     'This view should only be used when issuing credentials from a Vault credential library. Each row may contain encrypted data. '
-    'This view should not be used to retrieve data which will be returned external to boundary.';
+    'This view should not be used to retrieve data which will be returned external to dumpling.';
 
   create view credential_vault_library_list_lookup as
   with
@@ -206,6 +206,6 @@ begin;
       on library.public_id = sshpk.library_id;
   comment on view credential_vault_library_list_lookup is
     'credential_vault_library_list_lookup is a view where each row contains a credential library and any of library''s credential mapping overrides. '
-    'No encrypted data is returned. This view can be used to retrieve data which will be returned external to boundary.';
+    'No encrypted data is returned. This view can be used to retrieve data which will be returned external to dumpling.';
 
 commit;

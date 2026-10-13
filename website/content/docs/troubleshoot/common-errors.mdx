@@ -2,19 +2,19 @@
 layout: docs
 page_title: Common error messages
 description: |-
-  Common error messages for Boundary
+  Common error messages for Dumpling
 ---
 
 # Common error messages
 
-When installing and running Boundary, there are some common messages you might see. Usually they indicate an issue in your network or in your IAM
+When installing and running Dumpling, there are some common messages you might see. Usually they indicate an issue in your network or in your IAM
 configuration. Some of the more common errors and their solutions are listed below. If you think you have found a bug, please report the issue on
-[github](https://github.com/hashicorp/boundary/issues/new/choose).
+[github](https://github.com/opendumpling/opendumpling/issues/new/choose).
 
 ## Cannot connect to target: error from controller when performing authorize-session action against given target
 
 ```
-$ boundary targets authorize-session
+$ dumpling targets authorize-session
 Error from controller when performing authorize-session action against given target
 
 Error information:
@@ -27,12 +27,12 @@ Error information:
 This error message indicates the user does not have permission to access the requested target. Ensure the right IAM policies are configured for the
 user attempting to create a session. Users need to belong to a role in the target's scope with an authorize-session grant to access the target.
 [Resource table](/boundary/docs/concepts/security/permissions/resource-table) page is a great reference for how to configure
-the right permission grants for Boundary roles.
+the right permission grants for Dumpling roles.
 
 ## Error from controller when performing authorize-session action against given target
 
 ```
-$ boundary connect -target-id $TARGET_ID
+$ dumpling connect -target-id $TARGET_ID
 Error from controller when performing authorize-session action against given target
 
 Error information:
@@ -48,7 +48,7 @@ This error message indicates the worker is unable to proxy connections to the ta
 - Targets
   - Need to allow inbound connections from workers
 - Workers
-  - Need to allow outbound connections to a Boundary trusted control point (either the Boundary control plane or another trusted worker)
+  - Need to allow outbound connections to a Dumpling trusted control point (either the Dumpling control plane or another trusted worker)
   - Need to allow outbound connections to targets
   - Need to allow inbound connections from clients
 - Client devices
@@ -62,7 +62,7 @@ This error message indicates the worker is unable to proxy connections to the ta
 ## Error from controller when performing authorize-session action against given target: unsupported credential *vault.baseCred
 
 ```
-$ boundary connect ssh -target-id tssh_dmcFiVIakM
+$ dumpling connect ssh -target-id tssh_dmcFiVIakM
 Error from controller when performing authorize-session action against given target
 
 Error information:

@@ -26,13 +26,13 @@ type AuthMethodServiceClient interface {
 	// provided scope. The request must include the scope id and if missing,
 	// malformed, or referencing a non existing scope, an error is returned.
 	ListAuthMethods(ctx context.Context, in *ListAuthMethodsRequest, opts ...grpc.CallOption) (*ListAuthMethodsResponse, error)
-	// CreateAuthMethod creates and stores an Auth Method in boundary.  The
+	// CreateAuthMethod creates and stores an Auth Method in dumpling.  The
 	// provided request must include the scope in which the Auth Method will be
 	// created. If the scope id is missing, malformed or referencing a
 	// non existing resource an error is returned.  If a name is provided that is
 	// in use in another Auth Method in the same scope, an error is returned.
 	CreateAuthMethod(ctx context.Context, in *CreateAuthMethodRequest, opts ...grpc.CallOption) (*CreateAuthMethodResponse, error)
-	// UpdateAuthMethod updates an existing Auth Method in boundary.  The provided
+	// UpdateAuthMethod updates an existing Auth Method in dumpling.  The provided
 	// Auth Method must not have any read only fields set.  The update mask must be
 	// included in the request and contain at least 1 mutable field.  To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -41,10 +41,10 @@ type AuthMethodServiceClient interface {
 	// request attempts to update the name to one that is already in use by
 	// another Auth Method in the parent scope.
 	UpdateAuthMethod(ctx context.Context, in *UpdateAuthMethodRequest, opts ...grpc.CallOption) (*UpdateAuthMethodResponse, error)
-	// DeleteAuthMethod removes an Auth Method from Boundary. If the Auth Method id
+	// DeleteAuthMethod removes an Auth Method from Dumpling. If the Auth Method id
 	// is malformed or not provided an error is returned.
 	DeleteAuthMethod(ctx context.Context, in *DeleteAuthMethodRequest, opts ...grpc.CallOption) (*DeleteAuthMethodResponse, error)
-	// ChangeState changes the state of an Auth Method from Boundary.
+	// ChangeState changes the state of an Auth Method from Dumpling.
 	ChangeState(ctx context.Context, in *ChangeStateRequest, opts ...grpc.CallOption) (*ChangeStateResponse, error)
 	// Authenticate validates credentials provided and returns an Auth Token.
 	Authenticate(ctx context.Context, in *AuthenticateRequest, opts ...grpc.CallOption) (*AuthenticateResponse, error)
@@ -133,13 +133,13 @@ type AuthMethodServiceServer interface {
 	// provided scope. The request must include the scope id and if missing,
 	// malformed, or referencing a non existing scope, an error is returned.
 	ListAuthMethods(context.Context, *ListAuthMethodsRequest) (*ListAuthMethodsResponse, error)
-	// CreateAuthMethod creates and stores an Auth Method in boundary.  The
+	// CreateAuthMethod creates and stores an Auth Method in dumpling.  The
 	// provided request must include the scope in which the Auth Method will be
 	// created. If the scope id is missing, malformed or referencing a
 	// non existing resource an error is returned.  If a name is provided that is
 	// in use in another Auth Method in the same scope, an error is returned.
 	CreateAuthMethod(context.Context, *CreateAuthMethodRequest) (*CreateAuthMethodResponse, error)
-	// UpdateAuthMethod updates an existing Auth Method in boundary.  The provided
+	// UpdateAuthMethod updates an existing Auth Method in dumpling.  The provided
 	// Auth Method must not have any read only fields set.  The update mask must be
 	// included in the request and contain at least 1 mutable field.  To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -148,10 +148,10 @@ type AuthMethodServiceServer interface {
 	// request attempts to update the name to one that is already in use by
 	// another Auth Method in the parent scope.
 	UpdateAuthMethod(context.Context, *UpdateAuthMethodRequest) (*UpdateAuthMethodResponse, error)
-	// DeleteAuthMethod removes an Auth Method from Boundary. If the Auth Method id
+	// DeleteAuthMethod removes an Auth Method from Dumpling. If the Auth Method id
 	// is malformed or not provided an error is returned.
 	DeleteAuthMethod(context.Context, *DeleteAuthMethodRequest) (*DeleteAuthMethodResponse, error)
-	// ChangeState changes the state of an Auth Method from Boundary.
+	// ChangeState changes the state of an Auth Method from Dumpling.
 	ChangeState(context.Context, *ChangeStateRequest) (*ChangeStateResponse, error)
 	// Authenticate validates credentials provided and returns an Auth Token.
 	Authenticate(context.Context, *AuthenticateRequest) (*AuthenticateResponse, error)

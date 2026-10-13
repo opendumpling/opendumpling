@@ -7,9 +7,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hashicorp/boundary/internal/bsr"
-	pssh "github.com/hashicorp/boundary/internal/bsr/gen/ssh/v1"
-	"github.com/hashicorp/boundary/internal/bsr/internal/is"
+	"github.com/opendumpling/opendumpling/internal/bsr"
+	pssh "github.com/opendumpling/opendumpling/internal/bsr/gen/ssh/v1"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/is"
 	"google.golang.org/protobuf/proto"
 )
 

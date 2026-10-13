@@ -14,7 +14,7 @@ begin;
       public_id wt_plugin_id primary key
     );
     comment on table plugin is
-      'plugin is a table where each row represents a unique plugin registered with Boundary.';
+      'plugin is a table where each row represents a unique plugin registered with Dumpling.';
 
     insert into plugin (public_id)
       values

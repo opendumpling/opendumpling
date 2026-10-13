@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/errors"
 	"github.com/hashicorp/go-secure-stdlib/base62"
 	"golang.org/x/crypto/blake2b"
 )

@@ -5,7 +5,7 @@ syntax = "proto3";
 
 package testing.interceptor.v1;
 
-option go_package = "github.com/hashicorp/boundary/internal/gen/testing/interceptor;interceptor";
+option go_package = "github.com/opendumpling/opendumpling/internal/gen/testing/interceptor;interceptor";
 
 // The greeting service definition.  This is just a dead simple service that can
 // be used to test interceptors. (See controller.startTestGreeterService)

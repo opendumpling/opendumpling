@@ -11,7 +11,7 @@ import (
 	gvers "github.com/hashicorp/go-version"
 )
 
-const BoundaryPrefix = "Boundary v"
+const DumplingPrefix = "OpenDumpling v"
 
 // Info
 type Info struct {
@@ -84,7 +84,7 @@ func (c *Info) Semver() *gvers.Version {
 // string was unable to be parsed.
 func FromVersionString(s string) *Info {
 	s = strings.TrimSpace(s)
-	s = strings.TrimPrefix(s, BoundaryPrefix)
+	s = strings.TrimPrefix(s, DumplingPrefix)
 	i := Info{}
 
 	// Get the revision
@@ -117,10 +117,10 @@ func (c *Info) FullVersionNumber(rev bool) string {
 	var versionString bytes.Buffer
 
 	if Version == "unknown" && VersionPrerelease == "unknown" {
-		return "Boundary (version unknown)"
+		return "OpenDumpling (version unknown)"
 	}
 
-	fmt.Fprintf(&versionString, "%s%s", BoundaryPrefix, c.Version)
+	fmt.Fprintf(&versionString, "%s%s", DumplingPrefix, c.Version)
 	if c.VersionPrerelease != "" {
 		fmt.Fprintf(&versionString, "-%s", c.VersionPrerelease)
 	}

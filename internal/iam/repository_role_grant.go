@@ -7,12 +7,12 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/oplog"
-	"github.com/hashicorp/boundary/internal/perms"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/oplog"
+	"github.com/opendumpling/opendumpling/internal/perms"
 )
 
 // AddRoleGrant will add role grants associated with the role ID in the

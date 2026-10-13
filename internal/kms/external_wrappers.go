@@ -7,7 +7,7 @@ import (
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 )
 
-// ExternalWrappers holds wrappers defined outside of Boundary, e.g. in its
+// ExternalWrappers holds wrappers defined outside of Dumpling, e.g. in its
 // configuration file.
 type ExternalWrappers struct {
 	root       wrapping.Wrapper

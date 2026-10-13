@@ -11,16 +11,16 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/authtoken"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/host/static"
-	"github.com/hashicorp/boundary/internal/iam"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/scheduler"
-	"github.com/hashicorp/boundary/internal/session"
-	"github.com/hashicorp/boundary/internal/target"
-	"github.com/hashicorp/boundary/internal/target/tcp"
+	"github.com/opendumpling/opendumpling/internal/authtoken"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/host/static"
+	"github.com/opendumpling/opendumpling/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/scheduler"
+	"github.com/opendumpling/opendumpling/internal/session"
+	"github.com/opendumpling/opendumpling/internal/target"
+	"github.com/opendumpling/opendumpling/internal/target/tcp"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	vault "github.com/hashicorp/vault/api"
 	"github.com/stretchr/testify/assert"
@@ -1156,7 +1156,7 @@ func TestCredentialRenewalJob_Run(t *testing.T) {
 	repo, err := NewRepository(ctx, rw, rw, kmsCache, sche)
 	require.NoError(err)
 
-	_, token := v.CreateToken(t, WithPolicies([]string{"default", "boundary-controller", "database"}))
+	_, token := v.CreateToken(t, WithPolicies([]string{"default", "dumpling-controller", "database"}))
 	credStoreIn, err := NewCredentialStore(prj.GetPublicId(), v.Addr, []byte(token))
 	require.NoError(err)
 	j, err := newTokenRenewalJob(ctx, rw, rw, kmsCache)
@@ -1267,7 +1267,7 @@ func TestCredentialRenewalJob_RunExpired(t *testing.T) {
 	repo, err := NewRepository(ctx, rw, rw, kmsCache, sche)
 	require.NoError(err)
 
-	_, token := v.CreateToken(t, WithPolicies([]string{"default", "boundary-controller", "database"}))
+	_, token := v.CreateToken(t, WithPolicies([]string{"default", "dumpling-controller", "database"}))
 	credStoreIn, err := NewCredentialStore(prj.GetPublicId(), v.Addr, []byte(token))
 	require.NoError(err)
 	j, err := newTokenRenewalJob(ctx, rw, rw, kmsCache)
@@ -1584,7 +1584,7 @@ func TestCredentialRevocationJob_RunLimits(t *testing.T) {
 
 	v := NewTestVaultServer(t, WithDockerNetwork(true))
 	v.MountDatabase(t)
-	_, ct := v.CreateToken(t, WithPolicies([]string{"default", "boundary-controller", "database"}))
+	_, ct := v.CreateToken(t, WithPolicies([]string{"default", "dumpling-controller", "database"}))
 	in, err := NewCredentialStore(prj.GetPublicId(), v.Addr, []byte(ct))
 	require.NoError(t, err)
 	sche := scheduler.TestScheduler(t, conn, wrapper)
@@ -1705,7 +1705,7 @@ func TestCredentialRevocationJob_Run(t *testing.T) {
 	repo, err := NewRepository(ctx, rw, rw, kmsCache, sche)
 	require.NoError(err)
 
-	_, token := v.CreateToken(t, WithPolicies([]string{"default", "boundary-controller", "database"}))
+	_, token := v.CreateToken(t, WithPolicies([]string{"default", "dumpling-controller", "database"}))
 	credStoreIn, err := NewCredentialStore(prj.GetPublicId(), v.Addr, []byte(token))
 	require.NoError(err)
 	j, err := newTokenRenewalJob(ctx, rw, rw, kmsCache)
@@ -1800,7 +1800,7 @@ func TestCredentialRevocationJob_RunDeleted(t *testing.T) {
 	repo, err := NewRepository(ctx, rw, rw, kmsCache, sche)
 	require.NoError(err)
 
-	_, token := v.CreateToken(t, WithPolicies([]string{"default", "boundary-controller", "database"}))
+	_, token := v.CreateToken(t, WithPolicies([]string{"default", "dumpling-controller", "database"}))
 	credStoreIn, err := NewCredentialStore(prj.GetPublicId(), v.Addr, []byte(token))
 	require.NoError(err)
 	j, err := newTokenRenewalJob(ctx, rw, rw, kmsCache)
@@ -2194,7 +2194,7 @@ func TestCredentialCleanupJob_Run(t *testing.T) {
 	repo, err := NewRepository(ctx, rw, rw, kmsCache, sche)
 	require.NoError(err)
 
-	_, token := v.CreateToken(t, WithPolicies([]string{"default", "boundary-controller", "database"}))
+	_, token := v.CreateToken(t, WithPolicies([]string{"default", "dumpling-controller", "database"}))
 	credStoreIn, err := NewCredentialStore(prj.GetPublicId(), v.Addr, []byte(token))
 	require.NoError(err)
 	j, err := newTokenRenewalJob(ctx, rw, rw, kmsCache)

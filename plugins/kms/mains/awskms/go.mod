@@ -1,4 +1,4 @@
-module github.com/hashicorp/boundary/plugins/kms/mains/awskms
+module github.com/opendumpling/opendumpling/plugins/kms/mains/awskms
 
 go 1.20
 

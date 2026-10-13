@@ -6,7 +6,7 @@ package sshprivatekey
 import (
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/credential"
+	"github.com/opendumpling/opendumpling/internal/credential"
 	"github.com/mitchellh/pointerstructure"
 )
 

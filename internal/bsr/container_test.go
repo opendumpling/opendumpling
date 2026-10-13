@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/bsr/internal/fstest"
-	"github.com/hashicorp/boundary/internal/bsr/kms"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/fstest"
+	"github.com/opendumpling/opendumpling/internal/bsr/kms"
 	"github.com/stretchr/testify/require"
 )
 

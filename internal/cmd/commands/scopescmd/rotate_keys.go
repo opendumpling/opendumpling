@@ -7,9 +7,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/scopes"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/scopes"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/mitchellh/cli"
 	"github.com/mitchellh/go-wordwrap"
 	"github.com/posener/complete"
@@ -31,11 +31,11 @@ func (c *RotateKeysCommand) Synopsis() string {
 
 func (c *RotateKeysCommand) Help() string {
 	return base.WrapForHelpText([]string{
-		"Usage: boundary scopes rotate-keys [args]",
+		"Usage: dumpling scopes rotate-keys [args]",
 		"",
 		"  Deactivates a given scope's current KEK and DEKs and activates a new set of keys for the scope. Example:",
 		"",
-		`    $ boundary scopes rotate-keys -scope-id global`,
+		`    $ dumpling scopes rotate-keys -scope-id global`,
 		"",
 		"",
 	}) + c.Flags().Help()

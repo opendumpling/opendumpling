@@ -1,7 +1,7 @@
 ---
 layout: docs
 page_title: Overview/top-level parameters
-description: Boundary configuration reference.
+description: Dumpling configuration reference.
 ---
 
 # Configuration
@@ -13,27 +13,27 @@ description: Boundary configuration reference.
 [plugins]: /boundary/docs/configuration/plugins
 [events]: /boundary/docs/configuration/events
 
-Outside of development mode, Boundary controllers and workers are configured
+Outside of development mode, Dumpling controllers and workers are configured
 using a file. The format of this file is
 [HCL](https://github.com/hashicorp/hcl). In this section you'll find
-configuration block examples for Boundary controllers and workers.
+configuration block examples for Dumpling controllers and workers.
 
 After the configuration is written, use the `-config` flag to specify a local
 path to the file.
 
-## HCP Boundary-only parameters
+## HCP Dumpling-only parameters
 
-- `hcp_boundary_cluster_id` `(string)` - The ID of an HCP Boundary cluster.
+- `hcp_boundary_cluster_id` `(string)` - The ID of an HCP Dumpling cluster.
   Setting this allows discovery of upstream addresses for self-managed workers
   to connect to the cluster.
 
-## Shared self-managed and HCP Boundary parameters
+## Shared self-managed and HCP Dumpling parameters
 
 - [`worker`](/boundary/docs/configuration/worker): Worker specific configuration. If
   present, `boundary server` will start a Worker subprocess.
 
 - [`listener`](/boundary/docs/configuration/listener): Configures the listeners on which
-  Boundary serves traffic (API, cluster, and proxy).
+  Dumpling serves traffic (API, cluster, and proxy).
 
   Controllers must have at least two listener blocks defined: one marked for
   `api` purpose and the other marked for `cluster` purpose.
@@ -41,7 +41,7 @@ path to the file.
   Workers will have only one listener, marked for `proxy` purpose.
 
   Optionally, the `ops` purpose listener block serves as a higher-level listener
-  where Boundary's operational endpoints live (eg: /health).
+  where Dumpling's operational endpoints live (eg: /health).
 
 - [`kms`](/boundary/docs/configuration/kms): Configures KMS blocks [for various
   purposes](/boundary/docs/concepts/security/data-encryption).
@@ -52,11 +52,11 @@ path to the file.
 - `disable_mlock` `(bool: false)` – Disables the server from executing the
   `mlock` syscall, which prevents memory from being swapped to disk. This is
   fine for local development and testing; in production, it is not recommended
-  unless the systems running Boundary only use encrypted swap or do not use swap
-  at all. Boundary only supports memory locking on UNIX-like systems that
+  unless the systems running Dumpling only use encrypted swap or do not use swap
+  at all. Dumpling only supports memory locking on UNIX-like systems that
   support the mlock() syscall (Linux, FreeBSD, etc).
 
-  On Linux, to give the Boundary executable the ability to use the `mlock`
+  On Linux, to give the Dumpling executable the ability to use the `mlock`
   syscall without running the process as root, run:
 
   ```shell
@@ -80,7 +80,7 @@ path to the file.
   Specifies the log format to use; overridden by CLI and env var parameters.
   Supported log formats: `"standard"`, `"json"`.
 
-## Self-managed Boundary-only parameters
+## Self-managed Dumpling-only parameters
 
 - [`controller`](/boundary/docs/configuration/controller): Controller specific
   configuration. If present, `boundary server` will start a Controller subprocess.

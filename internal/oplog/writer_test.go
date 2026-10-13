@@ -7,7 +7,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/oplog/oplog_test"
+	"github.com/opendumpling/opendumpling/internal/oplog/oplog_test"
 	dbassert "github.com/hashicorp/dbassert/gorm"
 	"github.com/hashicorp/go-dbw"
 	"github.com/stretchr/testify/assert"

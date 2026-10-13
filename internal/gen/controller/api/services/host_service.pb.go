@@ -11,8 +11,8 @@ package services
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
-	hosts "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/hosts"
-	_ "github.com/hashicorp/boundary/sdk/pbs/controller/protooptions"
+	hosts "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/hosts"
+	_ "github.com/opendumpling/opendumpling/sdk/pbs/controller/protooptions"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"

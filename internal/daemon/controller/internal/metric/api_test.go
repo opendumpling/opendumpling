@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/gen/testing/protooptions"
+	"github.com/opendumpling/opendumpling/internal/gen/testing/protooptions"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

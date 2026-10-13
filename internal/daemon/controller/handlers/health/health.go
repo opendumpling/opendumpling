@@ -9,9 +9,9 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers"
-	pbs "github.com/hashicorp/boundary/internal/gen/ops/services"
-	pbhealth "github.com/hashicorp/boundary/internal/gen/worker/health"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/ops/services"
+	pbhealth "github.com/opendumpling/opendumpling/internal/gen/worker/health"
 )
 
 type Service struct {

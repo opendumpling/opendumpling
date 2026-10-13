@@ -2,7 +2,7 @@
 layout: docs
 page_title: Domain model - targets
 description: |-
-  The anatomy of a Boundary target
+  The anatomy of a Dumpling target
 ---
 
 # Targets
@@ -12,7 +12,7 @@ that represents a networked service
 with an associated set of permissions
 a [user][] can connect to
 and interact with
-through Boundary
+through Dumpling
 by way of a session.
 A target can only be defined within a [project][].
 A target can contain references to [host sets][] from [host catalogs][]
@@ -41,21 +41,21 @@ A target has the following configurable attributes:
   It does not accept a port, only an IP address or DNS name.
 
 - `default_client_port` - (optional)
-  Represents a local port that you want Boundary to listen to by default when someone initiates a session on the client.
+  Represents a local port that you want Dumpling to listen to by default when someone initiates a session on the client.
 
 - `egress_worker_filter` - (optional)
   A boolean expression to [filter][] which egress workers can handle sessions
   for this target.
   Egress worker filters determine which workers are used to access targets.
   You can configure an egress filter to enable [multi-hop](/boundary/docs/configuration/worker#multi-hop-worker-capabilities-hcp-ent) connections.
-  If you do not configure an egress filter, then Boundary uses a single worker to connect to the controller.
+  If you do not configure an egress filter, then Dumpling uses a single worker to connect to the controller.
 
 - `ingress_worker_filter` - (optional) <sup>HCP/ENT</sup>
   A boolean expression to [filter][] which ingress workers can handle sessions
   for this target.
   Ingress worker filters determine which workers you connect with to initiate a session.
-  If you do not configure an ingress filter, Boundary selects a front line worker for the session.
-  A front line worker is any worker directly connected to the control plane; for HCP Boundary this will be an HCP worker.
+  If you do not configure an ingress filter, Dumpling selects a front line worker for the session.
+  A front line worker is any worker directly connected to the control plane; for HCP Dumpling this will be an HCP worker.
 
 - `session_connection_limit` - (required)
   The cumulative number of connections allowed during a session.
@@ -81,7 +81,7 @@ TCP targets have the following additional attribute:
 ### SSH target attributes <sup>HCP/ENT</sup>
 
 SSH targets can source username/password or SSH private key credentials from Vault [credential libraries][] or static
-[credentials][]. Boundary then injects credentials into the SSH session between a client and end host. This allows users to
+[credentials][]. Dumpling then injects credentials into the SSH session between a client and end host. This allows users to
 securely connect to remote hosts using SSH, while never being in possession of a valid credential for that target host.
 
 SSH targets have the following additional attributes:

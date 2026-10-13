@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/servers/services"
-	"github.com/hashicorp/boundary/internal/session"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/servers/services"
+	"github.com/opendumpling/opendumpling/internal/session"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

@@ -5,7 +5,7 @@ syntax = "proto3";
 
 package controller.api.resources.plugins.v1;
 
-option go_package = "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/plugins;plugins";
+option go_package = "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/plugins;plugins";
 
 message PluginInfo {
   // Output only. The ID of the Plugin.

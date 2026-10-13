@@ -2,18 +2,18 @@
 layout: docs
 page_title: OCI KMS - KMSs - configuration
 description: |-
-  The OCI KMS configures Boundary to use OCI KMS for key management.
+  The OCI KMS configures Dumpling to use OCI KMS for key management.
 ---
 
 # `ocikms` KMS
 
-The OCI KMS configures Boundary to use OCI KMS for key management.
+The OCI KMS configures Dumpling to use OCI KMS for key management.
 
-The OCI KMS is activated by the presence of a `kms "ocikms"` block in Boundary's configuration file.
+The OCI KMS is activated by the presence of a `kms "ocikms"` block in Dumpling's configuration file.
 
 ## `ocikms` example
 
-This example shows configuring the OCI KMS through the Boundary configuration file
+This example shows configuring the OCI KMS through the Dumpling configuration file
 by providing all the required values:
 
 ```hcl
@@ -28,7 +28,7 @@ kms "ocikms" {
 
 ## `ocikms` parameters
 
-These parameters apply to the `kms` stanza in the Boundary configuration file:
+These parameters apply to the `kms` stanza in the Dumpling configuration file:
 
 - `purpose` - Purpose of this KMS, acceptable values are: `worker-auth`, `worker-auth-storage`,
    `root`, `previous-root`, `recovery`, or `config`.
@@ -38,7 +38,7 @@ These parameters apply to the `kms` stanza in the Boundary configuration file:
 - `management_endpoint` `(string: <required>)`: The OCI KMS management endpoint (or control plane endpoint)
   to be used to make OCI KMS key management requests.
 - `auth_type_api_key` `(boolean: false)`: Specifies if using API key to authenticate to OCI KMS service.
-  If it is `false`, Boundary authenticates using the instance principal from the compute instance. See Authentication section for details. Default is `false`.
+  If it is `false`, Dumpling authenticates using the instance principal from the compute instance. See Authentication section for details. Default is `false`.
 
 ## Authentication
 
@@ -93,7 +93,7 @@ admit dynamic-group <dynamic-group-name> of tenancy tenantA to use keys in compa
 
 ## `ocikms` rotate OCI KMS key
 
-For the [OCI KMS key rotation feature][oci-kms-rotation], OCI KMS will create a new version of key internally. This process is independent from Boundary, and boundary still uses the same `key_id` without any interruption.
+For the [OCI KMS key rotation feature][oci-kms-rotation], OCI KMS will create a new version of key internally. This process is independent from Dumpling, and boundary still uses the same `key_id` without any interruption.
 
 [oci-sdk]: https://docs.cloud.oracle.com/iaas/Content/API/Concepts/sdkconfig.htm
 [oci-dg]: https://docs.cloud.oracle.com/iaas/Content/Identity/Tasks/managingdynamicgroups.htm

@@ -6,7 +6,7 @@ package sanitize
 import (
 	"unicode"
 
-	"github.com/hashicorp/boundary/internal/db/sentinel"
+	"github.com/opendumpling/opendumpling/internal/db/sentinel"
 )
 
 // String sanitizes s by replacing all invalid unicode characters as well as the sentinel

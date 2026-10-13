@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: MPL-2.0
 
 // Package credential defines interfaces shared by other packages that
-// manage credentials for Boundary sessions.
+// manage credentials for Dumpling sessions.
 package credential
 
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/boundary"
+	"github.com/opendumpling/opendumpling/internal/dumpling"
 	"google.golang.org/protobuf/types/known/structpb"
 )
 
@@ -21,7 +21,7 @@ const Domain = "credential"
 // mechanisms to limit the credentials it can access to the minimum
 // necessary for the project it is in.
 type Store interface {
-	boundary.Resource
+	dumpling.Resource
 	GetProjectId() string
 }
 
@@ -40,7 +40,7 @@ const (
 // A Library is a resource that provides credentials that are of the same
 // type and access level from a single store.
 type Library interface {
-	boundary.Resource
+	dumpling.Resource
 	GetStoreId() string
 	CredentialType() Type
 }
@@ -75,7 +75,7 @@ type SecretData any
 
 // Credential is an entity containing secret data.
 type Credential interface {
-	boundary.Entity
+	dumpling.Entity
 	Secret() SecretData
 }
 
@@ -89,7 +89,7 @@ type Dynamic interface {
 
 // Static is a static credential that is stored directly in a credential store.
 type Static interface {
-	boundary.Resource
+	dumpling.Resource
 	GetStoreId() string
 }
 

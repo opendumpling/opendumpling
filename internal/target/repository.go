@@ -9,15 +9,15 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/boundary"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/oplog"
-	"github.com/hashicorp/boundary/internal/perms"
-	"github.com/hashicorp/boundary/internal/types/action"
-	"github.com/hashicorp/boundary/internal/types/resource"
-	"github.com/hashicorp/boundary/internal/types/scope"
+	"github.com/opendumpling/opendumpling/internal/dumpling"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/oplog"
+	"github.com/opendumpling/opendumpling/internal/perms"
+	"github.com/opendumpling/opendumpling/internal/types/action"
+	"github.com/opendumpling/opendumpling/internal/types/resource"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
 	"github.com/hashicorp/go-dbw"
 )
 
@@ -65,7 +65,7 @@ func NewRepository(ctx context.Context, r db.Reader, w db.Writer, kms *kms.Kms, 
 
 	opts := GetOpts(opt...)
 	if opts.WithLimit == 0 {
-		// zero signals the boundary defaults should be used.
+		// zero signals the dumpling defaults should be used.
 		opts.WithLimit = db.DefaultLimit
 	}
 
@@ -180,8 +180,8 @@ func (r *Repository) LookupTarget(ctx context.Context, publicIdOrName string, op
 	return subtype, nil
 }
 
-// FetchAuthzProtectedEntitiesByScope implements boundary.AuthzProtectedEntityProvider
-func (r *Repository) FetchAuthzProtectedEntitiesByScope(ctx context.Context, projectIds []string) (map[string][]boundary.AuthzProtectedEntity, error) {
+// FetchAuthzProtectedEntitiesByScope implements dumpling.AuthzProtectedEntityProvider
+func (r *Repository) FetchAuthzProtectedEntitiesByScope(ctx context.Context, projectIds []string) (map[string][]dumpling.AuthzProtectedEntity, error) {
 	const op = "target.(Repository).FetchAuthzProtectedEntitiesByScope"
 
 	var where string
@@ -215,7 +215,7 @@ func (r *Repository) FetchAuthzProtectedEntitiesByScope(ctx context.Context, pro
 	}
 	defer rows.Close()
 
-	targetsMap := map[string][]boundary.AuthzProtectedEntity{}
+	targetsMap := map[string][]dumpling.AuthzProtectedEntity{}
 	for rows.Next() {
 		var tv targetView
 		if err := r.reader.ScanRows(ctx, rows, &tv); err != nil {

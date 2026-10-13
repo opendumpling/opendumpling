@@ -10,11 +10,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/errors"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/api/services"
-	authtokenpb "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/authtokens"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/api/services"
+	authtokenpb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/authtokens"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"

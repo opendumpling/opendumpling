@@ -1,4 +1,4 @@
-module github.com/hashicorp/boundary/plugins/kms/mains/ocikms
+module github.com/opendumpling/opendumpling/plugins/kms/mains/ocikms
 
 go 1.20
 

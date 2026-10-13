@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"path/filepath"
 
-	"github.com/hashicorp/boundary/internal/observability/event"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
 )
 
 func devUiPassthroughHandler(uiPassthroughDir string) http.Handler {

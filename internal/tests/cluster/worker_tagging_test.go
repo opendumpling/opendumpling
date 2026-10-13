@@ -6,12 +6,12 @@ package cluster
 import (
 	"testing"
 
-	"github.com/hashicorp/boundary/api/targets"
-	"github.com/hashicorp/boundary/internal/cmd/config"
-	"github.com/hashicorp/boundary/internal/daemon/controller"
-	ct "github.com/hashicorp/boundary/internal/daemon/controller/handlers/targets"
-	"github.com/hashicorp/boundary/internal/daemon/worker"
-	pb "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/targets"
+	"github.com/opendumpling/opendumpling/api/targets"
+	"github.com/opendumpling/opendumpling/internal/cmd/config"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller"
+	ct "github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/targets"
+	"github.com/opendumpling/opendumpling/internal/daemon/worker"
+	pb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/targets"
 	"github.com/hashicorp/go-hclog"
 	"github.com/mr-tron/base58"
 	"github.com/stretchr/testify/assert"

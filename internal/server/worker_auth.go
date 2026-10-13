@@ -7,8 +7,8 @@ import (
 	"bytes"
 	"context"
 
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/server/store"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/server/store"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	"github.com/hashicorp/go-kms-wrapping/v2/extras/structwrapping"
 	"google.golang.org/protobuf/proto"
@@ -21,7 +21,7 @@ const (
 
 // WorkerAuth contains all fields related to an authorized Worker resource
 // This includes worker public keys, the controller encryption key,
-// and certificate bundles issued by the Boundary CA
+// and certificate bundles issued by the Dumpling CA
 type WorkerAuth struct {
 	*store.WorkerAuth
 	tableName string `gorm:"-"`

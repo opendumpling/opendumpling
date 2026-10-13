@@ -6,7 +6,7 @@ package target_test
 import (
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/target"
+	"github.com/opendumpling/opendumpling/internal/target"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

@@ -7,7 +7,7 @@ import (
 	"context"
 	"testing"
 
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/api/services"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/api/services"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc/codes"

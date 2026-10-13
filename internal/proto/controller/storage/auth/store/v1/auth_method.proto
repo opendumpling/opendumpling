@@ -5,7 +5,7 @@ syntax = "proto3";
 
 package controller.storage.auth.store.v1;
 
-option go_package = "github.com/hashicorp/boundary/internal/auth/store;store";
+option go_package = "github.com/opendumpling/opendumpling/internal/auth/store;store";
 
 // TODO - fill out the comments for these protobufs... at this point, I'm just
 // trying to get aligned on the basic data structures so we can keep moving

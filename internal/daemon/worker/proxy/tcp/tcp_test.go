@@ -14,10 +14,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/daemon/worker/proxy"
-	"github.com/hashicorp/boundary/internal/daemon/worker/session"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/servers/services"
-	"github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/targets"
+	"github.com/opendumpling/opendumpling/internal/daemon/worker/proxy"
+	"github.com/opendumpling/opendumpling/internal/daemon/worker/session"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/servers/services"
+	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/targets"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/types/known/anypb"
@@ -217,7 +217,7 @@ func createTestCert(t *testing.T) ([]byte, ed25519.PublicKey, ed25519.PrivateKey
 		BasicConstraintsValid: true,
 		IsCA:                  true,
 		IPAddresses:           []net.IP{net.ParseIP("127.0.0.1")},
-		DNSNames:              []string{"/tmp/boundary-opslistener-test0.sock", "/tmp/boundary-opslistener-test1.sock"},
+		DNSNames:              []string{"/tmp/dumpling-opslistener-test0.sock", "/tmp/dumpling-opslistener-test1.sock"},
 	}
 
 	certBytes, err := x509.CreateCertificate(rand.Reader, template, template, pub, priv)

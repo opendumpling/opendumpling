@@ -7,10 +7,10 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/workers"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/cmd/common"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/workers"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/common"
 	"github.com/hashicorp/go-secure-stdlib/strutil"
 	"github.com/mitchellh/cli"
 	"github.com/mitchellh/go-wordwrap"
@@ -31,11 +31,11 @@ type WorkerCACommand struct {
 func (c *WorkerCACommand) Synopsis() string {
 	switch c.Func {
 	case "read":
-		return wordwrap.WrapString("Read the certificate authority used to authorize Boundary workers", base.TermWidth)
+		return wordwrap.WrapString("Read the certificate authority used to authorize Dumpling workers", base.TermWidth)
 	case "reinitialize":
-		return wordwrap.WrapString("Reinitialize the certificate authority used to authorize Boundary workers", base.TermWidth)
+		return wordwrap.WrapString("Reinitialize the certificate authority used to authorize Dumpling workers", base.TermWidth)
 	}
-	return wordwrap.WrapString("Manage the certificate authority used to authorize Boundary workers", base.TermWidth)
+	return wordwrap.WrapString("Manage the certificate authority used to authorize Dumpling workers", base.TermWidth)
 }
 
 var flagsCertificateAuthority = map[string][]string{
@@ -47,33 +47,33 @@ func (c *WorkerCACommand) Help() string {
 	switch c.Func {
 	case "read":
 		return base.WrapForHelpText([]string{
-			"Usage: boundary workers certificate-authority read",
+			"Usage: dumpling workers certificate-authority read",
 			"",
-			"  Read the certificate authority used to authorize Boundary workers:",
+			"  Read the certificate authority used to authorize Dumpling workers:",
 			"",
-			`    $ boundary workers certificate-authority read`,
+			`    $ dumpling workers certificate-authority read`,
 			"",
 			"",
 		}) + c.Flags().Help()
 	case "reinitialize":
 		return base.WrapForHelpText([]string{
-			"Usage: boundary workers certificate-authority reinitialize",
+			"Usage: dumpling workers certificate-authority reinitialize",
 			"",
-			"  Reinitialize the certificate authority used to authorize Boundary workers:",
+			"  Reinitialize the certificate authority used to authorize Dumpling workers:",
 			"",
-			`    $ boundary workers certificate-authority reinitialize`,
+			`    $ dumpling workers certificate-authority reinitialize`,
 			"",
 			"",
 		}) + c.Flags().Help()
 	}
 	return base.WrapForHelpText([]string{
-		"Usage: boundary workers certificate-authority [options]",
+		"Usage: dumpling workers certificate-authority [options]",
 		"",
-		"  This command allows for management of the certificate authority used to authorize Boundary workers. Example:",
+		"  This command allows for management of the certificate authority used to authorize Dumpling workers. Example:",
 		"",
 		"    Read the current certificate authority:",
 		"",
-		`    $ boundary workers certificate-authority read`,
+		`    $ dumpling workers certificate-authority read`,
 		"",
 		"  Please see the certificate-authority subcommand help for detailed usage information.",
 		"",
@@ -169,7 +169,7 @@ func (c *WorkerCACommand) Run(args []string) int {
 		case "read":
 		case "reinitialize":
 			if c.FlagScopeId == "" {
-				c.PrintCliError(errors.New("Scope ID must be passed in via -scope-id or BOUNDARY_SCOPE_ID"))
+				c.PrintCliError(errors.New("Scope ID must be passed in via -scope-id or DUMPLING_SCOPE_ID"))
 				return base.CommandUserError
 			}
 

@@ -36,10 +36,10 @@ import (
 	"io"
 	"io/ioutil"
 
-	"github.com/hashicorp/boundary/internal/db/schema/internal/log"
-	"github.com/hashicorp/boundary/internal/db/schema/migration"
-	"github.com/hashicorp/boundary/internal/db/schema/migrations"
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/db/schema/internal/log"
+	"github.com/opendumpling/opendumpling/internal/db/schema/migration"
+	"github.com/opendumpling/opendumpling/internal/db/schema/migrations"
+	"github.com/opendumpling/opendumpling/internal/errors"
 	"github.com/hashicorp/go-multierror"
 	"github.com/jackc/pgx/v5/pgconn"
 )

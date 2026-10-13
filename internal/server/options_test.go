@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/version"
+	"github.com/opendumpling/opendumpling/version"
 	"github.com/stretchr/testify/assert"
 )
 

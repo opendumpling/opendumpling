@@ -6,7 +6,7 @@ package request
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/errors"
 )
 
 // Validate the request.State

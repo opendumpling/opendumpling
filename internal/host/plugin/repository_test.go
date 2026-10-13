@@ -7,15 +7,15 @@ import (
 	"context"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/scheduler"
-	plgpb "github.com/hashicorp/boundary/sdk/pbs/plugin"
+	"github.com/opendumpling/opendumpling/internal/scheduler"
+	plgpb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/host"
-	"github.com/hashicorp/boundary/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/host"
+	"github.com/opendumpling/opendumpling/internal/kms"
 )
 
 func TestRepository_New(t *testing.T) {

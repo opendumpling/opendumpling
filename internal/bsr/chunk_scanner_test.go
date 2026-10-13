@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/bsr"
+	"github.com/opendumpling/opendumpling/internal/bsr"
 	"github.com/hashicorp/go-kms-wrapping/v2/extras/crypto"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

@@ -6,8 +6,8 @@ package plugin
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
 )
 
 // PublicId prefixes for the resources in the plugin package.

@@ -6,7 +6,7 @@ package worker
 import (
 	"context"
 
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/servers/services"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/servers/services"
 	"google.golang.org/grpc"
 )
 

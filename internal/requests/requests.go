@@ -6,7 +6,7 @@ package requests
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/perms"
+	"github.com/opendumpling/opendumpling/internal/perms"
 )
 
 // ContextRequestInforation is a type used solely for context keys -- see the

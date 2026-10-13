@@ -7,9 +7,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/daemon/metric"
-	cservices "github.com/hashicorp/boundary/internal/gen/controller/servers/services"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/daemon/metric"
+	cservices "github.com/opendumpling/opendumpling/internal/gen/controller/servers/services"
 	"github.com/prometheus/client_golang/prometheus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"

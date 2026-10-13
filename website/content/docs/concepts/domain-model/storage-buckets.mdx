@@ -2,7 +2,7 @@
 layout: docs
 page_title: Domain model - storage bucket
 description: |-
-  The anatomy of a Boundary storage bucket
+  The anatomy of a Dumpling storage bucket
 ---
 
 # Storage buckets <sup>HCP/ENT</sup>
@@ -18,7 +18,7 @@ A storage bucket that is associated with the Global scope can be associated with
 However, a storage bucket in an Org scope can only be associated with targets in a project from the same Org scope.
 Any storage buckets associated with an Org scope are deleted when the Org itself is deleted.
 
-Deleting a storage bucket in Boundary does not delete the bucket in the external object store, nor does it delete the recorded sessions in the bucket.
+Deleting a storage bucket in Dumpling does not delete the bucket in the external object store, nor does it delete the recorded sessions in the bucket.
 The storage bucket's lifecycle does not affect the lifecycle of the bucket in the external object store.
 Any session recording metadata that is attached to the storage bucket is deleted, when the storage bucket is deleted.
 
@@ -26,7 +26,7 @@ Any session recording metadata that is attached to the storage bucket is deleted
 
 A storage bucket has the following configurable attributes:
 
-- `name` - (Optional) The name of the resource in Boundary.
+- `name` - (Optional) The name of the resource in Dumpling.
 The name is optional, but if you set it, it must be unique within the scope ID.
 - `description` - (Optional) A description of the resource.
 - `bucket_name` - (Required) The name of the bucket in the external object store.

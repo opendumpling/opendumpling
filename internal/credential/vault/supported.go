@@ -18,7 +18,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/db/common"
+	"github.com/opendumpling/opendumpling/internal/db/common"
 	"github.com/hashicorp/go-rootcerts"
 	vault "github.com/hashicorp/vault/api"
 	_ "github.com/jackc/pgx/v5/stdlib"
@@ -208,7 +208,7 @@ func gotNewServer(t testing.TB, opt ...TestOption) *TestVaultServer {
 	})
 	require.NoError(err)
 
-	server.addPolicy(t, "boundary-controller", requiredCapabilities)
+	server.addPolicy(t, "dumpling-controller", requiredCapabilities)
 	return server
 }
 
@@ -226,7 +226,7 @@ func gotMountDatabase(t testing.TB, v *TestVaultServer, opt ...TestOption) *Test
 		Repository: postgresRepository,
 		Tag:        "11",
 		Networks:   []*dockertest.Network{network},
-		Env:        []string{"POSTGRES_PASSWORD=password", "POSTGRES_DB=boundarytest"},
+		Env:        []string{"POSTGRES_PASSWORD=password", "POSTGRES_DB=dumplingtest"},
 	}
 
 	opts := getTestOpts(t, opt...)
@@ -240,7 +240,7 @@ func gotMountDatabase(t testing.TB, v *TestVaultServer, opt ...TestOption) *Test
 	}
 	v.postgresContainer = resource
 
-	dbUrlTemplate := fmt.Sprintf("postgres://%%s:%%s@%s/boundarytest?sslmode=disable", resource.GetHostPort("5432/tcp"))
+	dbUrlTemplate := fmt.Sprintf("postgres://%%s:%%s@%s/dumplingtest?sslmode=disable", resource.GetHostPort("5432/tcp"))
 	dburl := fmt.Sprintf(dbUrlTemplate, "postgres", "password")
 	err = pool.Retry(func() error {
 		var err error
@@ -253,15 +253,15 @@ func gotMountDatabase(t testing.TB, v *TestVaultServer, opt ...TestOption) *Test
 	require.NoError(err)
 
 	const (
-		createOpened = `create table boundary_opened ( name text primary key )`
-		createClosed = `create table boundary_closed ( name text primary key )`
+		createOpened = `create table dumpling_opened ( name text primary key )`
+		createClosed = `create table dumpling_closed ( name text primary key )`
 
 		createVaultAccount = `create role vault with superuser login createrole password 'vault-password'`
 		createOpenedRole   = `create role opened_role noinherit`
 		createClosedRole   = `create role closed_role noinherit`
 
-		grantOpenedRole = `grant select, insert, update, delete on boundary_opened to opened_role`
-		grantClosedRole = `grant select, insert, update, delete on boundary_closed to closed_role`
+		grantOpenedRole = `grant select, insert, update, delete on dumpling_opened to opened_role`
+		grantClosedRole = `grant select, insert, update, delete on dumpling_closed to closed_role`
 	)
 
 	db, err := common.SqlOpen("postgres", dburl)
@@ -317,7 +317,7 @@ func gotMountDatabase(t testing.TB, v *TestVaultServer, opt ...TestOption) *Test
 	t.Log(vaultContainer.GetIPInNetwork(network))
 
 	// Configure PostgreSQL secrets engine
-	connUrl := fmt.Sprintf("postgresql://{{username}}:{{password}}@%s:5432/boundarytest?sslmode=disable", resource.GetIPInNetwork(network))
+	connUrl := fmt.Sprintf("postgresql://{{username}}:{{password}}@%s:5432/dumplingtest?sslmode=disable", resource.GetIPInNetwork(network))
 	t.Log(connUrl)
 
 	postgresConfPath := path.Join(mountPath, "config/postgresql")

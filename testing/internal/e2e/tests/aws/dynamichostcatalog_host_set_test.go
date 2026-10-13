@@ -13,12 +13,12 @@ import (
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
-	"github.com/hashicorp/boundary/api/hostcatalogs"
-	"github.com/hashicorp/boundary/api/hosts"
-	"github.com/hashicorp/boundary/api/hostsets"
-	"github.com/hashicorp/boundary/api/scopes"
-	"github.com/hashicorp/boundary/testing/internal/e2e"
-	"github.com/hashicorp/boundary/testing/internal/e2e/boundary"
+	"github.com/opendumpling/opendumpling/api/hostcatalogs"
+	"github.com/opendumpling/opendumpling/api/hosts"
+	"github.com/opendumpling/opendumpling/api/hostsets"
+	"github.com/opendumpling/opendumpling/api/scopes"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e/dumpling"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -32,20 +32,20 @@ func TestCliCreateAwsDynamicHostCatalogWithHostSet(t *testing.T) {
 	require.NoError(t, err)
 
 	ctx := context.Background()
-	boundary.AuthenticateAdminCli(t, ctx)
-	newOrgId := boundary.CreateNewOrgCli(t, ctx)
+	dumpling.AuthenticateAdminCli(t, ctx)
+	newOrgId := dumpling.CreateNewOrgCli(t, ctx)
 	t.Cleanup(func() {
 		ctx := context.Background()
-		boundary.AuthenticateAdminCli(t, ctx)
-		output := e2e.RunCommand(ctx, "boundary", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
+		dumpling.AuthenticateAdminCli(t, ctx)
+		output := e2e.RunCommand(ctx, "dumpling", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
 		require.NoError(t, output.Err, string(output.Stderr))
 	})
-	newProjectId := boundary.CreateNewProjectCli(t, ctx, newOrgId)
-	newHostCatalogId := boundary.CreateNewAwsHostCatalogCli(t, ctx, newProjectId, c.AwsAccessKeyId, c.AwsSecretAccessKey)
+	newProjectId := dumpling.CreateNewProjectCli(t, ctx, newOrgId)
+	newHostCatalogId := dumpling.CreateNewAwsHostCatalogCli(t, ctx, newProjectId, c.AwsAccessKeyId, c.AwsSecretAccessKey)
 
 	// Set up a host set
-	newHostSetId1 := boundary.CreateNewAwsHostSetCli(t, ctx, newHostCatalogId, c.AwsHostSetFilter1)
-	actualHostSetCount1 := boundary.WaitForHostsInHostSetCli(t, ctx, newHostSetId1)
+	newHostSetId1 := dumpling.CreateNewAwsHostSetCli(t, ctx, newHostCatalogId, c.AwsHostSetFilter1)
+	actualHostSetCount1 := dumpling.WaitForHostsInHostSetCli(t, ctx, newHostSetId1)
 	var targetIps1 []string
 	err = json.Unmarshal([]byte(c.AwsHostSetIps1), &targetIps1)
 	expectedHostSetCount1 := len(targetIps1)
@@ -53,8 +53,8 @@ func TestCliCreateAwsDynamicHostCatalogWithHostSet(t *testing.T) {
 	assert.Equal(t, expectedHostSetCount1, actualHostSetCount1, "Numbers of hosts in host set did not match expected amount")
 
 	// Set up another host set
-	newHostSetId2 := boundary.CreateNewAwsHostSetCli(t, ctx, newHostCatalogId, c.AwsHostSetFilter2)
-	actualHostSetCount2 := boundary.WaitForHostsInHostSetCli(t, ctx, newHostSetId2)
+	newHostSetId2 := dumpling.CreateNewAwsHostSetCli(t, ctx, newHostCatalogId, c.AwsHostSetFilter2)
+	actualHostSetCount2 := dumpling.WaitForHostsInHostSetCli(t, ctx, newHostSetId2)
 	var targetIps2 []string
 	err = json.Unmarshal([]byte(c.AwsHostSetIps2), &targetIps2)
 	expectedHostSetCount2 := len(targetIps2)
@@ -66,7 +66,7 @@ func TestCliCreateAwsDynamicHostCatalogWithHostSet(t *testing.T) {
 	var actualHostCatalogCount int
 	err = backoff.RetryNotify(
 		func() error {
-			output := e2e.RunCommand(ctx, "boundary",
+			output := e2e.RunCommand(ctx, "dumpling",
 				e2e.WithArgs("hosts", "list", "-host-catalog-id", newHostCatalogId, "-format", "json"),
 			)
 			if output.Err != nil {
@@ -98,11 +98,11 @@ func TestCliCreateAwsDynamicHostCatalogWithHostSet(t *testing.T) {
 	assert.Equal(t, expectedHostCatalogCount, actualHostCatalogCount, "Numbers of hosts in host catalog did not match expected amount")
 
 	// Create target
-	newTargetId := boundary.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort)
-	boundary.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId1)
+	newTargetId := dumpling.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort)
+	dumpling.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId1)
 
 	// Connect to target
-	output := e2e.RunCommand(ctx, "boundary",
+	output := e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"connect",
 			"-target-id", newTargetId,
@@ -112,8 +112,8 @@ func TestCliCreateAwsDynamicHostCatalogWithHostSet(t *testing.T) {
 			"-o", "UserKnownHostsFile=/dev/null",
 			"-o", "StrictHostKeyChecking=no",
 			"-o", "IdentitiesOnly=yes", // forces the use of the provided key
-			"-p", "{{boundary.port}}", // this is provided by boundary
-			"{{boundary.ip}}",
+			"-p", "{{dumpling.port}}", // this is provided by boundary
+			"{{dumpling.ip}}",
 			"hostname", "-i",
 		),
 	)
@@ -141,17 +141,17 @@ func TestApiCreateAwsDynamicHostCatalog(t *testing.T) {
 	c, err := loadTestConfig()
 	require.NoError(t, err)
 
-	client, err := boundary.NewApiClient()
+	client, err := dumpling.NewApiClient()
 	require.NoError(t, err)
 	ctx := context.Background()
 
-	newOrgId := boundary.CreateNewOrgApi(t, ctx, client)
+	newOrgId := dumpling.CreateNewOrgApi(t, ctx, client)
 	t.Cleanup(func() {
 		scopeClient := scopes.NewClient(client)
 		_, err := scopeClient.Delete(ctx, newOrgId)
 		require.NoError(t, err)
 	})
-	newProjectId := boundary.CreateNewProjectApi(t, ctx, client, newOrgId)
+	newProjectId := dumpling.CreateNewProjectApi(t, ctx, client, newOrgId)
 
 	// Create a dynamic host catalog
 	hcClient := hostcatalogs.NewClient(client)

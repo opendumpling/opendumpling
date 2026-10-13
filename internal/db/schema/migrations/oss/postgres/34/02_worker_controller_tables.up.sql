@@ -14,7 +14,7 @@ create table server_controller (
   update_time wt_timestamp
 );
 comment on table server_controller is
-  'server_controller is a table where each row represents a Boundary controller.';
+  'server_controller is a table where each row represents a Dumpling controller.';
 
 create trigger immutable_columns before update on server_controller
   for each row execute procedure immutable_columns('private_id','create_time');
@@ -30,7 +30,7 @@ create trigger controller_update_time_column before update on server_controller
 
 -- Worker table takes the place of the server table.
 -- instead of the private_id we use a wt_public_id field named public_id since
--- workers will now be exposed as resources in boundary.
+-- workers will now be exposed as resources in dumpling.
 
 create table server_worker_type_enm (
   name text primary key
@@ -94,7 +94,7 @@ create table server_worker (
     unique(scope_id, name)
 );
 comment on table server_worker is
-  'server_worker is a table where each row represents a Boundary worker.';
+  'server_worker is a table where each row represents a Dumpling worker.';
 
 create trigger immutable_columns before update on server_worker
   for each row execute procedure immutable_columns('public_id', 'scope_id', 'type', 'create_time');

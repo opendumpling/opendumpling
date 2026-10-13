@@ -16,24 +16,24 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/cmd/config"
-	"github.com/hashicorp/boundary/internal/daemon/cluster"
-	"github.com/hashicorp/boundary/internal/daemon/cluster/handlers"
-	"github.com/hashicorp/boundary/internal/daemon/worker/common"
-	"github.com/hashicorp/boundary/internal/daemon/worker/internal/metric"
-	"github.com/hashicorp/boundary/internal/daemon/worker/proxy"
-	"github.com/hashicorp/boundary/internal/daemon/worker/session"
-	"github.com/hashicorp/boundary/internal/errors"
-	pb "github.com/hashicorp/boundary/internal/gen/controller/servers"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/servers/services"
-	"github.com/hashicorp/boundary/internal/observability/event"
-	"github.com/hashicorp/boundary/internal/server"
-	"github.com/hashicorp/boundary/internal/storage"
-	boundary_plugin_assets "github.com/hashicorp/boundary/plugins/boundary"
-	plgpb "github.com/hashicorp/boundary/sdk/pbs/plugin"
-	external_plugins "github.com/hashicorp/boundary/sdk/plugins"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/config"
+	"github.com/opendumpling/opendumpling/internal/daemon/cluster"
+	"github.com/opendumpling/opendumpling/internal/daemon/cluster/handlers"
+	"github.com/opendumpling/opendumpling/internal/daemon/worker/common"
+	"github.com/opendumpling/opendumpling/internal/daemon/worker/internal/metric"
+	"github.com/opendumpling/opendumpling/internal/daemon/worker/proxy"
+	"github.com/opendumpling/opendumpling/internal/daemon/worker/session"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	pb "github.com/opendumpling/opendumpling/internal/gen/controller/servers"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/servers/services"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
+	"github.com/opendumpling/opendumpling/internal/server"
+	"github.com/opendumpling/opendumpling/internal/storage"
+	dumpling_plugin_assets "github.com/opendumpling/opendumpling/plugins/dumpling"
+	plgpb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
+	external_plugins "github.com/opendumpling/opendumpling/sdk/plugins"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-secure-stdlib/base62"
 	"github.com/hashicorp/go-secure-stdlib/mlock"
@@ -241,7 +241,7 @@ func New(ctx context.Context, conf *Config) (*Worker, error) {
 					pluginType,
 					external_plugins.WithPluginOptions(
 						pluginutil.WithPluginExecutionDirectory(conf.RawConfig.Plugins.ExecutionDir),
-						pluginutil.WithPluginsFilesystem(boundary_plugin_assets.PluginPrefix, boundary_plugin_assets.FileSystem()),
+						pluginutil.WithPluginsFilesystem(dumpling_plugin_assets.PluginPrefix, dumpling_plugin_assets.FileSystem()),
 					),
 					external_plugins.WithLogger(pluginLogger.Named(pluginType)),
 				)
@@ -274,10 +274,10 @@ func New(ctx context.Context, conf *Config) (*Worker, error) {
 			return nil, fmt.Errorf(
 				"Failed to lock memory: %v\n\n"+
 					"This usually means that the mlock syscall is not available.\n"+
-					"Boundary uses mlock to prevent memory from being swapped to\n"+
+					"Dumpling uses mlock to prevent memory from being swapped to\n"+
 					"disk. This requires root privileges as well as a machine\n"+
 					"that supports mlock. Please enable mlock on your system or\n"+
-					"disable Boundary from using it. To disable Boundary from using it,\n"+
+					"disable Dumpling from using it. To disable Dumpling from using it,\n"+
 					"set the `disable_mlock` configuration option in your configuration\n"+
 					"file.",
 				err)

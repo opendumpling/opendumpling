@@ -13,16 +13,16 @@ import (
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/google/go-cmp/cmp"
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/db/timestamp"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/iam"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/server"
-	"github.com/hashicorp/boundary/internal/server/store"
-	"github.com/hashicorp/boundary/internal/session"
-	"github.com/hashicorp/boundary/internal/types/scope"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/db/timestamp"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/server"
+	"github.com/opendumpling/opendumpling/internal/server/store"
+	"github.com/opendumpling/opendumpling/internal/session"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
 	"github.com/hashicorp/go-dbw"
 	"github.com/hashicorp/go-kms-wrapping/extras/kms/v2/migrations"
 	"github.com/hashicorp/nodeenrollment/rotation"
@@ -301,7 +301,7 @@ func TestUpsertWorkerStatus(t *testing.T) {
 		// update again with a shutdown state
 		wStatus3 := server.NewWorker(scope.Global.String(),
 			server.WithAddress("new_address"), server.WithName("config_name1"),
-			server.WithOperationalState("shutdown"), server.WithReleaseVersion("Boundary v0.11.0"))
+			server.WithOperationalState("shutdown"), server.WithReleaseVersion("Dumpling v0.11.0"))
 		worker, err = repo.UpsertWorkerStatus(ctx, wStatus3)
 		require.NoError(t, err)
 		assert.Greater(t, worker.GetLastStatusTime().AsTime(), worker.GetCreateTime().AsTime())
@@ -449,7 +449,7 @@ func TestUpsertWorkerStatus(t *testing.T) {
 		anotherStatus := server.NewWorker(scope.Global.String(),
 			server.WithName("another_test_worker"),
 			server.WithAddress("address"),
-			server.WithReleaseVersion("Boundary v0.11.0"))
+			server.WithReleaseVersion("Dumpling v0.11.0"))
 		_, err = repo.UpsertWorkerStatus(ctx, anotherStatus)
 		require.NoError(t, err)
 
@@ -462,7 +462,7 @@ func TestUpsertWorkerStatus(t *testing.T) {
 		anotherStatus := server.NewWorker(scope.Global.String(),
 			server.WithName("name-and-keyid"),
 			server.WithAddress("address2"),
-			server.WithReleaseVersion("Boundary v0.11.0"),
+			server.WithReleaseVersion("Dumpling v0.11.0"),
 			server.WithKeyId(pkiWorkerKeyId))
 		_, err = repo.UpsertWorkerStatus(ctx, anotherStatus)
 		require.NoError(t, err)
@@ -477,7 +477,7 @@ func TestUpsertWorkerStatus(t *testing.T) {
 			server.WithName("another_test_worker"),
 			server.WithAddress("address"),
 			server.WithOperationalState("shutdown"),
-			server.WithReleaseVersion("Boundary v0.11.0"))
+			server.WithReleaseVersion("Dumpling v0.11.0"))
 		_, err = repo.UpsertWorkerStatus(ctx, anotherStatus)
 		require.NoError(t, err)
 
@@ -741,7 +741,7 @@ func TestListWorkers_WithActiveWorkers(t *testing.T) {
 						server.WithName(worker1.GetName()),
 						server.WithAddress(worker1.GetAddress()),
 						server.WithOperationalState(server.ShutdownOperationalState.String()),
-						server.WithReleaseVersion("Boundary v.0.11"),
+						server.WithReleaseVersion("Dumpling v.0.11"),
 						server.WithPublicId(worker1.GetPublicId())))
 			},
 			wantCnt:   2,
@@ -755,7 +755,7 @@ func TestListWorkers_WithActiveWorkers(t *testing.T) {
 						server.WithName(worker2.GetName()),
 						server.WithAddress(worker2.GetAddress()),
 						server.WithOperationalState(server.ShutdownOperationalState.String()),
-						server.WithReleaseVersion("Boundary v.0.11"),
+						server.WithReleaseVersion("Dumpling v.0.11"),
 						server.WithPublicId(worker2.GetPublicId())))
 			},
 			wantCnt:   1,
@@ -769,7 +769,7 @@ func TestListWorkers_WithActiveWorkers(t *testing.T) {
 						server.WithName(worker3.GetName()),
 						server.WithAddress(worker3.GetAddress()),
 						server.WithOperationalState(server.ShutdownOperationalState.String()),
-						server.WithReleaseVersion("Boundary v.0.11"),
+						server.WithReleaseVersion("Dumpling v.0.11"),
 						server.WithPublicId(worker3.GetPublicId())))
 			},
 			wantCnt:   0,

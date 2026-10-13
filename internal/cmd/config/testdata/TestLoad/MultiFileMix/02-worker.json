@@ -1,10 +1,10 @@
 {
     "worker": [
         {
-            "address": "boundary",
+            "address": "dumpling",
             "description": "A worker",
             "initial_upstreams": [
-                "boundary:9201"
+                "dumpling:9201"
             ],
             "name": "worker0"
         }

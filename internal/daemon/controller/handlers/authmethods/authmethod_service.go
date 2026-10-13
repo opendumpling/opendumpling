@@ -10,31 +10,31 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/auth"
-	"github.com/hashicorp/boundary/internal/auth/ldap"
-	"github.com/hashicorp/boundary/internal/auth/oidc"
-	"github.com/hashicorp/boundary/internal/auth/password"
-	"github.com/hashicorp/boundary/internal/authtoken"
-	requestauth "github.com/hashicorp/boundary/internal/daemon/controller/auth"
-	"github.com/hashicorp/boundary/internal/daemon/controller/common"
-	"github.com/hashicorp/boundary/internal/daemon/controller/common/scopeids"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/accounts"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/authtokens"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/managed_groups"
-	"github.com/hashicorp/boundary/internal/errors"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/api/services"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/perms"
-	"github.com/hashicorp/boundary/internal/requests"
-	"github.com/hashicorp/boundary/internal/types/action"
-	"github.com/hashicorp/boundary/internal/types/resource"
-	"github.com/hashicorp/boundary/internal/types/scope"
-	"github.com/hashicorp/boundary/internal/types/subtypes"
-	pb "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/authmethods"
-	pba "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/authtokens"
-	"github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/scopes"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/auth"
+	"github.com/opendumpling/opendumpling/internal/auth/ldap"
+	"github.com/opendumpling/opendumpling/internal/auth/oidc"
+	"github.com/opendumpling/opendumpling/internal/auth/password"
+	"github.com/opendumpling/opendumpling/internal/authtoken"
+	requestauth "github.com/opendumpling/opendumpling/internal/daemon/controller/auth"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/common"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/common/scopeids"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/accounts"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/authtokens"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/managed_groups"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/api/services"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/perms"
+	"github.com/opendumpling/opendumpling/internal/requests"
+	"github.com/opendumpling/opendumpling/internal/types/action"
+	"github.com/opendumpling/opendumpling/internal/types/resource"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
+	"github.com/opendumpling/opendumpling/internal/types/subtypes"
+	pb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/authmethods"
+	pba "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/authtokens"
+	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/scopes"
 	"github.com/hashicorp/go-secure-stdlib/strutil"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/protobuf/proto"
@@ -93,7 +93,7 @@ type Service struct {
 
 var _ pbs.AuthMethodServiceServer = (*Service)(nil)
 
-// NewService returns a auth method service which handles auth method related requests to boundary.
+// NewService returns a auth method service which handles auth method related requests to dumpling.
 func NewService(ctx context.Context, kms *kms.Kms, pwRepoFn common.PasswordAuthRepoFactory, oidcRepoFn common.OidcAuthRepoFactory, iamRepoFn common.IamRepoFactory, atRepoFn common.AuthTokenRepoFactory, ldapRepoFn common.LdapAuthRepoFactory, opt ...handlers.Option) (Service, error) {
 	const op = "authmethods.NewService"
 	if kms == nil {
@@ -1056,7 +1056,7 @@ func validateCreateRequest(ctx context.Context, req *pbs.CreateAuthMethodRequest
 					foundTo := make(map[string]bool, len(attrs.GetAccountClaimMaps()))
 					for _, m := range acm {
 						if foundTo[m.To] {
-							badFields[accountClaimMapsField] = fmt.Sprintf("%s=%s contains invalid map - multiple maps to the same Boundary to-claim %s", m.From, m.To, m.To)
+							badFields[accountClaimMapsField] = fmt.Sprintf("%s=%s contains invalid map - multiple maps to the same Dumpling to-claim %s", m.From, m.To, m.To)
 						}
 						foundTo[m.To] = true
 					}
@@ -1176,7 +1176,7 @@ func validateUpdateRequest(ctx context.Context, req *pbs.UpdateAuthMethodRequest
 						foundTo := make(map[string]bool, len(attrs.GetAccountClaimMaps()))
 						for _, m := range acm {
 							if foundTo[m.To] {
-								badFields[accountClaimMapsField] = fmt.Sprintf("%s=%s contains invalid map - multiple maps to the same Boundary to-claim %s", m.From, m.To, m.To)
+								badFields[accountClaimMapsField] = fmt.Sprintf("%s=%s contains invalid map - multiple maps to the same Dumpling to-claim %s", m.From, m.To, m.To)
 							}
 							foundTo[m.To] = true
 

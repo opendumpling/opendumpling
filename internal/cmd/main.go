@@ -15,8 +15,8 @@ import (
 	"text/tabwriter"
 
 	"github.com/fatih/color"
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	colorable "github.com/mattn/go-colorable"
 	"github.com/mitchellh/cli"
 )
@@ -71,10 +71,10 @@ func setupEnv(args []string) (retArgs []string, format string, outputCurlString 
 		}
 	}
 
-	envBoundaryCLIFormat := os.Getenv(base.EnvBoundaryCLIFormat)
+	envDumplingCLIFormat := os.Getenv(base.EnvDumplingCLIFormat)
 	// If we did not parse a value, fetch the env var
-	if format == "" && envBoundaryCLIFormat != "" {
-		format = envBoundaryCLIFormat
+	if format == "" && envDumplingCLIFormat != "" {
+		format = envDumplingCLIFormat
 	}
 	// Lowercase for consistency
 	format = strings.ToLower(format)
@@ -108,7 +108,7 @@ func RunCustom(args []string, runOpts *RunOptions) int {
 
 	// Don't use color if disabled
 	useColor := true
-	if os.Getenv(base.EnvBoundaryCLINoColor) != "" || color.NoColor {
+	if os.Getenv(base.EnvDumplingCLINoColor) != "" || color.NoColor {
 		useColor = false
 	}
 
@@ -137,7 +137,7 @@ func RunCustom(args []string, runOpts *RunOptions) int {
 		uiErrWriter = ioutil.Discard
 	}
 
-	ui := &base.BoundaryUI{
+	ui := &base.DumplingUI{
 		Ui: &cli.ColoredUi{
 			ErrorColor: cli.UiColorRed,
 			WarnColor:  cli.UiColorYellow,
@@ -150,7 +150,7 @@ func RunCustom(args []string, runOpts *RunOptions) int {
 		Format: format,
 	}
 
-	serverCmdUi := &base.BoundaryUI{
+	serverCmdUi := &base.DumplingUI{
 		Ui: &cli.ColoredUi{
 			ErrorColor: cli.UiColorRed,
 			WarnColor:  cli.UiColorYellow,
@@ -174,11 +174,11 @@ func RunCustom(args []string, runOpts *RunOptions) int {
 	hiddenCommands := []string{"version"}
 
 	cli := &cli.CLI{
-		Name:     "boundary",
+		Name:     "dumpling",
 		Args:     args,
 		Commands: Commands,
 		HelpFunc: groupedHelpFunc(
-			cli.BasicHelpFunc("boundary"),
+			cli.BasicHelpFunc("dumpling"),
 		),
 		HelpWriter:                 runOpts.Stderr,
 		HiddenCommands:             hiddenCommands,
@@ -220,7 +220,7 @@ func groupedHelpFunc(f cli.HelpFunc) cli.HelpFunc {
 		var b bytes.Buffer
 		tw := tabwriter.NewWriter(&b, 0, 2, 6, ' ', 0)
 
-		fmt.Fprintf(tw, "Usage: boundary <command> [args]\n")
+		fmt.Fprintf(tw, "Usage: dumpling <command> [args]\n")
 
 		otherCommands := make([]string, 0, len(commands))
 		for k := range commands {

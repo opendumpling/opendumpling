@@ -4,12 +4,12 @@
 worker {
   name              = "worker0"
   description       = "A worker"
-  address           = "boundary"
-  initial_upstreams = ["boundary:9201"]
+  address           = "dumpling"
+  initial_upstreams = ["dumpling:9201"]
 }
 
 listener "tcp" {
-  address     = "boundary"
+  address     = "dumpling"
   purpose     = "proxy"
   tls_disable = true
 }

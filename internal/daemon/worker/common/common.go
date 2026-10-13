@@ -6,7 +6,7 @@ package common
 import (
 	"time"
 
-	"github.com/hashicorp/boundary/internal/server"
+	"github.com/opendumpling/opendumpling/internal/server"
 )
 
 // In the future we could make this configurable

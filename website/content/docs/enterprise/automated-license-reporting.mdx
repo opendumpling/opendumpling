@@ -32,7 +32,7 @@ Upgrade to a release that supports license utilization reporting. These releases
 
 Automatic license utilization reporting will start sending data within 24 hours. Check the product logs for records that the data sent successfully.
 The records are sent as system events.
-You can use [`file sync`](/boundary/docs/configuration/events/file) to configure a file where Boundary logs events.
+You can use [`file sync`](/boundary/docs/configuration/events/file) to configure a file where Dumpling logs events.
 
 ```json
 {
@@ -44,7 +44,7 @@ You can use [`file sync`](/boundary/docs/configuration/events/file) to configure
         "version": "v0.1",
         "op": "census.(censusJob).Run",
         "data": {
-            "msg": "the following snapshot has been generated {\"snapshot_version\":1,\"id\":{\"ULID\":\"0001J50MM0QGR5KN21FVGYJVP9\",\"Timestamp\":\"2023-05-02T00:00:00Z\"},\"schema_version\":\"1.0.0\",\"service\":\"boundary\",\"process_id\":\"01H2B2KY823KYPVAVC02V65TZV\",\"metrics\":{\"boundary.sessions\":{\"key\":\"boundary.sessions\",\"value\":2,\"kind\":\"counter\",\"mode\":\"write\",\"description\":\"Number of pending sessions from previous day\"}}}"
+            "msg": "the following snapshot has been generated {\"snapshot_version\":1,\"id\":{\"ULID\":\"0001J50MM0QGR5KN21FVGYJVP9\",\"Timestamp\":\"2023-05-02T00:00:00Z\"},\"schema_version\":\"1.0.0\",\"service\":\"boundary\",\"process_id\":\"01H2B2KY823KYPVAVC02V65TZV\",\"metrics\":{\"dumpling.sessions\":{\"key\":\"dumpling.sessions\",\"value\":2,\"kind\":\"counter\",\"mode\":\"write\",\"description\":\"Number of pending sessions from previous day\"}}}"
         }
     },
     "datacontentype": "application/cloudevents",
@@ -122,8 +122,8 @@ HashiCorp collects the following utilization data as JSON payloads:
 
 ```json
 "metrics": {
-  "boundary.sessions": {
-    "key": "boundary.sessions",
+  "dumpling.sessions": {
+    "key": "dumpling.sessions",
     "kind": "counter",
     "mode": "write",
     "value": 33
@@ -133,4 +133,4 @@ HashiCorp collects the following utilization data as JSON payloads:
 
 Product payload description:
 
-- Sessions - Sessions is queried from the Boundary store, counts over the last X days
+- Sessions - Sessions is queried from the Dumpling store, counts over the last X days

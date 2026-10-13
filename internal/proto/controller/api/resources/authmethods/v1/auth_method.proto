@@ -12,7 +12,7 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
-option go_package = "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/authmethods;authmethods";
+option go_package = "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/authmethods;authmethods";
 option (custom_options.v1.domain) = "auth";
 
 // AuthMethod contains all fields related to an Auth Method resource
@@ -120,7 +120,7 @@ message OidcAuthMethodAttributes {
   // "active-private", or "active-public".
   string state = 10 [json_name = "state"]; // @gotags: `class:"public"`
 
-  // The issuer URL. Boundary expects only the schema, host, and port and will
+  // The issuer URL. Dumpling expects only the schema, host, and port and will
   // strip off ".well-known/openid-configuration" if present. This will be
   // used for configuration discovery as well as for validation of the "iss"
   // claim.
@@ -255,7 +255,7 @@ message OidcAuthMethodAttributes {
   ]; // @gotags: `class:"public"`
 
   // dry_run, when set on an update request, indicates that the changes should
-  // not be persisted.  Boundary will still perform the normal checks to confirm
+  // not be persisted.  Dumpling will still perform the normal checks to confirm
   // the auth method is complete and validated against the discovered config.
   // This value will also be set on the returned resource when set in the request
   // along with the updated fields applied to the resource (but not persisted) as
@@ -368,7 +368,7 @@ message LdapAuthMethodAttributes {
 
   // upn_domain is the userPrincipalDomain used to construct the UPN string for
   // the authenticating user. The constructed UPN will appear as
-  // [username]@UPNDomain  Example: example.com, which will cause Boundary to
+  // [username]@UPNDomain  Example: example.com, which will cause Dumpling to
   // bind as username@example.com when authenticating the user.
   google.protobuf.StringValue upn_domain = 60 [
     json_name = "upn_domain",

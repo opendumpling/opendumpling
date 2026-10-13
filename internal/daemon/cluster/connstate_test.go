@@ -26,7 +26,7 @@ func TestWorkerConnectionInfo(t *testing.T) {
 	connInfo := []*WorkerConnectionInfo{
 		{WorkerId: "something"},
 		{UpstreamAddress: "something"},
-		{BoundaryVersion: "something"},
+		{DumplingVersion: "something"},
 		{Name: "something"},
 		{Description: "something"},
 		{PublicAddr: "something"},
@@ -34,7 +34,7 @@ func TestWorkerConnectionInfo(t *testing.T) {
 		{
 			WorkerId:         "something",
 			UpstreamAddress:  "something else",
-			BoundaryVersion:  "something yet more",
+			DumplingVersion:  "something yet more",
 			Name:             "some name",
 			Description:      "some description",
 			PublicAddr:       "some addr",

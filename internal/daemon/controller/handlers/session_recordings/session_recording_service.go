@@ -7,11 +7,11 @@ import (
 	"context"
 	"sync/atomic"
 
-	"github.com/hashicorp/boundary/internal/daemon/controller/common"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/api/services"
-	intglobals "github.com/hashicorp/boundary/internal/globals"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/types/action"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/common"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/api/services"
+	intglobals "github.com/opendumpling/opendumpling/internal/globals"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/types/action"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

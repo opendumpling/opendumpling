@@ -4,7 +4,7 @@
 package authtoken
 
 import (
-	authStore "github.com/hashicorp/boundary/internal/auth/store"
+	authStore "github.com/opendumpling/opendumpling/internal/auth/store"
 	"google.golang.org/protobuf/proto"
 )
 

@@ -8,9 +8,9 @@ import (
 	"sort"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/credentialstores"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/credentialstores"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 )
 
 func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
@@ -18,45 +18,45 @@ func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
 	switch c.Func {
 	case "":
 		return base.WrapForHelpText([]string{
-			"Usage: boundary credential-stores [sub command] [options] [args]",
+			"Usage: dumpling credential-stores [sub command] [options] [args]",
 			"",
-			"  This command allows operations on Boundary credential store resources. Example:",
+			"  This command allows operations on Dumpling credential store resources. Example:",
 			"",
 			"    Read a credential store:",
 			"",
-			`      $ boundary credential-stores read -id csvlt_1234567890`,
+			`      $ dumpling credential-stores read -id csvlt_1234567890`,
 			"",
 			"  Please see the credential-stores subcommand help for detailed usage information.",
 		})
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary credential-stores create [type] [sub command] [options] [args]",
+			"Usage: dumpling credential-stores create [type] [sub command] [options] [args]",
 			"",
-			"  This command allows create operations on Boundary credential store resources. Example:",
+			"  This command allows create operations on Dumpling credential store resources. Example:",
 			"",
 			"    Create a vault-type credential store:",
 			"",
-			`      $ boundary credential-stores create vault -scope-id p_1234567890 -vault-address "http://localhost:8200" -vault-token "s.s0m3t0k3n"`,
+			`      $ dumpling credential-stores create vault -scope-id p_1234567890 -vault-address "http://localhost:8200" -vault-token "s.s0m3t0k3n"`,
 			"",
 			"    Create a static-type credential store:",
 			"",
-			`      $ boundary credential-stores create static -scope-id p_1234567890`,
+			`      $ dumpling credential-stores create static -scope-id p_1234567890`,
 			"",
 			"  Please see the typed subcommand help for detailed usage information.",
 		})
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary credential-stores update [type] [sub command] [options] [args]",
+			"Usage: dumpling credential-stores update [type] [sub command] [options] [args]",
 			"",
-			"  This command allows update operations on Boundary credential store resources. Example:",
+			"  This command allows update operations on Dumpling credential store resources. Example:",
 			"",
 			"    Update a vault-type credential store:",
 			"",
-			`      $ boundary credential-stores update vault -id csvlt_1234567890 -name devops -description "For DevOps usage"`,
+			`      $ dumpling credential-stores update vault -id csvlt_1234567890 -name devops -description "For DevOps usage"`,
 			"",
 			"    Update a static-type credential store:",
 			"",
-			`      $ boundary credential-stores update static -id cs_1234567890 -name devops -description "For DevOps usage"`,
+			`      $ dumpling credential-stores update static -id cs_1234567890 -name devops -description "For DevOps usage"`,
 			"",
 			"  Please see the typed subcommand help for detailed usage information.",
 		})

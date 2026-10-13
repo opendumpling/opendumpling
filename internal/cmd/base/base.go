@@ -17,10 +17,10 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/globals"
-	kms_plugin_assets "github.com/hashicorp/boundary/plugins/kms"
-	"github.com/hashicorp/boundary/sdk/wrapper"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/globals"
+	kms_plugin_assets "github.com/opendumpling/opendumpling/plugins/kms"
+	"github.com/opendumpling/opendumpling/sdk/wrapper"
 	"github.com/hashicorp/go-hclog"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	configutil "github.com/hashicorp/go-secure-stdlib/configutil/v2"
@@ -64,12 +64,12 @@ const (
 	// maxLineLength is the maximum width of any line.
 	maxLineLength int = 78
 
-	envToken          = "BOUNDARY_TOKEN"
-	EnvTokenName      = "BOUNDARY_TOKEN_NAME"
-	EnvKeyringType    = "BOUNDARY_KEYRING_TYPE"
-	envRecoveryConfig = "BOUNDARY_RECOVERY_CONFIG"
+	envToken          = "DUMPLING_TOKEN"
+	EnvTokenName      = "DUMPLING_TOKEN_NAME"
+	EnvKeyringType    = "DUMPLING_KEYRING_TYPE"
+	envRecoveryConfig = "DUMPLING_RECOVERY_CONFIG"
 
-	StoredTokenName = "HashiCorp Boundary Auth Token"
+	StoredTokenName = "OpenDumpling Auth Token"
 )
 
 // reRemoveWhitespace is a regular expression for stripping whitespace from
@@ -251,7 +251,7 @@ func (c *Command) Client(opt ...Option) (*api.Client, error) {
 	}
 
 	// Turn off retries on the CLI
-	if os.Getenv(api.EnvBoundaryMaxRetries) == "" {
+	if os.Getenv(api.EnvDumplingMaxRetries) == "" {
 		c.client.SetMaxRetries(0)
 	}
 
@@ -315,8 +315,8 @@ func (c *Command) Client(opt ...Option) (*api.Client, error) {
 		c.client.SetToken(token)
 
 	case os.Getenv(envToken) != "":
-		// Backwards compat: allow reading from existing BOUNDARY_TOKEN env var
-		c.UI.Warn(`Direct usage of BOUNDARY_TOKEN env var is deprecated; please use "-token env://<env var name>" format, e.g. "-token env://BOUNDARY_TOKEN" to specify an env var to use.`)
+		// Backwards compat: allow reading from existing DUMPLING_TOKEN env var
+		c.UI.Warn(`Direct usage of DUMPLING_TOKEN env var is deprecated; please use "-token env://<env var name>" format, e.g. "-token env://DUMPLING_TOKEN" to specify an env var to use.`)
 		c.client.SetToken(os.Getenv(envToken))
 
 	case c.client.Token() == "" && strings.ToLower(c.FlagKeyringType) != "none":
@@ -355,15 +355,15 @@ func (c *Command) FlagSet(bit FlagSetBit) *FlagSets {
 			f.StringVar(&StringVar{
 				Name:       FlagNameAddr,
 				Target:     &c.flagAddr,
-				EnvVar:     api.EnvBoundaryAddr,
+				EnvVar:     api.EnvDumplingAddr,
 				Completion: complete.PredictAnything,
-				Usage:      "Addr of the Boundary controller, as a complete URL (e.g. https://boundary.example.com:9200).",
+				Usage:      "Addr of the Dumpling controller, as a complete URL (e.g. https://dumpling.example.com:9200).",
 			})
 
 			f.StringVar(&StringVar{
 				Name:       FlagNameCACert,
 				Target:     &c.flagTLSCACert,
-				EnvVar:     api.EnvBoundaryCACert,
+				EnvVar:     api.EnvDumplingCACert,
 				Completion: complete.PredictFiles("*"),
 				Usage: "Path on the local disk to a single PEM-encoded CA " +
 					"certificate to verify the Controller or Worker's server's SSL certificate. This " +
@@ -373,7 +373,7 @@ func (c *Command) FlagSet(bit FlagSetBit) *FlagSets {
 			f.StringVar(&StringVar{
 				Name:       FlagNameCAPath,
 				Target:     &c.flagTLSCAPath,
-				EnvVar:     api.EnvBoundaryCAPath,
+				EnvVar:     api.EnvDumplingCAPath,
 				Completion: complete.PredictDirs("*"),
 				Usage: "Path on the local disk to a directory of PEM-encoded CA " +
 					"certificates to verify the SSL certificate of the Controller.",
@@ -382,17 +382,17 @@ func (c *Command) FlagSet(bit FlagSetBit) *FlagSets {
 			f.StringVar(&StringVar{
 				Name:       FlagNameClientCert,
 				Target:     &c.flagTLSClientCert,
-				EnvVar:     api.EnvBoundaryClientCert,
+				EnvVar:     api.EnvDumplingClientCert,
 				Completion: complete.PredictFiles("*"),
 				Usage: "Path on the local disk to a single PEM-encoded CA " +
-					"certificate to use for TLS authentication to the Boundary Controller. If " +
+					"certificate to use for TLS authentication to the Dumpling Controller. If " +
 					"this flag is specified, -client-key is also required.",
 			})
 
 			f.StringVar(&StringVar{
 				Name:       FlagNameClientKey,
 				Target:     &c.flagTLSClientKey,
-				EnvVar:     api.EnvBoundaryClientKey,
+				EnvVar:     api.EnvDumplingClientKey,
 				Completion: complete.PredictFiles("*"),
 				Usage: "Path on the local disk to a single PEM-encoded private key " +
 					"matching the client certificate from -client-cert.",
@@ -401,19 +401,19 @@ func (c *Command) FlagSet(bit FlagSetBit) *FlagSets {
 			f.StringVar(&StringVar{
 				Name:       FlagTLSServerName,
 				Target:     &c.flagTLSServerName,
-				EnvVar:     api.EnvBoundaryTLSServerName,
+				EnvVar:     api.EnvDumplingTLSServerName,
 				Completion: complete.PredictAnything,
-				Usage: "Name to use as the SNI host when connecting to the Boundary " +
+				Usage: "Name to use as the SNI host when connecting to the Dumpling " +
 					"server via TLS.",
 			})
 
 			f.BoolVar(&BoolVar{
 				Name:   FlagNameTLSInsecure,
 				Target: &c.flagTLSInsecure,
-				EnvVar: api.EnvBoundaryTLSInsecure,
+				EnvVar: api.EnvDumplingTLSInsecure,
 				Usage: "Disable verification of TLS certificates. Using this option " +
 					"is highly discouraged as it decreases the security of data " +
-					"transmissions to and from the Boundary server.",
+					"transmissions to and from the Dumpling server.",
 			})
 		}
 
@@ -472,7 +472,7 @@ func (c *Command) FlagSet(bit FlagSetBit) *FlagSets {
 					Name:       "format",
 					Target:     &c.flagFormat,
 					Default:    "table",
-					EnvVar:     EnvBoundaryCLIFormat,
+					EnvVar:     EnvDumplingCLIFormat,
 					Completion: complete.PredictSet("table", "json", "yaml"),
 					Usage:      "Print the output in the given format. Valid formats are \"table\" or \"json\".",
 				})

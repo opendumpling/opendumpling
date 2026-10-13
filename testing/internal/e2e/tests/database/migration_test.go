@@ -15,11 +15,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/api/credentiallibraries"
-	"github.com/hashicorp/boundary/testing/internal/e2e"
-	"github.com/hashicorp/boundary/testing/internal/e2e/boundary"
-	"github.com/hashicorp/boundary/testing/internal/e2e/infra"
-	"github.com/hashicorp/boundary/testing/internal/e2e/vault"
+	"github.com/opendumpling/opendumpling/api/credentiallibraries"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e/dumpling"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e/infra"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e/vault"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/ory/dockertest/v3"
 	"github.com/ory/dockertest/v3/docker"
@@ -29,16 +29,16 @@ import (
 type TestEnvironment struct {
 	Pool       *dockertest.Pool
 	Network    *dockertest.Network
-	Boundary   *infra.Container
+	Dumpling   *infra.Container
 	Database   *infra.Container
 	Target     *infra.Container
 	Vault      *infra.Container
-	DbInitInfo boundary.DbInitInfo
+	DbInitInfo dumpling.DbInitInfo
 }
 
-// TestDatabaseMigration tests migrating the Boundary database from the latest released version to
+// TestDatabaseMigration tests migrating the Dumpling database from the latest released version to
 // the version under test. It creates a database, populates the database with a number of resources,
-// and uses the Boundary version under test to migrate the database.
+// and uses the Dumpling version under test to migrate the database.
 func TestDatabaseMigration(t *testing.T) {
 	e2e.MaybeSkipTest(t)
 	c, err := loadTestConfig()
@@ -46,20 +46,20 @@ func TestDatabaseMigration(t *testing.T) {
 
 	ctx := context.Background()
 	te := setupEnvironment(t, ctx, c)
-	populateBoundaryDatabase(t, ctx, c, te)
+	populateDumplingDatabase(t, ctx, c, te)
 
 	// Migrate database
-	t.Log("Stopping boundary before migrating...")
-	err = te.Pool.Client.StopContainer(te.Boundary.Resource.Container.ID, 10)
+	t.Log("Stopping dumpling before migrating...")
+	err = te.Pool.Client.StopContainer(te.Dumpling.Resource.Container.ID, 10)
 	require.NoError(t, err)
 
-	bonfigFilePath, err := filepath.Abs("testdata/boundary-config.hcl")
+	bonfigFilePath, err := filepath.Abs("testdata/dumpling-config.hcl")
 	require.NoError(t, err)
 
 	t.Log("Starting database migration...")
-	output := e2e.RunCommand(ctx, "boundary",
+	output := e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs("database", "migrate", "-config", bonfigFilePath),
-		e2e.WithEnv("BOUNDARY_POSTGRES_URL", te.Database.UriLocalhost),
+		e2e.WithEnv("DUMPLING_POSTGRES_URL", te.Database.UriLocalhost),
 	)
 	require.NoError(t, output.Err, string(output.Stderr))
 	t.Logf("%s", output.Stdout)
@@ -75,7 +75,7 @@ func setupEnvironment(t testing.TB, ctx context.Context, c *config) TestEnvironm
 
 	// This ensures that the latest images are used
 	err = pool.Client.PullImage(docker.PullImageOptions{
-		Repository: "hashicorp/boundary",
+		Repository: "ghcr.io/opendumpling/opendumpling",
 		Tag:        "latest",
 	}, docker.AuthConfiguration{})
 	require.NoError(t, err)
@@ -115,8 +115,8 @@ func setupEnvironment(t testing.TB, ctx context.Context, c *config) TestEnvironm
 	})
 	require.NoError(t, err)
 
-	// Start a Boundary database and wait until it's ready
-	db := infra.StartBoundaryDatabase(t, pool, network)
+	// Start a Dumpling database and wait until it's ready
+	db := infra.StartDumplingDatabase(t, pool, network)
 	t.Cleanup(func() {
 		pool.Purge(db.Resource)
 	})
@@ -137,34 +137,34 @@ func setupEnvironment(t testing.TB, ctx context.Context, c *config) TestEnvironm
 	})
 
 	// Initialize the database and extract resulting information
-	dbInit := infra.InitBoundaryDatabase(t, pool, network, db.UriNetwork)
+	dbInit := infra.InitDumplingDatabase(t, pool, network, db.UriNetwork)
 	t.Cleanup(func() {
 		pool.Purge(dbInit.Resource)
 	})
 	dbInitInfo := infra.GetDbInitInfoFromContainer(t, pool, dbInit)
 
-	// Start a Boundary server and wait until Boundary has finished loading
-	b := infra.StartBoundary(t, pool, network, db.UriNetwork)
+	// Start a Dumpling server and wait until Dumpling has finished loading
+	b := infra.StartDumpling(t, pool, network, db.UriNetwork)
 	t.Cleanup(func() {
 		pool.Purge(b.Resource)
 	})
-	os.Setenv("BOUNDARY_ADDR", b.UriLocalhost)
+	os.Setenv("DUMPLING_ADDR", b.UriLocalhost)
 
 	buf := bytes.NewBuffer(nil)
 	ebuf := bytes.NewBuffer(nil)
-	_, err = b.Resource.Exec([]string{"boundary", "version"}, dockertest.ExecOptions{
+	_, err = b.Resource.Exec([]string{"dumpling", "version"}, dockertest.ExecOptions{
 		StdOut: buf,
 		StdErr: ebuf,
 	})
 	require.NoError(t, err)
 	require.Empty(t, ebuf)
-	t.Logf("Using Boundary Version: %s", buf.String())
+	t.Logf("Using Dumpling Version: %s", buf.String())
 
-	t.Log("Waiting for Boundary to finish loading...")
+	t.Log("Waiting for Dumpling to finish loading...")
 	err = pool.Retry(func() error {
 		response, err := http.Get(b.UriLocalhost)
 		if err != nil {
-			t.Logf("Could not access Boundary URL: %s. Retrying...", err.Error())
+			t.Logf("Could not access Dumpling URL: %s. Retrying...", err.Error())
 			return err
 		}
 
@@ -179,7 +179,7 @@ func setupEnvironment(t testing.TB, ctx context.Context, c *config) TestEnvironm
 	return TestEnvironment{
 		Pool:       pool,
 		Network:    network,
-		Boundary:   b,
+		Dumpling:   b,
 		Database:   db,
 		Target:     target,
 		Vault:      v,
@@ -187,41 +187,41 @@ func setupEnvironment(t testing.TB, ctx context.Context, c *config) TestEnvironm
 	}
 }
 
-func populateBoundaryDatabase(t testing.TB, ctx context.Context, c *config, te TestEnvironment) {
+func populateDumplingDatabase(t testing.TB, ctx context.Context, c *config, te TestEnvironment) {
 	// Create resources for target. Uses the local CLI so that these methods can be reused.
 	// While the CLI version used won't necessarily match the controller version, it should be (and is
 	// supposed to be) backwards ompatible
-	boundary.AuthenticateCli(t, ctx, te.DbInitInfo.AuthMethod.AuthMethodId, te.DbInitInfo.AuthMethod.LoginName, te.DbInitInfo.AuthMethod.Password)
-	newOrgId := boundary.CreateNewOrgCli(t, ctx)
-	newProjectId := boundary.CreateNewProjectCli(t, ctx, newOrgId)
-	newHostCatalogId := boundary.CreateNewHostCatalogCli(t, ctx, newProjectId)
-	newHostSetId := boundary.CreateNewHostSetCli(t, ctx, newHostCatalogId)
-	newHostId := boundary.CreateNewHostCli(t, ctx, newHostCatalogId, te.Target.UriNetwork)
-	boundary.AddHostToHostSetCli(t, ctx, newHostSetId, newHostId)
-	newTargetId := boundary.CreateNewTargetCli(t, ctx, newProjectId, "2222") // openssh-server uses port 2222
-	boundary.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
+	dumpling.AuthenticateCli(t, ctx, te.DbInitInfo.AuthMethod.AuthMethodId, te.DbInitInfo.AuthMethod.LoginName, te.DbInitInfo.AuthMethod.Password)
+	newOrgId := dumpling.CreateNewOrgCli(t, ctx)
+	newProjectId := dumpling.CreateNewProjectCli(t, ctx, newOrgId)
+	newHostCatalogId := dumpling.CreateNewHostCatalogCli(t, ctx, newProjectId)
+	newHostSetId := dumpling.CreateNewHostSetCli(t, ctx, newHostCatalogId)
+	newHostId := dumpling.CreateNewHostCli(t, ctx, newHostCatalogId, te.Target.UriNetwork)
+	dumpling.AddHostToHostSetCli(t, ctx, newHostSetId, newHostId)
+	newTargetId := dumpling.CreateNewTargetCli(t, ctx, newProjectId, "2222") // openssh-server uses port 2222
+	dumpling.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
 
 	// Create AWS dynamic host catalog
-	newAwsHostCatalogId := boundary.CreateNewAwsHostCatalogCli(t, ctx, newProjectId, c.AwsAccessKeyId, c.AwsSecretAccessKey)
-	newAwsHostSetId := boundary.CreateNewAwsHostSetCli(t, ctx, newAwsHostCatalogId, c.AwsHostSetFilter)
-	boundary.WaitForHostsInHostSetCli(t, ctx, newAwsHostSetId)
+	newAwsHostCatalogId := dumpling.CreateNewAwsHostCatalogCli(t, ctx, newProjectId, c.AwsAccessKeyId, c.AwsSecretAccessKey)
+	newAwsHostSetId := dumpling.CreateNewAwsHostSetCli(t, ctx, newAwsHostCatalogId, c.AwsHostSetFilter)
+	dumpling.WaitForHostsInHostSetCli(t, ctx, newAwsHostSetId)
 
 	// Create a user/group and add role to group
-	newAccountId, _ := boundary.CreateNewAccountCli(t, ctx, te.DbInitInfo.AuthMethod.AuthMethodId, "test-account")
-	newUserId := boundary.CreateNewUserCli(t, ctx, "global")
-	boundary.SetAccountToUserCli(t, ctx, newUserId, newAccountId)
-	newGroupId := boundary.CreateNewGroupCli(t, ctx, "global")
-	boundary.AddUserToGroup(t, ctx, newUserId, newGroupId)
-	newRoleId := boundary.CreateNewRoleCli(t, ctx, newProjectId)
-	boundary.AddGrantToRoleCli(t, ctx, newRoleId, "id=*;type=target;actions=authorize-session")
-	boundary.AddPrincipalToRoleCli(t, ctx, newRoleId, newGroupId)
+	newAccountId, _ := dumpling.CreateNewAccountCli(t, ctx, te.DbInitInfo.AuthMethod.AuthMethodId, "test-account")
+	newUserId := dumpling.CreateNewUserCli(t, ctx, "global")
+	dumpling.SetAccountToUserCli(t, ctx, newUserId, newAccountId)
+	newGroupId := dumpling.CreateNewGroupCli(t, ctx, "global")
+	dumpling.AddUserToGroup(t, ctx, newUserId, newGroupId)
+	newRoleId := dumpling.CreateNewRoleCli(t, ctx, newProjectId)
+	dumpling.AddGrantToRoleCli(t, ctx, newRoleId, "id=*;type=target;actions=authorize-session")
+	dumpling.AddPrincipalToRoleCli(t, ctx, newRoleId, newGroupId)
 
 	// Create static credentials
-	newCredentialStoreId := boundary.CreateNewCredentialStoreStaticCli(t, ctx, newProjectId)
-	boundary.CreateNewStaticCredentialPasswordCli(t, ctx, newCredentialStoreId, c.TargetSshUser, "password")
-	boundary.CreateNewStaticCredentialJsonCli(t, ctx, newCredentialStoreId, "testdata/credential.json")
-	newCredentialsId := boundary.CreateNewStaticCredentialPrivateKeyCli(t, ctx, newCredentialStoreId, c.TargetSshUser, c.TargetSshKeyPath)
-	boundary.AddBrokeredCredentialSourceToTargetCli(t, ctx, newTargetId, newCredentialsId)
+	newCredentialStoreId := dumpling.CreateNewCredentialStoreStaticCli(t, ctx, newProjectId)
+	dumpling.CreateNewStaticCredentialPasswordCli(t, ctx, newCredentialStoreId, c.TargetSshUser, "password")
+	dumpling.CreateNewStaticCredentialJsonCli(t, ctx, newCredentialStoreId, "testdata/credential.json")
+	newCredentialsId := dumpling.CreateNewStaticCredentialPrivateKeyCli(t, ctx, newCredentialStoreId, c.TargetSshUser, c.TargetSshKeyPath)
+	dumpling.AddBrokeredCredentialSourceToTargetCli(t, ctx, newTargetId, newCredentialsId)
 
 	// Create vault credentials
 	boundaryPolicyName, kvPolicyFilePath := vault.Setup(t)
@@ -254,10 +254,10 @@ func populateBoundaryDatabase(t testing.TB, ctx context.Context, c *config, te T
 	t.Log("Created Vault Cred Store Token")
 
 	// Create a credential store for vault
-	newVaultCredentialStoreId := boundary.CreateNewCredentialStoreVaultCli(t, ctx, newProjectId, te.Vault.UriNetwork, credStoreToken)
+	newVaultCredentialStoreId := dumpling.CreateNewCredentialStoreVaultCli(t, ctx, newProjectId, te.Vault.UriNetwork, credStoreToken)
 
 	// Create a credential library for the private key in vault
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"credential-libraries", "create", "vault",
 			"-credential-store-id", newVaultCredentialStoreId,
@@ -275,7 +275,7 @@ func populateBoundaryDatabase(t testing.TB, ctx context.Context, c *config, te T
 	t.Logf("Created Credential Library: %s", newCredentialLibraryId)
 
 	// Create a credential library for the password in vault
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"credential-libraries", "create", "vault",
 			"-credential-store-id", newVaultCredentialStoreId,
@@ -291,35 +291,35 @@ func populateBoundaryDatabase(t testing.TB, ctx context.Context, c *config, te T
 	newPasswordCredentialLibraryId := newCredentialLibraryResult.Item.Id
 	t.Logf("Created Credential Library: %s", newPasswordCredentialLibraryId)
 
-	// Create a session. Uses Boundary in a docker container to do the connect in order to avoid
+	// Create a session. Uses Dumpling in a docker container to do the connect in order to avoid
 	// modifying the runner's /etc/hosts file. Otherwise, you would need to add a `127.0.0.1
 	// localhost boundary` entry into /etc/hosts.
 	buf := bytes.NewBuffer(nil)
 	ebuf := bytes.NewBuffer(nil)
-	_, err = te.Boundary.Resource.Exec(
+	_, err = te.Dumpling.Resource.Exec(
 		[]string{
-			"boundary", "authenticate", "password",
-			"-addr", te.Boundary.UriNetwork,
+			"dumpling", "authenticate", "password",
+			"-addr", te.Dumpling.UriNetwork,
 			"-auth-method-id", te.DbInitInfo.AuthMethod.AuthMethodId,
 			"-login-name", te.DbInitInfo.AuthMethod.LoginName,
-			"-password", "env://E2E_TEST_BOUNDARY_PASSWORD",
+			"-password", "env://E2E_TEST_DUMPLING_PASSWORD",
 			"-format", "json",
 		},
 		dockertest.ExecOptions{
 			StdOut: buf,
 			StdErr: ebuf,
-			Env:    []string{"E2E_TEST_BOUNDARY_PASSWORD=" + te.DbInitInfo.AuthMethod.Password},
+			Env:    []string{"E2E_TEST_DUMPLING_PASSWORD=" + te.DbInitInfo.AuthMethod.Password},
 		},
 	)
 	require.NoError(t, err)
 	require.Empty(t, ebuf)
-	var authenticationResult boundary.AuthenticateCliOutput
+	var authenticationResult dumpling.AuthenticateCliOutput
 	err = json.Unmarshal(buf.Bytes(), &authenticationResult)
 	require.NoError(t, err)
 	auth_token, ok := authenticationResult.Item.Attributes["token"].(string)
 	require.True(t, ok)
 
-	connectTarget := infra.ConnectToTarget(t, te.Pool, te.Network, te.Boundary.UriNetwork, auth_token, newTargetId)
+	connectTarget := infra.ConnectToTarget(t, te.Pool, te.Network, te.Dumpling.UriNetwork, auth_token, newTargetId)
 	t.Cleanup(func() {
 		te.Pool.Purge(connectTarget.Resource)
 	})

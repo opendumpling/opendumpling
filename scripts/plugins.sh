@@ -16,16 +16,16 @@ SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ] ; do SOURCE="$(readlink "$SOURCE")"; done
 export DIR="$( cd -P "$( dirname "$SOURCE" )/.." && pwd )"
 
-# Create boundary plugins
-echo "==> Building boundary plugins..."
-rm -f $DIR/plugins/boundary/assets/boundary-plugin-*
-for CURR_PLUGIN in $(ls $DIR/plugins/boundary/mains); do
-    cd $DIR/plugins/boundary/mains/$CURR_PLUGIN;
-    go build -v -o $DIR/plugins/boundary/assets/boundary-plugin-${CURR_PLUGIN}${BINARY_SUFFIX} .;
+# Create dumpling plugins
+echo "==> Building dumpling plugins..."
+rm -f $DIR/plugins/dumpling/assets/dumpling-plugin-*
+for CURR_PLUGIN in $(ls $DIR/plugins/dumpling/mains); do
+    cd $DIR/plugins/dumpling/mains/$CURR_PLUGIN;
+    go build -v -o $DIR/plugins/dumpling/assets/dumpling-plugin-${CURR_PLUGIN}${BINARY_SUFFIX} .;
     cd $DIR;
 done;
-cd $DIR/plugins/boundary/assets;
-for CURR_PLUGIN in $(ls boundary-plugin*); do
+cd $DIR/plugins/dumpling/assets;
+for CURR_PLUGIN in $(ls dumpling-plugin*); do
     gzip -f -9 $CURR_PLUGIN;
 done;
 cd $DIR;
@@ -33,14 +33,14 @@ cd $DIR;
 # Create other plugins
 for PLUGIN_TYPE in "kms"; do
     echo "==> Building ${PLUGIN_TYPE} plugins..."
-    rm -f $DIR/plugins/$PLUGIN_TYPE/assets/boundary-plugin-${PLUGIN_TYPE}*
+    rm -f $DIR/plugins/$PLUGIN_TYPE/assets/dumpling-plugin-${PLUGIN_TYPE}*
     for CURR_PLUGIN in $(ls $DIR/plugins/$PLUGIN_TYPE/mains); do
         cd $DIR/plugins/$PLUGIN_TYPE/mains/$CURR_PLUGIN;
-        go build -v -o $DIR/plugins/$PLUGIN_TYPE/assets/boundary-plugin-${PLUGIN_TYPE}-${CURR_PLUGIN}${BINARY_SUFFIX} .;
+        go build -v -o $DIR/plugins/$PLUGIN_TYPE/assets/dumpling-plugin-${PLUGIN_TYPE}-${CURR_PLUGIN}${BINARY_SUFFIX} .;
         cd $DIR;
     done;
     cd $DIR/plugins/$PLUGIN_TYPE/assets;
-    for CURR_PLUGIN in $(ls boundary-plugin*); do
+    for CURR_PLUGIN in $(ls dumpling-plugin*); do
         gzip -f -9 $CURR_PLUGIN;
     done;
     cd $DIR;

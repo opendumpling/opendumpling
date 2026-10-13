@@ -7,7 +7,7 @@ package controller.custom_options.v1;
 
 import "controller/custom_options/v1/options.proto";
 
-option go_package = "github.com/hashicorp/boundary/sdk/pbs/controller/protooptions;protooptions";
+option go_package = "github.com/opendumpling/opendumpling/sdk/pbs/controller/protooptions;protooptions";
 
 message TestBase {
   string first_field = 1 [(mask_mapping) = {

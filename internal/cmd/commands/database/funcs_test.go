@@ -7,10 +7,10 @@ import (
 	"context"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/db/common"
-	"github.com/hashicorp/boundary/internal/db/schema"
-	"github.com/hashicorp/boundary/testing/dbtest"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/db/common"
+	"github.com/opendumpling/opendumpling/internal/db/schema"
+	"github.com/opendumpling/opendumpling/testing/dbtest"
 	"github.com/mitchellh/cli"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -90,7 +90,7 @@ func TestMigrateDatabase(t *testing.T) {
 				return u
 			},
 			expectedCode:   -1,
-			expectedOutput: "Database has already been initialized. Please use 'boundary database migrate'\nfor any upgrade needs.\n",
+			expectedOutput: "Database has already been initialized. Please use 'dumpling database migrate'\nfor any upgrade needs.\n",
 		},
 		{
 			name:        "old_version_table_used_intialized",
@@ -130,7 +130,7 @@ func TestMigrateDatabase(t *testing.T) {
 				return u
 			},
 			expectedCode:   -1,
-			expectedOutput: "Database has already been initialized. Please use 'boundary database migrate'\nfor any upgrade needs.\n",
+			expectedOutput: "Database has already been initialized. Please use 'dumpling database migrate'\nfor any upgrade needs.\n",
 		},
 		{
 			name:          "bad_url_initialized",

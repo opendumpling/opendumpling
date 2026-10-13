@@ -8,12 +8,12 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/observability/event"
-	"github.com/hashicorp/boundary/internal/oplog"
-	"github.com/hashicorp/boundary/internal/scheduler"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
+	"github.com/opendumpling/opendumpling/internal/oplog"
+	"github.com/opendumpling/opendumpling/internal/scheduler"
 	vault "github.com/hashicorp/vault/api"
 	ua "go.uber.org/atomic"
 )
@@ -107,7 +107,7 @@ func newTokenRenewalJob(ctx context.Context, r db.Reader, w db.Writer, kms *kms.
 
 	opts := getOpts(opt...)
 	if opts.withLimit == 0 {
-		// zero signals the boundary defaults should be used.
+		// zero signals the dumpling defaults should be used.
 		opts.withLimit = db.DefaultLimit
 	}
 	return &TokenRenewalJob{
@@ -330,7 +330,7 @@ func newTokenRevocationJob(ctx context.Context, r db.Reader, w db.Writer, kms *k
 
 	opts := getOpts(opt...)
 	if opts.withLimit == 0 {
-		// zero signals the boundary defaults should be used.
+		// zero signals the dumpling defaults should be used.
 		opts.withLimit = db.DefaultLimit
 	}
 	return &TokenRevocationJob{
@@ -495,7 +495,7 @@ func newCredentialRenewalJob(ctx context.Context, r db.Reader, w db.Writer, kms 
 
 	opts := getOpts(opt...)
 	if opts.withLimit == 0 {
-		// zero signals the boundary defaults should be used.
+		// zero signals the dumpling defaults should be used.
 		opts.withLimit = db.DefaultLimit
 	}
 	return &CredentialRenewalJob{
@@ -658,7 +658,7 @@ func newCredentialRevocationJob(ctx context.Context, r db.Reader, w db.Writer, k
 
 	opts := getOpts(opt...)
 	if opts.withLimit == 0 {
-		// zero signals the boundary defaults should be used.
+		// zero signals the dumpling defaults should be used.
 		opts.withLimit = db.DefaultLimit
 	}
 	return &CredentialRevocationJob{
@@ -800,7 +800,7 @@ func newCredentialStoreCleanupJob(ctx context.Context, r db.Reader, w db.Writer,
 
 	opts := getOpts(opt...)
 	if opts.withLimit == 0 {
-		// zero signals the boundary defaults should be used.
+		// zero signals the dumpling defaults should be used.
 		opts.withLimit = db.DefaultLimit
 	}
 	return &CredentialStoreCleanupJob{

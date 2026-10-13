@@ -9,7 +9,7 @@ package controller.storage.auth.ldap.store.v1;
 import "controller/custom_options/v1/options.proto";
 import "controller/storage/timestamp/v1/timestamp.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/auth/ldap/store;store";
+option go_package = "github.com/opendumpling/opendumpling/internal/auth/ldap/store;store";
 
 // AuthMethod represents an LDAP auth method.
 message AuthMethod {
@@ -89,7 +89,7 @@ message AuthMethod {
 
   // upn_domain is the userPrincipalDomain used to construct the UPN string for
   // the authenticating user. The constructed UPN will appear as
-  // [username]@UPNDomain  Example: example.com, which will cause Boundary to
+  // [username]@UPNDomain  Example: example.com, which will cause Dumpling to
   // bind as username@example.com when authenticating the user.
   // @inject_tag: `gorm:"default:null"`
   string upn_domain = 130 [(custom_options.v1.mask_mapping) = {
@@ -402,7 +402,7 @@ message ClientCertificate {
   string key_id = 70;
 }
 
-// BindCredentail (optional) represent parameters which allow Boundary to bind
+// BindCredentail (optional) represent parameters which allow Dumpling to bind
 // (aka authenticate) using the credentials provided when searching for the user
 // entry used to authenticate the end user.
 message BindCredential {

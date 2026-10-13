@@ -6,8 +6,8 @@ package managedgroupscmd
 import (
 	"fmt"
 
-	"github.com/hashicorp/boundary/api/managedgroups"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api/managedgroups"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 )
 
 const (
@@ -36,22 +36,22 @@ func (c *LdapCommand) extraLdapHelpFunc(helpMap map[string]func() string) string
 	switch c.Func {
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary managed-groups create ldap [options] [args]",
+			"Usage: dumpling managed-groups create ldap [options] [args]",
 			"",
 			"  Create a ldap-type managed group. Example:",
 			"",
-			`    $ boundary managed-groups create ldap -group-names admin -description "Ldap managed group for ProdOps"`,
+			`    $ dumpling managed-groups create ldap -group-names admin -description "Ldap managed group for ProdOps"`,
 			"",
 			"",
 		})
 
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary managed-groups update ldap [options] [args]",
+			"Usage: dumpling managed-groups update ldap [options] [args]",
 			"",
 			"  Update an ldap-type managed group given its ID. Example:",
 			"",
-			`    $ boundary managed-groups update ldap -id acctldap_1234567890 -name "devops" -description "Ldap managed group for DevOps"`,
+			`    $ dumpling managed-groups update ldap -id acctldap_1234567890 -name "devops" -description "Ldap managed group for DevOps"`,
 			"",
 			"",
 		})

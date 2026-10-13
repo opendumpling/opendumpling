@@ -67,7 +67,7 @@ func ParseLogFormat(format string) (LogFormat, error) {
 
 // ParseEnvLogFormat parses the log format from an environment variable.
 func ParseEnvLogFormat() LogFormat {
-	logFormat := os.Getenv("BOUNDARY_LOG_FORMAT")
+	logFormat := os.Getenv("DUMPLING_LOG_FORMAT")
 	switch strings.ToLower(logFormat) {
 	case "json":
 		return JSONFormat

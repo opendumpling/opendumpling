@@ -1,0 +1,12 @@
+{
+  "config": ".markdownlint.json",
+  "ignores": [
+    ".changelog/**",
+    ".github/ISSUE_TEMPLATE/**",
+    "CHANGELOG.md",
+    "internal/**",
+    "node_modules/**",
+    "testing/**",
+    "website/**"
+  ]
+}

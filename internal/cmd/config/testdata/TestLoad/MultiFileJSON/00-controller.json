@@ -4,7 +4,7 @@
         {
             "database": [
                 {
-                    "url": "env://LOAD_TEST_BOUNDARY_POSTGRES_URL"
+                    "url": "env://LOAD_TEST_DUMPLING_POSTGRES_URL"
                 }
             ],
             "description": "A controller",

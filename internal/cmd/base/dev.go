@@ -12,17 +12,17 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/auth/ldap"
-	"github.com/hashicorp/boundary/internal/auth/oidc"
-	"github.com/hashicorp/boundary/internal/cmd/base/internal/docker"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/db/schema"
-	"github.com/hashicorp/boundary/internal/iam"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/observability/event"
-	"github.com/hashicorp/boundary/internal/types/scope"
-	"github.com/hashicorp/boundary/testing/dbtest"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/auth/ldap"
+	"github.com/opendumpling/opendumpling/internal/auth/oidc"
+	"github.com/opendumpling/opendumpling/internal/cmd/base/internal/docker"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/db/schema"
+	"github.com/opendumpling/opendumpling/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
+	"github.com/opendumpling/opendumpling/testing/dbtest"
 	capoidc "github.com/hashicorp/cap/oidc"
 	"github.com/hashicorp/go-multierror"
 	"github.com/jimlambrt/gldap"
@@ -326,7 +326,7 @@ func (b *Server) createInitialLdapAuthMethod(ctx context.Context, host string, p
 		scope.Global.String(),
 		ldap.WithUrls(ctx, u),
 		ldap.WithName(ctx, "Generated global scope initial ldap auth method"),
-		ldap.WithDescription(ctx, "Provides initial administrative and unprivileged authentication into Boundary"),
+		ldap.WithDescription(ctx, "Provides initial administrative and unprivileged authentication into Dumpling"),
 		ldap.WithDiscoverDn(ctx),
 		ldap.WithUserDn(ctx, testdirectory.DefaultUserDN),
 		ldap.WithGroupDn(ctx, testdirectory.DefaultGroupDN),
@@ -581,7 +581,7 @@ func (b *Server) createInitialOidcAuthMethod(ctx context.Context) (*oidc.AuthMet
 		b.DevOidcSetup.clientId,
 		b.DevOidcSetup.clientSecret,
 		oidc.WithName("Generated global scope initial oidc auth method"),
-		oidc.WithDescription("Provides initial administrative and unprivileged authentication into Boundary"),
+		oidc.WithDescription("Provides initial administrative and unprivileged authentication into Dumpling"),
 		oidc.WithIssuer(discoveryUrl),
 		oidc.WithApiUrl(b.DevOidcSetup.callbackUrl),
 		oidc.WithSigningAlgs(oidc.EdDSA),

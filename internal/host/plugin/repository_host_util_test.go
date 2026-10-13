@@ -9,9 +9,9 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"github.com/hashicorp/boundary/internal/host"
-	hoststore "github.com/hashicorp/boundary/internal/host/store"
-	plgpb "github.com/hashicorp/boundary/sdk/pbs/plugin"
+	"github.com/opendumpling/opendumpling/internal/host"
+	hoststore "github.com/opendumpling/opendumpling/internal/host/store"
+	plgpb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/proto"

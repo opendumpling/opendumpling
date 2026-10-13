@@ -6,8 +6,8 @@ package tcp
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/target"
-	"github.com/hashicorp/boundary/internal/target/store"
+	"github.com/opendumpling/opendumpling/internal/target"
+	"github.com/opendumpling/opendumpling/internal/target/store"
 )
 
 // Expose functions and variables for tests.

@@ -9,7 +9,7 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/errors"
 	"github.com/hashicorp/cap/oidc"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

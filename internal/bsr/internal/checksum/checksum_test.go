@@ -11,8 +11,8 @@ import (
 	"io/fs"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/bsr/internal/checksum"
-	"github.com/hashicorp/boundary/internal/bsr/internal/fstest"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/checksum"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/fstest"
 	"github.com/hashicorp/go-multierror"
 	"github.com/stretchr/testify/require"
 )

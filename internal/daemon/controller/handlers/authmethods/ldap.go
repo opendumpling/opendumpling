@@ -11,14 +11,14 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/auth/ldap"
-	ldapstore "github.com/hashicorp/boundary/internal/auth/ldap/store"
-	"github.com/hashicorp/boundary/internal/daemon/controller/auth"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers"
-	"github.com/hashicorp/boundary/internal/errors"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/api/services"
-	"github.com/hashicorp/boundary/internal/types/action"
-	pb "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/authmethods"
+	"github.com/opendumpling/opendumpling/internal/auth/ldap"
+	ldapstore "github.com/opendumpling/opendumpling/internal/auth/ldap/store"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/auth"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/api/services"
+	"github.com/opendumpling/opendumpling/internal/types/action"
+	pb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/authmethods"
 	"google.golang.org/grpc/codes"
 )
 

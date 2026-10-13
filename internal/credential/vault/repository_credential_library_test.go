@@ -8,16 +8,16 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/credential"
-	"github.com/hashicorp/boundary/internal/credential/vault/store"
-	"github.com/hashicorp/boundary/internal/db"
-	dbassert "github.com/hashicorp/boundary/internal/db/assert"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/iam"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/oplog"
-	"github.com/hashicorp/boundary/internal/scheduler"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/credential"
+	"github.com/opendumpling/opendumpling/internal/credential/vault/store"
+	"github.com/opendumpling/opendumpling/internal/db"
+	dbassert "github.com/opendumpling/opendumpling/internal/db/assert"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/oplog"
+	"github.com/opendumpling/opendumpling/internal/scheduler"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -155,7 +155,7 @@ func TestRepository_CreateCredentialLibrary(t *testing.T) {
 					HttpMethod:      "POST",
 					Description:     "test-description-repo",
 					VaultPath:       "/some/path",
-					HttpRequestBody: []byte(`{"common_name":"boundary.com"}`),
+					HttpRequestBody: []byte(`{"common_name":"dumpling.com"}`),
 				},
 			},
 			want: &CredentialLibrary{
@@ -164,7 +164,7 @@ func TestRepository_CreateCredentialLibrary(t *testing.T) {
 					HttpMethod:      "POST",
 					Description:     "test-description-repo",
 					VaultPath:       "/some/path",
-					HttpRequestBody: []byte(`{"common_name":"boundary.com"}`),
+					HttpRequestBody: []byte(`{"common_name":"dumpling.com"}`),
 				},
 			},
 		},

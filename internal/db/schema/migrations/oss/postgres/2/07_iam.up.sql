@@ -6,7 +6,7 @@ begin;
 
 -- the intent of this update statement: set the primary auth method for scopes
 -- that only have a single auth_password_method, since currently there are only
--- auth_password_methods in boundary. Before this release all
+-- auth_password_methods in dumpling. Before this release all
 -- auth_password_methods were "basically" primary auth methods and would create
 -- an iam_user on first login.
 with single_authmethod (scope_id, public_id) as (

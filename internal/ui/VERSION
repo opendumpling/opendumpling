@@ -1,4 +1,4 @@
 37c0c55a6033e552bc8f4d5b707db731fb618b87
-# This file determines the version of the UI to embed in the boundary binary.
-# Update this file by running 'make update-ui-version' from the root of this repo.
-# Set UI_COMMITISH when running the above target to update to a specific version.
+# Version of the HashiCorp Boundary admin UI that the upstream v0.13.1 release
+# embedded. OpenDumpling does not build or embed that UI (BUSL-1.1); this pin is
+# kept for provenance only.

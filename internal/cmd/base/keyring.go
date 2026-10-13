@@ -11,7 +11,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/hashicorp/boundary/api/authtokens"
+	"github.com/opendumpling/opendumpling/api/authtokens"
 	nkeyring "github.com/jefferai/keyring"
 	"github.com/pkg/errors"
 	zkeyring "github.com/zalando/go-keyring"
@@ -27,7 +27,7 @@ const (
 
 	DefaultTokenName = "default"
 	LoginCollection  = "login"
-	PassPrefix       = "HashiCorp_Boundary"
+	PassPrefix       = "OpenDumpling"
 )
 
 func (c *Command) DiscoverKeyringTokenInfo() (string, string, error) {
@@ -100,7 +100,7 @@ func (c *Command) DiscoverKeyringTokenInfo() (string, string, error) {
 	}
 
 	if !available {
-		return "", "", fmt.Errorf("Keyring type %q is not available on this machine. For help with setting up keyrings, see https://www.boundaryproject.io/docs/api-clients/cli.", keyringType)
+		return "", "", fmt.Errorf("Keyring type %q is not available on this machine. For help with setting up keyrings, see https://github.com/opendumpling/opendumpling/docs/api-clients/cli.", keyringType)
 	}
 
 	os.Setenv(EnvKeyringType, keyringType)
@@ -123,7 +123,7 @@ func (c *Command) ReadTokenFromKeyring(keyringType, tokenName string) *authtoken
 				c.UI.Error("No saved credential found, continuing without")
 			} else {
 				c.UI.Error(fmt.Sprintf("Error reading auth token from keyring: %s", err))
-				c.UI.Warn("Token must be provided via BOUNDARY_TOKEN env var or -token flag. Reading the token can also be disabled via -keyring-type=none.")
+				c.UI.Warn("Token must be provided via DUMPLING_TOKEN env var or -token flag. Reading the token can also be disabled via -keyring-type=none.")
 			}
 			token = ""
 		}
@@ -138,14 +138,14 @@ func (c *Command) ReadTokenFromKeyring(keyringType, tokenName string) *authtoken
 		kr, err := nkeyring.Open(krConfig)
 		if err != nil {
 			c.UI.Error(fmt.Sprintf("Error opening keyring: %s", err))
-			c.UI.Warn("Token must be provided via BOUNDARY_TOKEN env var or -token flag. Reading the token can also be disabled via -keyring-type=none.")
+			c.UI.Warn("Token must be provided via DUMPLING_TOKEN env var or -token flag. Reading the token can also be disabled via -keyring-type=none.")
 			break
 		}
 
 		item, err := kr.Get(tokenName)
 		if err != nil {
 			c.UI.Error(fmt.Sprintf("Error fetching token from keyring: %s", err))
-			c.UI.Warn("Token must be provided via BOUNDARY_TOKEN env var or -token flag. Reading the token can also be disabled via -keyring-type=none.")
+			c.UI.Warn("Token must be provided via DUMPLING_TOKEN env var or -token flag. Reading the token can also be disabled via -keyring-type=none.")
 			break
 		}
 

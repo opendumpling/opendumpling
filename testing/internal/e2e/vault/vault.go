@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/hashicorp/boundary/testing/internal/e2e"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e"
 	"github.com/hashicorp/go-secure-stdlib/base62"
 	"github.com/stretchr/testify/require"
 )
@@ -27,7 +27,7 @@ type CreateTokenResponse struct {
 // policy to vault. Returns the vault address.
 func Setup(t testing.TB) (boundaryPolicyName string, kvPolicyFilePath string) {
 	// Set up boundary policy
-	boundaryPolicyFilePath, err := filepath.Abs("testdata/boundary-controller-policy.hcl")
+	boundaryPolicyFilePath, err := filepath.Abs("testdata/dumpling-controller-policy.hcl")
 	require.NoError(t, err)
 	boundaryPolicyName = WritePolicy(t, context.Background(), boundaryPolicyFilePath)
 

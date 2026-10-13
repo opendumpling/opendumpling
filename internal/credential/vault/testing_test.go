@@ -16,9 +16,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/iam"
 	"github.com/hashicorp/go-secure-stdlib/parseutil"
 	vault "github.com/hashicorp/vault/api"
 	"github.com/stretchr/testify/assert"
@@ -349,9 +349,9 @@ func TestTestVaultServer_MountPKI(t *testing.T) {
 		_, token := v.CreateToken(t, WithPolicies([]string{"default", "pki"}))
 		vc.SetToken(token)
 
-		certPath := path.Join("pki", "issue", "boundary")
+		certPath := path.Join("pki", "issue", "dumpling")
 		certOptions := map[string]any{
-			"common_name": "boundary.com",
+			"common_name": "dumpling.com",
 		}
 		certSecret, err := vc.Logical().Write(certPath, certOptions)
 		assert.NoError(err)
@@ -380,9 +380,9 @@ func TestTestVaultServer_MountPKI(t *testing.T) {
 		_, token := v.CreateToken(t, WithPolicies([]string{"default", "pki"}))
 		vc.SetToken(token)
 
-		certPath := path.Join("gary", "issue", "boundary")
+		certPath := path.Join("gary", "issue", "dumpling")
 		certOptions := map[string]any{
-			"common_name": "boundary.com",
+			"common_name": "dumpling.com",
 		}
 		certSecret, err := vc.Logical().Write(certPath, certOptions)
 		assert.NoError(err)
@@ -413,7 +413,7 @@ func TestTestVaultServer_MountPKI(t *testing.T) {
 
 		certPath := path.Join("pki", "issue", "gary")
 		certOptions := map[string]any{
-			"common_name": "boundary.com",
+			"common_name": "dumpling.com",
 		}
 		certSecret, err := vc.Logical().Write(certPath, certOptions)
 		assert.NoError(err)
@@ -442,7 +442,7 @@ func TestTestVaultServer_MountDatabase(t *testing.T) {
 
 		assert.Greater(afterCount, beforeCount)
 
-		_, token := v.CreateToken(t, WithPolicies([]string{"default", "boundary-controller", "database"}))
+		_, token := v.CreateToken(t, WithPolicies([]string{"default", "dumpling-controller", "database"}))
 		vc.SetToken(token)
 
 		dbSecret, err := vc.Logical().Read(path.Join("database", "creds", "opened"))

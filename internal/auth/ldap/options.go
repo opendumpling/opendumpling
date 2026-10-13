@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/errors"
 )
 
 type options struct {
@@ -183,7 +183,7 @@ func WithAnonGroupSearch(_ context.Context) Option {
 
 // WithUpnDomain optionally specifies the userPrincipalDomain used to construct
 // the UPN string for the authenticating user. The constructed UPN will appear
-// as [username]@UPNDomain  Example: example.com, which will cause Boundary to
+// as [username]@UPNDomain  Example: example.com, which will cause Dumpling to
 // bind as username@example.com when authenticating the user.
 func WithUpnDomain(_ context.Context, domain string) Option {
 	return func(o *options) error {
@@ -241,7 +241,7 @@ func WithGroupFilter(_ context.Context, filter string) Option {
 }
 
 // WithBindCredential optionally specifies a set of optional configuration
-// parameters which allow Boundary to bind (aka authenticate) using the
+// parameters which allow Dumpling to bind (aka authenticate) using the
 // credentials provided when searching for the user entry used to authenticate
 // the end user.
 func WithBindCredential(ctx context.Context, dn, password string) Option {

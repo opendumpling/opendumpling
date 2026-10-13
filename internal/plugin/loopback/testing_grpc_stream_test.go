@@ -9,7 +9,7 @@ import (
 	"sync"
 	"testing"
 
-	plgpb "github.com/hashicorp/boundary/sdk/pbs/plugin"
+	plgpb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
 	tr "github.com/stretchr/testify/require"
 )
 

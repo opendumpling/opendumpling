@@ -2,18 +2,18 @@
 layout: docs
 page_title: Vault Transit - seals - configuration
 description: |-
-  The Transit configures Boundary to use Vault's Transit Secret Engine for key management.
+  The Transit configures Dumpling to use Vault's Transit Secret Engine for key management.
 ---
 
 # `transit` seal
 
-The Transit configures Boundary to use Vault's Transit Secret Engine for key management.
+The Transit configures Dumpling to use Vault's Transit Secret Engine for key management.
 
-The Transit KMS is activated by the presence of a `kms transit` block in Boundary's configuration file
+The Transit KMS is activated by the presence of a `kms transit` block in Dumpling's configuration file
 
 ## `transit` example
 
-This example shows configuring Transit KMS through the Boundary configuration file
+This example shows configuring Transit KMS through the Dumpling configuration file
 by providing all the required values:
 
 ```hcl

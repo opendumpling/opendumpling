@@ -5,7 +5,7 @@ package base
 
 const (
 	// FlagNameAddr is the flag used in the base command to read in the
-	// address of the Boundary server.
+	// address of the Dumpling server.
 	FlagNameAddr = "addr"
 	// FlagnameCACert is the flag used in the base command to read in the CA
 	// cert.
@@ -28,6 +28,6 @@ const (
 )
 
 const (
-	EnvBoundaryCLINoColor = `BOUNDARY_CLI_NO_COLOR`
-	EnvBoundaryCLIFormat  = `BOUNDARY_CLI_FORMAT`
+	EnvDumplingCLINoColor = `DUMPLING_CLI_NO_COLOR`
+	EnvDumplingCLIFormat  = `DUMPLING_CLI_FORMAT`
 )

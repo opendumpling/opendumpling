@@ -1,36 +1,36 @@
 ---
 layout: docs
-page_title: Boundary Desktop
+page_title: Dumpling Desktop
 description: |-
-  Get up and running with Boundary Desktop
+  Get up and running with Dumpling Desktop
 ---
 
-# Boundary Desktop
+# Dumpling Desktop
 
-Boundary Desktop is a standalone application that provides a simple interface
+Dumpling Desktop is a standalone application that provides a simple interface
 for browsing and connecting to targets on your local computer (macOS and Windows
-currently supported). Launch a session in Boundary Desktop and then make a connection
+currently supported). Launch a session in Dumpling Desktop and then make a connection
 using your favorite tooling!
 
 ## Get started
 
--> If you're running Boundary for the first time, [download the latest binary](/boundary/downloads)
+-> If you're running Dumpling for the first time, [download the latest binary](/boundary/downloads)
 and run it in `dev` mode locally so you can have a server to run against:
 
 ```shell-session
-$ boundary dev
+$ dumpling dev
 ```
 
-### Install Boundary Desktop
+### Install Dumpling Desktop
 
-1. Download the latest .dmg installer or .exe archive from our [releases page](https://releases.hashicorp.com/boundary-desktop). Alternatively, if you're a homebrew user, you can run `brew install hashicorp-boundary-desktop`
-1. In macOS, double-click the downloaded .dmg to run the installer by draggin and dropping Boundary into the applications folder
+1. Download the latest .dmg installer or .exe archive from our [releases page](https://github.com/opendumpling/opendumpling/releases/download-desktop). Alternatively, if you're a homebrew user, you can run `brew install hashicorp-boundary-desktop`
+1. In macOS, double-click the downloaded .dmg to run the installer by draggin and dropping Dumpling into the applications folder
    ![](/img/desktop/macos/boundary-desktop-drag-to-install.png)
 1. In Windows, extract downloaded archive and find .exe to launch
 
-### Run Boundary Desktop
+### Run Dumpling Desktop
 
-1. Open the Boundary Desktop application
+1. Open the Dumpling Desktop application
 
 <Tabs>
 <Tab heading="MacOS">
@@ -48,8 +48,8 @@ $ boundary dev
 </Tabs>
 
 
-1. You'll be prompted for the Boundary server origin, this is the URL for the client
-   to connect to the Boundary API. If you are running a local `dev` mode server, this
+1. You'll be prompted for the Dumpling server origin, this is the URL for the client
+   to connect to the Dumpling API. If you are running a local `dev` mode server, this
    URL will be `http://localhost:9200`
 
 <Tabs>
@@ -68,7 +68,7 @@ $ boundary dev
 </Tabs>
 
 
-1. You can now login to Boundary. We're using a `dev` mode server in this example with the
+1. You can now login to Dumpling. We're using a `dev` mode server in this example with the
    username `admin` and the password `password`
 
 <Tabs>
@@ -108,7 +108,7 @@ $ boundary dev
 
 ### Connect!
 
--> The rest of this example assumes you're running Boundary in `dev` mode.
+-> The rest of this example assumes you're running Dumpling in `dev` mode.
 
 1. Click on `connect` next to the default target. A pop-up window will display the local
    address of the proxy and the ephemeral port for the session

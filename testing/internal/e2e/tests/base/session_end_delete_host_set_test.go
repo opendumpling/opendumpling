@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/session"
-	"github.com/hashicorp/boundary/testing/internal/e2e"
-	"github.com/hashicorp/boundary/testing/internal/e2e/boundary"
+	"github.com/opendumpling/opendumpling/internal/session"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e/dumpling"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -21,54 +21,54 @@ func TestCliSessionEndWhenHostSetIsDeleted(t *testing.T) {
 	e2e.MaybeSkipTest(t)
 	c, err := loadTestConfig()
 	require.NoError(t, err)
-	bc, err := boundary.LoadConfig()
+	bc, err := dumpling.LoadConfig()
 	require.NoError(t, err)
 
 	ctx := context.Background()
-	boundary.AuthenticateAdminCli(t, ctx)
-	newOrgId := boundary.CreateNewOrgCli(t, ctx)
+	dumpling.AuthenticateAdminCli(t, ctx)
+	newOrgId := dumpling.CreateNewOrgCli(t, ctx)
 	t.Cleanup(func() {
 		ctx := context.Background()
-		boundary.AuthenticateAdminCli(t, ctx)
-		output := e2e.RunCommand(ctx, "boundary", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
+		dumpling.AuthenticateAdminCli(t, ctx)
+		output := e2e.RunCommand(ctx, "dumpling", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
 		require.NoError(t, output.Err, string(output.Stderr))
 	})
-	newProjectId := boundary.CreateNewProjectCli(t, ctx, newOrgId)
-	newHostCatalogId := boundary.CreateNewHostCatalogCli(t, ctx, newProjectId)
-	newHostSetId := boundary.CreateNewHostSetCli(t, ctx, newHostCatalogId)
-	newHostId := boundary.CreateNewHostCli(t, ctx, newHostCatalogId, c.TargetIp)
-	boundary.AddHostToHostSetCli(t, ctx, newHostSetId, newHostId)
-	newTargetId := boundary.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort)
-	boundary.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
+	newProjectId := dumpling.CreateNewProjectCli(t, ctx, newOrgId)
+	newHostCatalogId := dumpling.CreateNewHostCatalogCli(t, ctx, newProjectId)
+	newHostSetId := dumpling.CreateNewHostSetCli(t, ctx, newHostCatalogId)
+	newHostId := dumpling.CreateNewHostCli(t, ctx, newHostCatalogId, c.TargetIp)
+	dumpling.AddHostToHostSetCli(t, ctx, newHostSetId, newHostId)
+	newTargetId := dumpling.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort)
+	dumpling.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
 	acctName := "e2e-account"
-	newAccountId, acctPassword := boundary.CreateNewAccountCli(t, ctx, bc.AuthMethodId, acctName)
+	newAccountId, acctPassword := dumpling.CreateNewAccountCli(t, ctx, bc.AuthMethodId, acctName)
 	t.Cleanup(func() {
-		boundary.AuthenticateAdminCli(t, context.Background())
-		output := e2e.RunCommand(ctx, "boundary",
+		dumpling.AuthenticateAdminCli(t, context.Background())
+		output := e2e.RunCommand(ctx, "dumpling",
 			e2e.WithArgs("accounts", "delete", "-id", newAccountId),
 		)
 		require.NoError(t, output.Err, string(output.Stderr))
 	})
-	newUserId := boundary.CreateNewUserCli(t, ctx, "global")
+	newUserId := dumpling.CreateNewUserCli(t, ctx, "global")
 	t.Cleanup(func() {
-		boundary.AuthenticateAdminCli(t, context.Background())
-		output := e2e.RunCommand(ctx, "boundary",
+		dumpling.AuthenticateAdminCli(t, context.Background())
+		output := e2e.RunCommand(ctx, "dumpling",
 			e2e.WithArgs("users", "delete", "-id", newUserId),
 		)
 		require.NoError(t, output.Err, string(output.Stderr))
 	})
-	boundary.SetAccountToUserCli(t, ctx, newUserId, newAccountId)
-	newRoleId := boundary.CreateNewRoleCli(t, ctx, newProjectId)
-	boundary.AddGrantToRoleCli(t, ctx, newRoleId, "id=*;type=target;actions=authorize-session")
-	boundary.AddPrincipalToRoleCli(t, ctx, newRoleId, newUserId)
+	dumpling.SetAccountToUserCli(t, ctx, newUserId, newAccountId)
+	newRoleId := dumpling.CreateNewRoleCli(t, ctx, newProjectId)
+	dumpling.AddGrantToRoleCli(t, ctx, newRoleId, "id=*;type=target;actions=authorize-session")
+	dumpling.AddPrincipalToRoleCli(t, ctx, newRoleId, newUserId)
 
 	// Connect to target to create a session
 	ctxCancel, cancel := context.WithCancel(context.Background())
 	errChan := make(chan *e2e.CommandResult)
 	go func() {
-		token := boundary.GetAuthenticationTokenCli(t, ctx, acctName, acctPassword)
+		token := dumpling.GetAuthenticationTokenCli(t, ctx, acctName, acctPassword)
 		t.Log("Starting session as user...")
-		errChan <- e2e.RunCommand(ctxCancel, "boundary",
+		errChan <- e2e.RunCommand(ctxCancel, "dumpling",
 			e2e.WithArgs(
 				"connect",
 				"-token", "env://E2E_AUTH_TOKEN",
@@ -79,22 +79,22 @@ func TestCliSessionEndWhenHostSetIsDeleted(t *testing.T) {
 				"-o", "UserKnownHostsFile=/dev/null",
 				"-o", "StrictHostKeyChecking=no",
 				"-o", "IdentitiesOnly=yes", // forces the use of the provided key
-				"-p", "{{boundary.port}}", // this is provided by boundary
-				"{{boundary.ip}}",
+				"-p", "{{dumpling.port}}", // this is provided by boundary
+				"{{dumpling.ip}}",
 				"hostname -i; sleep 60",
 			),
 			e2e.WithEnv("E2E_AUTH_TOKEN", token),
 		)
 	}()
 	t.Cleanup(cancel)
-	s := boundary.WaitForSessionCli(t, ctx, newProjectId)
-	boundary.WaitForSessionStatusCli(t, ctx, s.Id, session.StatusActive.String())
+	s := dumpling.WaitForSessionCli(t, ctx, newProjectId)
+	dumpling.WaitForSessionStatusCli(t, ctx, s.Id, session.StatusActive.String())
 	assert.Equal(t, newTargetId, s.TargetId)
 	assert.Equal(t, newHostId, s.HostId)
 
 	// Delete Host Set
 	t.Log("Deleting host set...")
-	output := e2e.RunCommand(ctx, "boundary", e2e.WithArgs("host-sets", "delete", "-id", newHostSetId))
+	output := e2e.RunCommand(ctx, "dumpling", e2e.WithArgs("host-sets", "delete", "-id", newHostSetId))
 	require.NoError(t, output.Err, string(output.Stderr))
 
 	// Check if session has terminated
@@ -106,6 +106,6 @@ func TestCliSessionEndWhenHostSetIsDeleted(t *testing.T) {
 		t.Fatal("Timed out waiting for session command to exit")
 	}
 
-	boundary.WaitForSessionStatusCli(t, ctx, s.Id, session.StatusTerminated.String())
+	dumpling.WaitForSessionStatusCli(t, ctx, s.Id, session.StatusTerminated.String())
 	t.Log("Session successfully ended after host set was deleted")
 }

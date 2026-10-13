@@ -26,13 +26,13 @@ type GroupServiceClient interface {
 	// provided scope id. If that id is missing, malformed, or
 	// references a non-existing scope, an error is returned.
 	ListGroups(ctx context.Context, in *ListGroupsRequest, opts ...grpc.CallOption) (*ListGroupsResponse, error)
-	// CreateGroup creates and stores a Group in boundary. The provided
+	// CreateGroup creates and stores a Group in dumpling. The provided
 	// request must include the scope ID in which the Group will be created.
 	// If the scope ID is missing, malformed or references a non existing
 	// resource, an error is returned. If a name is provided that is in
 	// use in another Group in the same scope, an error is returned.
 	CreateGroup(ctx context.Context, in *CreateGroupRequest, opts ...grpc.CallOption) (*CreateGroupResponse, error)
-	// UpdateGroup updates an existing Group in boundary. The provided Group
+	// UpdateGroup updates an existing Group in dumpling. The provided Group
 	// must not have any read only fields set. The update mask must be included in
 	// the request and contain at least 1 mutable field. To unset a field's value,
 	// include the field in the update mask and don't set it in the provided
@@ -41,7 +41,7 @@ type GroupServiceClient interface {
 	// to update the name to one that is already used by another Group in the
 	// same scope.
 	UpdateGroup(ctx context.Context, in *UpdateGroupRequest, opts ...grpc.CallOption) (*UpdateGroupResponse, error)
-	// DeleteGroup removes a Group from Boundary. If the provided Group
+	// DeleteGroup removes a Group from Dumpling. If the provided Group
 	// ID is malformed or not provided an error is returned.
 	DeleteGroup(ctx context.Context, in *DeleteGroupRequest, opts ...grpc.CallOption) (*DeleteGroupResponse, error)
 	// AddGroupMembers adds members to a Group.  The provided request must include
@@ -155,13 +155,13 @@ type GroupServiceServer interface {
 	// provided scope id. If that id is missing, malformed, or
 	// references a non-existing scope, an error is returned.
 	ListGroups(context.Context, *ListGroupsRequest) (*ListGroupsResponse, error)
-	// CreateGroup creates and stores a Group in boundary. The provided
+	// CreateGroup creates and stores a Group in dumpling. The provided
 	// request must include the scope ID in which the Group will be created.
 	// If the scope ID is missing, malformed or references a non existing
 	// resource, an error is returned. If a name is provided that is in
 	// use in another Group in the same scope, an error is returned.
 	CreateGroup(context.Context, *CreateGroupRequest) (*CreateGroupResponse, error)
-	// UpdateGroup updates an existing Group in boundary. The provided Group
+	// UpdateGroup updates an existing Group in dumpling. The provided Group
 	// must not have any read only fields set. The update mask must be included in
 	// the request and contain at least 1 mutable field. To unset a field's value,
 	// include the field in the update mask and don't set it in the provided
@@ -170,7 +170,7 @@ type GroupServiceServer interface {
 	// to update the name to one that is already used by another Group in the
 	// same scope.
 	UpdateGroup(context.Context, *UpdateGroupRequest) (*UpdateGroupResponse, error)
-	// DeleteGroup removes a Group from Boundary. If the provided Group
+	// DeleteGroup removes a Group from Dumpling. If the provided Group
 	// ID is malformed or not provided an error is returned.
 	DeleteGroup(context.Context, *DeleteGroupRequest) (*DeleteGroupResponse, error)
 	// AddGroupMembers adds members to a Group.  The provided request must include

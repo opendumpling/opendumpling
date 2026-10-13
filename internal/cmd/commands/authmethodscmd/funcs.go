@@ -8,10 +8,10 @@ import (
 	"sort"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/authmethods"
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/authmethods"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 )
 
 func init() {
@@ -23,37 +23,37 @@ func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
 	switch c.Func {
 	case "":
 		return base.WrapForHelpText([]string{
-			"Usage: boundary auth-methods [sub command] [options] [args]",
+			"Usage: dumpling auth-methods [sub command] [options] [args]",
 			"",
-			"  This command allows operations on Boundary auth method resources. Example:",
+			"  This command allows operations on Dumpling auth method resources. Example:",
 			"",
 			"    Read an auth method:",
 			"",
-			`      $ boundary auth-methods read -id ampw_1234567890`,
+			`      $ dumpling auth-methods read -id ampw_1234567890`,
 			"",
 			"  Please see the auth-methods subcommand help for detailed usage information.",
 		})
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary auth-methods create [type] [sub command] [options] [args]",
+			"Usage: dumpling auth-methods create [type] [sub command] [options] [args]",
 			"",
-			"  This command allows create operations on Boundary auth method resources. Example:",
+			"  This command allows create operations on Dumpling auth method resources. Example:",
 			"",
 			"    Create a password-type auth method:",
 			"",
-			`      $ boundary auth-methods create password -name prodops -description "For ProdOps usage"`,
+			`      $ dumpling auth-methods create password -name prodops -description "For ProdOps usage"`,
 			"",
 			"  Please see the typed subcommand help for detailed usage information.",
 		})
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary auth-methods update [type] [sub command] [options] [args]",
+			"Usage: dumpling auth-methods update [type] [sub command] [options] [args]",
 			"",
-			"  This command allows update operations on Boundary auth method resources. Example:",
+			"  This command allows update operations on Dumpling auth method resources. Example:",
 			"",
 			"    Update a password-type auth method:",
 			"",
-			`      $ boundary auth-methods update password -id ampw_1234567890 -name devops -description "For DevOps usage"`,
+			`      $ dumpling auth-methods update password -id ampw_1234567890 -name devops -description "For DevOps usage"`,
 			"",
 			"  Please see the typed subcommand help for detailed usage information.",
 		})

@@ -10,9 +10,9 @@
 package storagebuckets
 
 import (
-	plugins "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/plugins"
-	scopes "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/scopes"
-	_ "github.com/hashicorp/boundary/sdk/pbs/controller/protooptions"
+	plugins "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/plugins"
+	scopes "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/scopes"
+	_ "github.com/opendumpling/opendumpling/sdk/pbs/controller/protooptions"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	structpb "google.golang.org/protobuf/types/known/structpb"
@@ -244,7 +244,7 @@ type StorageBucketPersisted struct {
 	// credentials, rotated secrets, or configuration data.
 	// Data can be anything that may need to be provided to
 	// a series of different method calls.
-	// Data is encrypted at-rest by Boundary.
+	// Data is encrypted at-rest by Dumpling.
 	// Data is never returned to the end user.
 	Data *structpb.Struct `protobuf:"bytes,10,opt,name=data,proto3" json:"data,omitempty"`
 }

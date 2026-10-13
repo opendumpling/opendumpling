@@ -2,12 +2,12 @@
 layout: docs
 page_title: systemd Installation
 description: |-
-  How to install Boundary under systemd on Linux
+  How to install Dumpling under systemd on Linux
 ---
 
-# Install Boundary under systemd
+# Install Dumpling under systemd
 
-This section covers how to install Boundary under the [systemd](https://systemd.io/) init system on modern Linux distributions. In this section, we'll cover an example of breaking out the controller and worker servers onto separate instances, though you can opt to run both on a single server.
+This section covers how to install Dumpling under the [systemd](https://systemd.io/) init system on modern Linux distributions. In this section, we'll cover an example of breaking out the controller and worker servers onto separate instances, though you can opt to run both on a single server.
 
 ## Filesystem configuration
 
@@ -15,13 +15,13 @@ This section covers how to install Boundary under the [systemd](https://systemd.
 
 1. `/etc/boundary-${TYPE}.hcl`: Configuration file for the boundary service.
 
-2. `/usr/local/bin/boundary`: The Boundary binary, which can be built from the [source](https://github.com/hashicorp/boundary) or downloaded from our [release page](/boundary/downloads).
+2. `/usr/local/bin/boundary`: The Dumpling binary, which can be built from the [source](https://github.com/opendumpling/opendumpling) or downloaded from our [release page](/boundary/downloads).
 
-3. `/etc/systemd/system/boundary-${TYPE}.service`: Systemd unit file for the Boundary service.
+3. `/etc/systemd/system/boundary-${TYPE}.service`: Systemd unit file for the Dumpling service.
 
 ## User and group configuration
 
-We recommend running Boundary as a non-root user and using this user to manage the Boundary process running under systemd. The example init files here do exactly that. Our example install script below creates a user and group on Ubuntu or Debian-like systems.
+We recommend running Dumpling as a non-root user and using this user to manage the Dumpling process running under systemd. The example init files here do exactly that. Our example install script below creates a user and group on Ubuntu or Debian-like systems.
 
 ## systemd unit file
 
@@ -71,7 +71,7 @@ WantedBy=multi-user.target
 EOF
 
 # Add the boundary system user and group to ensure we have a no-login
-# user capable of owning and running Boundary
+# user capable of owning and running Dumpling
 sudo adduser --system --group boundary || true
 sudo chown boundary:boundary /etc/${NAME}-${TYPE}.hcl
 sudo chown boundary:boundary /usr/local/bin/boundary

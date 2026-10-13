@@ -9,8 +9,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/hashicorp/boundary/api/credentials"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api/credentials"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/hashicorp/go-secure-stdlib/parseutil"
 	"github.com/hashicorp/go-secure-stdlib/password"
 	"golang.org/x/crypto/ssh"
@@ -154,22 +154,22 @@ func (c *SshPrivateKeyCommand) extraSshPrivateKeyHelpFunc(_ map[string]func() st
 	switch c.Func {
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary credentials create ssh-private-key -credential-store-id [options] [args]",
+			"Usage: dumpling credentials create ssh-private-key -credential-store-id [options] [args]",
 			"",
 			"  Create an SSH private key credential. Example:",
 			"",
-			`    $ boundary credentials create ssh-private-key -credential-store-id csvlt_1234567890 -username user -private-key file:///home/user/.ssh/id_ed25519`,
+			`    $ dumpling credentials create ssh-private-key -credential-store-id csvlt_1234567890 -username user -private-key file:///home/user/.ssh/id_ed25519`,
 			"",
 			"",
 		})
 
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary credentials update ssh-private-key [options] [args]",
+			"Usage: dumpling credentials update ssh-private-key [options] [args]",
 			"",
 			"  Update an SSH private key credential given its ID. Example:",
 			"",
-			`    $ boundary credentials update ssh-private-key -id clvlt_1234567890 -name devops -description "For DevOps usage"`,
+			`    $ dumpling credentials update ssh-private-key -id clvlt_1234567890 -name devops -description "For DevOps usage"`,
 			"",
 			"",
 		})

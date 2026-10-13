@@ -10,17 +10,17 @@ import (
 	"sync/atomic"
 	"time"
 
-	dcommon "github.com/hashicorp/boundary/internal/daemon/common"
-	"github.com/hashicorp/boundary/internal/daemon/controller/common"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/servers/services"
-	intglobals "github.com/hashicorp/boundary/internal/globals"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/observability/event"
-	"github.com/hashicorp/boundary/internal/server"
-	"github.com/hashicorp/boundary/internal/session"
-	"github.com/hashicorp/boundary/internal/types/scope"
-	"github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/targets"
+	dcommon "github.com/opendumpling/opendumpling/internal/daemon/common"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/common"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/servers/services"
+	intglobals "github.com/opendumpling/opendumpling/internal/globals"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
+	"github.com/opendumpling/opendumpling/internal/server"
+	"github.com/opendumpling/opendumpling/internal/session"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
+	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/targets"
 	"github.com/hashicorp/go-bexpr"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -333,7 +333,7 @@ func (ws *workerServiceServer) Status(ctx context.Context, req *pbs.StatusReques
 	return ret, nil
 }
 
-// ListHcpbWorkers looks up workers that are HCP Boundary-managed, currently by
+// ListHcpbWorkers looks up workers that are HCP Dumpling-managed, currently by
 // seeing if they are KMS and have a known tag
 func (ws *workerServiceServer) ListHcpbWorkers(ctx context.Context, req *pbs.ListHcpbWorkersRequest) (*pbs.ListHcpbWorkersResponse, error) {
 	const op = "workers.(workerServiceServer).ListHcpbWorkers"

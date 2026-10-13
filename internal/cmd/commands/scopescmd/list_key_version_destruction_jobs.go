@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/scopes"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/scopes"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/mitchellh/cli"
 	"github.com/mitchellh/go-wordwrap"
 	"github.com/posener/complete"
@@ -31,13 +31,13 @@ func (c *ListKeyVersionDestructionJobsCommand) Synopsis() string {
 
 func (c *ListKeyVersionDestructionJobsCommand) Help() string {
 	return base.WrapForHelpText([]string{
-		"Usage: boundary scopes list-key-version-destruction-jobs [args]",
+		"Usage: dumpling scopes list-key-version-destruction-jobs [args]",
 		"",
 		"  List all pending key version destruction jobs within a scope. A key version",
 		"  destruction job asynchronously re-encrypts any existing data with the latest",
 		"  key version before destroying the key version. Example:",
 		"",
-		`    $ boundary scopes list-key-version-destruction-jobs -scope-id global`,
+		`    $ dumpling scopes list-key-version-destruction-jobs -scope-id global`,
 		"",
 		"",
 	}) + c.Flags().Help()

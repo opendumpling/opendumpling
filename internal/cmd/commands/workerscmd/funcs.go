@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/workers"
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/workers"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 )
 
 func init() {
@@ -48,49 +48,49 @@ func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
 	switch c.Func {
 	case "":
 		return base.WrapForHelpText([]string{
-			"Usage: boundary workers [sub command] [options] [args]",
+			"Usage: dumpling workers [sub command] [options] [args]",
 			"",
-			"  This command allows operations on Boundary worker resources. Example:",
+			"  This command allows operations on Dumpling worker resources. Example:",
 			"",
 			"    Read a worker:",
 			"",
-			`      $ boundary workers read -id w_1234567890`,
+			`      $ dumpling workers read -id w_1234567890`,
 			"",
 			"  Please see the workers subcommand help for detailed usage information.",
 		})
 	case "add-worker-tags":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary workers add-worker-tags [sub command] [args]",
+			"Usage: dumpling workers add-worker-tags [sub command] [args]",
 			"",
 			"  This command allows adding api tags to worker resources. Example:",
 			"",
 			"    Add a set of api tags to a specified worker:",
 			"",
-			`      & boundary workers add-worker-tags -id w_1234567890 -tag "key1=val-a" -tag "key2=val-b,val-c"`,
+			`      & dumpling workers add-worker-tags -id w_1234567890 -tag "key1=val-a" -tag "key2=val-b,val-c"`,
 			"",
 			"",
 		})
 	case "set-worker-tags":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary workers set-worker-tags [sub command] [args]",
+			"Usage: dumpling workers set-worker-tags [sub command] [args]",
 			"",
 			"  This command allows setting api tags for worker resources. Example:",
 			"",
 			"    Set api tags for a specified worker:",
 			"",
-			`      & boundary workers set-worker-tags -id w_1234567890 -tag "key1=val-a" -tag "key2=val-b,val-c"`,
+			`      & dumpling workers set-worker-tags -id w_1234567890 -tag "key1=val-a" -tag "key2=val-b,val-c"`,
 			"",
 			"",
 		})
 	case "remove-worker-tags":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary workers remove-worker-tags [sub command] [args]",
+			"Usage: dumpling workers remove-worker-tags [sub command] [args]",
 			"",
 			"  This command allows removing api tags from worker resources. Example:",
 			"",
 			"    Remove a set of api tags to a specified worker:",
 			"",
-			`      & boundary workers remove-worker-tags -id w_1234567890 -tag "key1=val-a" -tag "key2=val-b,val-c"`,
+			`      & dumpling workers remove-worker-tags -id w_1234567890 -tag "key1=val-a" -tag "key2=val-b,val-c"`,
 			"",
 			"",
 		})

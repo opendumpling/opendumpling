@@ -8,17 +8,17 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/auth/oidc/request"
-	"github.com/hashicorp/boundary/internal/authtoken"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/auth/oidc/request"
+	"github.com/opendumpling/opendumpling/internal/authtoken"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/kms"
 	"google.golang.org/protobuf/proto"
 )
 
 // TokenRequest is an oidc domain service function for processing a token
-// request from a Boundary client.  Token requests are the result of a Boundary
+// request from a Dumpling client.  Token requests are the result of a Dumpling
 // client polling the tokenUrl they received via StartAuth.  On success, it
-// returns Boundary token.
+// returns Dumpling token.
 //
 // * Decrypt the tokenRequestId.  If encryption fails, it returns an error.
 //

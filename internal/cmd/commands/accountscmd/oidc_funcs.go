@@ -4,8 +4,8 @@
 package accountscmd
 
 import (
-	"github.com/hashicorp/boundary/api/accounts"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api/accounts"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 )
 
 const (
@@ -35,22 +35,22 @@ func (c *OidcCommand) extraOidcHelpFunc(helpMap map[string]func() string) string
 	switch c.Func {
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary accounts create oidc [options] [args]",
+			"Usage: dumpling accounts create oidc [options] [args]",
 			"",
 			"  Create a oidc-type account. Example:",
 			"",
-			`    $ boundary accounts create oidc -subject "prodops" -description "Oidc account for ProdOps"`,
+			`    $ dumpling accounts create oidc -subject "prodops" -description "Oidc account for ProdOps"`,
 			"",
 			"",
 		})
 
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary accounts update oidc [options] [args]",
+			"Usage: dumpling accounts update oidc [options] [args]",
 			"",
 			"  Update a oidc-type account given its ID. Example:",
 			"",
-			`    $ boundary accounts update oidc -id acctoidc_1234567890 -name "devops" -description "Oidc account for DevOps"`,
+			`    $ dumpling accounts update oidc -id acctoidc_1234567890 -name "devops" -description "Oidc account for DevOps"`,
 			"",
 			"",
 		})

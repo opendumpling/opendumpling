@@ -6,8 +6,8 @@ package static
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/host/static/store"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/host/static/store"
 )
 
 // A HostSetMember represents the membership of a host in a host set.

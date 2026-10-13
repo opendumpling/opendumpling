@@ -9,7 +9,7 @@ package controller.storage.auth.oidc.store.v1;
 import "controller/custom_options/v1/options.proto";
 import "controller/storage/timestamp/v1/timestamp.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/auth/oidc/store;store";
+option go_package = "github.com/opendumpling/opendumpling/internal/auth/oidc/store;store";
 
 // AuthMethod represents an OIDC auth method.
 message AuthMethod {

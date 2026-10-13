@@ -9,8 +9,8 @@ import (
 	"net"
 	"sync"
 
-	"github.com/hashicorp/boundary/internal/daemon/worker/proxy"
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/daemon/worker/proxy"
+	"github.com/opendumpling/opendumpling/internal/errors"
 	"google.golang.org/protobuf/types/known/anypb"
 )
 

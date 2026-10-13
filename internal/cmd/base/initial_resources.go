@@ -8,19 +8,19 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/auth/password"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/host/static"
-	"github.com/hashicorp/boundary/internal/iam"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/plugin"
-	"github.com/hashicorp/boundary/internal/target"
-	"github.com/hashicorp/boundary/internal/target/tcp"
-	"github.com/hashicorp/boundary/internal/types/scope"
-	"github.com/hashicorp/boundary/internal/util"
-	plgpb "github.com/hashicorp/boundary/sdk/pbs/plugin"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/auth/password"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/host/static"
+	"github.com/opendumpling/opendumpling/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/plugin"
+	"github.com/opendumpling/opendumpling/internal/target"
+	"github.com/opendumpling/opendumpling/internal/target/tcp"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
+	"github.com/opendumpling/opendumpling/internal/util"
+	plgpb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
 	"github.com/hashicorp/go-secure-stdlib/base62"
 )
 
@@ -91,7 +91,7 @@ func (b *Server) CreateInitialPasswordAuthMethod(ctx context.Context) (*password
 	}
 	authMethod, err := password.NewAuthMethod(ctx, scope.Global.String(),
 		password.WithName("Generated global scope initial password auth method"),
-		password.WithDescription("Provides initial administrative and unprivileged authentication into Boundary"),
+		password.WithDescription("Provides initial administrative and unprivileged authentication into Dumpling"),
 	)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error creating new in memory auth method: %w", err)
@@ -284,7 +284,7 @@ func (b *Server) CreateInitialScopes(ctx context.Context) (*iam.Scope, *iam.Scop
 	}
 	opts := []iam.Option{
 		iam.WithName("Generated org scope"),
-		iam.WithDescription("Provides an initial org scope in Boundary"),
+		iam.WithDescription("Provides an initial org scope in Dumpling"),
 		iam.WithRandomReader(b.SecureRandomReader),
 		iam.WithPublicId(b.DevOrgId),
 	}
@@ -307,7 +307,7 @@ func (b *Server) CreateInitialScopes(ctx context.Context) (*iam.Scope, *iam.Scop
 	}
 	opts = []iam.Option{
 		iam.WithName("Generated project scope"),
-		iam.WithDescription("Provides an initial project scope in Boundary"),
+		iam.WithDescription("Provides an initial project scope in Dumpling"),
 		iam.WithRandomReader(b.SecureRandomReader),
 		iam.WithPublicId(b.DevProjectId),
 	}
@@ -353,7 +353,7 @@ func (b *Server) CreateInitialHostResources(ctx context.Context) (*static.HostCa
 	}
 	opts := []static.Option{
 		static.WithName("Generated host catalog"),
-		static.WithDescription("Provides an initial host catalog in Boundary"),
+		static.WithDescription("Provides an initial host catalog in Dumpling"),
 		static.WithPublicId(b.DevHostCatalogId),
 	}
 	hc, err := static.NewHostCatalog(ctx, b.DevProjectId, opts...)
@@ -378,7 +378,7 @@ func (b *Server) CreateInitialHostResources(ctx context.Context) (*static.HostCa
 	}
 	opts = []static.Option{
 		static.WithName("Generated host"),
-		static.WithDescription("Provides an initial host in Boundary"),
+		static.WithDescription("Provides an initial host in Dumpling"),
 		static.WithAddress(b.DevHostAddress),
 		static.WithPublicId(b.DevHostId),
 	}
@@ -401,7 +401,7 @@ func (b *Server) CreateInitialHostResources(ctx context.Context) (*static.HostCa
 	}
 	opts = []static.Option{
 		static.WithName("Generated host set"),
-		static.WithDescription("Provides an initial host set in Boundary"),
+		static.WithDescription("Provides an initial host set in Dumpling"),
 		static.WithPublicId(b.DevHostSetId),
 	}
 	hs, err := static.NewHostSet(ctx, hc.PublicId, opts...)
@@ -438,8 +438,8 @@ func (b *Server) CreateInitialTargetWithAddress(ctx context.Context) (target.Tar
 		return nil, fmt.Errorf("failed to create target repository: %w", err)
 	}
 
-	// When this function is not called as part of boundary dev (eg: as part of
-	// boundary database init or tests), generate random target ids.
+	// When this function is not called as part of dumpling dev (eg: as part of
+	// dumpling database init or tests), generate random target ids.
 	if len(b.DevTargetId) == 0 {
 		b.DevTargetId, err = db.NewPublicId(ctx, globals.TcpTargetPrefix)
 		if err != nil {
@@ -454,7 +454,7 @@ func (b *Server) CreateInitialTargetWithAddress(ctx context.Context) (target.Tar
 	}
 	opts := []target.Option{
 		target.WithName("Generated target with a direct address"),
-		target.WithDescription("Provides an initial target using an address in Boundary"),
+		target.WithDescription("Provides an initial target using an address in Dumpling"),
 		target.WithDefaultPort(uint32(b.DevTargetDefaultPort)),
 		target.WithSessionMaxSeconds(uint32(b.DevTargetSessionMaxSeconds)),
 		target.WithSessionConnectionLimit(int32(b.DevTargetSessionConnectionLimit)),
@@ -505,8 +505,8 @@ func (b *Server) CreateInitialTargetWithHostSources(ctx context.Context) (target
 		return nil, fmt.Errorf("failed to create target repository: %w", err)
 	}
 
-	// When this function is not called as part of boundary dev (eg: as part of
-	// boundary database init or tests), generate random target ids.
+	// When this function is not called as part of dumpling dev (eg: as part of
+	// dumpling database init or tests), generate random target ids.
 	if len(b.DevSecondaryTargetId) == 0 {
 		b.DevSecondaryTargetId, err = db.NewPublicId(ctx, globals.TcpTargetPrefix)
 		if err != nil {
@@ -519,7 +519,7 @@ func (b *Server) CreateInitialTargetWithHostSources(ctx context.Context) (target
 
 	opts := []target.Option{
 		target.WithName("Generated target using host sources"),
-		target.WithDescription("Provides a target using host sources in Boundary"),
+		target.WithDescription("Provides a target using host sources in Dumpling"),
 		target.WithDefaultPort(uint32(b.DevTargetDefaultPort)),
 		target.WithSessionMaxSeconds(uint32(b.DevTargetSessionMaxSeconds)),
 		target.WithSessionConnectionLimit(int32(b.DevTargetSessionConnectionLimit)),
@@ -557,7 +557,7 @@ func (b *Server) CreateInitialTargetWithHostSources(ctx context.Context) (target
 // RegisterPlugin creates a plugin in the database if not present, and flags
 // the plugin type based on the flags parameter. If the PluginTypeHost flag is
 // set, it also registers the plugin in the shared map of running plugins.
-// Since all boundary provided plugins must have a name, a name is required
+// Since all dumpling provided plugins must have a name, a name is required
 // when calling RegisterPlugin and will be used even if WithName is provided.
 // hostClient must not be nil when host flag is included.
 func (b *Server) RegisterPlugin(ctx context.Context, name string, hostClient plgpb.HostPluginServiceClient, flags []plugin.PluginType, opt ...plugin.Option) (*plugin.Plugin, error) {
@@ -653,7 +653,7 @@ func unprivilegedDevUserRoleSetup(ctx context.Context, repo *iam.Repository, use
 	}
 	defaultRole := roles[defaultRoleIdx]
 
-	// This function may be called more than once for the same boundary
+	// This function may be called more than once for the same dumpling
 	// deployment (eg: if we're creating more than one target), so we need to
 	// check if the unprivileged user is not already a principal for the default
 	// role in this project, as attempting to add an existing principal is an

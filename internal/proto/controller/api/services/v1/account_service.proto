@@ -11,7 +11,7 @@ import "google/api/annotations.proto";
 import "google/protobuf/field_mask.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/gen/controller/api/services;services";
+option go_package = "github.com/opendumpling/opendumpling/internal/gen/controller/api/services;services";
 option (custom_options.v1.domain) = "auth";
 
 service AccountService {
@@ -35,7 +35,7 @@ service AccountService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Lists all Accounts in a specific Auth Method."};
   }
 
-  // CreateAccount creates and stores an Account in boundary. The provided
+  // CreateAccount creates and stores an Account in dumpling. The provided
   // request must include the Auth Method ID in which the Account will be
   // created. If the Auth Method ID is missing, malformed, or references a non
   // existing resource an error is returned. If a name or login_name is
@@ -50,7 +50,7 @@ service AccountService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Creates a single Account in the provided Auth Method."};
   }
 
-  // UpdateAccount updates an existing Account in boundary. The provided Account
+  // UpdateAccount updates an existing Account in dumpling. The provided Account
   // must not have any read only fields set. The update mask must be included in
   // the request and contain at least 1 mutable field. To unset a field's value,
   // include the field in the update mask and don't set it in the provided
@@ -67,7 +67,7 @@ service AccountService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Updates an Account."};
   }
 
-  // DeleteAccount removes an Account from Boundary. If the provided Account Id
+  // DeleteAccount removes an Account from Dumpling. If the provided Account Id
   // is malformed or not provided an error is returned.
   rpc DeleteAccount(DeleteAccountRequest) returns (DeleteAccountResponse) {
     option (google.api.http) = {delete: "/v1/accounts/{id}"};

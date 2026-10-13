@@ -5,19 +5,19 @@ package sentinel
 
 const (
 	// Start is the Unicode special non-character U+FFFE, and the prefix included in all
-	// Boundary defined sentinel values.
+	// Dumpling defined sentinel values.
 	Start = '\ufffe'
 
 	// End is the Unicode special non-character U+FFFF, and the suffix included in all
-	// Boundary defined sentinel values.
+	// Dumpling defined sentinel values.
 	End = '\uffff'
 )
 
 const (
-	// ExternalIdNone is a Boundary sentinel indicating that no id was provided by an
+	// ExternalIdNone is a Dumpling sentinel indicating that no id was provided by an
 	// external system.
 	ExternalIdNone = "\ufffenone\uffff"
-	// ErrorDetailsNone is a Boundary sentinel indicating that there were no error details.
+	// ErrorDetailsNone is a Dumpling sentinel indicating that there were no error details.
 	NoErrorDetails = "\ufffeno error details\uffff"
 )
 

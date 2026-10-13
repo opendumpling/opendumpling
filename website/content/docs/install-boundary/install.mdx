@@ -1,26 +1,26 @@
 ---
 layout: docs
-page_title: Install Boundary
+page_title: Install Dumpling
 description: |-
- Install a self-managed version of Boundary
+ Install a self-managed version of Dumpling
 ---
 
-# Install Boundary
+# Install Dumpling
 
-This guide outlines the required steps to manually install and configure a single HashiCorp Boundary cluster as defined in the [Recommended architecture](/boundary/docs/install-boundary/recommended-architecture) topic.
-It assumes you install Boundary on virtual machines (VMs) or bare-metal servers running a Debian or Red Hat-based Linux distribution.
+This guide outlines the required steps to manually install and configure a single OpenDumpling cluster as defined in the [Recommended architecture](/boundary/docs/install-boundary/recommended-architecture) topic.
+It assumes you install Dumpling on virtual machines (VMs) or bare-metal servers running a Debian or Red Hat-based Linux distribution.
 
 This document includes general guidance as well as specific recommendations for popular cloud infrastructure platforms.
 These recommendations have also been encoded into official Terraform reference architectures for [AWS](https://github.com/hashicorp/boundary-reference-architecture/tree/main/deployment/aws), [Azure](https://github.com/hashicorp/boundary-reference-architecture/tree/main/deployment/azure), and [GCP](https://github.com/hashicorp/boundary-reference-architecture/tree/main/deployment/gcp).
 
-Pre-built Boundary packages are available from the [HashiCorp Linux Repository](https://www.hashicorp.com/blog/announcing-the-hashicorp-linux-repository).
-In addition to installing the Boundary binary, the official package also provides a systemd service unit, and a local `boundary` user account under which the service runs.
+Pre-built Dumpling packages are available from the [HashiCorp Linux Repository](https://www.hashicorp.com/blog/announcing-the-hashicorp-linux-repository).
+In addition to installing the Dumpling binary, the official package also provides a systemd service unit, and a local `boundary` user account under which the service runs.
 
-You must complete the following steps for each Boundary controller and worker node that you want to deploy.
-The binary operates as either a worker or controller, depending on the subsequent configuration that you generate for the Boundary binary.
+You must complete the following steps for each Dumpling controller and worker node that you want to deploy.
+The binary operates as either a worker or controller, depending on the subsequent configuration that you generate for the Dumpling binary.
 
 The steps vary by Linux distribution.
-Select your distribution, and complete the steps to install Boundary.
+Select your distribution, and complete the steps to install Dumpling.
 
 <Tabs>
 <Tab heading="Ubuntu/Debian">
@@ -42,7 +42,7 @@ Select your distribution, and complete the steps to install Boundary.
     $ sudo apt update
     ```
 
-1. Install Boundary:
+1. Install Dumpling:
 
     ```shell-session
     $ sudo apt install boundary
@@ -63,7 +63,7 @@ Select your distribution, and complete the steps to install Boundary.
     $ sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
     ```
 
-3. Install Boundary:
+3. Install Dumpling:
 
     ```shell-session
     $ sudo yum -y install boundary-enterprise
@@ -85,7 +85,7 @@ Select your distribution, and complete the steps to install Boundary.
     $ sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
     ```
 
-3. Install Boundary:
+3. Install Dumpling:
 
     ```shell-session
     $ sudo yum -y install boundary-enterprise

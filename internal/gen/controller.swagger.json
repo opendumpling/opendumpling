@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Boundary Controller HTTP API",
+    "title": "Dumpling Controller HTTP API",
     "version": "version not set"
   },
   "tags": [
@@ -3342,7 +3342,7 @@
                   "items": {
                     "type": "string"
                   },
-                  "description": "Injected application credentials are used by a Boundary worker to secure the\nconnection between the worker and the endpoint. Injected application credentials are\nnever returned to the user."
+                  "description": "Injected application credentials are used by a Dumpling worker to secure the\nconnection between the worker and the endpoint. Injected application credentials are\nnever returned to the user."
                 }
               }
             }
@@ -3506,7 +3506,7 @@
                   "items": {
                     "type": "string"
                   },
-                  "description": "Injected application credentials are used by a Boundary worker to secure the\nconnection between the worker and the endpoint. Injected application credentials are\nnever returned to the user."
+                  "description": "Injected application credentials are used by a Dumpling worker to secure the\nconnection between the worker and the endpoint. Injected application credentials are\nnever returned to the user."
                 }
               }
             }
@@ -3617,7 +3617,7 @@
                   "items": {
                     "type": "string"
                   },
-                  "description": "Injected application credentials are used by a Boundary worker to secure the\nconnection between the worker and the endpoint. Injected application credentials are\nnever returned to the user."
+                  "description": "Injected application credentials are used by a Dumpling worker to secure the\nconnection between the worker and the endpoint. Injected application credentials are\nnever returned to the user."
                 }
               },
               "description": "Sets the values for credential sources. Any credential_source_id field that\nis not set in the request will result in those fields being cleared."
@@ -5117,7 +5117,7 @@
         "sync_interval_seconds": {
           "type": "integer",
           "format": "int32",
-          "description": "An interger number of seconds indicating the amount of time that should\nelapse between syncs of the host set. The interval will be applied to the\nend of the previous sync operation, not the start. Setting to -1 will\ndisable syncing for that host set; setting to zero will cause the set to\nuse Boundary's default. The default may change between releases. May not\nbe valid for all plugin types."
+          "description": "An interger number of seconds indicating the amount of time that should\nelapse between syncs of the host set. The interval will be applied to the\nend of the previous sync operation, not the start. Setting to -1 will\ndisable syncing for that host set; setting to zero will cause the set to\nuse Dumpling's default. The default may change between releases. May not\nbe valid for all plugin types."
         },
         "attributes": {
           "type": "object",
@@ -6017,7 +6017,7 @@
           "description": "The attributes that are applicable for the specific Target."
         }
       },
-      "description": "Target describes a target in Boundary."
+      "description": "Target describes a target in Dumpling."
     },
     "controller.api.resources.sessionrecordings.v1.User": {
       "type": "object",
@@ -6039,7 +6039,7 @@
           "description": "The scope that the User is in."
         }
       },
-      "description": "User describes an authenticated user in Boundary."
+      "description": "User describes an authenticated user in Dumpling."
     },
     "controller.api.resources.sessionrecordings.v1.ValuesAtTime": {
       "type": "object",
@@ -6073,7 +6073,7 @@
           "description": "Information about the Credential Libraries used for this session."
         }
       },
-      "description": "ValuesAtTime contain information about other Boundary resources as they\nwere at a certain time through the lifetime of the Session Recording."
+      "description": "ValuesAtTime contain information about other Dumpling resources as they\nwere at a certain time through the lifetime of the Session Recording."
     },
     "controller.api.resources.sessions.v1.Connection": {
       "type": "object",
@@ -6923,7 +6923,7 @@
         },
         "release_version": {
           "type": "string",
-          "description": "Output only. The version of the Boundary binary the worker is running.",
+          "description": "Output only. The version of the Dumpling binary the worker is running.",
           "readOnly": true
         },
         "directly_connected_downstream_workers": {

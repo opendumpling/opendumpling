@@ -7,8 +7,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hashicorp/boundary/internal/errors"
-	plgpb "github.com/hashicorp/boundary/sdk/pbs/plugin"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	plgpb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
 	"github.com/mitchellh/mapstructure"
 )
 

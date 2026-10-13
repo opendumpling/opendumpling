@@ -10,9 +10,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/sessions"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/sessions"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 )
 
 const (
@@ -62,24 +62,24 @@ func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
 	switch c.Func {
 	case "":
 		return base.WrapForHelpText([]string{
-			"Usage: boundary sessions [sub command] [options] [args]",
+			"Usage: dumpling sessions [sub command] [options] [args]",
 			"",
-			"  This command allows operations on Boundary sessions.",
+			"  This command allows operations on Dumpling sessions.",
 			"",
 			"    Read a session:",
 			"",
-			`      $ boundary sessions read -id s_1234567890`,
+			`      $ dumpling sessions read -id s_1234567890`,
 			"",
 			"  Please see the sessions subcommand help for detailed usage information.",
 		})
 
 	case "cancel":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary sessions cancel [options] [args]",
+			"Usage: dumpling sessions cancel [options] [args]",
 			"",
 			"  Cancel the session specified by ID. If the session is already canceled, this command succeeds with no effect. Example:",
 			"",
-			`    $ boundary sessions cancel -id s_1234567890`,
+			`    $ dumpling sessions cancel -id s_1234567890`,
 			"",
 			"",
 		})

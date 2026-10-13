@@ -7,9 +7,9 @@ import (
 	"context"
 	"testing"
 
-	authStore "github.com/hashicorp/boundary/internal/auth/store"
-	"github.com/hashicorp/boundary/internal/db"
-	dbassert "github.com/hashicorp/boundary/internal/db/assert"
+	authStore "github.com/opendumpling/opendumpling/internal/auth/store"
+	"github.com/opendumpling/opendumpling/internal/db"
+	dbassert "github.com/opendumpling/opendumpling/internal/db/assert"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/proto"

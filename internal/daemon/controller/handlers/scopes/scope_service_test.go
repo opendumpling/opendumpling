@@ -13,22 +13,22 @@ import (
 
 	"github.com/golang/protobuf/ptypes/wrappers"
 	"github.com/google/go-cmp/cmp"
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/auth/oidc"
-	"github.com/hashicorp/boundary/internal/authtoken"
-	"github.com/hashicorp/boundary/internal/daemon/controller"
-	"github.com/hashicorp/boundary/internal/daemon/controller/auth"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers"
-	"github.com/hashicorp/boundary/internal/daemon/controller/handlers/scopes"
-	"github.com/hashicorp/boundary/internal/db"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/api/services"
-	authpb "github.com/hashicorp/boundary/internal/gen/controller/auth"
-	"github.com/hashicorp/boundary/internal/iam"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/perms"
-	"github.com/hashicorp/boundary/internal/server"
-	"github.com/hashicorp/boundary/internal/types/scope"
-	pb "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/scopes"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/auth/oidc"
+	"github.com/opendumpling/opendumpling/internal/authtoken"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/auth"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/scopes"
+	"github.com/opendumpling/opendumpling/internal/db"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/api/services"
+	authpb "github.com/opendumpling/opendumpling/internal/gen/controller/auth"
+	"github.com/opendumpling/opendumpling/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/perms"
+	"github.com/opendumpling/opendumpling/internal/server"
+	"github.com/opendumpling/opendumpling/internal/types/scope"
+	pb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/scopes"
 	wrappingKms "github.com/hashicorp/go-kms-wrapping/extras/kms/v2"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -884,7 +884,7 @@ func TestCreate(t *testing.T) {
 
 				if name != "" {
 					// Test cases can specify names with leading and trailing
-					// whitespace to test for Boundary's whitespace removal.
+					// whitespace to test for Dumpling's whitespace removal.
 					// Since we're adding to the name before we send the request
 					// off, we need to make sure we keep it as we found it.
 

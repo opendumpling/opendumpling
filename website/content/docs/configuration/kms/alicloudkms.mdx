@@ -2,19 +2,19 @@
 layout: docs
 page_title: AliCloud KMS - KMSs - configuration
 description: >-
-  The AliCloud KMS configures Boundary to use AliCloud KMS for key management.
+  The AliCloud KMS configures Dumpling to use AliCloud KMS for key management.
 ---
 
 # `alicloudkms` KMS
 
-The AliCloud KMS configures Boundary to use AliCloud KMS for key management.
+The AliCloud KMS configures Dumpling to use AliCloud KMS for key management.
 The AliCloud KMS is activated by one of the following:
 
-- The presence of a `kms "alicloudkms"` block in Boundary's configuration file.
+- The presence of a `kms "alicloudkms"` block in Dumpling's configuration file.
 
 ## `alicloudkms` example
 
-This example shows configuring AliCloud KMS through the Boundary configuration file
+This example shows configuring AliCloud KMS through the Dumpling configuration file
 by providing all the required values:
 
 ```hcl
@@ -29,7 +29,7 @@ kms "alicloudkms" {
 
 ## `alicloudkms` parameters
 
-These parameters apply to the `kms` stanza in the Boundary configuration file:
+These parameters apply to the `kms` stanza in the Dumpling configuration file:
 
 - `purpose` - Purpose of this KMS, acceptable values are: `worker-auth`, `worker-auth-storage`,
    `root`, `previous-root`, `recovery`, or `config`.

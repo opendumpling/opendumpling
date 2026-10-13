@@ -8,7 +8,7 @@ package plugin.v1;
 import "controller/api/resources/storagebuckets/v1/storage_bucket.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "github.com/hashicorp/boundary/sdk/pbs/plugin;plugin";
+option go_package = "github.com/opendumpling/opendumpling/sdk/pbs/plugin;plugin";
 
 // StoragePluginService describes the service for storage bucket plugins.
 service StoragePluginService {

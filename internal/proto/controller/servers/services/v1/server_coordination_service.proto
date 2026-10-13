@@ -7,7 +7,7 @@ package controller.servers.services.v1;
 
 import "controller/servers/v1/servers.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/gen/controller/servers/services;services";
+option go_package = "github.com/opendumpling/opendumpling/internal/gen/controller/servers/services;services";
 
 service ServerCoordinationService {
   // Status gets worker status requests which include the ongoing jobs the worker is handling and
@@ -15,7 +15,7 @@ service ServerCoordinationService {
   // jobs as well as provide a list of the controllers in the system.
   rpc Status(StatusRequest) returns (StatusResponse) {}
 
-  // Returns the addresses of HCP Boundary workers, if any
+  // Returns the addresses of HCP Dumpling workers, if any
   rpc ListHcpbWorkers(ListHcpbWorkersRequest) returns (ListHcpbWorkersResponse) {}
 }
 
@@ -195,7 +195,7 @@ message WorkerInfo {
   string address = 2;
 }
 
-// A HCP Boundary workers request. Empty for now.
+// A HCP Dumpling workers request. Empty for now.
 message ListHcpbWorkersRequest {}
 
 // A response containing worker information

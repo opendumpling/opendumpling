@@ -10,8 +10,8 @@
 package authmethods
 
 import (
-	scopes "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/scopes"
-	_ "github.com/hashicorp/boundary/sdk/pbs/controller/protooptions"
+	scopes "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/scopes"
+	_ "github.com/opendumpling/opendumpling/sdk/pbs/controller/protooptions"
 	_ "google.golang.org/genproto/googleapis/api/visibility"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -317,7 +317,7 @@ type OidcAuthMethodAttributes struct {
 	// Output only. The state of the auth method. Will be "inactive",
 	// "active-private", or "active-public".
 	State string `protobuf:"bytes,10,opt,name=state,proto3" json:"state,omitempty" class:"public"` // @gotags: `class:"public"`
-	// The issuer URL. Boundary expects only the schema, host, and port and will
+	// The issuer URL. Dumpling expects only the schema, host, and port and will
 	// strip off ".well-known/openid-configuration" if present. This will be
 	// used for configuration discovery as well as for validation of the "iss"
 	// claim.
@@ -366,7 +366,7 @@ type OidcAuthMethodAttributes struct {
 	// will be disabled.
 	DisableDiscoveredConfigValidation bool `protobuf:"varint,120,opt,name=disable_discovered_config_validation,proto3" json:"disable_discovered_config_validation,omitempty" class:"public"` // @gotags: `class:"public"`
 	// dry_run, when set on an update request, indicates that the changes should
-	// not be persisted.  Boundary will still perform the normal checks to confirm
+	// not be persisted.  Dumpling will still perform the normal checks to confirm
 	// the auth method is complete and validated against the discovered config.
 	// This value will also be set on the returned resource when set in the request
 	// along with the updated fields applied to the resource (but not persisted) as
@@ -824,7 +824,7 @@ type LdapAuthMethodAttributes struct {
 	AnonGroupSearch bool `protobuf:"varint,50,opt,name=anon_group_search,proto3" json:"anon_group_search,omitempty" class:"public"` // @gotags: `class:"public"`
 	// upn_domain is the userPrincipalDomain used to construct the UPN string for
 	// the authenticating user. The constructed UPN will appear as
-	// [username]@UPNDomain  Example: example.com, which will cause Boundary to
+	// [username]@UPNDomain  Example: example.com, which will cause Dumpling to
 	// bind as username@example.com when authenticating the user.
 	UpnDomain *wrapperspb.StringValue `protobuf:"bytes,60,opt,name=upn_domain,proto3" json:"upn_domain,omitempty" class:"public"` // @gotags: `class:"public"`
 	// urls are the LDAP URLS that specify LDAP servers to connection to.  There

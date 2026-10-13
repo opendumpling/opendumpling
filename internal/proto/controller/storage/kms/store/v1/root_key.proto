@@ -7,7 +7,7 @@ package controller.storage.kms.store.v1;
 
 import "controller/storage/timestamp/v1/timestamp.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/kms/store;store";
+option go_package = "github.com/opendumpling/opendumpling/internal/kms/store;store";
 
 message RootKey {
   // private_id is used to access the root key via an API

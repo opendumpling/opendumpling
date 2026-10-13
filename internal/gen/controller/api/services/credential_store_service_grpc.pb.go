@@ -26,13 +26,13 @@ type CredentialStoreServiceClient interface {
 	// provided scope. The request must include the scope id and if missing,
 	// malformed, or referencing a non existing scope, an error is returned.
 	ListCredentialStores(ctx context.Context, in *ListCredentialStoresRequest, opts ...grpc.CallOption) (*ListCredentialStoresResponse, error)
-	// CreateCredentialStore creates and stores an Credential Store in boundary.  The
+	// CreateCredentialStore creates and stores an Credential Store in dumpling.  The
 	// provided request must include the scope in which the Credential Store will be
 	// created. If the scope id is missing, malformed or referencing a
 	// non existing resource an error is returned.  If a name is provided that is
 	// in use in another Credential Store in the same scope, an error is returned.
 	CreateCredentialStore(ctx context.Context, in *CreateCredentialStoreRequest, opts ...grpc.CallOption) (*CreateCredentialStoreResponse, error)
-	// UpdateCredentialStore updates an existing Credential Store in boundary.  The provided
+	// UpdateCredentialStore updates an existing Credential Store in dumpling.  The provided
 	// Credential Store must not have any read only fields set.  The update mask must be
 	// included in the request and contain at least 1 mutable field.  To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -41,7 +41,7 @@ type CredentialStoreServiceClient interface {
 	// request attempts to update the name to one that is already in use by
 	// another Credential Store in the parent scope.
 	UpdateCredentialStore(ctx context.Context, in *UpdateCredentialStoreRequest, opts ...grpc.CallOption) (*UpdateCredentialStoreResponse, error)
-	// DeleteCredentialStore removes a Credential Store from Boundary. If the Credential Store id
+	// DeleteCredentialStore removes a Credential Store from Dumpling. If the Credential Store id
 	// is malformed or not provided an error is returned.
 	DeleteCredentialStore(ctx context.Context, in *DeleteCredentialStoreRequest, opts ...grpc.CallOption) (*DeleteCredentialStoreResponse, error)
 }
@@ -111,13 +111,13 @@ type CredentialStoreServiceServer interface {
 	// provided scope. The request must include the scope id and if missing,
 	// malformed, or referencing a non existing scope, an error is returned.
 	ListCredentialStores(context.Context, *ListCredentialStoresRequest) (*ListCredentialStoresResponse, error)
-	// CreateCredentialStore creates and stores an Credential Store in boundary.  The
+	// CreateCredentialStore creates and stores an Credential Store in dumpling.  The
 	// provided request must include the scope in which the Credential Store will be
 	// created. If the scope id is missing, malformed or referencing a
 	// non existing resource an error is returned.  If a name is provided that is
 	// in use in another Credential Store in the same scope, an error is returned.
 	CreateCredentialStore(context.Context, *CreateCredentialStoreRequest) (*CreateCredentialStoreResponse, error)
-	// UpdateCredentialStore updates an existing Credential Store in boundary.  The provided
+	// UpdateCredentialStore updates an existing Credential Store in dumpling.  The provided
 	// Credential Store must not have any read only fields set.  The update mask must be
 	// included in the request and contain at least 1 mutable field.  To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -126,7 +126,7 @@ type CredentialStoreServiceServer interface {
 	// request attempts to update the name to one that is already in use by
 	// another Credential Store in the parent scope.
 	UpdateCredentialStore(context.Context, *UpdateCredentialStoreRequest) (*UpdateCredentialStoreResponse, error)
-	// DeleteCredentialStore removes a Credential Store from Boundary. If the Credential Store id
+	// DeleteCredentialStore removes a Credential Store from Dumpling. If the Credential Store id
 	// is malformed or not provided an error is returned.
 	DeleteCredentialStore(context.Context, *DeleteCredentialStoreRequest) (*DeleteCredentialStoreResponse, error)
 	mustEmbedUnimplementedCredentialStoreServiceServer()

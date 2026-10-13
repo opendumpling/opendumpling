@@ -14,8 +14,8 @@ import (
 	"io"
 	"log"
 
-	"github.com/hashicorp/boundary/internal/bsr/internal/is"
-	"github.com/hashicorp/boundary/internal/bsr/kms"
+	"github.com/opendumpling/opendumpling/internal/bsr/internal/is"
+	"github.com/opendumpling/opendumpling/internal/bsr/kms"
 )
 
 // DecodeChunkFunc is a function that given a BaseChunk and the data portion

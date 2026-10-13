@@ -7,7 +7,7 @@ description: |-
 
 # `controller` stanza
 
-The `controller` stanza configures Boundary controller-specific parameters.
+The `controller` stanza configures Dumpling controller-specific parameters.
 
 ```hcl
 controller {
@@ -20,7 +20,7 @@ controller {
 }
 ```
 
-- `name` - Specifies a unique name of this controller within the Boundary
+- `name` - Specifies a unique name of this controller within the Dumpling
   cluster. This value can be a direct name string, can refer to a file on disk
   (file://) from which an name will be read; or an env var (env://) from which
   the name will be read.
@@ -32,7 +32,7 @@ description will be read.
 - `database` - Configuration block with two valid parameters for connecting to Postgres:
 
   - `url` - Configures the URL for connecting to Postgres. If your Postgres server has TLS disabled,
-    Boundary will not be able to connect by default. To run Boundary without a TLS connection
+    Dumpling will not be able to connect by default. To run Dumpling without a TLS connection
     to Postgres (not recommended for production usage), add the `sslmode=disable` parameter to
     your connection string, such as `url = "postgresql://postgres:boundary@192.168.1.1:5432/boundary?sslmode=disable"`
     This value can refer to a file on disk (file://) from which a URL will be read; an env
@@ -99,10 +99,10 @@ description will be read.
   a status to the database for 5 minutes. Once a job is interrupted it will be run immediate on the
   first controller available. Default is 30 seconds.
 
-- `graceful_shutdown_wait_duration` - Amount of time Boundary will wait before initiating the shutdown procedure,
-  after receiving a shutdown signal. In this state, Boundary still processes requests as normal but replies
+- `graceful_shutdown_wait_duration` - Amount of time Dumpling will wait before initiating the shutdown procedure,
+  after receiving a shutdown signal. In this state, Dumpling still processes requests as normal but replies
   with `503 Service Unavailable` to any health requests. This is designed to allow an operator to configure
-  load-balancers to preemptively stop new traffic to a Boundary instance that is going away. Valid time units
+  load-balancers to preemptively stop new traffic to a Dumpling instance that is going away. Valid time units
   are anything specified by Go's [ParseDuration()](https://golang.org/pkg/time/#ParseDuration) method. Only
   used when an `ops` listener is set and the Controller is present. Default is 0 seconds.
 
@@ -117,7 +117,7 @@ The `SIGTERM` and `SIGINT` signals initiate a graceful shutdown on a controller.
 The controller requires two KMS stanzas for `root` and `worker-auth` purposes:
 
 ```hcl
-# Root KMS configuration block: this is the root key for Boundary
+# Root KMS configuration block: this is the root key for Dumpling
 # Use a production KMS such as AWS KMS in production installs
 kms "aead" {
   purpose = "root"
@@ -140,7 +140,7 @@ kms "aead" {
 And optionally, a KMS stanza for recovery purpose:
 
 ```hcl
-# Recovery KMS block: configures the recovery key for Boundary
+# Recovery KMS block: configures the recovery key for Dumpling
 # Use a production KMS such as AWS KMS for production installs
 kms "aead" {
   purpose = "recovery"
@@ -162,7 +162,7 @@ kms "aead" {
 }
 ```
 
-Boundary supports many kinds of KMS integrations. For a complete guide to all available
+Dumpling supports many kinds of KMS integrations. For a complete guide to all available
 KMS types, see our [KMS documentation](/boundary/docs/configuration/kms).
 
 ## Complete configuration example
@@ -177,7 +177,7 @@ controller {
   name = "demo-controller-1"
   description = "A controller for a demo!"
 
-  # After receiving a shutdown signal, Boundary will wait 10s before initiating the shutdown process.
+  # After receiving a shutdown signal, Dumpling will wait 10s before initiating the shutdown process.
   graceful_shutdown_wait_duration = "10s"
 
   # Database URL for postgres. This can be a direct "postgres://"
@@ -222,7 +222,7 @@ listener "tcp" {
   tls_disable = false
 }
 
-# Root KMS configuration block: this is the root key for Boundary
+# Root KMS configuration block: this is the root key for Dumpling
 # Use a production KMS such as AWS KMS in production installs
 kms "aead" {
   purpose = "root"
@@ -241,7 +241,7 @@ kms "aead" {
   key_id = "global_worker-auth"
 }
 
-# Recovery KMS block: configures the recovery key for Boundary
+# Recovery KMS block: configures the recovery key for Dumpling
 # Use a production KMS such as AWS KMS for production installs
 kms "aead" {
   purpose = "recovery"

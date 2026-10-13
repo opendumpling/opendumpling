@@ -10,7 +10,7 @@
 package services
 
 import (
-	targets "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/targets"
+	targets "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/targets"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	anypb "google.golang.org/protobuf/types/known/anypb"

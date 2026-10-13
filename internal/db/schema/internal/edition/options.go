@@ -3,7 +3,7 @@
 
 package edition
 
-import "github.com/hashicorp/boundary/internal/db/schema/migration"
+import "github.com/opendumpling/opendumpling/internal/db/schema/migration"
 
 // getOpts - iterate the inbound Options and return a struct.
 func getOpts(opt ...Option) options {

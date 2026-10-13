@@ -10,9 +10,9 @@
 package hostcatalogs
 
 import (
-	plugins "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/plugins"
-	scopes "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/scopes"
-	_ "github.com/hashicorp/boundary/sdk/pbs/controller/protooptions"
+	plugins "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/plugins"
+	scopes "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/scopes"
+	_ "github.com/opendumpling/opendumpling/sdk/pbs/controller/protooptions"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	structpb "google.golang.org/protobuf/types/known/structpb"

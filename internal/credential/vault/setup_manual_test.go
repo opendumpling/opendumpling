@@ -13,24 +13,24 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/api/credentiallibraries"
-	"github.com/hashicorp/boundary/api/credentialstores"
-	"github.com/hashicorp/boundary/api/hosts"
-	"github.com/hashicorp/boundary/api/targets"
-	"github.com/hashicorp/boundary/internal/cmd/config"
-	"github.com/hashicorp/boundary/internal/credential/vault"
-	"github.com/hashicorp/boundary/internal/daemon/controller"
-	"github.com/hashicorp/boundary/internal/daemon/worker"
+	"github.com/opendumpling/opendumpling/api/credentiallibraries"
+	"github.com/opendumpling/opendumpling/api/credentialstores"
+	"github.com/opendumpling/opendumpling/api/hosts"
+	"github.com/opendumpling/opendumpling/api/targets"
+	"github.com/opendumpling/opendumpling/internal/cmd/config"
+	"github.com/opendumpling/opendumpling/internal/credential/vault"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller"
+	"github.com/opendumpling/opendumpling/internal/daemon/worker"
 	"github.com/hashicorp/go-hclog"
 	"github.com/stretchr/testify/require"
 
-	_ "github.com/hashicorp/boundary/internal/daemon/controller/handlers/targets/tcp"
+	_ "github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/targets/tcp"
 )
 
 func TestSetupSleepyDevEnvironment(t *testing.T) {
-	if os.Getenv("BOUNDARY_SLEEPY_TESTS") == "" {
+	if os.Getenv("DUMPLING_SLEEPY_TESTS") == "" {
 		t.Skip("This test exists to make manual testing and debugging easier by setting up an environment to test against.\n" +
-			"Set BOUNDARY_SLEEPY_TESTS to something non-zero to run the environment establishing test.")
+			"Set DUMPLING_SLEEPY_TESTS to something non-zero to run the environment establishing test.")
 	}
 
 	logger := hclog.New(&hclog.LoggerOptions{
@@ -69,7 +69,7 @@ func TestSetupSleepyDevEnvironment(t *testing.T) {
 	require.NoError(t, err)
 	_, err = tcl.Update(ctx, "ttcp_1234567890", 0, targets.WithTcpTargetDefaultPort(uint32(port)), targets.WithAutomaticVersioning(true))
 	require.NoError(t, err)
-	sec, _ := v.CreateToken(t, vault.WithPolicies([]string{"default", "boundary-controller", "database"}))
+	sec, _ := v.CreateToken(t, vault.WithPolicies([]string{"default", "dumpling-controller", "database"}))
 	storeClient := credentialstores.NewClient(client)
 	store, err := storeClient.Create(ctx, "vault", tgt.Item.ScopeId,
 		credentialstores.WithVaultCredentialStoreAddress(v.Addr),
@@ -101,8 +101,8 @@ func TestSetupSleepyDevEnvironment(t *testing.T) {
 	})
 	defer w1.Shutdown()
 	addr := c1.ApiAddrs()[0]
-	t.Logf("Boundary ready\n"+
-		"boundary authenticate password -addr %q -auth-method-id ampw_1234567890 -login-name admin -password password\n"+
-		"boundary connect -addr %q -target-id ttcp_1234567890 -format json\n", addr, addr)
+	t.Logf("Dumpling ready\n"+
+		"dumpling authenticate password -addr %q -auth-method-id ampw_1234567890 -login-name admin -password password\n"+
+		"dumpling connect -addr %q -target-id ttcp_1234567890 -format json\n", addr, addr)
 	time.Sleep(time.Hour)
 }

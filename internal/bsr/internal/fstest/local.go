@@ -13,7 +13,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/hashicorp/boundary/internal/storage"
+	"github.com/opendumpling/opendumpling/internal/storage"
 )
 
 // LocalFS is a test filesystem that creates files in the provided directory.

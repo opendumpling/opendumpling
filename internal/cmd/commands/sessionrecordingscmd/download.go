@@ -10,9 +10,9 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/sessionrecordings"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/sessionrecordings"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/mitchellh/cli"
 	"github.com/mitchellh/go-wordwrap"
 	"github.com/posener/complete"
@@ -37,11 +37,11 @@ func (c *DownloadCommand) Synopsis() string {
 
 func (c *DownloadCommand) Help() string {
 	return base.WrapForHelpText([]string{
-		"Usage: boundary session-recordings download [args]",
+		"Usage: dumpling session-recordings download [args]",
 		"",
 		"  Download a session recording resource. Example:",
 		"",
-		`    $ boundary session-recordings download -id chr_u6e9wJ8B8H`,
+		`    $ dumpling session-recordings download -id chr_u6e9wJ8B8H`,
 		"",
 		"",
 	}) + c.Flags().Help()

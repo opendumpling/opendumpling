@@ -7,12 +7,12 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hashicorp/boundary/internal/credential"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/credential"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/kms"
 )
 
-// Retrieve retrieves and returns static credentials from Boundary for all the provided
+// Retrieve retrieves and returns static credentials from Dumpling for all the provided
 // ids. All the returned static credentials will have their secret fields decrypted.
 func (r *Repository) Retrieve(ctx context.Context, projectId string, ids []string) ([]credential.Static, error) {
 	const op = "static.(Repository).Retrieve"

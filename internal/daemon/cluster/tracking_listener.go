@@ -10,9 +10,9 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/observability/event"
-	"github.com/hashicorp/boundary/version"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
+	"github.com/opendumpling/opendumpling/version"
 	nodee "github.com/hashicorp/nodeenrollment"
 	"github.com/hashicorp/nodeenrollment/protocol"
 )
@@ -82,7 +82,7 @@ func (e *trackingListener) Accept() (net.Conn, error) {
 			conn.Close()
 			return conn, nil
 		case version.Get().VersionMetadata != "":
-			incomingVer := version.FromVersionString(wi.BoundaryVersion)
+			incomingVer := version.FromVersionString(wi.DumplingVersion)
 			if (incomingVer == nil || incomingVer.VersionMetadata == "") && version.SupportsFeature(version.Binary, version.RequireVersionInWorkerInfo) {
 				err := stderrors.New("build contains version with metadata, incoming worker version is nil or has mismatched metadata")
 				event.WriteError(e.ctx, op, err)

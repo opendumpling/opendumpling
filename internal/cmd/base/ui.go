@@ -10,7 +10,7 @@ import (
 	"golang.org/x/term"
 )
 
-type BoundaryUI struct {
+type DumplingUI struct {
 	cli.Ui
 	Format string
 }

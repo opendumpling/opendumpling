@@ -12,7 +12,7 @@
 package request
 
 import (
-	timestamp "github.com/hashicorp/boundary/internal/db/timestamp"
+	timestamp "github.com/opendumpling/opendumpling/internal/db/timestamp"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -29,17 +29,17 @@ const (
 // First, State is used in constructing the authorization URL, in the first
 // leg of the authen flow. State represents the unique data used to construct
 // an oidc.Request (see: https://github.com/hashicorp/cap/blob/main/oidc/request.go).
-// State needs enough information, that when combined with a Boundary oidc auth method,
+// State needs enough information, that when combined with a Dumpling oidc auth method,
 // a proper oidc.Request can be recreated during the second leg of the authen flow.  State
 // also needs the provider.ConfigHash() used to from the first leg, so it can verify
-// the Boundary's oidc auth method configuration hasn't changed since the authen flow
+// the Dumpling's oidc auth method configuration hasn't changed since the authen flow
 // began.
 type State struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// token_request_id is the id. This id is used by the client to poll for a Boundary
+	// token_request_id is the id. This id is used by the client to poll for a Dumpling
 	// token, once the final leg of the authen flow is compeleted.  The Callback uses this
 	// id to create a "pending" token for that polling process.
 	TokenRequestId string `protobuf:"bytes,10,opt,name=token_request_id,json=tokenRequestId,proto3" json:"token_request_id,omitempty"`
@@ -194,7 +194,7 @@ func (x *Token) GetExpirationTime() *timestamp.Timestamp {
 }
 
 // Wrapper wraps an encrypted cipher text with non-sensitive info
-// which allows Boundary to determine how to decrypt
+// which allows Dumpling to determine how to decrypt
 // the wrappered cipher text (ct) field.
 type Wrapper struct {
 	state         protoimpl.MessageState

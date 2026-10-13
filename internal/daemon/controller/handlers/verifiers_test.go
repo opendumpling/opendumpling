@@ -7,8 +7,8 @@ import (
 	"errors"
 	"testing"
 
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/api/services"
-	pb "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/users"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/api/services"
+	pb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/users"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"

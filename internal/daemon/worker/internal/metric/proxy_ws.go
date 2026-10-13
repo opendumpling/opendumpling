@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/hashicorp/boundary/globals"
+	"github.com/opendumpling/opendumpling/globals"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
@@ -25,7 +25,7 @@ var (
 			Namespace: globals.MetricNamespace,
 			Subsystem: proxyWebsocketSubsystem,
 			Name:      "active_connections",
-			Help:      "Count of open websocket proxy connections (to Boundary workers).",
+			Help:      "Count of open websocket proxy connections (to Dumpling workers).",
 		},
 	)
 

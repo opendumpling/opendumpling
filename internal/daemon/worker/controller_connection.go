@@ -21,16 +21,16 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/daemon/cluster"
-	"github.com/hashicorp/boundary/internal/daemon/cluster/handlers"
-	"github.com/hashicorp/boundary/internal/daemon/worker/internal/metric"
-	"github.com/hashicorp/boundary/internal/errors"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/servers/services"
-	"github.com/hashicorp/boundary/internal/observability/event"
-	"github.com/hashicorp/boundary/internal/server"
-	"github.com/hashicorp/boundary/version"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/daemon/cluster"
+	"github.com/opendumpling/opendumpling/internal/daemon/cluster/handlers"
+	"github.com/opendumpling/opendumpling/internal/daemon/worker/internal/metric"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/servers/services"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
+	"github.com/opendumpling/opendumpling/internal/server"
+	"github.com/opendumpling/opendumpling/version"
 	"github.com/hashicorp/go-secure-stdlib/base62"
 	"github.com/hashicorp/nodeenrollment"
 	"github.com/hashicorp/nodeenrollment/multihop"
@@ -71,7 +71,7 @@ func (w *Worker) StartControllerConnections() error {
 		if w.conf.RawConfig.HcpbClusterId != "" && HandleHcpbClusterId != nil {
 			clusterAddress := HandleHcpbClusterId(w.conf.RawConfig.HcpbClusterId)
 			initialAddrs = append(initialAddrs, clusterAddress)
-			event.WriteSysEvent(w.baseContext, op, fmt.Sprintf("Setting HCP Boundary cluster address %s as upstream address", clusterAddress))
+			event.WriteSysEvent(w.baseContext, op, fmt.Sprintf("Setting HCP Dumpling cluster address %s as upstream address", clusterAddress))
 		} else {
 			return errors.New(w.baseContext, errors.InvalidParameter, op, "no initial upstream addresses found")
 		}
@@ -280,7 +280,7 @@ func (w *Worker) workerAuthTLSConfig(extraAlpnProtos ...string) (*tls.Config, *b
 		Name:            w.conf.RawConfig.Worker.Name,
 		Description:     w.conf.RawConfig.Worker.Description,
 		ProxyAddress:    w.conf.RawConfig.Worker.PublicAddr,
-		BoundaryVersion: version.Get().VersionNumber(),
+		DumplingVersion: version.Get().VersionNumber(),
 	}
 
 	info.ConnectionNonce, err = w.nonceFn(20)
@@ -386,7 +386,7 @@ func (w *Worker) workerConnectionInfo(addr string) (*structpb.Struct, error) {
 	const op = "worker.(Worker).workerConnectionInfo"
 	wci := &cluster.WorkerConnectionInfo{
 		UpstreamAddress:  addr,
-		BoundaryVersion:  version.Get().VersionNumber(),
+		DumplingVersion:  version.Get().VersionNumber(),
 		Name:             w.conf.RawConfig.Worker.Name,
 		Description:      w.conf.RawConfig.Worker.Description,
 		PublicAddr:       w.conf.RawConfig.Worker.PublicAddr,

@@ -9,7 +9,7 @@ import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/gen/testing/event;event";
+option go_package = "github.com/opendumpling/opendumpling/internal/gen/testing/event;event";
 
 service TestAuthMethodService {
   // TestAuthenticate validates credentials provided and returns an Auth Token.

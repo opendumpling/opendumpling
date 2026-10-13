@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/bsr"
-	pssh "github.com/hashicorp/boundary/internal/bsr/gen/ssh/v1"
+	"github.com/opendumpling/opendumpling/internal/bsr"
+	pssh "github.com/opendumpling/opendumpling/internal/bsr/gen/ssh/v1"
 	"github.com/stretchr/testify/require"
 	gssh "golang.org/x/crypto/ssh"
 	"google.golang.org/protobuf/proto"

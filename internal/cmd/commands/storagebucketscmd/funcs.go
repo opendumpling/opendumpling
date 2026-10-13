@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/storagebuckets"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/storagebuckets"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/hashicorp/go-bexpr"
 )
 
@@ -105,37 +105,37 @@ func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
 	switch c.Func {
 	case "":
 		return base.WrapForHelpText([]string{
-			"Usage: boundary storage-buckets [sub command] [options] [args]",
+			"Usage: dumpling storage-buckets [sub command] [options] [args]",
 			"",
-			"  This command allows operations on Boundary storage bucket resources. Example:",
+			"  This command allows operations on Dumpling storage bucket resources. Example:",
 			"",
 			"    Read a storage bucket:",
 			"",
-			`      $ boundary storage-buckets read -id sb_1234567890`,
+			`      $ dumpling storage-buckets read -id sb_1234567890`,
 			"",
 			"  Please see the storage-buckets subcommand help for detailed usage information.",
 		})
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary storage-buckets create [sub command] [options] [args]",
+			"Usage: dumpling storage-buckets create [sub command] [options] [args]",
 			"",
-			"  This command allows create operations on Boundary storage bucket resources. Example:",
+			"  This command allows create operations on Dumpling storage bucket resources. Example:",
 			"",
 			"    Create a storage bucket:",
 			"",
-			`      $ boundary storage-buckets create -plugin-name aws -bucket-name prod_bucket`,
+			`      $ dumpling storage-buckets create -plugin-name aws -bucket-name prod_bucket`,
 			"",
 			"  Please see the subcommand help for detailed usage information.",
 		})
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary storage-buckets update [sub command] [options] [args]",
+			"Usage: dumpling storage-buckets update [sub command] [options] [args]",
 			"",
-			"  This command allows update operations on Boundary storage bucket resources. Example:",
+			"  This command allows update operations on Dumpling storage bucket resources. Example:",
 			"",
 			"    Update a storage bucket:",
 			"",
-			`      $ boundary storage-buckets update -id sb_1234567890 -name devops -description "For DevOps usage"`,
+			`      $ dumpling storage-buckets update -id sb_1234567890 -name devops -description "For DevOps usage"`,
 			"",
 			"  Please see the subcommand help for detailed usage information.",
 		})

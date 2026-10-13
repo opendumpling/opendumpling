@@ -10,8 +10,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/hashicorp/boundary/testing/internal/e2e"
-	"github.com/hashicorp/boundary/version"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e"
+	"github.com/opendumpling/opendumpling/version"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -21,7 +21,7 @@ func TestCliVersion(t *testing.T) {
 	e2e.MaybeSkipTest(t)
 
 	ctx := context.Background()
-	output := e2e.RunCommand(ctx, "boundary", e2e.WithArgs("version", "-format", "json"))
+	output := e2e.RunCommand(ctx, "dumpling", e2e.WithArgs("version", "-format", "json"))
 	require.NoError(t, output.Err, string(output.Stderr))
 
 	var versionResult version.Info

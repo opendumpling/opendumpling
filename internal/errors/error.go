@@ -10,8 +10,8 @@ import (
 	"runtime"
 	"strings"
 
-	pberrors "github.com/hashicorp/boundary/internal/gen/errors"
-	"github.com/hashicorp/boundary/internal/observability/event"
+	pberrors "github.com/opendumpling/opendumpling/internal/gen/errors"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
@@ -94,8 +94,8 @@ func E(ctx context.Context, opt ...Option) error {
 			Msg:     err.Msg,
 		}
 		if eventErr.Op == "" {
-			const has = "github.com/hashicorp/boundary/internal/errors."
-			const trim = "github.com/hashicorp/boundary/"
+			const has = "github.com/opendumpling/opendumpling/internal/errors."
+			const trim = "github.com/opendumpling/opendumpling/"
 			for i := 0; i < 5; i++ {
 				pc, _, _, ok := runtime.Caller(i)
 				details := runtime.FuncForPC(pc)
@@ -158,7 +158,7 @@ func Wrap(ctx context.Context, e error, op Op, opt ...Option) error {
 	return E(ctx, opt...)
 }
 
-// Convert will convert the error to a Boundary *Err (returning it as an error)
+// Convert will convert the error to a Dumpling *Err (returning it as an error)
 // and attempt to add a helpful error msg as well. If that's not possible, it
 // will return nil
 func Convert(e error) *Err {

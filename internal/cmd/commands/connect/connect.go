@@ -20,12 +20,12 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/targets"
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/proxy"
-	targetspb "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/targets"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/targets"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/proxy"
+	targetspb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/targets"
 	"github.com/hashicorp/go-cleanhttp"
 	"github.com/hashicorp/go-secure-stdlib/base62"
 	"github.com/mitchellh/cli"
@@ -114,7 +114,7 @@ type Command struct {
 func (c *Command) Synopsis() string {
 	switch c.Func {
 	case "connect":
-		return "Connect to a target through a Boundary worker"
+		return "Connect to a target through a Dumpling worker"
 	case "http":
 		return httpSynopsis
 	case "postgres":
@@ -134,26 +134,26 @@ func (c *Command) Help() string {
 	switch c.Func {
 	case "connect":
 		return base.WrapForHelpText([]string{
-			"Usage: boundary connect [options] [args]",
+			"Usage: dumpling connect [options] [args]",
 			"",
 			`  This command performs a target authorization (or consumes an existing authorization token) and launches a proxied connection.`,
 			"",
 			"  Example:",
 			"",
-			`      $ boundary connect -target-id ttcp_1234567890`,
+			`      $ dumpling connect -target-id ttcp_1234567890`,
 			"",
 			"",
 		}) + c.Flags().Help()
 
 	default:
 		return base.WrapForHelpText([]string{
-			fmt.Sprintf("Usage: boundary connect %s [options] [args]", c.Func),
+			fmt.Sprintf("Usage: dumpling connect %s [options] [args]", c.Func),
 			"",
 			fmt.Sprintf(`  This command performs a target authorization (or consumes an existing authorization token) and launches a proxied %s connection.`, c.Func),
 			"",
 			"  Example:",
 			"",
-			fmt.Sprintf(`      $ boundary connect %s -target-id ttcp_1234567890`, c.Func),
+			fmt.Sprintf(`      $ dumpling connect %s -target-id ttcp_1234567890`, c.Func),
 			"",
 			"",
 		}) + c.Flags().Help()
@@ -167,9 +167,9 @@ func (c *Command) Flags() *base.FlagSets {
 	f.StringVar(&base.StringVar{
 		Name:       "authz-token",
 		Target:     &c.flagAuthzToken,
-		EnvVar:     "BOUNDARY_CONNECT_AUTHZ_TOKEN",
+		EnvVar:     "DUMPLING_CONNECT_AUTHZ_TOKEN",
 		Completion: complete.PredictNothing,
-		Usage:      `Only needed if -target-id is not set. The authorization string returned from the Boundary controller via an "authorize-session" action against a target. If set to "-", the command will attempt to read in the authorization string from standard input.`,
+		Usage:      `Only needed if -target-id is not set. The authorization string returned from the Dumpling controller via an "authorize-session" action against a target. If set to "-", the command will attempt to read in the authorization string from standard input.`,
 	})
 
 	f.StringVar(&base.StringVar{
@@ -187,7 +187,7 @@ func (c *Command) Flags() *base.FlagSets {
 	f.StringVar(&base.StringVar{
 		Name:       "exec",
 		Target:     &c.flagExec,
-		EnvVar:     "BOUNDARY_CONNECT_EXEC",
+		EnvVar:     "DUMPLING_CONNECT_EXEC",
 		Completion: complete.PredictAnything,
 		Usage:      `If set, after connecting to the worker, the given binary will be executed. This should be a binary on your path, or an absolute path. If all command flags are followed by " -- " (space, two hyphens, space), then any arguments after that will be sent directly to the binary.`,
 	})
@@ -201,7 +201,7 @@ func (c *Command) Flags() *base.FlagSets {
 	f.StringVar(&base.StringVar{
 		Name:       "target-scope-id",
 		Target:     &c.FlagScopeId,
-		EnvVar:     "BOUNDARY_CONNECT_TARGET_SCOPE_ID",
+		EnvVar:     "DUMPLING_CONNECT_TARGET_SCOPE_ID",
 		Completion: complete.PredictAnything,
 		Usage:      "Target scope ID, if authorizing the session via scope parameters and target name. Mutually exclusive with -scope-name.",
 	})
@@ -209,7 +209,7 @@ func (c *Command) Flags() *base.FlagSets {
 	f.StringVar(&base.StringVar{
 		Name:       "target-scope-name",
 		Target:     &c.FlagScopeName,
-		EnvVar:     "BOUNDARY_CONNECT_TARGET_SCOPE_NAME",
+		EnvVar:     "DUMPLING_CONNECT_TARGET_SCOPE_NAME",
 		Completion: complete.PredictAnything,
 		Usage:      "Target scope name, if authorizing the session via scope parameters and target name. Mutually exclusive with -scope-id.",
 	})
@@ -219,7 +219,7 @@ func (c *Command) Flags() *base.FlagSets {
 		f.StringVar(&base.StringVar{
 			Name:       "listen-addr",
 			Target:     &c.flagListenAddr,
-			EnvVar:     "BOUNDARY_CONNECT_LISTEN_ADDR",
+			EnvVar:     "DUMPLING_CONNECT_LISTEN_ADDR",
 			Completion: complete.PredictAnything,
 			Usage:      `If set, the CLI will attempt to bind its listening address to the given value, which must be an IP address. If it cannot, the command will error. If not set, defaults to the most common IPv4 loopback address (127.0.0.1).`,
 		})
@@ -227,7 +227,7 @@ func (c *Command) Flags() *base.FlagSets {
 		f.IntVar(&base.IntVar{
 			Name:       "listen-port",
 			Target:     &c.flagListenPort,
-			EnvVar:     "BOUNDARY_CONNECT_LISTEN_PORT",
+			EnvVar:     "DUMPLING_CONNECT_LISTEN_PORT",
 			Completion: complete.PredictAnything,
 			Usage:      `If set, the CLI will attempt to bind its listening port to the given value. If it cannot, the command will error.`,
 		})
@@ -894,10 +894,10 @@ func (c *Command) handleExec(passthroughArgs []string) {
 
 	stringReplacer := func(in, typ, replacer string) string {
 		for _, style := range []string{
-			fmt.Sprintf("{{boundary.%s}}", typ),
-			fmt.Sprintf("{{ boundary.%s}}", typ),
-			fmt.Sprintf("{{boundary.%s }}", typ),
-			fmt.Sprintf("{{ boundary.%s }}", typ),
+			fmt.Sprintf("{{dumpling.%s}}", typ),
+			fmt.Sprintf("{{ dumpling.%s}}", typ),
+			fmt.Sprintf("{{dumpling.%s }}", typ),
+			fmt.Sprintf("{{ dumpling.%s }}", typ),
 		} {
 			in = strings.Replace(in, style, replacer, -1)
 		}
@@ -916,9 +916,9 @@ func (c *Command) handleExec(passthroughArgs []string) {
 	cmd := exec.Command(c.flagExec, args...)
 	// Add original and network related envs here
 	cmd.Env = append(os.Environ(),
-		fmt.Sprintf("BOUNDARY_PROXIED_PORT=%s", port),
-		fmt.Sprintf("BOUNDARY_PROXIED_IP=%s", ip),
-		fmt.Sprintf("BOUNDARY_PROXIED_ADDR=%s", addr),
+		fmt.Sprintf("DUMPLING_PROXIED_PORT=%s", port),
+		fmt.Sprintf("DUMPLING_PROXIED_IP=%s", ip),
+		fmt.Sprintf("DUMPLING_PROXIED_ADDR=%s", addr),
 	)
 	// Envs that came from subcommand handling
 	cmd.Env = append(cmd.Env, envs...)

@@ -11,8 +11,8 @@ package services
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
-	storagebuckets "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/storagebuckets"
-	_ "github.com/hashicorp/boundary/sdk/pbs/controller/protooptions"
+	storagebuckets "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/storagebuckets"
+	_ "github.com/opendumpling/opendumpling/sdk/pbs/controller/protooptions"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"

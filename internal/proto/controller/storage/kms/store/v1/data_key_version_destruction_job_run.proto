@@ -5,7 +5,7 @@ syntax = "proto3";
 
 package controller.storage.kms.store.v1;
 
-option go_package = "github.com/hashicorp/boundary/internal/kms/store;store";
+option go_package = "github.com/opendumpling/opendumpling/internal/kms/store;store";
 
 // DataKeyVersionDestructionJobRun is used to read and write
 // data from the kms_data_key_version_destruction_job_run table.

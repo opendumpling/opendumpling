@@ -8,7 +8,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/mitchellh/cli"
 	"github.com/stretchr/testify/assert"
 )
@@ -17,7 +17,7 @@ func TestCommand_Flags(t *testing.T) {
 	t.Parallel()
 	assert := assert.New(t)
 
-	serverCmdUi := &base.BoundaryUI{
+	serverCmdUi := &base.DumplingUI{
 		Ui: &cli.ColoredUi{
 			ErrorColor: cli.UiColorRed,
 			WarnColor:  cli.UiColorYellow,

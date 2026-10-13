@@ -12,8 +12,8 @@
 package store
 
 import (
-	timestamp "github.com/hashicorp/boundary/internal/db/timestamp"
-	_ "github.com/hashicorp/boundary/sdk/pbs/controller/protooptions"
+	timestamp "github.com/opendumpling/opendumpling/internal/db/timestamp"
+	_ "github.com/opendumpling/opendumpling/sdk/pbs/controller/protooptions"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -76,7 +76,7 @@ type AuthMethod struct {
 	AnonGroupSearch bool `protobuf:"varint,120,opt,name=anon_group_search,json=anonGroupSearch,proto3" json:"anon_group_search,omitempty" gorm:"not_null;default:false"`
 	// upn_domain is the userPrincipalDomain used to construct the UPN string for
 	// the authenticating user. The constructed UPN will appear as
-	// [username]@UPNDomain  Example: example.com, which will cause Boundary to
+	// [username]@UPNDomain  Example: example.com, which will cause Dumpling to
 	// bind as username@example.com when authenticating the user.
 	// @inject_tag: `gorm:"default:null"`
 	UpnDomain string `protobuf:"bytes,130,opt,name=upn_domain,json=upnDomain,proto3" json:"upn_domain,omitempty" gorm:"default:null"`
@@ -901,7 +901,7 @@ func (x *ClientCertificate) GetKeyId() string {
 	return ""
 }
 
-// BindCredentail (optional) represent parameters which allow Boundary to bind
+// BindCredentail (optional) represent parameters which allow Dumpling to bind
 // (aka authenticate) using the credentials provided when searching for the user
 // entry used to authenticate the end user.
 type BindCredential struct {

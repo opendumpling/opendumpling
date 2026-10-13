@@ -8,16 +8,16 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/libs/endpoint"
-	"github.com/hashicorp/boundary/internal/observability/event"
-	"github.com/hashicorp/boundary/internal/oplog"
-	"github.com/hashicorp/boundary/internal/scheduler"
-	hcpb "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/hostcatalogs"
-	pb "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/hostsets"
-	plgpb "github.com/hashicorp/boundary/sdk/pbs/plugin"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/libs/endpoint"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
+	"github.com/opendumpling/opendumpling/internal/oplog"
+	"github.com/opendumpling/opendumpling/internal/scheduler"
+	hcpb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/hostcatalogs"
+	pb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/hostsets"
+	plgpb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
 	"github.com/hashicorp/go-secure-stdlib/strutil"
 	ua "go.uber.org/atomic"
 )
@@ -60,7 +60,7 @@ func newSetSyncJob(ctx context.Context, r db.Reader, w db.Writer, kms *kms.Kms, 
 
 	opts := getOpts(opt...)
 	if opts.withLimit == 0 {
-		// zero signals the boundary defaults should be used.
+		// zero signals the dumpling defaults should be used.
 		opts.withLimit = db.DefaultLimit
 	}
 	return &SetSyncJob{

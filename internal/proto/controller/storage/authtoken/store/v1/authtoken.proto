@@ -7,7 +7,7 @@ package controller.storage.authtoken.store.v1;
 
 import "controller/storage/timestamp/v1/timestamp.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/authtoken/store;store";
+option go_package = "github.com/opendumpling/opendumpling/internal/authtoken/store;store";
 
 message AuthToken {
   // public_id is used to access the auth token via an API

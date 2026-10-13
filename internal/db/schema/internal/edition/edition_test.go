@@ -7,7 +7,7 @@ import (
 	"embed"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/db/schema/internal/edition"
+	"github.com/opendumpling/opendumpling/internal/db/schema/internal/edition"
 	"github.com/stretchr/testify/assert"
 )
 

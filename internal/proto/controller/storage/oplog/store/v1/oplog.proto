@@ -8,7 +8,7 @@ package controller.storage.oplog.store.v1;
 
 import "controller/storage/timestamp/v1/timestamp.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/oplog/store;store";
+option go_package = "github.com/opendumpling/opendumpling/internal/oplog/store;store";
 
 // Entry provides a message for oplog entries that's compatible with gorm
 message Entry {

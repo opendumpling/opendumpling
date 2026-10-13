@@ -6,10 +6,10 @@ package storage_buckets
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/daemon/controller/common"
-	pbs "github.com/hashicorp/boundary/internal/gen/controller/api/services"
-	"github.com/hashicorp/boundary/internal/globals"
-	"github.com/hashicorp/boundary/internal/types/action"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/common"
+	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/api/services"
+	"github.com/opendumpling/opendumpling/internal/globals"
+	"github.com/opendumpling/opendumpling/internal/types/action"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

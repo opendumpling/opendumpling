@@ -11,9 +11,9 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	opsservices "github.com/hashicorp/boundary/internal/gen/ops/services"
-	pbhealth "github.com/hashicorp/boundary/internal/gen/worker/health"
-	"github.com/hashicorp/boundary/internal/server"
+	opsservices "github.com/opendumpling/opendumpling/internal/gen/ops/services"
+	pbhealth "github.com/opendumpling/opendumpling/internal/gen/worker/health"
+	"github.com/opendumpling/opendumpling/internal/server"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/testing/protocmp"

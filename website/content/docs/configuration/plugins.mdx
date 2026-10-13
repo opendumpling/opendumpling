@@ -8,9 +8,9 @@ description: |-
 # `plugin` stanza
 
 The `plugin` stanza configures plugin-specific parameters. The plugin system was
-introduced in Boundary 0.7.0 and is currently internal; over time, the intent is
+introduced in Dumpling 0.7.0 and is currently internal; over time, the intent is
 to provide a mechanism for third-party plugins to be able to be used. Available
-plugins are currently bundled with Boundary and executed automatically.
+plugins are currently bundled with Dumpling and executed automatically.
 
 There is currently one configuration parameter available:
 
@@ -20,9 +20,9 @@ plugins {
 }
 ```
 
-- `execution_dir` - Specifies a directory that Boundary can use to write and
+- `execution_dir` - Specifies a directory that Dumpling can use to write and
   execute its built-in plugins. This value can be a direct directory string,
   can refer to a file on disk (file://) from which a directory location will be
   read; or an env var (env://) from which the directory location will be read.
-  This directory must be writeable by the Boundary user. If not set, Boundary will
+  This directory must be writeable by the Dumpling user. If not set, Dumpling will
   attempt to create a suitable directory in the system temporary folder.

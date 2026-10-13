@@ -9,13 +9,13 @@ import (
 	"os"
 	"testing"
 
-	"github.com/hashicorp/boundary/api/credentiallibraries"
-	"github.com/hashicorp/boundary/api/credentialstores"
-	"github.com/hashicorp/boundary/api/scopes"
-	"github.com/hashicorp/boundary/api/targets"
-	"github.com/hashicorp/boundary/testing/internal/e2e"
-	"github.com/hashicorp/boundary/testing/internal/e2e/boundary"
-	"github.com/hashicorp/boundary/testing/internal/e2e/vault"
+	"github.com/opendumpling/opendumpling/api/credentiallibraries"
+	"github.com/opendumpling/opendumpling/api/credentialstores"
+	"github.com/opendumpling/opendumpling/api/scopes"
+	"github.com/opendumpling/opendumpling/api/targets"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e/dumpling"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e/vault"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -28,21 +28,21 @@ func TestCliVaultCredentialStore(t *testing.T) {
 	require.NoError(t, err)
 
 	ctx := context.Background()
-	boundary.AuthenticateAdminCli(t, ctx)
-	newOrgId := boundary.CreateNewOrgCli(t, ctx)
+	dumpling.AuthenticateAdminCli(t, ctx)
+	newOrgId := dumpling.CreateNewOrgCli(t, ctx)
 	t.Cleanup(func() {
 		ctx := context.Background()
-		boundary.AuthenticateAdminCli(t, ctx)
-		output := e2e.RunCommand(ctx, "boundary", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
+		dumpling.AuthenticateAdminCli(t, ctx)
+		output := e2e.RunCommand(ctx, "dumpling", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
 		require.NoError(t, output.Err, string(output.Stderr))
 	})
-	newProjectId := boundary.CreateNewProjectCli(t, ctx, newOrgId)
-	newHostCatalogId := boundary.CreateNewHostCatalogCli(t, ctx, newProjectId)
-	newHostSetId := boundary.CreateNewHostSetCli(t, ctx, newHostCatalogId)
-	newHostId := boundary.CreateNewHostCli(t, ctx, newHostCatalogId, c.TargetIp)
-	boundary.AddHostToHostSetCli(t, ctx, newHostSetId, newHostId)
-	newTargetId := boundary.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort)
-	boundary.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
+	newProjectId := dumpling.CreateNewProjectCli(t, ctx, newOrgId)
+	newHostCatalogId := dumpling.CreateNewHostCatalogCli(t, ctx, newProjectId)
+	newHostSetId := dumpling.CreateNewHostSetCli(t, ctx, newHostCatalogId)
+	newHostId := dumpling.CreateNewHostCli(t, ctx, newHostCatalogId, c.TargetIp)
+	dumpling.AddHostToHostSetCli(t, ctx, newHostSetId, newHostId)
+	newTargetId := dumpling.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort)
+	dumpling.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
 
 	// Configure vault
 	boundaryPolicyName, kvPolicyFilePath := vault.Setup(t)
@@ -97,10 +97,10 @@ func TestCliVaultCredentialStore(t *testing.T) {
 	t.Log("Created Vault Cred Store Token")
 
 	// Create a credential store
-	newCredentialStoreId := boundary.CreateNewCredentialStoreVaultCli(t, ctx, newProjectId, c.VaultAddr, credStoreToken)
+	newCredentialStoreId := dumpling.CreateNewCredentialStoreVaultCli(t, ctx, newProjectId, c.VaultAddr, credStoreToken)
 
 	// Create a credential library for the private key
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"credential-libraries", "create", "vault",
 			"-credential-store-id", newCredentialStoreId,
@@ -118,7 +118,7 @@ func TestCliVaultCredentialStore(t *testing.T) {
 	t.Logf("Created Credential Library: %s", newPrivateKeyCredentialLibraryId)
 
 	// Create a credential library for the password
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs(
 			"credential-libraries", "create", "vault",
 			"-credential-store-id", newCredentialStoreId,
@@ -135,7 +135,7 @@ func TestCliVaultCredentialStore(t *testing.T) {
 	t.Logf("Created Credential Library: %s", newPasswordCredentialLibraryId)
 
 	// Get credentials for target (expect empty)
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs("targets", "authorize-session", "-id", newTargetId, "-format", "json"),
 	)
 	require.NoError(t, output.Err, string(output.Stderr))
@@ -145,11 +145,11 @@ func TestCliVaultCredentialStore(t *testing.T) {
 	require.True(t, newSessionAuthorizationResult.Item.Credentials == nil)
 
 	// Add credentials to target
-	boundary.AddBrokeredCredentialSourceToTargetCli(t, ctx, newTargetId, newPrivateKeyCredentialLibraryId)
-	boundary.AddBrokeredCredentialSourceToTargetCli(t, ctx, newTargetId, newPasswordCredentialLibraryId)
+	dumpling.AddBrokeredCredentialSourceToTargetCli(t, ctx, newTargetId, newPrivateKeyCredentialLibraryId)
+	dumpling.AddBrokeredCredentialSourceToTargetCli(t, ctx, newTargetId, newPasswordCredentialLibraryId)
 
 	// Get credentials for target
-	output = e2e.RunCommand(ctx, "boundary",
+	output = e2e.RunCommand(ctx, "dumpling",
 		e2e.WithArgs("targets", "authorize-session", "-id", newTargetId, "-format", "json"),
 	)
 	require.NoError(t, output.Err, string(output.Stderr))
@@ -190,23 +190,23 @@ func TestApiVaultCredentialStore(t *testing.T) {
 	c, err := loadTestConfig()
 	require.NoError(t, err)
 
-	client, err := boundary.NewApiClient()
+	client, err := dumpling.NewApiClient()
 	require.NoError(t, err)
 	ctx := context.Background()
 
-	newOrgId := boundary.CreateNewOrgApi(t, ctx, client)
+	newOrgId := dumpling.CreateNewOrgApi(t, ctx, client)
 	t.Cleanup(func() {
 		scopeClient := scopes.NewClient(client)
 		_, err := scopeClient.Delete(ctx, newOrgId)
 		require.NoError(t, err)
 	})
-	newProjectId := boundary.CreateNewProjectApi(t, ctx, client, newOrgId)
-	newHostCatalogId := boundary.CreateNewHostCatalogApi(t, ctx, client, newProjectId)
-	newHostSetId := boundary.CreateNewHostSetApi(t, ctx, client, newHostCatalogId)
-	newHostId := boundary.CreateNewHostApi(t, ctx, client, newHostCatalogId, c.TargetIp)
-	boundary.AddHostToHostSetApi(t, ctx, client, newHostSetId, newHostId)
-	newTargetId := boundary.CreateNewTargetApi(t, ctx, client, newProjectId, c.TargetPort)
-	boundary.AddHostSourceToTargetApi(t, ctx, client, newTargetId, newHostSetId)
+	newProjectId := dumpling.CreateNewProjectApi(t, ctx, client, newOrgId)
+	newHostCatalogId := dumpling.CreateNewHostCatalogApi(t, ctx, client, newProjectId)
+	newHostSetId := dumpling.CreateNewHostSetApi(t, ctx, client, newHostCatalogId)
+	newHostId := dumpling.CreateNewHostApi(t, ctx, client, newHostCatalogId, c.TargetIp)
+	dumpling.AddHostToHostSetApi(t, ctx, client, newHostSetId, newHostId)
+	newTargetId := dumpling.CreateNewTargetApi(t, ctx, client, newProjectId, c.TargetPort)
+	dumpling.AddHostSourceToTargetApi(t, ctx, client, newTargetId, newHostSetId)
 
 	// Configure vault
 	boundaryPolicyName, kvPolicyFilePath := vault.Setup(t)

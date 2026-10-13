@@ -37,13 +37,13 @@ func TestEnsureVersion_UpdateForEditionSupport(t *testing.T) {
 	p, db, _ := setup(ctx, t)
 
 	_, err := db.ExecContext(ctx, `
-	create table boundary_schema_version (
+	create table dumpling_schema_version (
 		version bigint primary key,
 		dirty boolean not null
 	);`)
 	require.NoError(t, err)
 	_, err = db.ExecContext(ctx, `
-	insert into boundary_schema_version
+	insert into dumpling_schema_version
 	(version, dirty)
 	values
 	(1001, false);`)
@@ -63,7 +63,7 @@ func TestEnsureVersion_UpdateForEditionSupport(t *testing.T) {
 
 	err = db.QueryRowContext(
 		ctx,
-		`select edition, version from boundary_schema_version`,
+		`select edition, version from dumpling_schema_version`,
 	).Scan(&edition, &version)
 
 	require.NoError(t, err)
@@ -104,7 +104,7 @@ func TestEnsureVersion_RenameOldSchemaTable(t *testing.T) {
 
 	err = db.QueryRowContext(
 		ctx,
-		`select edition, version from boundary_schema_version`,
+		`select edition, version from dumpling_schema_version`,
 	).Scan(&edition, &version)
 
 	require.NoError(t, err)

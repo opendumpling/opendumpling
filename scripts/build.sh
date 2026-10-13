@@ -17,7 +17,7 @@ DIR="$( cd -P "$( dirname "$SOURCE" )/.." && pwd )"
 cd "$DIR"
 
 # Set build tags
-BUILD_TAGS="${BUILD_TAGS:-"boundary"}"
+BUILD_TAGS="${BUILD_TAGS:-"dumpling"}"
 echo "==> Build tags: ${BUILD_TAGS}"
 
 # Get the git commit
@@ -53,15 +53,16 @@ if [ "${GOOS}x" = "windowsx" ]; then
     BINARY_SUFFIX=".exe"
 fi
 
-# Build needed plugins first
-if [ "${SKIP_PLUGIN_BUILD}x" == "x" ]; then
+# Build needed plugins first. Plugin binaries are built from separate upstream
+# projects and are NOT bundled by default: set SKIP_PLUGIN_BUILD=0 to build them.
+if [ "${SKIP_PLUGIN_BUILD:-1}x" == "0x" ]; then
     $DIR/scripts/plugins.sh
 fi
 
 BASE_PRODUCT_VERSION=${BASE_PRODUCT_VERSION:=$(cat version/VERSION)}
 
 # Declare binary paths!
-BINARY_NAME="boundary${BINARY_SUFFIX}"
+BINARY_NAME="dumpling${BINARY_SUFFIX}"
 BIN_PATH=${BIN_PATH:=bin/${BINARY_NAME}}
 BIN_PARENT_DIR="${BIN_PATH%/*}"
 BIN_PARENT_DIR="${BIN_PARENT_DIR##*/}"
@@ -78,17 +79,17 @@ ${GO_CMD} build \
     -trimpath \
     -buildvcs=false \
     -ldflags "
-      -X 'github.com/hashicorp/boundary/version.GitCommit=${GIT_COMMIT}${GIT_DIRTY}'
-      -X 'github.com/hashicorp/boundary/version.Version=$BASE_PRODUCT_VERSION'
-      -X 'github.com/hashicorp/boundary/version.VersionPrerelease=$PRERELEASE_PRODUCT_VERSION'
-      -X 'github.com/hashicorp/boundary/version.VersionMetadata=$METADATA_PRODUCT_VERSION'
-      -X 'github.com/hashicorp/boundary/version.BuildDate=$BUILD_DATE'
+      -X 'github.com/opendumpling/opendumpling/version.GitCommit=${GIT_COMMIT}${GIT_DIRTY}'
+      -X 'github.com/opendumpling/opendumpling/version.Version=$BASE_PRODUCT_VERSION'
+      -X 'github.com/opendumpling/opendumpling/version.VersionPrerelease=$PRERELEASE_PRODUCT_VERSION'
+      -X 'github.com/opendumpling/opendumpling/version.VersionMetadata=$METADATA_PRODUCT_VERSION'
+      -X 'github.com/opendumpling/opendumpling/version.BuildDate=$BUILD_DATE'
       " \
     -o "$BIN_PATH" \
-    ./cmd/boundary
+    ./cmd/dumpling
 
 # Copy binary into gopath if desired
-if [ "${BOUNDARY_INSTALL_BINARY}x" != "x" ]; then
+if [ "${DUMPLING_INSTALL_BINARY}x" != "x" ]; then
     echo "==> Moving binary into GOPATH/bin..."
     mv -f "${BIN_PATH}" "${GOPATH}/bin/"
 fi

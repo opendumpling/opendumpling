@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/scopes"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/scopes"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/mitchellh/cli"
 	"github.com/mitchellh/go-wordwrap"
 	"github.com/posener/complete"
@@ -31,11 +31,11 @@ func (c *ListKeysCommand) Synopsis() string {
 
 func (c *ListKeysCommand) Help() string {
 	return base.WrapForHelpText([]string{
-		"Usage: boundary scopes list-keys [args]",
+		"Usage: dumpling scopes list-keys [args]",
 		"",
 		"  List keys within a scope. Example:",
 		"",
-		`    $ boundary scopes list-keys -scope-id global`,
+		`    $ dumpling scopes list-keys -scope-id global`,
 		"",
 		"",
 	}) + c.Flags().Help()

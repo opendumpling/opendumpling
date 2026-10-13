@@ -8,10 +8,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/db/common"
-	"github.com/hashicorp/boundary/internal/db/schema"
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/db/common"
+	"github.com/opendumpling/opendumpling/internal/db/schema"
+	"github.com/opendumpling/opendumpling/internal/errors"
 	"github.com/mitchellh/cli"
 )
 
@@ -59,11 +59,11 @@ func migrateDatabase(ctx context.Context, ui cli.Ui, dialect, u string, initiali
 		return unlock, 2
 	}
 	if initialized && !st.Initialized {
-		ui.Output(base.WrapAtLength("Database has not been initialized. Please use 'boundary database init' to initialize the boundary database."))
+		ui.Output(base.WrapAtLength("Database has not been initialized. Please use 'dumpling database init' to initialize the dumpling database."))
 		return unlock, -1
 	}
 	if !initialized && st.Initialized {
-		ui.Output(base.WrapAtLength("Database has already been initialized. Please use 'boundary database migrate' for any upgrade needs."))
+		ui.Output(base.WrapAtLength("Database has already been initialized. Please use 'dumpling database migrate' for any upgrade needs."))
 		return unlock, -1
 	}
 	repairLogs, err := man.ApplyMigrations(ctx)
@@ -71,7 +71,7 @@ func migrateDatabase(ctx context.Context, ui cli.Ui, dialect, u string, initiali
 		ui.Error(fmt.Errorf("Error running database migrations: %w", err).Error())
 		if checkErr, ok := err.(schema.MigrationCheckError); ok {
 			ui.Error(fmt.Errorf("%s", strings.Join(checkErr.Problems, "\n")).Error())
-			ui.Error(fmt.Sprintf("To automatically repair, use 'boundary database migrate -repair=%s:%d'. This will: %s", checkErr.Edition, checkErr.Version, checkErr.RepairDescription))
+			ui.Error(fmt.Sprintf("To automatically repair, use 'dumpling database migrate -repair=%s:%d'. This will: %s", checkErr.Edition, checkErr.Version, checkErr.RepairDescription))
 		}
 		return unlock, 2
 	}

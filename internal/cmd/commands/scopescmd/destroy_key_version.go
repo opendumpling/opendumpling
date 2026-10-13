@@ -7,9 +7,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/scopes"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/scopes"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/mitchellh/cli"
 	"github.com/mitchellh/go-wordwrap"
 	"github.com/posener/complete"
@@ -31,13 +31,13 @@ func (c *DestroyKeyVersionCommand) Synopsis() string {
 
 func (c *DestroyKeyVersionCommand) Help() string {
 	return base.WrapForHelpText([]string{
-		"Usage: boundary scopes destroy-key-version [args]",
+		"Usage: dumpling scopes destroy-key-version [args]",
 		"",
 		"  Destroys a key version in the scope. The key version must not be the currently active key version.",
 		"  This may start an asynchronous job to re-encrypt existing data encrypted with the key version.",
-		"  Use `boundary scopes list-key-version-destruction-jobs` to monitor the progress of this job. Example:",
+		"  Use `dumpling scopes list-key-version-destruction-jobs` to monitor the progress of this job. Example:",
 		"",
-		`    $ boundary scopes destroy-key-version -scope-id global -key-version-id krkv_123456789`,
+		`    $ dumpling scopes destroy-key-version -scope-id global -key-version-id krkv_123456789`,
 		"",
 		"",
 	}) + c.Flags().Help()
@@ -120,7 +120,7 @@ func (c *DestroyKeyVersionCommand) Run(args []string) int {
 		case "completed":
 			c.UI.Output("The key version was successfully destroyed.")
 		case "pending":
-			c.UI.Output("A key version destruction job has been created, which will re-encrypt existing data in the background. Use `boundary scopes list-key-version-destruction-jobs` to monitor this job. Once it has completed the key version will have been destroyed.")
+			c.UI.Output("A key version destruction job has been created, which will re-encrypt existing data in the background. Use `dumpling scopes list-key-version-destruction-jobs` to monitor this job. Once it has completed the key version will have been destroyed.")
 		default:
 			c.PrintCliError(fmt.Errorf("unexpected state: %q", result.State))
 			return base.CommandApiError

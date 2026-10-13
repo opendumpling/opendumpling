@@ -6,7 +6,7 @@ package session
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/errors"
 )
 
 const (

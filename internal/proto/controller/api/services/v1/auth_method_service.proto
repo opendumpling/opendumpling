@@ -14,7 +14,7 @@ import "google/protobuf/field_mask.proto";
 import "google/protobuf/struct.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/gen/controller/api/services;services";
+option go_package = "github.com/opendumpling/opendumpling/internal/gen/controller/api/services;services";
 option (custom_options.v1.domain) = "auth";
 
 service AuthMethodService {
@@ -37,7 +37,7 @@ service AuthMethodService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Lists all Auth Methods."};
   }
 
-  // CreateAuthMethod creates and stores an Auth Method in boundary.  The
+  // CreateAuthMethod creates and stores an Auth Method in dumpling.  The
   // provided request must include the scope in which the Auth Method will be
   // created. If the scope id is missing, malformed or referencing a
   // non existing resource an error is returned.  If a name is provided that is
@@ -51,7 +51,7 @@ service AuthMethodService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Creates a single Auth Method."};
   }
 
-  // UpdateAuthMethod updates an existing Auth Method in boundary.  The provided
+  // UpdateAuthMethod updates an existing Auth Method in dumpling.  The provided
   // Auth Method must not have any read only fields set.  The update mask must be
   // included in the request and contain at least 1 mutable field.  To unset
   // a field's value, include the field in the update mask and don't set it
@@ -68,14 +68,14 @@ service AuthMethodService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Updates an Auth Method."};
   }
 
-  // DeleteAuthMethod removes an Auth Method from Boundary. If the Auth Method id
+  // DeleteAuthMethod removes an Auth Method from Dumpling. If the Auth Method id
   // is malformed or not provided an error is returned.
   rpc DeleteAuthMethod(DeleteAuthMethodRequest) returns (DeleteAuthMethodResponse) {
     option (google.api.http) = {delete: "/v1/auth-methods/{id}"};
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Deletes an AuthMethod"};
   }
 
-  // ChangeState changes the state of an Auth Method from Boundary.
+  // ChangeState changes the state of an Auth Method from Dumpling.
   rpc ChangeState(ChangeStateRequest) returns (ChangeStateResponse) {
     option (google.api.http) = {
       post: "/v1/auth-methods/{id}:change-state"

@@ -9,7 +9,7 @@ import (
 	"net"
 
 	"github.com/fatih/structs"
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/errors"
 	"github.com/mitchellh/mapstructure"
 	"google.golang.org/protobuf/types/known/structpb"
 )
@@ -25,7 +25,7 @@ type WorkerConnectionInfo struct {
 	// The worker id of the worker that is dialing
 	WorkerId string `mapstructure:"worker_id,omitempty"`
 	// The version of the worker that is dialing
-	BoundaryVersion string `mapstructure:"boundary_version,omitempty"`
+	DumplingVersion string `mapstructure:"dumpling_version,omitempty"`
 	// The name, used for wrapping registration flow
 	Name string `mapstructure:"name,omitempty"`
 	// The description, used for wrapping registration flow

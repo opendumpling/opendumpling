@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/hashicorp/boundary/api"
-	"github.com/hashicorp/boundary/api/authmethods"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api"
+	"github.com/opendumpling/opendumpling/api/authmethods"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 )
 
 func init() {
@@ -139,7 +139,7 @@ func extraOidcFlagsFuncImpl(c *OidcCommand, set *base.FlagSets, _ *base.FlagSet)
 			f.StringSliceVar(&base.StringSliceVar{
 				Name:   accountClaimMaps,
 				Target: &c.flagAccountClaimMaps,
-				Usage:  `The optional account claim maps from custom claims to the standard claims of sub, name and email.  These maps are represented as key=value where the key equals the Provider from-claim and the value equals the Boundary to-claim.  For example "oid=sub". May be specified multiple times for different to-claims.`,
+				Usage:  `The optional account claim maps from custom claims to the standard claims of sub, name and email.  These maps are represented as key=value where the key equals the Provider from-claim and the value equals the Dumpling to-claim.  For example "oid=sub". May be specified multiple times for different to-claims.`,
 			})
 		case stateFlagName:
 			f.StringVar(&base.StringVar{
@@ -168,32 +168,32 @@ func (c *OidcCommand) extraOidcHelpFunc(helpMap map[string]func() string) string
 	switch c.Func {
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary auth-methods create oidc [options] [args]",
+			"Usage: dumpling auth-methods create oidc [options] [args]",
 			"",
 			"  Create an oidc-type auth method. Example:",
 			"",
-			`    $ boundary auth-methods create oidc -name prodops -description "Oidc auth-method for ProdOps"`,
+			`    $ dumpling auth-methods create oidc -name prodops -description "Oidc auth-method for ProdOps"`,
 			"",
 			"",
 		})
 
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary auth-methods update oidc [options] [args]",
+			"Usage: dumpling auth-methods update oidc [options] [args]",
 			"",
 			"  Update an oidc-type auth method given its ID. Example:",
 			"",
-			`    $ boundary auth-methods update oidc -id amoidc_1234567890 -name "devops" -description "Oidc auth-method for DevOps"`,
+			`    $ dumpling auth-methods update oidc -id amoidc_1234567890 -name "devops" -description "Oidc auth-method for DevOps"`,
 			"",
 			"",
 		})
 	case "change-state":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary auth-methods change-state oidc [options] [args]",
+			"Usage: dumpling auth-methods change-state oidc [options] [args]",
 			"",
 			"  Change the active and visibility state of an oidc-type auth method given its ID. Example:",
 			"",
-			`    $ boundary auth-methods change-state oidc -id amoidc_1234567890 -state "public-active"`,
+			`    $ dumpling auth-methods change-state oidc -id amoidc_1234567890 -state "public-active"`,
 			"",
 			"",
 		})

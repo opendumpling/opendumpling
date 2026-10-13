@@ -9,7 +9,7 @@ import (
 	"net/url"
 	"sync"
 
-	filterpkg "github.com/hashicorp/boundary/internal/filter"
+	filterpkg "github.com/opendumpling/opendumpling/internal/filter"
 	"github.com/hashicorp/eventlogger"
 	"github.com/hashicorp/eventlogger/formatter_filters/cloudevents"
 	"github.com/hashicorp/go-bexpr"

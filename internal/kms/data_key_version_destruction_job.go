@@ -4,7 +4,7 @@
 package kms
 
 import (
-	"github.com/hashicorp/boundary/internal/kms/store"
+	"github.com/opendumpling/opendumpling/internal/kms/store"
 	"google.golang.org/protobuf/proto"
 )
 

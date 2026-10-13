@@ -7,7 +7,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/db/schema/internal/log"
+	"github.com/opendumpling/opendumpling/internal/db/schema/internal/log"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -41,19 +41,19 @@ func TestEnsureMigrationLog_NoTxn(t *testing.T) {
 // and any existing log entries can be updated.
 //
 // The scenario involves a case where:
-// - The database was initialized with the original boundary_schema_version table
+// - The database was initialized with the original dumpling_schema_version table
 // - The original migrations where run, creating the log_migration table and some entries in the table.
 func TestEnsureMigrationLog_UpdateForEditionSupport(t *testing.T) {
 	ctx := context.Background()
 	p, db, _ := setup(ctx, t)
 
 	statements := []string{
-		// original boundary_schema_version table
-		`create table boundary_schema_version (
+		// original dumpling_schema_version table
+		`create table dumpling_schema_version (
 			 version bigint primary key,
 			 dirty boolean not null);`,
 		// populate the table with a version
-		`insert into boundary_schema_version
+		`insert into dumpling_schema_version
 			 (version, dirty)
 		 values
 			 (1001, false);`,
@@ -121,7 +121,7 @@ func TestEnsureMigrationLog_UpdateForEditionSupport(t *testing.T) {
 		 as $$
 			declare current_version bigint;
 			begin
-				select max(version) from boundary_schema_version into current_version;
+				select max(version) from dumpling_schema_version into current_version;
 				new.migration_version = current_version;
 				return new;
 			end;
@@ -170,7 +170,7 @@ func TestEnsureMigrationLog_UpdateForEditionSupport(t *testing.T) {
 	// now ensure the updated table and trigger still works
 	statements = []string{
 		// update the version, to make it easy to filter on log_migrations
-		`update boundary_schema_version set version = 1002;`,
+		`update dumpling_schema_version set version = 1002;`,
 		// insert a new log entry
 		`insert into log_migration (entry, edition)
 		values

@@ -9,8 +9,8 @@ import (
 	"encoding/pem"
 	"fmt"
 
-	"github.com/hashicorp/boundary/internal/auth/ldap/store"
-	"github.com/hashicorp/boundary/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/auth/ldap/store"
+	"github.com/opendumpling/opendumpling/internal/errors"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	"github.com/hashicorp/go-kms-wrapping/v2/extras/structwrapping"
 	"google.golang.org/protobuf/proto"

@@ -2,20 +2,20 @@
 layout: docs
 page_title: Manage recorded sessions
 description: |-
-  How to download, view, and validate Boundary's recorded sessions
+  How to download, view, and validate Dumpling's recorded sessions
 ---
 
 # Manage recorded sessions
 
-Boundary provides [auditing](/boundary/docs/concepts/auditing) capabilities via [session recording](/boundary/docs/configuration/session-recording).
-In Boundary, a session represents a set of connections between a user and a host from a target.
+Dumpling provides [auditing](/boundary/docs/concepts/auditing) capabilities via [session recording](/boundary/docs/configuration/session-recording).
+In Dumpling, a session represents a set of connections between a user and a host from a target.
 The session begins when an authorized user requests access to a target, and it ends when that access is terminated.
 When you enable session recording on a target, any user session that connects to the target is automatically recorded.
 An administrator can later view the recordings to investigate security issues, review system activity, or perform regular assessments of security policies and procedures.
 
 Recorded sessions are stored in an external storage bucket that you create.
-Storing session recordings in a system external to Boundary means those recordings can be accessed, modified, deleted, and even restored independently of Boundary.
-You can view any sessions that Boundary recorded in your storage provider or via the CLI.
+Storing session recordings in a system external to Dumpling means those recordings can be accessed, modified, deleted, and even restored independently of Dumpling.
+You can view any sessions that Dumpling recorded in your storage provider or via the CLI.
 
 You can view a list of all recorded sessions, or if you know the ID of a specific recorded session, you can find any channels associated with that recording.
 
@@ -26,14 +26,14 @@ You can view a list of all recorded sessions, or if you know the ID of a specifi
 
 Complete the following steps to find all recorded sessions using the CLI.
 
-1. Authenticate to Boundary in the CLI.
+1. Authenticate to Dumpling in the CLI.
 1. Type the following command to view a list of all recorded sessions:
 
    ```bash
    boundary session-recordings list -recursive
    ```
 
-   Boundary displays a list of all recorded sessions by scope.
+   Dumpling displays a list of all recorded sessions by scope.
 
 ## Find a specific recorded session by ID
 
@@ -56,7 +56,7 @@ boundary session-recordings read -id <id>
 
 Complete the following steps to download a recorded session channel:
 
-1. Authenticate to Boundary in the CLI.
+1. Authenticate to Dumpling in the CLI.
 1. Type the following command to download a recorded session channel.
 Substitute the ID of the channel for **chr_1234567890**:
 
@@ -71,7 +71,7 @@ Substitute the ID of the channel for **chr_1234567890**:
 
 You can find all recorded sessions in the UI from the global scope.
 
-1. Log in to Boundary.
+1. Log in to Dumpling.
 1. Select **Session Recordings** in the navigation pane.
 
    The **Session Recordings** page displays the created time, user, project,

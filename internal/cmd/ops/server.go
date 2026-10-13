@@ -1,7 +1,7 @@
 // Copyright (c) HashiCorp, Inc.
 // SPDX-License-Identifier: MPL-2.0
 
-// Package ops encapsulates the lifecycle of Boundary's ops-purpose listeners
+// Package ops encapsulates the lifecycle of Dumpling's ops-purpose listeners
 // and servers: Creating, setting them up, starting and shutdown.
 package ops
 
@@ -13,9 +13,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/internal/daemon/controller"
-	"github.com/hashicorp/boundary/internal/daemon/worker"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller"
+	"github.com/opendumpling/opendumpling/internal/daemon/worker"
 	"github.com/hashicorp/go-cleanhttp"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-multierror"

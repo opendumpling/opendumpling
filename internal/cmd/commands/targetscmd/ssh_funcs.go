@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/hashicorp/boundary/api/targets"
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/api/targets"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/hashicorp/go-bexpr"
 )
 
@@ -53,22 +53,22 @@ func (c *SshCommand) extraSshHelpFunc(helpMap map[string]func() string) string {
 	switch c.Func {
 	case "create":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary targets create ssh [options] [args]",
+			"Usage: dumpling targets create ssh [options] [args]",
 			"",
 			"  Create a ssh-type target. Example:",
 			"",
-			`    $ boundary targets create ssh -name prodops -description "Ssh target for ProdOps"`,
+			`    $ dumpling targets create ssh -name prodops -description "Ssh target for ProdOps"`,
 			"",
 			"",
 		})
 
 	case "update":
 		helpStr = base.WrapForHelpText([]string{
-			"Usage: boundary targets update ssh [options] [args]",
+			"Usage: dumpling targets update ssh [options] [args]",
 			"",
 			"  Update a ssh-type target given its ID. Example:",
 			"",
-			`    $ boundary targets update ssh -id tssh_1234567890 -name "devops" -description "Ssh target for DevOps"`,
+			`    $ dumpling targets update ssh -id tssh_1234567890 -name "devops" -description "Ssh target for DevOps"`,
 			"",
 			"",
 		})

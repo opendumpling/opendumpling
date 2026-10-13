@@ -8,19 +8,19 @@ import (
 	"path"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/authtoken"
-	"github.com/hashicorp/boundary/internal/credential"
-	"github.com/hashicorp/boundary/internal/credential/vault"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/db/timestamp"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/host/static"
-	"github.com/hashicorp/boundary/internal/iam"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/scheduler"
-	"github.com/hashicorp/boundary/internal/session"
-	"github.com/hashicorp/boundary/internal/target"
-	"github.com/hashicorp/boundary/internal/target/tcp"
+	"github.com/opendumpling/opendumpling/internal/authtoken"
+	"github.com/opendumpling/opendumpling/internal/credential"
+	"github.com/opendumpling/opendumpling/internal/credential/vault"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/db/timestamp"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/host/static"
+	"github.com/opendumpling/opendumpling/internal/iam"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/scheduler"
+	"github.com/opendumpling/opendumpling/internal/session"
+	"github.com/opendumpling/opendumpling/internal/target"
+	"github.com/opendumpling/opendumpling/internal/target/tcp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -136,7 +136,7 @@ func TestRepository_IssueCredentials(t *testing.T) {
 	err = vault.RegisterJobs(ctx, sche, rw, rw, kms)
 	require.NoError(t, err)
 
-	_, token := v.CreateToken(t, vault.WithPolicies([]string{"default", "boundary-controller", "database", "pki", "secret"}))
+	_, token := v.CreateToken(t, vault.WithPolicies([]string{"default", "dumpling-controller", "database", "pki", "secret"}))
 
 	// Create valid username password KV secret
 	v.CreateKVSecret(t, "my-up-secret", []byte(`{"data":{"username":"user","password":"pass"}}`))
@@ -157,7 +157,7 @@ func TestRepository_IssueCredentials(t *testing.T) {
 	assert.NoError(t, err)
 	require.NotNil(t, origStore)
 
-	_, expToken := v.CreateToken(t, vault.WithPolicies([]string{"default", "boundary-controller", "database", "pki", "secret"}))
+	_, expToken := v.CreateToken(t, vault.WithPolicies([]string{"default", "dumpling-controller", "database", "pki", "secret"}))
 	expCredStoreIn, err := vault.NewCredentialStore(prj.GetPublicId(), v.Addr, []byte(expToken), opts...)
 	assert.NoError(t, err)
 	require.NotNil(t, expCredStoreIn)
@@ -185,8 +185,8 @@ func TestRepository_IssueCredentials(t *testing.T) {
 		libs[libDB] = testLib{PublicId: lib.GetPublicId(), HasLease: true, IsRenewable: true}
 	}
 	{
-		libPath := path.Join("pki", "issue", "boundary")
-		libIn, err := vault.NewCredentialLibrary(origStore.GetPublicId(), libPath, vault.WithMethod(vault.MethodPost), vault.WithRequestBody([]byte(`{"common_name":"boundary.com"}`)))
+		libPath := path.Join("pki", "issue", "dumpling")
+		libIn, err := vault.NewCredentialLibrary(origStore.GetPublicId(), libPath, vault.WithMethod(vault.MethodPost), vault.WithRequestBody([]byte(`{"common_name":"dumpling.com"}`)))
 		assert.NoError(t, err)
 		require.NotNil(t, libIn)
 		lib, err := repo.CreateCredentialLibrary(ctx, prj.GetPublicId(), libIn)
@@ -196,7 +196,7 @@ func TestRepository_IssueCredentials(t *testing.T) {
 	}
 	{
 
-		libPath := path.Join("pki", "issue", "boundary")
+		libPath := path.Join("pki", "issue", "dumpling")
 		libIn, err := vault.NewCredentialLibrary(origStore.GetPublicId(), libPath, vault.WithMethod(vault.MethodPost))
 		assert.NoError(t, err)
 		require.NotNil(t, libIn)

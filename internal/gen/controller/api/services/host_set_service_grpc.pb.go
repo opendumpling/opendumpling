@@ -26,14 +26,14 @@ type HostSetServiceClient interface {
 	// Host Catalog provided. The request must include a properly formatted
 	// Host Catalog id or an error is returned.
 	ListHostSets(ctx context.Context, in *ListHostSetsRequest, opts ...grpc.CallOption) (*ListHostSetsResponse, error)
-	// CreateHostSet creates and stores a Host Set in boundary.  The provided
+	// CreateHostSet creates and stores a Host Set in dumpling.  The provided
 	// request must include the Host Catalog id in which the Host Set
 	// will be created.  If the Host Catalog id is missing, malformed or
 	// references a non existing resource, an error is returned.  If a name is
 	// provided that is in use by another Host Set in the same Host Catalog, an
 	// error is returned.
 	CreateHostSet(ctx context.Context, in *CreateHostSetRequest, opts ...grpc.CallOption) (*CreateHostSetResponse, error)
-	// UpdateHostSet updates an existing Host Set in boundary.  The provided
+	// UpdateHostSet updates an existing Host Set in dumpling.  The provided
 	// Host Set must not have any read only fields set.  The update mask must be
 	// included in the request and contain at least 1 mutable field.  To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -42,7 +42,7 @@ type HostSetServiceClient interface {
 	// An error is also returned if the request attempts to update the name to
 	// one that is already in use in this Host Catalog.
 	UpdateHostSet(ctx context.Context, in *UpdateHostSetRequest, opts ...grpc.CallOption) (*UpdateHostSetResponse, error)
-	// DeleteHostSet removes a Host Set from Boundary. If the provided
+	// DeleteHostSet removes a Host Set from Dumpling. If the provided
 	// Host Set id is malformed or not provided an error is returned.
 	DeleteHostSet(ctx context.Context, in *DeleteHostSetRequest, opts ...grpc.CallOption) (*DeleteHostSetResponse, error)
 	// AddHostSetHosts adds a Host to a Host Set. The provided request must
@@ -160,14 +160,14 @@ type HostSetServiceServer interface {
 	// Host Catalog provided. The request must include a properly formatted
 	// Host Catalog id or an error is returned.
 	ListHostSets(context.Context, *ListHostSetsRequest) (*ListHostSetsResponse, error)
-	// CreateHostSet creates and stores a Host Set in boundary.  The provided
+	// CreateHostSet creates and stores a Host Set in dumpling.  The provided
 	// request must include the Host Catalog id in which the Host Set
 	// will be created.  If the Host Catalog id is missing, malformed or
 	// references a non existing resource, an error is returned.  If a name is
 	// provided that is in use by another Host Set in the same Host Catalog, an
 	// error is returned.
 	CreateHostSet(context.Context, *CreateHostSetRequest) (*CreateHostSetResponse, error)
-	// UpdateHostSet updates an existing Host Set in boundary.  The provided
+	// UpdateHostSet updates an existing Host Set in dumpling.  The provided
 	// Host Set must not have any read only fields set.  The update mask must be
 	// included in the request and contain at least 1 mutable field.  To unset
 	// a field's value, include the field in the update mask and don't set it
@@ -176,7 +176,7 @@ type HostSetServiceServer interface {
 	// An error is also returned if the request attempts to update the name to
 	// one that is already in use in this Host Catalog.
 	UpdateHostSet(context.Context, *UpdateHostSetRequest) (*UpdateHostSetResponse, error)
-	// DeleteHostSet removes a Host Set from Boundary. If the provided
+	// DeleteHostSet removes a Host Set from Dumpling. If the provided
 	// Host Set id is malformed or not provided an error is returned.
 	DeleteHostSet(context.Context, *DeleteHostSetRequest) (*DeleteHostSetResponse, error)
 	// AddHostSetHosts adds a Host to a Host Set. The provided request must

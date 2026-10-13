@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/api/sessions"
-	"github.com/hashicorp/boundary/testing/internal/e2e"
-	"github.com/hashicorp/boundary/testing/internal/e2e/boundary"
+	"github.com/opendumpling/opendumpling/api/sessions"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e/dumpling"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -24,28 +24,28 @@ func TestCliBytesUpDownEmpty(t *testing.T) {
 	require.NoError(t, err)
 
 	ctx := context.Background()
-	boundary.AuthenticateAdminCli(t, ctx)
-	newOrgId := boundary.CreateNewOrgCli(t, ctx)
+	dumpling.AuthenticateAdminCli(t, ctx)
+	newOrgId := dumpling.CreateNewOrgCli(t, ctx)
 	t.Cleanup(func() {
 		ctx := context.Background()
-		boundary.AuthenticateAdminCli(t, ctx)
-		output := e2e.RunCommand(ctx, "boundary", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
+		dumpling.AuthenticateAdminCli(t, ctx)
+		output := e2e.RunCommand(ctx, "dumpling", e2e.WithArgs("scopes", "delete", "-id", newOrgId))
 		require.NoError(t, output.Err, string(output.Stderr))
 	})
-	newProjectId := boundary.CreateNewProjectCli(t, ctx, newOrgId)
-	newHostCatalogId := boundary.CreateNewHostCatalogCli(t, ctx, newProjectId)
-	newHostSetId := boundary.CreateNewHostSetCli(t, ctx, newHostCatalogId)
-	newHostId := boundary.CreateNewHostCli(t, ctx, newHostCatalogId, c.TargetIp)
-	boundary.AddHostToHostSetCli(t, ctx, newHostSetId, newHostId)
-	newTargetId := boundary.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort)
-	boundary.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
+	newProjectId := dumpling.CreateNewProjectCli(t, ctx, newOrgId)
+	newHostCatalogId := dumpling.CreateNewHostCatalogCli(t, ctx, newProjectId)
+	newHostSetId := dumpling.CreateNewHostSetCli(t, ctx, newHostCatalogId)
+	newHostId := dumpling.CreateNewHostCli(t, ctx, newHostCatalogId, c.TargetIp)
+	dumpling.AddHostToHostSetCli(t, ctx, newHostSetId, newHostId)
+	newTargetId := dumpling.CreateNewTargetCli(t, ctx, newProjectId, c.TargetPort)
+	dumpling.AddHostSourceToTargetCli(t, ctx, newTargetId, newHostSetId)
 
 	// Create a session where no additional commands are run
 	ctxCancel, cancel := context.WithCancel(context.Background())
 	errChan := make(chan *e2e.CommandResult)
 	go func() {
 		t.Log("Starting session...")
-		errChan <- e2e.RunCommand(ctxCancel, "boundary",
+		errChan <- e2e.RunCommand(ctxCancel, "dumpling",
 			e2e.WithArgs(
 				"connect",
 				"-target-id", newTargetId,
@@ -55,14 +55,14 @@ func TestCliBytesUpDownEmpty(t *testing.T) {
 				"-o", "UserKnownHostsFile=/dev/null",
 				"-o", "StrictHostKeyChecking=no",
 				"-o", "IdentitiesOnly=yes", // forces the use of the provided key
-				"-p", "{{boundary.port}}", // this is provided by boundary
-				"{{boundary.ip}}",
+				"-p", "{{dumpling.port}}", // this is provided by boundary
+				"{{dumpling.ip}}",
 			),
 		)
 	}()
 	t.Cleanup(cancel)
 
-	session := boundary.WaitForSessionCli(t, ctx, newProjectId)
+	session := dumpling.WaitForSessionCli(t, ctx, newProjectId)
 	assert.Equal(t, newTargetId, session.TargetId)
 	assert.Equal(t, newHostId, session.HostId)
 
@@ -73,7 +73,7 @@ func TestCliBytesUpDownEmpty(t *testing.T) {
 	// Wait until bytes up and down is greater than 0
 	t.Log("Waiting for bytes_up/bytes_down to be greater than 0...")
 	for i := 0; i < 3; i++ {
-		output := e2e.RunCommand(ctx, "boundary",
+		output := e2e.RunCommand(ctx, "dumpling",
 			e2e.WithArgs("sessions", "read", "-id", session.Id, "-format", "json"),
 		)
 		require.NoError(t, output.Err, string(output.Stderr))
@@ -102,7 +102,7 @@ func TestCliBytesUpDownEmpty(t *testing.T) {
 	for i := 0; i < 3; i++ {
 		time.Sleep(2 * time.Second)
 
-		output := e2e.RunCommand(ctx, "boundary",
+		output := e2e.RunCommand(ctx, "dumpling",
 			e2e.WithArgs("sessions", "read", "-id", session.Id, "-format", "json"),
 		)
 		require.NoError(t, output.Err, string(output.Stderr))

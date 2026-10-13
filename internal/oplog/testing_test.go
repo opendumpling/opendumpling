@@ -7,7 +7,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/db/common"
+	"github.com/opendumpling/opendumpling/internal/db/common"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -62,7 +62,7 @@ func Test_testInitStore(t *testing.T) {
 	testInitStore(t, cleanup, url)
 
 	const query = `
-select count(*) from information_schema."tables" t where table_name = 'boundary_schema_version';
+select count(*) from information_schema."tables" t where table_name = 'dumpling_schema_version';
 `
 	db, err := common.SqlOpen("postgres", url)
 	require.NoError(err)

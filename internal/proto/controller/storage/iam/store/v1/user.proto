@@ -8,7 +8,7 @@ package controller.storage.iam.store.v1;
 import "controller/custom_options/v1/options.proto";
 import "controller/storage/timestamp/v1/timestamp.proto";
 
-option go_package = "github.com/hashicorp/boundary/internal/iam/store;store";
+option go_package = "github.com/opendumpling/opendumpling/internal/iam/store;store";
 
 message User {
   // public_id is used to access the User via an API

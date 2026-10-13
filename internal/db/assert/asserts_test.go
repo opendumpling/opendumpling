@@ -7,7 +7,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/hashicorp/boundary/internal/db"
+	"github.com/opendumpling/opendumpling/internal/db"
 	dbassert "github.com/hashicorp/dbassert"
 	gormAssert "github.com/hashicorp/dbassert/gorm"
 	"github.com/hashicorp/go-secure-stdlib/base62"

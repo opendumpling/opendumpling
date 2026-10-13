@@ -8,7 +8,7 @@ shopt -s globstar
 # Create database to use as template
 psql -v "ON_ERROR_STOP=1" --username "$POSTGRES_USER" --dbname "$POSTGRES_DB"   -q <<EOSQL
 create user postgres superuser login;
-create database boundary_template owner $POSTGRES_USER;
+create database dumpling_template owner $POSTGRES_USER;
 EOSQL
 
 apply_migrations() {
@@ -22,7 +22,7 @@ apply_migrations() {
     old_ifs=$IFS
     for file in $(ls -v ${d}/postgres/**/*.up.sql); do
         echo "Applying migration: ${file}"
-        psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --no-password --dbname boundary_template -f "$file"
+        psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --no-password --dbname dumpling_template -f "$file"
 
         IFS='/'
         read -ra PARTS <<< "$file"
@@ -35,9 +35,9 @@ apply_migrations() {
         let version=${major}*1000+${minor}
         IFS=$old_ifs
     done
-    echo "setting boundary_schema_version for ${edition} to ${version}";
-    psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --no-password --dbname boundary_template -q <<EOSQL
-    insert into boundary_schema_version
+    echo "setting dumpling_schema_version for ${edition} to ${version}";
+    psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --no-password --dbname dumpling_template -q <<EOSQL
+    insert into dumpling_schema_version
       (edition, version)
     values
       ('${edition}', ${version});
@@ -46,7 +46,7 @@ EOSQL
 
 for file in $(ls -v /migrations/base/postgres/*.up.sql); do
     echo "Applying base migration: ${file}"
-    psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --no-password --dbname boundary_template -f "$file"
+    psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --no-password --dbname dumpling_template -f "$file"
 done
 
 if [ -d /migrations/oss ]; then
@@ -60,5 +60,5 @@ done
 
 # Make database a template and prevent connections.
 psql -v "ON_ERROR_STOP=1" --username "$POSTGRES_USER" --dbname "$POSTGRES_DB"   -q <<EOSQL
-update pg_database set datistemplate = true, datallowconn = false where datname = 'boundary_template';
+update pg_database set datistemplate = true, datallowconn = false where datname = 'dumpling_template';
 EOSQL

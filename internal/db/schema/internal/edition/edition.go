@@ -14,7 +14,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/db/schema/migration"
+	"github.com/opendumpling/opendumpling/internal/db/schema/migration"
 )
 
 // Dialect is a specific SQL language variant. This generally is the same as

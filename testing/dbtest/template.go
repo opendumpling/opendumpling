@@ -13,7 +13,7 @@ import (
 
 	// postgres dialect
 
-	"github.com/hashicorp/boundary/internal/db/common"
+	"github.com/opendumpling/opendumpling/internal/db/common"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	"github.com/hashicorp/go-kms-wrapping/v2/aead"
 	_ "github.com/jackc/pgx/v5/stdlib"
@@ -38,20 +38,20 @@ const (
 	Postgres = "postgres"
 )
 
-// BoundaryBenchmarksUserPassword is the password used for all users
+// DumplingBenchmarksUserPassword is the password used for all users
 // created by the boundary benchmarks dump generator.
-const BoundaryBenchmarksUserPassword = "testpassword"
+const DumplingBenchmarksUserPassword = "testpassword"
 
 // Template Database Names
 const (
-	BoundaryTemplate                                 = "boundary_template"
+	DumplingTemplate                                 = "dumpling_template"
 	Template1                                        = "template1"
-	Boundary1000Sessions10ConnsPerSession10Template  = "boundary_session_1000_10_10_template"
-	Boundary1000Sessions10ConnsPerSession25Template  = "boundary_session_1000_10_25_template"
-	Boundary1000Sessions10ConnsPerSession50Template  = "boundary_session_1000_10_50_template"
-	Boundary1000Sessions10ConnsPerSession75Template  = "boundary_session_1000_10_75_template"
-	Boundary1000Sessions10ConnsPerSession100Template = "boundary_session_1000_10_100_template"
-	Boundary1000Sessions10ConnsPerSession500Template = "boundary_session_1000_10_500_template"
+	Dumpling1000Sessions10ConnsPerSession10Template  = "boundary_session_1000_10_10_template"
+	Dumpling1000Sessions10ConnsPerSession25Template  = "boundary_session_1000_10_25_template"
+	Dumpling1000Sessions10ConnsPerSession50Template  = "boundary_session_1000_10_50_template"
+	Dumpling1000Sessions10ConnsPerSession75Template  = "boundary_session_1000_10_75_template"
+	Dumpling1000Sessions10ConnsPerSession100Template = "boundary_session_1000_10_100_template"
+	Dumpling1000Sessions10ConnsPerSession500Template = "boundary_session_1000_10_500_template"
 )
 
 var supportedDialects = map[string]struct{}{
@@ -59,14 +59,14 @@ var supportedDialects = map[string]struct{}{
 }
 
 var supportedTemplates = map[string]struct{}{
-	BoundaryTemplate: {},
+	DumplingTemplate: {},
 	Template1:        {},
-	Boundary1000Sessions10ConnsPerSession10Template:  {},
-	Boundary1000Sessions10ConnsPerSession25Template:  {},
-	Boundary1000Sessions10ConnsPerSession50Template:  {},
-	Boundary1000Sessions10ConnsPerSession75Template:  {},
-	Boundary1000Sessions10ConnsPerSession100Template: {},
-	Boundary1000Sessions10ConnsPerSession500Template: {},
+	Dumpling1000Sessions10ConnsPerSession10Template:  {},
+	Dumpling1000Sessions10ConnsPerSession25Template:  {},
+	Dumpling1000Sessions10ConnsPerSession50Template:  {},
+	Dumpling1000Sessions10ConnsPerSession75Template:  {},
+	Dumpling1000Sessions10ConnsPerSession100Template: {},
+	Dumpling1000Sessions10ConnsPerSession500Template: {},
 }
 
 const letterBytes = "abcdefghijklmnopqrstuvwxyz"
@@ -78,8 +78,8 @@ const (
 
 const boundaryBenchmarksRootKey = "rootkey1rootkey1rootkey1rootkey1" // 32 bytes for AES-256
 
-// GetBoundaryBenchmarksRootKeyWrapper returns the root key wrapper used for the benchmark dumps.
-func GetBoundaryBenchmarksRootKeyWrapper(ctx context.Context) (wrapping.Wrapper, error) {
+// GetDumplingBenchmarksRootKeyWrapper returns the root key wrapper used for the benchmark dumps.
+func GetDumplingBenchmarksRootKeyWrapper(ctx context.Context) (wrapping.Wrapper, error) {
 	wrap := aead.NewWrapper()
 	_, err := wrap.SetConfig(ctx, wrapping.WithKeyId(base64.StdEncoding.EncodeToString([]byte(boundaryBenchmarksRootKey))))
 	if err != nil {
@@ -118,14 +118,14 @@ func startUsingTemplate(dialect string, opt ...Option) (cleanup func() error, re
 	if dialect == "postgres" {
 		dialect = "pgx"
 	}
-	db, err := common.SqlOpen(dialect, fmt.Sprintf("postgres://boundary:boundary@127.0.0.1:%s/boundary?sslmode=disable", testDBPort))
+	db, err := common.SqlOpen(dialect, fmt.Sprintf("postgres://boundary:boundary@127.0.0.1:%s/dumpling?sslmode=disable", testDBPort))
 	if err != nil {
 		return func() error { return nil }, "", "", fmt.Errorf("could not connect to source database: %w", err)
 	}
 	defer db.Close()
 
 	dbname = fmt.Sprintf("boundary_test_%s", randStr(16))
-	template := BoundaryTemplate
+	template := DumplingTemplate
 
 	opts := GetOpts(opt...)
 	if opts.withTemplate != "" {
@@ -173,7 +173,7 @@ func dropDatabase(dialect, dbname string) error {
 		return fmt.Errorf("empty dbname")
 	}
 
-	db, err := common.SqlOpen(dialect, fmt.Sprintf("postgres://boundary:boundary@127.0.0.1:%s/boundary?sslmode=disable", testDBPort))
+	db, err := common.SqlOpen(dialect, fmt.Sprintf("postgres://boundary:boundary@127.0.0.1:%s/dumpling?sslmode=disable", testDBPort))
 	if err != nil {
 		return err
 	}

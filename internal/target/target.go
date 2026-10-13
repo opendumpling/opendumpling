@@ -8,12 +8,12 @@ import (
 	goerrs "errors"
 	"fmt"
 
-	"github.com/hashicorp/boundary/internal/boundary"
-	"github.com/hashicorp/boundary/internal/db/timestamp"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/oplog"
-	"github.com/hashicorp/boundary/internal/target/store"
-	"github.com/hashicorp/boundary/internal/types/subtypes"
+	"github.com/opendumpling/opendumpling/internal/dumpling"
+	"github.com/opendumpling/opendumpling/internal/db/timestamp"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/oplog"
+	"github.com/opendumpling/opendumpling/internal/target/store"
+	"github.com/opendumpling/opendumpling/internal/types/subtypes"
 )
 
 // Target is a commmon interface for all target subtypes
@@ -66,7 +66,7 @@ const (
 )
 
 var (
-	_ boundary.AuthzProtectedEntity = (*targetView)(nil)
+	_ dumpling.AuthzProtectedEntity = (*targetView)(nil)
 
 	errTargetSubtypeNotFound = goerrs.New("target subtype not found")
 )
@@ -116,12 +116,12 @@ func (t *targetView) SetCredentialSources(cs []CredentialSource) {
 	t.CredentialSources = cs
 }
 
-// GetPublicId satisfies boundary.AuthzProtectedEntity
+// GetPublicId satisfies dumpling.AuthzProtectedEntity
 func (t targetView) GetPublicId() string {
 	return t.PublicId
 }
 
-// GetProjectId satisfies boundary.AuthzProtectedEntity
+// GetProjectId satisfies dumpling.AuthzProtectedEntity
 func (t targetView) GetProjectId() string {
 	return t.ProjectId
 }
@@ -134,7 +134,7 @@ func (t *targetView) GetCredentialSources() []CredentialSource {
 	return t.CredentialSources
 }
 
-// GetUserId satisfies boundary.AuthzProtectedEntity; targets are not associated
+// GetUserId satisfies dumpling.AuthzProtectedEntity; targets are not associated
 // with a user ID so this always returns an empty string
 func (t targetView) GetUserId() string {
 	return ""

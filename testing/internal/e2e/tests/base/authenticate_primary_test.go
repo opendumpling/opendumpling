@@ -14,8 +14,8 @@ import (
 	"testing"
 
 	"github.com/creack/pty"
-	"github.com/hashicorp/boundary/testing/internal/e2e"
-	"github.com/hashicorp/boundary/testing/internal/e2e/boundary"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e"
+	"github.com/opendumpling/opendumpling/testing/internal/e2e/dumpling"
 	"github.com/stretchr/testify/require"
 )
 
@@ -25,12 +25,12 @@ import (
 func TestCliAuthenticatePrimary(t *testing.T) {
 	e2e.MaybeSkipTest(t)
 
-	bc, err := boundary.LoadConfig()
+	bc, err := dumpling.LoadConfig()
 	require.NoError(t, err)
 
 	var cmd *exec.Cmd
 	ctx := context.Background()
-	cmd = exec.CommandContext(ctx, "boundary", "authenticate", "-addr", bc.Address, "-format", "json")
+	cmd = exec.CommandContext(ctx, "dumpling", "authenticate", "-addr", bc.Address, "-format", "json")
 
 	f, err := pty.Start(cmd)
 	require.NoError(t, err)
@@ -49,7 +49,7 @@ func TestCliAuthenticatePrimary(t *testing.T) {
 	parts := strings.Split(strings.TrimSpace(buf.String()), "\r\n")
 	response := parts[len(parts)-1]
 
-	var authenticationResult boundary.AuthenticateCliOutput
+	var authenticationResult dumpling.AuthenticateCliOutput
 	err = json.Unmarshal([]byte(response), &authenticationResult)
 	require.NoError(t, err)
 	require.Equal(t, http.StatusOK, authenticationResult.StatusCode, response)

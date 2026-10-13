@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/hashicorp/boundary/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/posener/complete"
 )
 
@@ -22,7 +22,7 @@ func postgresOptions(c *Command, set *base.FlagSets) {
 	f.StringVar(&base.StringVar{
 		Name:       "style",
 		Target:     &c.flagPostgresStyle,
-		EnvVar:     "BOUNDARY_CONNECT_POSTGRES_STYLE",
+		EnvVar:     "DUMPLING_CONNECT_POSTGRES_STYLE",
 		Completion: complete.PredictSet("psql"),
 		Default:    "psql",
 		Usage:      `Specifies how the CLI will attempt to invoke a Postgres client. This will also set a suitable default for -exec if a value was not specified. Currently-understood values are "psql".`,
@@ -31,7 +31,7 @@ func postgresOptions(c *Command, set *base.FlagSets) {
 	f.StringVar(&base.StringVar{
 		Name:       "username",
 		Target:     &c.flagUsername,
-		EnvVar:     "BOUNDARY_CONNECT_USERNAME",
+		EnvVar:     "DUMPLING_CONNECT_USERNAME",
 		Completion: complete.PredictNothing,
 		Usage:      `Specifies the username to pass through to the client. May be overridden by credentials sourced from a credential store.`,
 	})
@@ -39,7 +39,7 @@ func postgresOptions(c *Command, set *base.FlagSets) {
 	f.StringVar(&base.StringVar{
 		Name:       "dbname",
 		Target:     &c.flagDbname,
-		EnvVar:     "BOUNDARY_CONNECT_DBNAME",
+		EnvVar:     "DUMPLING_CONNECT_DBNAME",
 		Completion: complete.PredictNothing,
 		Usage:      `Specifies the database name to pass through to the client.`,
 	})

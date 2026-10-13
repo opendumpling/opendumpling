@@ -21,11 +21,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/db/common"
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/kms"
-	"github.com/hashicorp/boundary/internal/scheduler"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/db/common"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/kms"
+	"github.com/opendumpling/opendumpling/internal/scheduler"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	vault "github.com/hashicorp/vault/api"
 	"github.com/stretchr/testify/assert"
@@ -540,9 +540,9 @@ func getDefaultTestOptions(t testing.TB) testOptions {
 		orphan:        true,
 		periodic:      true,
 		renewable:     true,
-		policies:      []string{"default", "boundary-controller"},
+		policies:      []string{"default", "dumpling-controller"},
 		mountPath:     "",
-		roleName:      "boundary",
+		roleName:      "dumpling",
 		vaultTLS:      TestNoTLS,
 		dockerNetwork: false,
 		tokenPeriod:   defaultPeriod,
@@ -609,13 +609,13 @@ func WithTestMountPath(p string) TestOption {
 }
 
 // WithTestRoleName sets the roleName name to n.
-// The default role name is boundary.
+// The default role name is dumpling.
 func WithTestRoleName(n string) TestOption {
 	return func(t testing.TB, o *testOptions) {
 		t.Helper()
 		n = strings.TrimSpace(n)
 		if n == "" {
-			n = "boundary"
+			n = "dumpling"
 		}
 		o.roleName = n
 	}
@@ -811,7 +811,7 @@ func (v *TestVaultServer) addPolicy(t testing.TB, name string, pc pathCapabiliti
 // generating a root certificate authority and creating a default role on
 // the mount. The root CA is returned.
 //
-// The default mount path is ssh and the default role name is boundary.
+// The default mount path is ssh and the default role name is dumpling.
 // WithTestMountPath, WithTestRoleName, and WithAllowedExtension are the
 // test options supported. extensions are combined into allowed_extensions.
 // allowed_extensions defaults to "*" (allow all)
@@ -900,7 +900,7 @@ func (v *TestVaultServer) MountSSH(t testing.TB, opt ...TestOption) *vault.Secre
 // generating a root certificate authority and creating a default role on
 // the mount. The root CA is returned.
 //
-// The default mount path is pki and the default role name is boundary.
+// The default mount path is pki and the default role name is dumpling.
 // WithTestMountPath and WithTestRoleName are the only test options
 // supported.
 //

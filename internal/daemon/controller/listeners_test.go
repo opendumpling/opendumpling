@@ -23,8 +23,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/boundary/internal/cmd/base"
-	"github.com/hashicorp/boundary/version"
+	"github.com/opendumpling/opendumpling/internal/cmd/base"
+	"github.com/opendumpling/opendumpling/version"
 	"github.com/hashicorp/go-secure-stdlib/base62"
 	"github.com/hashicorp/go-secure-stdlib/configutil/v2"
 	"github.com/hashicorp/go-secure-stdlib/listenerutil"
@@ -813,7 +813,7 @@ func clusterTestDialer(t *testing.T, c *Controller, network string) func(context
 			CertPEM:         pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: certBytes}),
 			KeyPEM:          pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: marshaledKey}),
 			ConnectionNonce: nonce,
-			BoundaryVersion: v,
+			DumplingVersion: v,
 		}
 		infoBytes, err := json.Marshal(info)
 		require.NoError(t, err)

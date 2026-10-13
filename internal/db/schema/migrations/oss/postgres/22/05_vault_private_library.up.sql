@@ -48,7 +48,7 @@ begin;
         and store.token_status = 'current';
   comment on view credential_vault_library_private is
     'credential_vault_library_private is a view where each row contains a credential library and the credential library''s data needed to connect to Vault. '
-    'Each row may contain encrypted data. This view should not be used to retrieve data which will be returned external to boundary.';
+    'Each row may contain encrypted data. This view should not be used to retrieve data which will be returned external to dumpling.';
 
      create view credential_vault_library_public as
      select public_id,
@@ -67,6 +67,6 @@ begin;
        from credential_vault_library_private;
   comment on view credential_vault_library_public is
     'credential_vault_library_public is a view where each row contains a credential library and any of library''s credential mapping overrides. '
-    'No encrypted data is returned. This view can be used to retrieve data which will be returned external to boundary.';
+    'No encrypted data is returned. This view can be used to retrieve data which will be returned external to dumpling.';
 
 commit;

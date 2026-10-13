@@ -10,9 +10,9 @@
 package hostsets
 
 import (
-	plugins "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/plugins"
-	scopes "github.com/hashicorp/boundary/sdk/pbs/controller/api/resources/scopes"
-	_ "github.com/hashicorp/boundary/sdk/pbs/controller/protooptions"
+	plugins "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/plugins"
+	scopes "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/scopes"
+	_ "github.com/opendumpling/opendumpling/sdk/pbs/controller/protooptions"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	structpb "google.golang.org/protobuf/types/known/structpb"
@@ -69,7 +69,7 @@ type HostSet struct {
 	// elapse between syncs of the host set. The interval will be applied to the
 	// end of the previous sync operation, not the start. Setting to -1 will
 	// disable syncing for that host set; setting to zero will cause the set to
-	// use Boundary's default. The default may change between releases. May not
+	// use Dumpling's default. The default may change between releases. May not
 	// be valid for all plugin types.
 	SyncIntervalSeconds *wrapperspb.Int32Value `protobuf:"bytes,102,opt,name=sync_interval_seconds,proto3" json:"sync_interval_seconds,omitempty" class:"public"` // @gotags: `class:"public"`
 	// Types that are assignable to Attrs:

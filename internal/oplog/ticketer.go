@@ -6,8 +6,8 @@ package oplog
 import (
 	"context"
 
-	"github.com/hashicorp/boundary/internal/errors"
-	"github.com/hashicorp/boundary/internal/oplog/store"
+	"github.com/opendumpling/opendumpling/internal/errors"
+	"github.com/opendumpling/opendumpling/internal/oplog/store"
 	"github.com/hashicorp/go-dbw"
 )
 

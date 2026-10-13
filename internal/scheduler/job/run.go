@@ -4,7 +4,7 @@
 package job
 
 import (
-	"github.com/hashicorp/boundary/internal/scheduler/job/store"
+	"github.com/opendumpling/opendumpling/internal/scheduler/job/store"
 	"google.golang.org/protobuf/proto"
 )
 

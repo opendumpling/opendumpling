@@ -9,9 +9,9 @@ import (
 	"time"
 
 	"github.com/golang/protobuf/ptypes"
-	"github.com/hashicorp/boundary/internal/db/timestamp"
-	"github.com/hashicorp/boundary/internal/oplog/oplog_test"
-	"github.com/hashicorp/boundary/internal/oplog/store"
+	"github.com/opendumpling/opendumpling/internal/db/timestamp"
+	"github.com/opendumpling/opendumpling/internal/oplog/oplog_test"
+	"github.com/opendumpling/opendumpling/internal/oplog/store"
 	"github.com/hashicorp/go-dbw"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

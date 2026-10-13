@@ -19,12 +19,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hashicorp/boundary/globals"
-	"github.com/hashicorp/boundary/internal/db"
-	"github.com/hashicorp/boundary/internal/observability/event"
-	"github.com/hashicorp/boundary/internal/util"
-	kms_plugin_assets "github.com/hashicorp/boundary/plugins/kms"
-	"github.com/hashicorp/boundary/sdk/wrapper"
+	"github.com/opendumpling/opendumpling/globals"
+	"github.com/opendumpling/opendumpling/internal/db"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
+	"github.com/opendumpling/opendumpling/internal/util"
+	kms_plugin_assets "github.com/opendumpling/opendumpling/plugins/kms"
+	"github.com/opendumpling/opendumpling/sdk/wrapper"
 	"github.com/hashicorp/go-hclog"
 	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	configutil "github.com/hashicorp/go-secure-stdlib/configutil/v2"
@@ -40,7 +40,7 @@ import (
 var extraParsingFuncs []func(*Config) error
 
 const (
-	desktopCorsOrigin = "serve://boundary"
+	desktopCorsOrigin = "serve://dumpling"
 
 	devConfig = `
 disable_mlock = true
@@ -130,7 +130,7 @@ kms "aead" {
 	defaultCsp = "default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; frame-src 'self'; font-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self'; media-src 'self'; manifest-src 'self'; style-src-attr 'self'; frame-ancestors 'self'"
 )
 
-// Config is the configuration for the boundary controller
+// Config is the configuration for the dumpling controller
 type Config struct {
 	*configutil.SharedConfig `hcl:"-"`
 
@@ -336,7 +336,7 @@ type License struct {
 	Enabled bool `hcl:"enabled"`
 }
 
-// DevWorker is a Config that is used for dev mode of Boundary
+// DevWorker is a Config that is used for dev mode of Dumpling
 // workers. Supported options: WithObservationsEnabled, WithSysEventsEnabled,
 // WithAuditEventsEnabled, TestWithErrorEventsEnabled
 func DevWorker(opt ...Option) (*Config, error) {
@@ -374,7 +374,7 @@ func DevKeyGeneration() string {
 	return devKey
 }
 
-// DevController is a Config that is used for dev mode of Boundary
+// DevController is a Config that is used for dev mode of Dumpling
 // controllers
 func DevController(opt ...Option) (*Config, error) {
 	controllerKey := DevKeyGeneration()
@@ -597,7 +597,7 @@ func Parse(d string) (*Config, error) {
 
 		workerStatusGracePeriod := result.Controller.WorkerStatusGracePeriod
 		if util.IsNil(workerStatusGracePeriod) {
-			workerStatusGracePeriod = os.Getenv("BOUNDARY_CONTROLLER_WORKER_STATUS_GRACE_PERIOD")
+			workerStatusGracePeriod = os.Getenv("DUMPLING_CONTROLLER_WORKER_STATUS_GRACE_PERIOD")
 		}
 		if workerStatusGracePeriod != nil {
 			t, err := parseutil.ParseDurationSecond(workerStatusGracePeriod)
@@ -612,7 +612,7 @@ func Parse(d string) (*Config, error) {
 
 		livenessTimeToStale := result.Controller.LivenessTimeToStale
 		if util.IsNil(livenessTimeToStale) {
-			livenessTimeToStale = os.Getenv("BOUNDARY_CONTROLLER_LIVENESS_TIME_TO_STALE")
+			livenessTimeToStale = os.Getenv("DUMPLING_CONTROLLER_LIVENESS_TIME_TO_STALE")
 		}
 		if livenessTimeToStale != nil {
 			t, err := parseutil.ParseDurationSecond(livenessTimeToStale)
@@ -712,7 +712,7 @@ func Parse(d string) (*Config, error) {
 
 		statusCallTimeoutDuration := result.Worker.StatusCallTimeout
 		if util.IsNil(statusCallTimeoutDuration) {
-			statusCallTimeoutDuration = os.Getenv("BOUNDARY_WORKER_STATUS_CALL_TIMEOUT")
+			statusCallTimeoutDuration = os.Getenv("DUMPLING_WORKER_STATUS_CALL_TIMEOUT")
 		}
 		if statusCallTimeoutDuration != nil {
 			t, err := parseutil.ParseDurationSecond(statusCallTimeoutDuration)
@@ -727,7 +727,7 @@ func Parse(d string) (*Config, error) {
 
 		successfulStatusGracePeriod := result.Worker.SuccessfulStatusGracePeriod
 		if util.IsNil(successfulStatusGracePeriod) {
-			successfulStatusGracePeriod = os.Getenv("BOUNDARY_WORKER_SUCCESSFUL_STATUS_GRACE_PERIOD")
+			successfulStatusGracePeriod = os.Getenv("DUMPLING_WORKER_SUCCESSFUL_STATUS_GRACE_PERIOD")
 		}
 		if successfulStatusGracePeriod != nil {
 			t, err := parseutil.ParseDurationSecond(successfulStatusGracePeriod)
