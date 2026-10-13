@@ -1,9 +1,13 @@
 name: Release
 
 # Pushing a tag like "v0.13.1" builds every downloadable asset and pushes a
-# multi-arch container image to GHCR. Each build job uploads its own zip
-# straight to the GitHub Release, so the release job never has to download the
-# large binaries (actions/download-artifact is too flaky for that).
+# multi-arch container image to GHCR.
+#
+# Everything is kept in one self-contained job on purpose: GitHub's
+# actions/download-artifact@v4 is unreliable on hosted runners right now
+# (fails to fetch artifacts from the blob store even for tiny files), so no
+# cross-job artifact hand-off is used. The job builds all 18 archives, writes
+# SHA256SUMS, and uploads everything to the release.
 on:
   push:
     tags:
@@ -20,21 +24,18 @@ concurrency:
 
 env:
   GO_VERSION: '1.23.x'
+  CGO_ENABLED: '0'
 
 jobs:
-  # ---------------------------------------------------------------------------
-  # Compute version/tag and create (or reuse) a draft release when running on a
-  # tag. Every other job depends on this, so the release exists before any
-  # asset upload happens.
-  # ---------------------------------------------------------------------------
-  prepare:
-    name: prepare
+  build:
+    name: Build release archives
     runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.version.outputs.version }}
-      tag: ${{ steps.version.outputs.tag }}
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
 
       - name: Determine version
         id: version
@@ -49,137 +50,67 @@ jobs:
           echo "version=${version}" >> "$GITHUB_OUTPUT"
           echo "tag=${tag}" >> "$GITHUB_OUTPUT"
 
-      - name: Create draft release (tagged runs only)
+      - name: Build and package
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          cd out
+          platforms="darwin/amd64 darwin/arm64 \
+            freebsd/386 freebsd/amd64 freebsd/arm \
+            linux/386 linux/amd64 linux/arm linux/arm64 \
+            netbsd/386 netbsd/amd64 netbsd/arm \
+            openbsd/386 openbsd/amd64 openbsd/arm \
+            solaris/amd64 \
+            windows/386 windows/amd64"
+          for p in ${platforms}; do
+            os="${p%/*}"
+            arch="${p#*/}"
+            ext=""
+            if [ "${os}" = "windows" ]; then ext=".exe"; fi
+            echo "==> Building ${os}_${arch}"
+            GOOS="${os}" GOARCH="${arch}" go build -trimpath -tags=dumpling \
+              -ldflags "-s -w \
+                -X github.com/opendumpling/opendumpling/version.GitCommit=${GITHUB_SHA} \
+                -X github.com/opendumpling/opendumpling/version.Version=${VERSION} \
+                -X github.com/opendumpling/opendumpling/version.BuildDate=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+              -o "dumpling${ext}" ../cmd/dumpling
+            zip -j "dumpling_${VERSION}_${os}_${arch}.zip" "dumpling${ext}"
+            rm -f "dumpling${ext}"
+          done
+          sha256sum ./*.zip > SHA256SUMS
+          echo "---- out/ contents ----"
+          ls -la
+
+      - name: Publish release
         if: github.ref_type == 'tag'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.version }}
+        working-directory: out
         run: |
-          gh release create "${TAG}" --draft --notes "OpenDumpling ${TAG}" \
-            || gh release edit "${TAG}" --draft=true \
-            || true
-
-  # ---------------------------------------------------------------------------
-  # Cross-compiled release archives. Mirrors the upstream Boundary v0.13.1
-  # asset list (same OS/arch set), as "dumpling_<version>_<os>_<arch>.zip".
-  # ---------------------------------------------------------------------------
-  binaries:
-    name: ${{ matrix.goos }}/${{ matrix.goarch }}
-    needs: prepare
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - {goos: darwin, goarch: amd64}
-          - {goos: darwin, goarch: arm64}
-          - {goos: freebsd, goarch: 386}
-          - {goos: freebsd, goarch: amd64}
-          - {goos: freebsd, goarch: arm}
-          - {goos: linux, goarch: 386}
-          - {goos: linux, goarch: amd64}
-          - {goos: linux, goarch: arm}
-          - {goos: linux, goarch: arm64}
-          - {goos: netbsd, goarch: 386}
-          - {goos: netbsd, goarch: amd64}
-          - {goos: netbsd, goarch: arm}
-          - {goos: openbsd, goarch: 386}
-          - {goos: openbsd, goarch: amd64}
-          - {goos: openbsd, goarch: arm}
-          - {goos: solaris, goarch: amd64}
-          - {goos: windows, goarch: 386}
-          - {goos: windows, goarch: amd64}
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-go@v5
-        with:
-          go-version: ${{ env.GO_VERSION }}
-
-      - name: Build
-        env:
-          GOOS: ${{ matrix.goos }}
-          GOARCH: ${{ matrix.goarch }}
-          CGO_ENABLED: '0'
-          VERSION: ${{ needs.prepare.outputs.version }}
-        run: |
-          ext=""
-          if [ "${GOOS}" = "windows" ]; then ext=".exe"; fi
-          go build -trimpath -tags=dumpling \
-            -ldflags "-s -w \
-              -X github.com/opendumpling/opendumpling/version.GitCommit=${GITHUB_SHA} \
-              -X github.com/opendumpling/opendumpling/version.Version=${VERSION} \
-              -X github.com/opendumpling/opendumpling/version.BuildDate=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-            -o "dumpling${ext}" ./cmd/dumpling
-
-      - name: Package
-        id: package
-        env:
-          VERSION: ${{ needs.prepare.outputs.version }}
-        run: |
-          name="dumpling_${VERSION}_${{ matrix.goos }}_${{ matrix.goarch }}.zip"
-          if [ "${{ matrix.goos }}" = "windows" ]; then
-            zip -j "${name}" dumpling.exe
-          else
-            zip -j "${name}" dumpling
-          fi
-          sha256sum "${name}" > "sha256sums.txt"
-          echo "name=${name}" >> "$GITHUB_OUTPUT"
-
-      - name: Upload zip to release
-        if: github.ref_type == 'tag'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG: ${{ needs.prepare.outputs.tag }}
-        run: gh release upload "${TAG}" "${{ steps.package.outputs.name }}" --clobber
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: sums-${{ matrix.goos }}-${{ matrix.goarch }}
-          path: sha256sums.txt
-          if-no-files-found: error
-          retention-days: 7
-
-  # ---------------------------------------------------------------------------
-  # Assemble SHA256SUMS from the small per-job checksums and publish the release
-  # (once all zips are attached).
-  # ---------------------------------------------------------------------------
-  release:
-    needs: [prepare, binaries]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          path: sums
-          pattern: sums-*
-          merge-multiple: true
-
-      - name: Assemble SHA256SUMS
-        working-directory: sums
-        run: |
-          rm -f SHA256SUMS
-          cat ./*.txt | sort > SHA256SUMS
-          wc -l SHA256SUMS
-
-      - name: Publish checksums and finalize release
-        if: github.ref_type == 'tag'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG: ${{ needs.prepare.outputs.tag }}
-          VERSION: ${{ needs.prepare.outputs.version }}
-        run: |
-          gh release upload "${TAG}" sums/SHA256SUMS --clobber
+          gh release create "${TAG}" --title "OpenDumpling ${VERSION}" \
+            --notes "OpenDumpling ${VERSION}" || true
+          gh release upload "${TAG}" ./*.zip SHA256SUMS --clobber
           gh release edit "${TAG}" --draft=false --title "OpenDumpling ${VERSION}"
 
-  # ---------------------------------------------------------------------------
-  # Multi-arch container image.
-  # ---------------------------------------------------------------------------
   docker:
     name: container image
-    needs: prepare
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Determine version
+        id: version
+        run: |
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            version="${GITHUB_REF_NAME#v}"
+          else
+            version="$(cat version/VERSION)"
+          fi
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
 
       - uses: docker/setup-qemu-action@v3
       - uses: docker/setup-buildx-action@v3
@@ -198,8 +129,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           build-args: |
-            VERSION=${{ needs.prepare.outputs.version }}
+            VERSION=${{ steps.version.outputs.version }}
             GIT_COMMIT=${{ github.sha }}
           tags: |
-            ghcr.io/opendumpling/opendumpling:${{ needs.prepare.outputs.version }}
+            ghcr.io/opendumpling/opendumpling:${{ steps.version.outputs.version }}
             ghcr.io/opendumpling/opendumpling:latest
