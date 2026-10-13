@@ -92,7 +92,8 @@ the same OS/architecture matrix that upstream Boundary v0.13.1 offered:
 | Windows | `386`, `amd64` |
 
 Assets are named `dumpling_<version>_<os>_<arch>.zip` and are accompanied by a
-`SHA256SUMS` checksum file. See [RELEASING.md](./RELEASING.md) for details.
+`dumpling_<version>_SHA256SUMS` checksum file. See [RELEASING.md](./RELEASING.md)
+for details.
 
 ## Configuration
 

@@ -19,7 +19,7 @@ and the automatically provided `GITHUB_TOKEN`.
 
    * cross-compile `dumpling` for the full OS/architecture matrix;
    * package each binary as `dumpling_<version>_<os>_<arch>.zip`;
-   * generate a `SHA256SUMS` checksum file;
+   * generate a `dumpling_<version>_SHA256SUMS` checksum file;
    * create (or update) the GitHub Release for the tag and upload the archives;
    * build and push a multi-arch image (`linux/amd64`, `linux/arm64`) to
      `ghcr.io/opendumpling/opendumpling:<version>` and `:latest`.
