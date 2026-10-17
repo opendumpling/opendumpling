@@ -96,7 +96,7 @@ var (
 		action.List,
 	}
 
-	validateCredentialSourcesFn      = func(context.Context, subtypes.Subtype, []target.CredentialSource) error { return nil }
+	validateCredentialSourcesFn      = defaultValidateCredentialSources
 	ValidateIngressWorkerFilterFn    = IngressWorkerFilterUnsupported
 	AuthorizeSessionWorkerFilterFn   = AuthorizeSessionWithWorkerFilter
 	PostSessionAuthorizationCallback = DefaultPostSessionAuthorizationCallback
@@ -105,6 +105,18 @@ var (
 
 func IngressWorkerFilterUnsupported(string) error {
 	return fmt.Errorf("Ingress Worker Filter field is not supported in OSS")
+}
+
+// defaultValidateCredentialSources validates that the credential sources
+// attached to a target are supported by the target's subtype. It is invoked when
+// authorizing a session so that a target cannot be used with credential sources
+// it does not support (for example an injected credential on a tcp target).
+func defaultValidateCredentialSources(ctx context.Context, subtype subtypes.Subtype, sources []target.CredentialSource) error {
+	const op = "targets.(Service).defaultValidateCredentialSources"
+	if err := target.VetCredentialSources(ctx, subtype, sources); err != nil {
+		return errors.Wrap(ctx, err, op)
+	}
+	return nil
 }
 
 // Service handles request as described by the pbs.TargetServiceServer interface.

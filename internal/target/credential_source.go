@@ -4,8 +4,12 @@
 package target
 
 import (
+	"context"
+
 	"github.com/opendumpling/opendumpling/internal/credential"
+	"github.com/opendumpling/opendumpling/internal/errors"
 	"github.com/opendumpling/opendumpling/internal/target/store"
+	"github.com/opendumpling/opendumpling/internal/types/subtypes"
 )
 
 // CredentialSourceType is the type of credential source.
@@ -86,4 +90,37 @@ type credentialSourceView struct {
 // TableName returns the tablename to override the default gorm table name
 func (csv *credentialSourceView) TableName() string {
 	return "credential_source_all_types"
+}
+
+// VetCredentialSources checks that the provided credential sources are valid
+// for the provided target subtype. It is used to (re)validate the credential
+// sources attached to a target, for example when authorizing a session.
+func VetCredentialSources(ctx context.Context, s subtypes.Subtype, sources []CredentialSource) error {
+	const op = "target.VetCredentialSources"
+	vet, ok := subtypeRegistry.vetCredentialSourcesFunc(s)
+	if !ok {
+		return errors.New(ctx, errors.InvalidParameter, op, "unsupported subtype")
+	}
+	libs := make([]*CredentialLibrary, 0, len(sources))
+	creds := make([]*StaticCredential, 0, len(sources))
+	for _, src := range sources {
+		if src == nil {
+			continue
+		}
+		switch src.Type() {
+		case LibraryCredentialSourceType:
+			libs = append(libs, &CredentialLibrary{CredentialLibrary: &store.CredentialLibrary{
+				CredentialLibraryId: src.Id(),
+				TargetId:            src.TargetId(),
+				CredentialPurpose:   string(src.CredentialPurpose()),
+			}})
+		case StaticCredentialSourceType:
+			creds = append(creds, &StaticCredential{StaticCredential: &store.StaticCredential{
+				CredentialId:      src.Id(),
+				TargetId:          src.TargetId(),
+				CredentialPurpose: string(src.CredentialPurpose()),
+			}})
+		}
+	}
+	return vet(ctx, libs, creds)
 }
