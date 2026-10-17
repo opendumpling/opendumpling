@@ -4,5 +4,6 @@
 package worker
 
 import (
+	_ "github.com/opendumpling/opendumpling/internal/daemon/worker/proxy/ssh"
 	_ "github.com/opendumpling/opendumpling/internal/daemon/worker/proxy/tcp"
 )

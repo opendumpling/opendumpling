@@ -8,10 +8,11 @@ import (
 	"fmt"
 	"testing"
 
+	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 	"github.com/opendumpling/opendumpling/internal/cmd/config"
 	"github.com/opendumpling/opendumpling/internal/daemon/controller"
-	wrapping "github.com/hashicorp/go-kms-wrapping/v2"
 
+	_ "github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/targets/ssh"
 	_ "github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/targets/tcp"
 )
 

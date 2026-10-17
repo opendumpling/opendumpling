@@ -141,3 +141,18 @@ message CloseConnectionResponseData {
 message CloseConnectionResponse {
   repeated CloseConnectionResponseData close_response_data = 10; // @gotags: `class:"public"`
 }
+
+// SshProtocolContext contains information specific to an SSH session that the
+// worker needs in order to proxy the connection to the endpoint.
+//
+// It is delivered to the worker through the protocol_context field of the
+// AuthorizeConnectionResponse. The presence of this message tells the worker
+// that it acts as an SSH man-in-the-middle: it terminates the SSH connection
+// from the client and establishes a new SSH connection to the endpoint using
+// the credentials below.
+message SshProtocolContext {
+  // credentials contains the credentials which must be injected by the worker
+  // when establishing the SSH connection to the endpoint. Only
+  // injected-application purpose credentials are included.
+  repeated Credential credentials = 10; // @gotags: `class:"secret"`
+}

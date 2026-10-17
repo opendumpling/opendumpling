@@ -271,5 +271,5 @@ func extraSshFlagsHandlingFuncImpl(c *SshCommand, _ *base.FlagSets, opts *[]targ
 }
 
 func extraSshSynopsisFuncImpl(_ *SshCommand) string {
-	return "Create a ssh-type target (HCP only)"
+	return "Create a ssh-type target"
 }

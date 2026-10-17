@@ -6,22 +6,26 @@ package handlers
 import (
 	"context"
 	"fmt"
+	"net/url"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
 
+	"github.com/hashicorp/go-bexpr"
 	dcommon "github.com/opendumpling/opendumpling/internal/daemon/common"
 	"github.com/opendumpling/opendumpling/internal/daemon/controller/common"
 	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers"
+	"github.com/opendumpling/opendumpling/internal/errors"
 	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/servers/services"
 	intglobals "github.com/opendumpling/opendumpling/internal/globals"
 	"github.com/opendumpling/opendumpling/internal/kms"
 	"github.com/opendumpling/opendumpling/internal/observability/event"
 	"github.com/opendumpling/opendumpling/internal/server"
 	"github.com/opendumpling/opendumpling/internal/session"
+	targetssh "github.com/opendumpling/opendumpling/internal/target/ssh"
 	"github.com/opendumpling/opendumpling/internal/types/scope"
 	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/targets"
-	"github.com/hashicorp/go-bexpr"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -54,11 +58,11 @@ var (
 	connectionRouteFn = singleHopConnectionRoute
 
 	// getProtocolContext populates the protocol specific context fields
-	// depending on the protocol used to for the boundary connection. Defaults
-	// to noProtocolContext since tcp connections are the only protocol schemes
-	// available in OSS and are a straight forward proxy with no additional
-	// fields needed.
-	getProtocolContext = noProtocolContext
+	// depending on the protocol used for the Dumpling connection. SSH sessions
+	// receive an SshProtocolContext carrying the credentials the worker must
+	// inject when establishing the connection to the endpoint. Other protocols
+	// (e.g. tcp) need no additional context.
+	getProtocolContext = sshProtocolContext
 )
 
 // singleHopConnectionRoute returns a route consisting of the singlehop worker (the root worker id)
@@ -381,18 +385,56 @@ func egressFilterSelector(sessionInfo *session.Session) string {
 	return ""
 }
 
-// noProtocolContext doesn't provide any protocol context since tcp doesn't need any
-func noProtocolContext(
-	context.Context,
-	*session.Repository,
-	*server.Repository,
-	common.WorkerAuthRepoStorageFactory,
-	*pbs.AuthorizeConnectionRequest,
-	[]string,
-	string,
-	intglobals.ControllerExtension,
+// sshProtocolContext returns the protocol context for a session. SSH sessions
+// receive an SshProtocolContext carrying the injected credentials the worker
+// must use when connecting to the endpoint. All other protocols return a nil
+// protocol context.
+func sshProtocolContext(
+	ctx context.Context,
+	sessionRepo *session.Repository,
+	_ *server.Repository,
+	_ common.WorkerAuthRepoStorageFactory,
+	_ *pbs.AuthorizeConnectionRequest,
+	sessInfo *session.Session,
+	_ []string,
+	_ string,
+	_ intglobals.ControllerExtension,
 ) (*anypb.Any, error) {
-	return nil, nil
+	const op = "cluster.handlers.sshProtocolContext"
+	if sessInfo == nil || sessInfo.Endpoint == "" {
+		return nil, nil
+	}
+	endpointUrl, err := url.Parse(sessInfo.Endpoint)
+	if err != nil {
+		return nil, errors.Wrap(ctx, err, op, errors.WithMsg("unable to parse session endpoint"))
+	}
+	if !strings.EqualFold(endpointUrl.Scheme, string(targetssh.Subtype)) {
+		// Not an SSH session: no protocol specific context is required.
+		return nil, nil
+	}
+	if sessionRepo == nil {
+		return nil, errors.New(ctx, errors.Internal, op, "session repository is nil")
+	}
+
+	// Only injected-application purpose credentials are stored for a session,
+	// so everything returned here is meant to be used by the worker.
+	creds, err := sessionRepo.ListSessionCredentials(ctx, sessInfo.ProjectId, sessInfo.PublicId)
+	if err != nil {
+		return nil, errors.Wrap(ctx, err, op, errors.WithMsg("unable to list session credentials"))
+	}
+	protoCtx := &pbs.SshProtocolContext{}
+	for _, c := range creds {
+		cred := &pbs.Credential{}
+		if err := proto.Unmarshal(c, cred); err != nil {
+			return nil, errors.Wrap(ctx, err, op, errors.WithMsg("unable to unmarshal session credential"))
+		}
+		protoCtx.Credentials = append(protoCtx.Credentials, cred)
+	}
+	anyCtx, err := anypb.New(protoCtx)
+	if err != nil {
+		return nil, errors.Wrap(ctx, err, op, errors.WithMsg("unable to marshal ssh protocol context"))
+	}
+	return anyCtx, nil
 }
 
 func lookupSessionWorkerFilter(ctx context.Context, sessionInfo *session.Session, authzSummary *session.AuthzSummary, ws *workerServiceServer,
@@ -641,6 +683,7 @@ func (ws *workerServiceServer) AuthorizeConnection(ctx context.Context, req *pbs
 		serversRepo,
 		ws.workerAuthRepoFn,
 		req,
+		sessInfo,
 		route,
 		ret.ConnectionId,
 		ws.controllerExt,

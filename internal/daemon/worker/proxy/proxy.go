@@ -9,12 +9,14 @@ import (
 	"net"
 	"sync"
 
+	"github.com/opendumpling/opendumpling/internal/gen/controller/servers/services"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/anypb"
 )
 
 var (
 	TcpHandlerName = "tcp"
+	SshHandlerName = "ssh"
 
 	// handlers is the map of registered handlers
 	handlers sync.Map
@@ -28,8 +30,29 @@ var (
 	// GetHandler returns the handler registered for the provided worker and
 	// protocolContext. If a protocol cannot be determined or the protocol is
 	// not registered nil, ErrUnknownProtocol is returned.
-	GetHandler = tcpOnly
+	GetHandler = protocolHandler
 )
+
+// protocolHandler selects the proxy handler to use based on the protocol
+// context provided by the controller. A SshProtocolContext indicates the worker
+// must terminate the SSH connection from the client and inject credentials when
+// connecting to the endpoint; any other (or absent) protocol context is treated
+// as a straightforward tcp proxy.
+func protocolHandler(_ string, protocolCtx proto.Message) (Handler, error) {
+	if a, ok := protocolCtx.(*anypb.Any); ok && a != nil && a.MessageIs(&services.SshProtocolContext{}) {
+		return loadHandler(SshHandlerName)
+	}
+	return loadHandler(TcpHandlerName)
+}
+
+// loadHandler returns the handler registered for the provided protocol.
+func loadHandler(protocol string) (Handler, error) {
+	handler, ok := handlers.Load(protocol)
+	if !ok {
+		return nil, ErrUnknownProtocol
+	}
+	return handler.(Handler), nil
+}
 
 // RecordingManager allows a handler for a protocol that supports recording.
 type RecordingManager any
@@ -54,13 +77,4 @@ func RegisterHandler(protocol string, handler Handler) error {
 		return ErrProtocolAlreadyRegistered
 	}
 	return nil
-}
-
-// tcpOnly returns only the TCP protocol.
-func tcpOnly(string, proto.Message) (Handler, error) {
-	handler, ok := handlers.Load(TcpHandlerName)
-	if !ok {
-		return nil, ErrUnknownProtocol
-	}
-	return handler.(Handler), nil
 }
