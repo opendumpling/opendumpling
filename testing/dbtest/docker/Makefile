@@ -47,6 +47,8 @@ database-up:
 		--mount type=tmpfs,destination=/pgdata \
 		-v "$(CWD)/../../../internal/db/schema/migrations":/migrations \
 		-v "$(CWD)/benchmark_dumps":/benchmark_dumps \
+		-v "$(CWD)/init-db.sh":/docker-entrypoint-initdb.d/00-init-db.sh \
+		-v "$(CWD)/restore-benchmark-dumps.sh":/docker-entrypoint-initdb.d/01-restore-benchmark-dumps.sh \
 		$(TEST_IMAGE_TAG) \
 		-c 'config_file=/etc/postgresql/postgresql.conf' \
 		$(PG_OPTS) 1> /dev/null
