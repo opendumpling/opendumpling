@@ -44,19 +44,11 @@ const (
 )
 
 // the function that handles a secondary connection over a provided listener
-var handleSecondaryConnection = closeListeners
-
-// closeListeners handles the secondary connection listeners by closing them.
-// l is the grpc listener and l2 is the data plane listener.
-func closeListeners(_ context.Context, l, l2 net.Listener, _ any) error {
-	if l != nil {
-		l.Close()
-	}
-	if l2 != nil {
-		l2.Close()
-	}
-	return nil
-}
+//
+// Serving them is what allows a worker to act as the ingress worker of a multi
+// hop route; workers which never receive downstream workers simply never see a
+// connection on these listeners.
+var handleSecondaryConnection = serveSecondaryConnections
 
 func (w *Worker) startListeners(sm session.Manager) error {
 	const op = "worker.(Worker).startListeners"
@@ -296,7 +288,11 @@ func (w *Worker) configureForWorker(ln *base.ServerListener, logger *log.Logger,
 
 	return func() {
 		handleSecondaryConnection(cancelCtx, metric.InstrumentWorkerClusterTrackingListener(revPkiWorkerTrackingListener, reverseGrpcListenerPurpose),
-			metric.InstrumentWorkerClusterTrackingListener(dataPlaneProxyTrackingListener, multihopProxyDataplaneListenerPurpose), w.downstreamReceiver)
+			metric.InstrumentWorkerClusterTrackingListener(dataPlaneProxyTrackingListener, multihopProxyDataplaneListenerPurpose),
+			&secondaryConnections{
+				grpcServer:         ln.GrpcServer,
+				downstreamReceiver: w.downstreamReceiver,
+			})
 		go w.workerAuthSplitListener.Start()
 		go httpServer.Serve(proxyListener)
 		go ln.GrpcServer.Serve(metric.InstrumentWorkerClusterTrackingListener(pkiWorkerTrackingListener, grpcListenerPurpose))
