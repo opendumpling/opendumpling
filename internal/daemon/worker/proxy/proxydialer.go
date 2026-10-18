@@ -15,7 +15,11 @@ import (
 
 // GetEndpointDialer returns a ProxyDialer which, when Dial() is called
 // returns a net.Conn which reaches the provided endpoint.
-var GetEndpointDialer = directDialer
+//
+// The controller returns the route a session travels in the authorize session
+// response, so the dialer either dials the endpoint itself or tunnels through
+// the downstream workers of the route.
+var GetEndpointDialer = routeDialer
 
 // directDialer returns a ProxyDialer which tcp dials directly to the provided
 // endpoint.

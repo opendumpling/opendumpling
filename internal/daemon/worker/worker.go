@@ -73,6 +73,11 @@ type reverseConnReceiver interface {
 type downstreamers interface {
 	// RootId returns the root ID of the downstreamers' graph
 	RootId() string
+	// Children returns the direct downstream worker ids of the provided worker id
+	Children(ctx context.Context, id string) ([]string, error)
+	// Routes returns all routes (paths of worker ids) starting at the
+	// provided worker id and ending at a leaf worker
+	Routes(ctx context.Context, id string) ([][]string, error)
 }
 
 // recorderManager updates the status updates with relevant recording
@@ -518,6 +523,11 @@ func (w *Worker) Start() error {
 	if err := w.startListeners(w.sessionManager); err != nil {
 		return errors.Wrap(w.baseContext, err, op, errors.WithMsg("error starting worker listeners"))
 	}
+
+	// A private worker reaches its upstreams through the data plane
+	// connections it maintains, which is what makes it reachable without any
+	// inbound listener of its own.
+	w.startDataPlaneUpstream(w.baseContext)
 
 	w.operationalState.Store(server.ActiveOperationalState)
 
