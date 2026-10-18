@@ -56,6 +56,11 @@ func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
 			"",
 			`      $ dumpling workers read -id w_1234567890`,
 			"",
+			"    Register a worker which has been started and printed its",
+			"    Worker Auth Registration Request:",
+			"",
+			`      $ dumpling workers register -name ingress-1 -auth-request-file /opt/dumpling/ingress/auth_request_token`,
+			"",
 			"  Please see the workers subcommand help for detailed usage information.",
 		})
 	case "add-worker-tags":

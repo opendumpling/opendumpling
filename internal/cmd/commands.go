@@ -1263,6 +1263,11 @@ func initCommands(ui, serverCmdUi cli.Ui, runOpts *RunOptions) {
 				Func:    "create",
 			}, nil
 		},
+		"workers register": func() (cli.Command, error) {
+			return &workerscmd.RegisterCommand{
+				Command: base.NewCommand(ui),
+			}, nil
+		},
 		"workers read": func() (cli.Command, error) {
 			return &workerscmd.Command{
 				Command: base.NewCommand(ui),
