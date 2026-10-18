@@ -2552,3 +2552,75 @@ worker {
 		})
 	}
 }
+
+func TestClusterDiscoveryConfig(t *testing.T) {
+	tests := []struct {
+		name         string
+		raw          string
+		expDomain    string
+		expFallback  []string
+		expErrSubstr string
+	}{
+		{
+			name: "unset",
+			raw: `
+worker {
+  name = "w1"
+}`,
+		},
+		{
+			name: "cluster id only",
+			raw:  `hcp_boundary_cluster_id = "c-1"`,
+		},
+		{
+			name: "discovery domain",
+			raw: `
+hcp_boundary_cluster_id = "c-1"
+discovery_domain        = "dumpling.example.com"`,
+			expDomain: "dumpling.example.com",
+		},
+		{
+			name: "trailing dot is trimmed",
+			raw: `
+hcp_boundary_cluster_id = "c-1"
+discovery_domain        = "dumpling.example.com."`,
+			expDomain: "dumpling.example.com",
+		},
+		{
+			name: "fallback as a list",
+			raw: `
+hcp_boundary_cluster_id   = "c-1"
+discovery_fallback_addr   = ["boundary.example.com:9201", "10.0.0.5"]`,
+			expFallback: []string{"boundary.example.com:9201", "10.0.0.5"},
+		},
+		{
+			name: "fallback from an environment variable",
+			raw: `
+hcp_boundary_cluster_id = "c-1"
+discovery_fallback_addr = "env://DUMPLING_TEST_FALLBACK_ADDRS"`,
+			expFallback: []string{"boundary.example.com:9201"},
+		},
+		{
+			name: "whitespace in the discovery domain",
+			raw: `
+hcp_boundary_cluster_id = "c-1"
+discovery_domain        = "dumpling example.com"`,
+			expErrSubstr: "whitespace",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Setenv("DUMPLING_TEST_FALLBACK_ADDRS", `["boundary.example.com:9201"]`)
+
+			c, err := Parse(tt.raw)
+			if tt.expErrSubstr != "" {
+				require.ErrorContains(t, err, tt.expErrSubstr)
+				return
+			}
+			require.NoError(t, err)
+			assert.Equal(t, tt.expDomain, c.DiscoveryDomain)
+			assert.Equal(t, tt.expFallback, c.DiscoveryFallbackAddr)
+		})
+	}
+}

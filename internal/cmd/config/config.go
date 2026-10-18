@@ -152,9 +152,27 @@ type Config struct {
 	// Plugin-related options
 	Plugins Plugins `hcl:"plugins"`
 
-	// Internal field for use with HCP deployments. Used if controllers/
-	// initial_upstreams is not set.
+	// Identifies the Dumpling cluster this process belongs to. A worker which
+	// has this set finds its controllers by resolving the cluster id instead
+	// of listing their addresses, which is how HCP Boundary workers are
+	// configured. On a worker it is mutually exclusive with the worker's
+	// initial_upstreams; on a controller it is only reported back so an
+	// operator has something to hand to the workers.
 	HcpbClusterId string `hcl:"hcp_boundary_cluster_id"`
+
+	// DiscoveryDomain is the DNS domain a worker resolves a cluster id
+	// against. Together with the cluster id it forms the name
+	// "<cluster id>.<discovery domain>", which has to resolve to a
+	// controller for discovery to work. Defaults to dumpling.local.
+	DiscoveryDomain string `hcl:"discovery_domain"`
+
+	// DiscoveryFallbackAddr is consulted when the discovery lookup fails, so
+	// that a worker which cannot reach the discovery DNS still joins the
+	// cluster it was told about. Like initial_upstreams it accepts a list of
+	// addresses or a single string holding a JSON array, which may be read
+	// from an environment variable or a file.
+	DiscoveryFallbackAddrRaw any      `hcl:"discovery_fallback_addr"`
+	DiscoveryFallbackAddr    []string `hcl:"-"`
 
 	// Whether to log information from the worker authentication process. This
 	// shouldn't divulge any secrets but may contain information considered
@@ -906,6 +924,15 @@ func Parse(d string) (*Config, error) {
 		}
 	}
 
+	result.DiscoveryFallbackAddr, err = parseDiscoveryFallbackAddr(result)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to parse discovery fallback address: %w", err)
+	}
+	result.DiscoveryDomain = strings.TrimSuffix(result.DiscoveryDomain, ".")
+	if strings.ContainsAny(result.DiscoveryDomain, " \t\r\n") {
+		return nil, fmt.Errorf("Discovery domain contains whitespace")
+	}
+
 	// Now that we can have multiple KMSes for downstream workers, allow an
 	// unlimited number of KMS blocks as we don't know how many might be defined
 	sharedConfig, err := configutil.ParseConfig(
@@ -1023,6 +1050,41 @@ func parseWorkerUpstreams(c *Config) ([]string, error) {
 	default:
 		typ := reflect.TypeOf(t)
 		return nil, fmt.Errorf("unexpected type %q", typ.String())
+	}
+}
+
+func parseDiscoveryFallbackAddr(c *Config) ([]string, error) {
+	if c == nil {
+		return nil, fmt.Errorf("config is nil")
+	}
+	if c.DiscoveryFallbackAddrRaw == nil {
+		// return nil here so that a worker which relies purely on discovery
+		// does not need the field at all
+		return nil, nil
+	}
+
+	switch t := c.DiscoveryFallbackAddrRaw.(type) {
+	case []any:
+		var addrs []string
+		if err := mapstructure.WeakDecode(t, &addrs); err != nil {
+			return nil, fmt.Errorf("failed to decode discovery_fallback_addr into config field: %w", err)
+		}
+		return addrs, nil
+
+	case string:
+		addrsStr, err := parseutil.ParsePath(t)
+		if err != nil {
+			return nil, fmt.Errorf("bad env var or file pointer: %w", err)
+		}
+
+		var addrs []string
+		if err := json.Unmarshal([]byte(addrsStr), &addrs); err != nil {
+			return nil, fmt.Errorf("failed to unmarshal env/file contents: %w", err)
+		}
+		return addrs, nil
+
+	default:
+		return nil, fmt.Errorf("unexpected type %q", reflect.TypeOf(t).String())
 	}
 }
 

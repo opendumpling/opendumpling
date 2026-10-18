@@ -248,9 +248,8 @@ func (w *Worker) sendWorkerStatus(cancelCtx context.Context, sessionManager sess
 
 					if len(w.conf.RawConfig.Worker.InitialUpstreams) > 0 {
 						addrs = append(addrs, w.conf.RawConfig.Worker.InitialUpstreams...)
-					} else if HandleHcpbClusterId != nil && len(w.conf.RawConfig.HcpbClusterId) > 0 {
-						clusterAddress := HandleHcpbClusterId(w.conf.RawConfig.HcpbClusterId)
-						addrs = append(addrs, clusterAddress)
+					} else {
+						addrs = append(addrs, w.clusterUpstreams(cancelCtx)...)
 					}
 
 					addrs = strutil.RemoveDuplicates(addrs, false)

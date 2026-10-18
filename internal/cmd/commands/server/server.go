@@ -30,7 +30,7 @@ import (
 	"github.com/hashicorp/go-multierror"
 	"github.com/hashicorp/go-secure-stdlib/mlock"
 	"github.com/hashicorp/go-secure-stdlib/parseutil"
-	"github.com/hashicorp/go-uuid"
+	"github.com/hashicorp/go-secure-stdlib/strutil"
 	"github.com/mitchellh/cli"
 	"github.com/posener/complete"
 	"go.uber.org/atomic"
@@ -360,19 +360,43 @@ func (c *Command) Run(args []string) int {
 
 		if c.Config.HcpbClusterId != "" {
 			if len(c.Config.Worker.InitialUpstreams) > 0 {
-				c.UI.Error(fmt.Errorf("Initial upstreams and HCPB cluster ID are mutually exclusive fields").Error())
+				c.UI.Error("Initial upstreams and cluster ID are mutually exclusive fields")
 				return base.CommandUserError
 			}
-			clusterId := c.Config.HcpbClusterId
-			if strings.HasPrefix(clusterId, "int-") {
-				clusterId = strings.TrimPrefix(clusterId, "int-")
-			}
-			_, err := uuid.ParseUUID(clusterId)
-			if err != nil {
-				c.UI.Error(fmt.Errorf("Invalid HCP Dumpling cluster ID %q: %w", clusterId, err).Error())
+			if !strutil.Printable(c.Config.HcpbClusterId) {
+				c.UI.Error("Cluster ID contains non-printable characters")
 				return base.CommandUserError
 			}
+
+			// Nothing is checked about the address the cluster id resolves to;
+			// DNS may well be unreachable at start up and a worker keeps
+			// retrying anyway. What is checked is that the operator did not
+			// configure discovery settings which can never be used, since a
+			// worker which cannot reach its cluster has little else to go on.
+			switch {
+			case c.Config.DiscoveryDomain != "":
+			case len(c.Config.DiscoveryFallbackAddr) > 0:
+			default:
+				c.UI.Warn(fmt.Sprintf(
+					"Cluster ID is resolved through DNS as %q and no %q or %q is set; a worker relying on this can only reach the cluster when that name resolves",
+					c.Config.HcpbClusterId+"."+worker.DefaultClusterDiscoveryDomain,
+					"discovery_domain",
+					"discovery_fallback_addr",
+				))
+			}
+		} else if c.Config.DiscoveryDomain != "" || len(c.Config.DiscoveryFallbackAddr) > 0 {
+			c.UI.Error(fmt.Errorf("%q and %q are only used together with %q",
+				"discovery_domain", "discovery_fallback_addr", "hcp_boundary_cluster_id").Error())
+			return base.CommandUserError
 		}
+	}
+
+	// Report the cluster id back however this process is configured; it is
+	// what an operator copies into the configuration of a worker which is
+	// about to join this cluster.
+	if c.Config.HcpbClusterId != "" {
+		c.InfoKeys = append(c.InfoKeys, "cluster id")
+		c.Info["cluster id"] = c.Config.HcpbClusterId
 	}
 	if err := c.SetupListeners(c.UI, c.Config.SharedConfig, []string{"api", "cluster", "proxy", "ops"}); err != nil {
 		c.UI.Error(err.Error())

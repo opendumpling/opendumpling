@@ -44,8 +44,6 @@ import (
 	"google.golang.org/protobuf/types/known/structpb"
 )
 
-var HandleHcpbClusterId func(s string) string
-
 // StartControllerConnections starts up the resolver and initiates controller
 // connection client creation
 func (w *Worker) StartControllerConnections() error {
@@ -68,12 +66,28 @@ func (w *Worker) StartControllerConnections() error {
 	}
 
 	if len(initialAddrs) == 0 {
-		if w.conf.RawConfig.HcpbClusterId != "" && HandleHcpbClusterId != nil {
-			clusterAddress := HandleHcpbClusterId(w.conf.RawConfig.HcpbClusterId)
-			initialAddrs = append(initialAddrs, clusterAddress)
-			event.WriteSysEvent(w.baseContext, op, fmt.Sprintf("Setting HCP Dumpling cluster address %s as upstream address", clusterAddress))
-		} else {
-			return errors.New(w.baseContext, errors.InvalidParameter, op, "no initial upstream addresses found")
+		switch {
+		case w.conf.RawConfig.HcpbClusterId != "":
+			discovered, err := ClusterIdResolver(
+				w.baseContext,
+				w.conf.RawConfig.HcpbClusterId,
+				w.conf.RawConfig.DiscoveryDomain,
+				w.conf.RawConfig.DiscoveryFallbackAddr,
+			)
+			if err != nil {
+				return errors.Wrap(w.baseContext, err, op,
+					errors.WithMsg("error finding an address for the configured cluster id"))
+			}
+			event.WriteSysEvent(w.baseContext, op, fmt.Sprintf(
+				"Cluster %s resolved to upstream addresses %s",
+				w.conf.RawConfig.HcpbClusterId,
+				strings.Join(discovered, ", "),
+			))
+			initialAddrs = append(initialAddrs, discovered...)
+
+		default:
+			return errors.New(w.baseContext, errors.InvalidParameter, op,
+				"no initial upstream addresses found and no cluster id to discover them from")
 		}
 	}
 
