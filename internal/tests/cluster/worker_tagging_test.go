@@ -104,11 +104,10 @@ func TestWorkerTagging(t *testing.T) {
 
 	expectWorkers(t, c1, w1, w2, w3)
 
-	// Ensure we are using the OSS filter, which uses egress only for worker selection
+	// Ensure we are using the OSS filter, which uses the ingress filter for
+	// worker selection when the target configures one
 	oldAuthFun := ct.AuthorizeSessionWorkerFilterFn
 	ct.AuthorizeSessionWorkerFilterFn = ct.AuthorizeSessionWithWorkerFilter
-	validateIngressFn := ct.ValidateIngressWorkerFilterFn
-	ct.ValidateIngressWorkerFilterFn = ct.IngressWorkerFilterUnsupported
 
 	cases := []struct {
 		name          string
@@ -137,10 +136,12 @@ func TestWorkerTagging(t *testing.T) {
 			expWorkers:   []string{w1Addr},
 		},
 		{
-			name:          "ingress filter invalid",
-			ingressFilter: `"/name" matches "test_worker_[13]" and "west" in "/tags/region"`,
-			expWorkers:    []string{w3Addr},
-			wantErr:       true,
+			name:          "ingress filter",
+			ingressFilter: `"west" in "/tags/region"`,
+			egressFilter:  `"/name" matches "test_worker_3"`,
+			// worker 2 is an ingress candidate too, but it has no route down
+			// to the only worker matching the egress filter.
+			expWorkers: []string{w3Addr},
 		},
 	}
 	for _, tc := range cases {
@@ -179,5 +180,4 @@ func TestWorkerTagging(t *testing.T) {
 		})
 	}
 	ct.AuthorizeSessionWorkerFilterFn = oldAuthFun
-	ct.ValidateIngressWorkerFilterFn = validateIngressFn
 }

@@ -97,14 +97,20 @@ var (
 	}
 
 	validateCredentialSourcesFn      = defaultValidateCredentialSources
-	ValidateIngressWorkerFilterFn    = IngressWorkerFilterUnsupported
+	ValidateIngressWorkerFilterFn    = IngressWorkerFilter
 	AuthorizeSessionWorkerFilterFn   = AuthorizeSessionWithWorkerFilter
 	PostSessionAuthorizationCallback = DefaultPostSessionAuthorizationCallback
 	WorkerFilterDeprecationMessage   = fmt.Sprintf("This field is deprecated. Use %s instead.", globals.EgressWorkerFilterField)
 )
 
-func IngressWorkerFilterUnsupported(string) error {
-	return fmt.Errorf("Ingress Worker Filter field is not supported in OSS")
+func IngressWorkerFilter(in string) error {
+	if in == "" {
+		return fmt.Errorf("ingress worker filter is empty")
+	}
+	if _, err := bexpr.CreateEvaluator(in); err != nil {
+		return fmt.Errorf("invalid ingress worker filter: %w", err)
+	}
+	return nil
 }
 
 // defaultValidateCredentialSources validates that the credential sources
@@ -670,43 +676,134 @@ func (s Service) RemoveTargetCredentialSources(ctx context.Context, req *pbs.Rem
 // If set, use the worker_filter or egress_worker_filter to filter the selected workers
 // and ensure we have workers available to service this request. The second return
 // argument is always nil.
+// AuthorizeSessionWithWorkerFilter restricts the workers a client may use for a
+// session to those that are allowed to handle it.
+//
+// The list handed back holds the workers the client is expected to connect to,
+// which in a multi-hop deployment are the ingress workers.  When the target
+// configures an ingress worker filter those workers are selected with it and
+// then pruned down to the ones which can actually build a route to a worker
+// matching the session's egress worker filter.  When no ingress filter is
+// configured the egress (or deprecated worker) filter selects them, which is
+// the single hop behaviour this function has always had.
 func AuthorizeSessionWithWorkerFilter(
-	_ context.Context,
+	ctx context.Context,
 	t target.Target,
 	selectedWorkers wl.WorkerList,
 	_ string,
 	_ intglobals.ControllerExtension,
-	_ common.Downstreamers,
+	downstreams common.Downstreamers,
 	_ ...target.Option,
 ) (wl.WorkerList, *server.Worker, error) {
-	if len(selectedWorkers) > 0 {
-		var eval *bexpr.Evaluator
-		var err error
-		switch {
-		case len(t.GetEgressWorkerFilter()) > 0:
-			eval, err = bexpr.CreateEvaluator(t.GetEgressWorkerFilter())
-		case len(t.GetWorkerFilter()) > 0:
-			eval, err = bexpr.CreateEvaluator(t.GetWorkerFilter())
-		default: // No filter
-			return selectedWorkers, nil, nil
-		}
-		if err != nil {
-			return nil, nil, err
-		}
-
-		selectedWorkers, err = selectedWorkers.Filtered(eval)
-		if err != nil {
-			return nil, nil, err
-		}
-	}
-
 	if len(selectedWorkers) == 0 {
-		return nil, nil, handlers.ApiErrorWithCodeAndMessage(
-			codes.FailedPrecondition,
-			"No workers are available to handle this session, or all have been filtered.")
+		return nil, nil, noWorkersAvailable()
 	}
 
-	return selectedWorkers, nil, nil
+	egressFilter := egressWorkerFilter(t)
+	if ingressFilter := t.GetIngressWorkerFilter(); ingressFilter != "" {
+		eval, err := bexpr.CreateEvaluator(ingressFilter)
+		if err != nil {
+			return nil, nil, err
+		}
+		ingressWorkers, err := selectedWorkers.Filtered(eval)
+		if err != nil {
+			return nil, nil, err
+		}
+		if len(ingressWorkers) == 0 {
+			return nil, nil, noWorkersAvailable()
+		}
+		// Only prune for reachability when there is a graph to test against;
+		// without one no better answer exists than the ingress workers
+		// themselves.
+		if downstreams != nil && egressFilter != "" {
+			ingressWorkers, err = reachableWorkers(ctx, ingressWorkers, egressFilter, selectedWorkers, downstreams)
+			if err != nil {
+				return nil, nil, err
+			}
+			if len(ingressWorkers) == 0 {
+				return nil, nil, noWorkersAvailable()
+			}
+		}
+		return ingressWorkers, nil, nil
+	}
+
+	if egressFilter == "" {
+		return selectedWorkers, nil, nil
+	}
+	eval, err := bexpr.CreateEvaluator(egressFilter)
+	if err != nil {
+		return nil, nil, err
+	}
+	filtered, err := selectedWorkers.Filtered(eval)
+	if err != nil {
+		return nil, nil, err
+	}
+	if len(filtered) == 0 {
+		return nil, nil, noWorkersAvailable()
+	}
+	return filtered, nil, nil
+}
+
+// egressWorkerFilter returns the filter which selects the worker that dials the
+// endpoint for a target, honouring the deprecated worker filter.
+func egressWorkerFilter(t target.Target) string {
+	if filter := t.GetEgressWorkerFilter(); filter != "" {
+		return filter
+	}
+	return t.GetWorkerFilter()
+}
+
+// reachableWorkers returns the workers from candidates which have a route to at
+// least one worker matching egressFilter.  pool supplies the workers eligible
+// to act as the egress worker; it is normally the full candidate set before
+// the ingress filter was applied.
+func reachableWorkers(
+	ctx context.Context,
+	candidates wl.WorkerList,
+	egressFilter string,
+	pool wl.WorkerList,
+	downstreams common.Downstreamers,
+) (wl.WorkerList, error) {
+	const op = "targets.reachableWorkers"
+	egressEval, err := bexpr.CreateEvaluator(egressFilter)
+	if err != nil {
+		return nil, err
+	}
+	egressWorkers, err := pool.Filtered(egressEval)
+	if err != nil {
+		return nil, err
+	}
+	if len(egressWorkers) == 0 {
+		return nil, nil
+	}
+	egressIds := make(map[string]struct{}, len(egressWorkers))
+	for _, worker := range egressWorkers {
+		egressIds[worker.GetPublicId()] = struct{}{}
+	}
+
+	var ret wl.WorkerList
+	for _, candidate := range candidates {
+		routes, err := downstreams.Routes(ctx, candidate.GetPublicId())
+		if err != nil {
+			return nil, errors.Wrap(ctx, err, op, errors.WithMsg("unable to calculate downstream worker routes"))
+		}
+	findRoute:
+		for _, route := range routes {
+			for _, hop := range route {
+				if _, ok := egressIds[hop]; ok {
+					ret = append(ret, candidate)
+					break findRoute
+				}
+			}
+		}
+	}
+	return ret, nil
+}
+
+func noWorkersAvailable() error {
+	return handlers.ApiErrorWithCodeAndMessage(
+		codes.FailedPrecondition,
+		"No workers are available to handle this session, or all have been filtered.")
 }
 
 func DefaultPostSessionAuthorizationCallback(context.Context, intglobals.ControllerExtension, *kms.Kms, *target.Repository, target.Target, *session.Session, *server.Worker) error {

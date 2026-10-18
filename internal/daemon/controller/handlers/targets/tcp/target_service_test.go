@@ -850,8 +850,6 @@ func TestUpdate(t *testing.T) {
 	// Ensure we are using the OSS worker filter functions
 	workerFilterFn := targets.AuthorizeSessionWorkerFilterFn
 	targets.AuthorizeSessionWorkerFilterFn = targets.AuthorizeSessionWithWorkerFilter
-	validateIngressFn := targets.ValidateIngressWorkerFilterFn
-	targets.ValidateIngressWorkerFilterFn = targets.IngressWorkerFilterUnsupported
 
 	cases := []struct {
 		name string
@@ -1162,13 +1160,13 @@ func TestUpdate(t *testing.T) {
 			err: handlers.ApiErrorWithCode(codes.InvalidArgument),
 		},
 		{
-			name: "Ingress filter unsupported",
+			name: "Invalid ingress filter",
 			req: &pbs.UpdateTargetRequest{
 				UpdateMask: &field_mask.FieldMask{
 					Paths: []string{"ingress_worker_filter"},
 				},
 				Item: &pb.Target{
-					IngressWorkerFilter: wrapperspb.String(`type == "bar"`),
+					IngressWorkerFilter: wrapperspb.String(`"/name" matches`),
 				},
 			},
 			res: nil,
@@ -1270,7 +1268,6 @@ func TestUpdate(t *testing.T) {
 	}
 	// Reset worker filter funcs
 	targets.AuthorizeSessionWorkerFilterFn = workerFilterFn
-	targets.ValidateIngressWorkerFilterFn = validateIngressFn
 }
 
 func TestUpdate_BadVersion(t *testing.T) {

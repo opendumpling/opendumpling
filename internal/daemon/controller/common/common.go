@@ -4,6 +4,8 @@
 package common
 
 import (
+	"context"
+
 	"github.com/opendumpling/opendumpling/internal/auth/ldap"
 	"github.com/opendumpling/opendumpling/internal/auth/oidc"
 	"github.com/opendumpling/opendumpling/internal/auth/password"
@@ -41,4 +43,14 @@ type (
 type Downstreamers interface {
 	// RootId returns the root ID of the downstreamers' graph
 	RootId() string
+	// SetDownstreamWorkers records the ids of the workers that connect
+	// directly downstream of the reporting worker, replacing any previously
+	// recorded ids for that worker.
+	SetDownstreamWorkers(ctx context.Context, reporter string, downstream []string) error
+	// Children returns the direct downstream worker ids of the provided worker id
+	Children(ctx context.Context, id string) ([]string, error)
+	// Routes returns all routes (paths of worker ids) starting at the
+	// provided worker id and ending at a leaf worker.  The provided id is
+	// always the first element of each returned route.
+	Routes(ctx context.Context, id string) ([][]string, error)
 }

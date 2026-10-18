@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"sort"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -51,11 +52,24 @@ var (
 	_ pbs.SessionServiceServer            = &workerServiceServer{}
 	_ pbs.ServerCoordinationServiceServer = &workerServiceServer{}
 
-	workerFilterSelectionFn = egressFilterSelector
+	// workerFilterSelectionFn selects the filter which is used to verify the
+	// worker serving the client connection; in a multi-hop deployment that
+	// worker is the ingress worker.
+	workerFilterSelectionFn = ingressFilterSelector
+	// ingressFilterSelector selects the ingress worker filter of the session.
+	// When no ingress filter is configured it falls back to the egress (or
+	// deprecated worker) filter so that single hop sessions keep validating
+	// against the same filter they always have.
+	ingressFilterSelector = func(sessionInfo *session.Session) string {
+		if sessionInfo.IngressWorkerFilter != "" {
+			return sessionInfo.IngressWorkerFilter
+		}
+		return egressFilterSelector(sessionInfo)
+	}
 	// connectionRouteFn returns a route to the egress worker.  If the requester
 	// is the egress worker a route of length 1 is returned. A route of
 	// length 0 is never returned unless there is an error.
-	connectionRouteFn = singleHopConnectionRoute
+	connectionRouteFn = multiHopConnectionRoute
 
 	// getProtocolContext populates the protocol specific context fields
 	// depending on the protocol used for the Dumpling connection. SSH sessions
@@ -68,6 +82,101 @@ var (
 // singleHopConnectionRoute returns a route consisting of the singlehop worker (the root worker id)
 func singleHopConnectionRoute(_ context.Context, w *server.Worker, _ *session.Session, _ *session.AuthzSummary, _ *server.Repository, _ common.Downstreamers) ([]string, error) {
 	return []string{w.GetPublicId()}, nil
+}
+
+// multiHopConnectionRoute returns a route from the requesting worker to the
+// egress worker which will dial the endpoint.
+//
+// When the session carries no egress worker filter the requesting worker is
+// the egress worker and a route of length 1 is returned.  Otherwise the route
+// must end at a worker matching the session's egress worker filter, which is
+// either the requesting worker itself (a single hop session) or one of its
+// downstream workers (an ingress to egress multi-hop session).  Routes are
+// preferred shortest first so that a deployment keeps using its ingress
+// worker as the egress worker for as long as that worker matches the filter.
+func multiHopConnectionRoute(
+	ctx context.Context,
+	w *server.Worker,
+	sessionInfo *session.Session,
+	authzSummary *session.AuthzSummary,
+	serversRepo *server.Repository,
+	downstreams common.Downstreamers,
+) ([]string, error) {
+	const op = "handlers.multiHopConnectionRoute"
+
+	// Without a graph or a session to consult there is nothing to compute;
+	// this keeps single controller deployments (and the unit tests, which do
+	// not supply a graph) behaving exactly like the single hop route.
+	if downstreams == nil || sessionInfo == nil {
+		return singleHopConnectionRoute(ctx, w, sessionInfo, authzSummary, serversRepo, downstreams)
+	}
+
+	egressFilter := egressFilterSelector(sessionInfo)
+	if egressFilter == "" {
+		return singleHopConnectionRoute(ctx, w, sessionInfo, authzSummary, serversRepo, downstreams)
+	}
+	if w == nil {
+		return nil, errors.New(ctx, errors.InvalidParameter, op, "requesting worker is nil")
+	}
+	if serversRepo == nil {
+		return nil, errors.New(ctx, errors.InvalidParameter, op, "servers repository is nil")
+	}
+	eval, err := bexpr.CreateEvaluator(egressFilter)
+	if err != nil {
+		return nil, errors.Wrap(ctx, err, op, errors.WithMsg("unable to create egress worker filter evaluator"))
+	}
+
+	// The requesting worker is allowed to dial the endpoint itself.
+	egress, err := filterWorkers(eval, w)
+	if err != nil {
+		return nil, errors.Wrap(ctx, err, op, errors.WithMsg("unable to evaluate egress worker filter"))
+	}
+	if egress != nil {
+		return []string{w.GetPublicId()}, nil
+	}
+
+	routes, err := downstreams.Routes(ctx, w.GetPublicId())
+	if err != nil {
+		return nil, errors.Wrap(ctx, err, op, errors.WithMsg("unable to calculate downstream worker routes"))
+	}
+	// Shortest routes first, so that the closest matching egress worker wins.
+	sort.SliceStable(routes, func(i, j int) bool { return len(routes[i]) < len(routes[j]) })
+
+	for _, route := range routes {
+		// The requesting worker has already been ruled out above.
+		if len(route) < 2 {
+			continue
+		}
+		candidate, err := serversRepo.LookupWorker(ctx, route[len(route)-1])
+		if err != nil {
+			return nil, errors.Wrap(ctx, err, op, errors.WithMsg("unable to look up egress worker"))
+		}
+		if candidate == nil {
+			continue
+		}
+		egress, err := filterWorkers(eval, candidate)
+		if err != nil {
+			return nil, errors.Wrap(ctx, err, op, errors.WithMsg("unable to evaluate egress worker filter"))
+		}
+		if egress != nil {
+			return route, nil
+		}
+	}
+	return nil, errors.New(ctx, errors.WorkerNotFound, op,
+		fmt.Sprintf("no route to an egress worker matching worker filter %q from worker %q", egressFilter, w.GetPublicId()))
+}
+
+// filterWorkers returns the first worker passing the evaluator's evaluation,
+// or nil when none of them match.
+func filterWorkers(eval *bexpr.Evaluator, workers ...*server.Worker) (*server.Worker, error) {
+	matched, err := dcommon.WorkerList(workers).Filtered(eval)
+	if err != nil {
+		return nil, err
+	}
+	if len(matched) == 0 {
+		return nil, nil
+	}
+	return matched[0], nil
 }
 
 func NewWorkerServiceServer(
@@ -205,6 +314,16 @@ func (ws *workerServiceServer) Status(ctx context.Context, req *pbs.StatusReques
 			return &pbs.StatusResponse{}, status.Errorf(codes.Internal, "Error getting authorized worker key ids: %v", err)
 		}
 		authorizedWorkerList.WorkerKeyIdentifiers = authorizedKeyIds
+	}
+
+	// Keep the controller's graph of downstream workers in sync with what the
+	// reporting worker can actually see, so that routes to an egress worker
+	// can be calculated for multi-hop sessions.  This is a no-op when no graph
+	// was installed on the service.
+	if ws.downstreams != nil {
+		if err := ws.downstreams.SetDownstreamWorkers(ctx, wrk.GetPublicId(), authorizedDownstreams.WorkerPublicIds); err != nil {
+			event.WriteError(ctx, op, err, event.WithInfoMsg("error updating downstream worker graph", "worker_id", wrk.GetPublicId()))
+		}
 	}
 
 	ret := &pbs.StatusResponse{

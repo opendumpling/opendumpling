@@ -19,6 +19,7 @@ import (
 	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers"
 	"github.com/opendumpling/opendumpling/internal/errors"
 	pbs "github.com/opendumpling/opendumpling/internal/gen/controller/api/services"
+	"github.com/opendumpling/opendumpling/internal/observability/event"
 	"github.com/opendumpling/opendumpling/internal/perms"
 	"github.com/opendumpling/opendumpling/internal/requests"
 	"github.com/opendumpling/opendumpling/internal/server"
@@ -68,7 +69,7 @@ var (
 	}
 	// downstreamWorkers returns a list of worker ids which are directly
 	// connected downstream of the provided worker.
-	downstreamWorkers = emptyDownstreamWorkers
+	downstreamWorkers downstreamWorkersFn = graphDownstreamWorkers
 )
 
 func init() {
@@ -82,9 +83,23 @@ func init() {
 	}
 }
 
-func emptyDownstreamWorkers(context.Context, string, common.Downstreamers) []string {
-	return nil
+// graphDownstreamWorkers resolves the direct children of a worker from the
+// controller's downstream worker graph.  Deployments without a graph (or
+// workers which have not yet reported their downstreams) return nothing.
+func graphDownstreamWorkers(ctx context.Context, id string, downstreams common.Downstreamers) []string {
+	if downstreams == nil || id == "" {
+		return nil
+	}
+	children, err := downstreams.Children(ctx, id)
+	if err != nil {
+		event.WriteError(ctx, "workers.graphDownstreamWorkers", err, event.WithInfoMsg("error reading downstream workers", "worker_id", id))
+		return nil
+	}
+	return children
 }
+
+// downstreamWorkersFn is the function used to get direct downstream workers
+type downstreamWorkersFn func(context.Context, string, common.Downstreamers) []string
 
 // Service handles request as described by the pbs.WorkerServiceServer interface.
 type Service struct {
