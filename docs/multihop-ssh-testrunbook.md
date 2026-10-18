@@ -64,6 +64,11 @@ dumpling database init -url "$DB_URL"
 ```hcl
 disable_mlock = true
 
+# The id a worker is configured with to find this cluster. It is also what the
+# controller reports back at start up, so there is one value to hand to the
+# workers. See docs/worker-registration.md.
+hcp_boundary_cluster_id = "c-demo"
+
 controller {
   name = "demo-controller"
   database {
@@ -130,11 +135,17 @@ see step 8.
 `public-worker.hcl`:
 
 ```hcl
+# The cluster id replaces the list of upstream addresses; the worker finds the
+# controller by resolving this. On a single machine there is no discovery DNS,
+# so the address is given as the fallback instead. See
+# docs/worker-registration.md.
+hcp_boundary_cluster_id = "c-demo"
+discovery_fallback_addr = ["127.0.0.1:9201"]
+
 worker {
-  name              = "public"
-  description       = "Public (ingress) worker"
-  public_addr       = "127.0.0.1:9202"
-  initial_upstreams = ["127.0.0.1:9201"]
+  name        = "public"
+  description = "Public (ingress) worker"
+  public_addr = "127.0.0.1:9202"
 }
 
 listener "tcp" {
@@ -156,6 +167,13 @@ kms "aead" {
 ```
 
 > The `worker-auth` key must match the one in the controller config exactly.
+> Because this worker has one, it authenticates with the shared key and needs
+> no registration; that is also what lets it wrap the registration flow of the
+> workers which connect to it. A worker which authenticates with a key instead
+> of being registered takes its name from its configuration and cannot set
+> `auth_storage_path`. `docs/worker-registration.md` describes the other way,
+> in which a worker is registered with the controller instead and configured
+> with a cluster id alone.
 
 ```sh
 dumpling server -config public-worker.hcl
