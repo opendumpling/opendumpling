@@ -2474,3 +2474,81 @@ func TestSetupWorkerInitialUpstreams(t *testing.T) {
 		})
 	}
 }
+
+func TestWorkerPrivate(t *testing.T) {
+	tests := []struct {
+		name        string
+		raw         string
+		expPrivate  bool
+		expPoolSize int
+	}{
+		{
+			name: "unset",
+			raw: `
+worker {
+  name = "w1"
+}`,
+			expPrivate:  false,
+			expPoolSize: DefaultDataPlanePoolSize,
+		},
+		{
+			name: "block-with-defaults",
+			raw: `
+worker {
+  name = "w2"
+  private {
+    enabled = true
+  }
+}`,
+			expPrivate:  true,
+			expPoolSize: DefaultDataPlanePoolSize,
+		},
+		{
+			name: "block-disabled",
+			raw: `
+worker {
+  name = "w3"
+  private {
+    enabled = false
+  }
+}`,
+			expPrivate:  false,
+			expPoolSize: DefaultDataPlanePoolSize,
+		},
+		{
+			name: "block-with-pool-size",
+			raw: `
+worker {
+  name = "w4"
+  private {
+    enabled             = true
+    data_plane_pool_size = 4
+  }
+}`,
+			expPrivate:  true,
+			expPoolSize: 4,
+		},
+		{
+			name: "block-with-invalid-pool-size",
+			raw: `
+worker {
+  name = "w5"
+  private {
+    enabled             = true
+    data_plane_pool_size = -1
+  }
+}`,
+			expPrivate:  true,
+			expPoolSize: DefaultDataPlanePoolSize,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c, err := Parse(tt.raw)
+			require.NoError(t, err)
+			require.NotNil(t, c.Worker)
+			assert.Equal(t, tt.expPrivate, c.Worker.IsPrivate())
+			assert.Equal(t, tt.expPoolSize, c.Worker.DataPlanePoolSize())
+		})
+	}
+}

@@ -290,6 +290,47 @@ type Worker struct {
 	// method of using KMSes to authenticate. This should not be used when the
 	// controller version supports the new style.
 	UseDeprecatedKmsAuthMethod bool `hcl:"use_deprecated_kms_auth_method"`
+
+	// Private marks this worker as a private (egress only) worker: it runs
+	// behind a public worker and reaches everything through it rather than
+	// accepting connections from clients or from a controller itself.
+	Private *PrivateWorker `hcl:"private"`
+}
+
+// PrivateWorker holds the configuration of a worker which runs behind a
+// public worker.
+type PrivateWorker struct {
+	// Enabled turns the private worker behaviour on.  A private worker dials
+	// each of its upstreams to offer them a data plane connection, which is
+	// what lets a client reach an endpoint through a public worker and this
+	// worker without this worker listening for inbound connections.
+	Enabled bool `hcl:"enabled"`
+
+	// DataPlanePoolSize is the number of idle data plane connections this
+	// worker keeps towards its upstreams.  Every connection carries one
+	// session at a time, so this bounds how many concurrent multi hop
+	// sessions this worker can serve.  Defaults to
+	// DefaultDataPlanePoolSize when unset or not positive.
+	DataPlanePoolSize int `hcl:"data_plane_pool_size"`
+}
+
+// DefaultDataPlanePoolSize is the number of data plane connections a private
+// worker keeps towards its upstreams when it is not configured explicitly.
+const DefaultDataPlanePoolSize = 10
+
+// IsPrivate returns whether the worker is configured as a private (egress
+// only) worker.
+func (c *Worker) IsPrivate() bool {
+	return c != nil && c.Private != nil && c.Private.Enabled
+}
+
+// DataPlanePoolSize returns the effective number of data plane connections a
+// private worker keeps towards its upstreams.
+func (c *Worker) DataPlanePoolSize() int {
+	if c == nil || c.Private == nil || c.Private.DataPlanePoolSize <= 0 {
+		return DefaultDataPlanePoolSize
+	}
+	return c.Private.DataPlanePoolSize
 }
 
 type Database struct {
