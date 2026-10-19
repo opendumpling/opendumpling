@@ -47,15 +47,15 @@ A target has the following configurable attributes:
   A boolean expression to [filter][] which egress workers can handle sessions
   for this target.
   Egress worker filters determine which workers are used to access targets.
-  You can configure an egress filter to enable [multi-hop](/boundary/docs/configuration/worker#multi-hop-worker-capabilities-hcp-ent) connections.
+  You can configure an egress filter to enable [multi-hop](/docs/configuration/worker#multi-hop-worker-capabilities) connections.
   If you do not configure an egress filter, then Dumpling uses a single worker to connect to the controller.
 
-- `ingress_worker_filter` - (optional) <sup>HCP/ENT</sup>
+- `ingress_worker_filter` - (optional)
   A boolean expression to [filter][] which ingress workers can handle sessions
   for this target.
   Ingress worker filters determine which workers you connect with to initiate a session.
   If you do not configure an ingress filter, Dumpling selects a front line worker for the session.
-  A front line worker is any worker directly connected to the control plane; for HCP Dumpling this will be an HCP worker.
+  A front line worker is any worker directly connected to the control plane.
 
 - `session_connection_limit` - (required)
   The cumulative number of connections allowed during a session.
@@ -78,7 +78,7 @@ TCP targets have the following additional attribute:
 - `default_port` - (required)
   The default port to set on this target.
 
-### SSH target attributes <sup>HCP/ENT</sup>
+### SSH target attributes
 
 SSH targets can source username/password or SSH private key credentials from Vault [credential libraries][] or static
 [credentials][]. Dumpling then injects credentials into the SSH session between a client and end host. This allows users to
@@ -107,33 +107,33 @@ SSH targets have the following additional attributes:
 - [Session Recordings][]
 - [Worker Filtering][]
 
-[credentials]: /boundary/docs/concepts/domain-model/credentials
-[credential library]: /boundary/docs/concepts/domain-model/credential-libraries
-[credential libraries]: /boundary/docs/concepts/domain-model/credential-libraries
-[credential store]: /boundary/docs/concepts/domain-model/credential-stores
-[credential stores]: /boundary/docs/concepts/domain-model/credential-stores
-[host catalog]: /boundary/docs/concepts/domain-model/host-catalogs
-[host catalogs]: /boundary/docs/concepts/domain-model/host-catalogs
-[host set]: /boundary/docs/concepts/domain-model/host-sets
-[host sets]: /boundary/docs/concepts/domain-model/host-sets
-[host]: /boundary/docs/concepts/domain-model/hosts
-[hosts]: /boundary/docs/concepts/domain-model/hosts
-[permission]: /boundary/docs/concepts/security/permissions
-[permissions]: /boundary/docs/concepts/security/permissions
-[project]: /boundary/docs/concepts/domain-model/scopes#projects
-[projects]: /boundary/docs/concepts/domain-model/scopes#projects
-[role]: /boundary/docs/concepts/domain-model/roles
-[roles]: /boundary/docs/concepts/domain-model/roles
-[session]: /boundary/docs/concepts/domain-model/sessions
-[sessions]: /boundary/docs/concepts/domain-model/sessions
-[session recordings]: /boundary/docs/concepts/domain-model/session-recordings
-[filter]: /boundary/docs/concepts/filtering/worker-tags
-[worker filtering]: /boundary/docs/concepts/filtering/worker-tags
-[user]: /boundary/docs/concepts/domain-model/users
-[users]: /boundary/docs/concepts/domain-model/users
+[credentials]: /docs/concepts/domain-model/credentials
+[credential library]: /docs/concepts/domain-model/credential-libraries
+[credential libraries]: /docs/concepts/domain-model/credential-libraries
+[credential store]: /docs/concepts/domain-model/credential-stores
+[credential stores]: /docs/concepts/domain-model/credential-stores
+[host catalog]: /docs/concepts/domain-model/host-catalogs
+[host catalogs]: /docs/concepts/domain-model/host-catalogs
+[host set]: /docs/concepts/domain-model/host-sets
+[host sets]: /docs/concepts/domain-model/host-sets
+[host]: /docs/concepts/domain-model/hosts
+[hosts]: /docs/concepts/domain-model/hosts
+[permission]: /docs/concepts/security/permissions
+[permissions]: /docs/concepts/security/permissions
+[project]: /docs/concepts/domain-model/scopes#projects
+[projects]: /docs/concepts/domain-model/scopes#projects
+[role]: /docs/concepts/domain-model/roles
+[roles]: /docs/concepts/domain-model/roles
+[session]: /docs/concepts/domain-model/sessions
+[sessions]: /docs/concepts/domain-model/sessions
+[session recordings]: /docs/concepts/domain-model/session-recordings
+[filter]: /docs/concepts/filtering/worker-tags
+[worker filtering]: /docs/concepts/filtering/worker-tags
+[user]: /docs/concepts/domain-model/users
+[users]: /docs/concepts/domain-model/users
 
 ## Service API docs
 
 The following services are relevant to this resource:
 
-- [Target Service](/boundary/api-docs/target-service)
+- [Target Service](/api-docs/target-service)

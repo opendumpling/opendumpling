@@ -1,0 +1,37 @@
+---
+layout: docs
+page_title: Version compatibility
+description: |-
+  Which Dumpling component versions can be mixed within one cluster, and which
+  database versions are supported.
+---
+
+# Version compatibility
+
+A Dumpling cluster is made of controllers and workers, and those do not always
+get upgraded at the same moment. This page states what can be mixed, and which
+PostgreSQL versions the database schema is meant to run on.
+
+## Control plane and workers
+
+Dumpling keeps API backwards compatibility between a control plane and workers
+from the previous major release. So a worker on 0.13.0 can serve sessions
+against a control plane on 0.14.0, but not against a control plane that has
+moved on to 0.15.0 or later.
+
+All workers in one environment must run the same version. A worker that cannot
+be upgraded together with the rest is better taken out of the cluster than left
+to run at a version the control plane no longer speaks.
+
+Upgrading the control plane first and the workers after it keeps sessions
+working in between; upgrading workers first does not.
+
+## Database
+
+Dumpling expects PostgreSQL 13 or newer. Older releases are not supported: the
+schema migrations are written against the behaviour of current PostgreSQL, and
+versions before 13 have not been tested against them.
+
+Run `dumpling database migrate` after a version upgrade. The schema version is
+recorded per database, and a controller refuses to start against a database
+that has not been migrated to the version it expects.

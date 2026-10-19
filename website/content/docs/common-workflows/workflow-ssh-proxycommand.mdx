@@ -6,11 +6,11 @@ description: How to manage SSH proxy configuration with Dumpling
 
 # SSH ProxyCommand Workflow
 
-The most common pattern for using Dumpling to SSH is with the built-in `boundary connect ssh` command. However,
+The most common pattern for using Dumpling to SSH is with the built-in `dumpling connect ssh` command. However,
 there are more idiomatic approaches that can be employed to make Dumpling transparent to users, and at the same
 time simplify common developer and operator workflows. Using `ProxyCommand` to execute a proxy when invoking the
 SSH client is a common practice. In this workflow, we'll cover configuring your SSH client to execute the
-`boundary` command, enabling a simplified SSH workflow that leverages Dumpling's authenticated proxy for accessing
+`dumpling` command, enabling a simplified SSH workflow that leverages Dumpling's authenticated proxy for accessing
 targets.
 
 ## SSH Configuration
@@ -19,20 +19,20 @@ Start by configuring a `Host` entry in `.ssh/ssh_config` for `localhost`:
 
 ```bash
 Host ttcp_*
-  ProxyCommand sh -c "boundary connect -target-id %n -exec nc -- {{dumpling.ip}} {{dumpling.port}}"
+  ProxyCommand sh -c "dumpling connect -target-id %n -exec nc -- {{dumpling.ip}} {{dumpling.port}}"
 ```
 
-The `ProxyCommand` tells the SSH client to invoke `boundary connect`. We are passing the `-exec nc` flag to
-`boundary connect` to wrap [netcat](http://netcat.sourceforge.net/), and then pass the `dumpling.ip` and `dumpling.port`
+The `ProxyCommand` tells the SSH client to invoke `dumpling connect`. We are passing the `-exec nc` flag to
+`dumpling connect` to wrap [netcat](http://netcat.sourceforge.net/), and then pass the `dumpling.ip` and `dumpling.port`
 variables as arguments to `nc`. This allows us to proxy our SSH connection through a local netcat tunnel that's
 managed as a Dumpling session.
 
-When you run `ssh ttcp_1234567890` (example target ID), SSH will invoke `boundary connect`, and will tunnel the traffic through
-the local Dumpling proxy in a wrapped netcat session, passing in the target ID as the hostname to the `boundary` command.
+When you run `ssh ttcp_1234567890` (example target ID), SSH will invoke `dumpling connect`, and will tunnel the traffic through
+the local Dumpling proxy in a wrapped netcat session, passing in the target ID as the hostname to the `dumpling` command.
 
 ## Authenticate to Dumpling
 
-Before `ssh` can invoke `boundary connect` you need to authenticate. In this example, we're using `boundary dev` with the
+Before `ssh` can invoke `dumpling connect` you need to authenticate. In this example, we're using `dumpling dev` with the
 default username (admin) and password (password), and because this auth method is the primary that resides in the global 
 scope, we can use the short form of the authenticate command with no extra flags:
 
@@ -42,7 +42,7 @@ $ dumpling authenticate
 
 ## SSH to Target
 
-Running Dumpling in [dev mode](/boundary/docs/oss/installing/dev-mode) creates other
+Running Dumpling in [dev mode](/docs/getting-started/dev-mode/dev-mode) creates other
 default resources such as a target and auth method. The default target (ttcp_1234567890) is already setup with a host
 at `localhost` and a default port of `22`.
 
@@ -64,7 +64,7 @@ controller.worker-handler: connection established: session_id=s_WkaQbqmrJx conne
 You can inspect the session on the CLI as well:
 
 ```bash
-$  boundary sessions read -id $(dumpling sessions list -scope-id p_1234567890 -format json | jq '.[0]["id"]' | tr -d '"')
+$  dumpling sessions read -id $(dumpling sessions list -scope-id p_1234567890 -format json | jq '.[0]["id"]' | tr -d '"')
 
 Session information:
   Auth Token ID:       at_a8itRfDSyV
@@ -109,12 +109,12 @@ command.
 ```bash
 Host localhost
     # requires DUMPLING_CONNECT_AUTHZ_TOKEN to be set from authorize-session command
-    ProxyCommand sh -c "boundary connect -exec nc -- {{dumpling.ip}} {{dumpling.port}}"
+    ProxyCommand sh -c "dumpling connect -exec nc -- {{dumpling.ip}} {{dumpling.port}}"
 ```
 
 ## Authenticate to Dumpling
 
-Before `ssh` can invoke `boundary connect` you need to authenticate. In this example, we're using `boundary dev` with the
+Before `ssh` can invoke `dumpling connect` you need to authenticate. In this example, we're using `dumpling dev` with the
 default username (admin) and password (password):
 
 ```bash
@@ -123,7 +123,7 @@ $ dumpling authenticate
 
 ## Authorize the Session
 
-Running Dumpling in [dev mode](/boundary/docs/oss/installing/dev-mode) creates other
+Running Dumpling in [dev mode](/docs/getting-started/dev-mode/dev-mode) creates other
 default resources such as a target and auth method. The default target (ttcp_1234567890) is already setup with a host
 at `localhost` and a default port of `22`.
 

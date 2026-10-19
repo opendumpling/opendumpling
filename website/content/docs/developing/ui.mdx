@@ -1,21 +1,31 @@
 ---
 layout: docs
 page_title: Develop the UI
-description: Develop the Dumpling user interface
+description: The Dumpling user interface is not part of this repository
 ---
 
 # Develop the Dumpling user interface
 
-For detailed instructions and the most up-to-date information on developing the
-Dumpling admin UI, please consult [the project README on GitHub](https://github.com/hashicorp/boundary-ui).
+The web admin UI is not part of this repository and is not built or embedded
+into the `dumpling` binary. When the binary is compiled without the `ui` build
+tag, `internal/ui/dummy.go` is compiled in instead of `internal/ui/assets.go`,
+and `dumpling server` has no admin UI to serve. Drive the server with the CLI or
+the [HTTP API](/docs/api-clients/api) instead.
 
-## Run a local fork of the UI locally in dev mode
+## Serve a UI from a local checkout
 
-If you're developing the Dumpling UI locally you can point a dev mode server at a
-local checkout of the repo without building it into the binary. We call this
-directory a passthrough directory, and you can enable it using an env var while in
-conjunction with running Dumpling in dev mode:
+The controller has a passthrough mode that serves a directory of static files
+from disk, so a UI can be developed and served out of tree. It is enabled with
+`-ui-passthrough-dir` (or `DUMPLING_DEV_UI_PASSTHROUGH_DIR`), which is accepted
+by `dumpling dev`:
 
 ```bash
-DUMPLING_DEV_UI_PASSTHROUGH_DIR=../boundary-ui/ui/admin/dist boundary dev
+DUMPLING_DEV_UI_PASSTHROUGH_DIR=../some-ui/dist dumpling dev
 ```
+
+The directory you point at is served at `/` by the controller's listener, in
+front of the built-in handler. Note that building a UI into the binary is a
+separate, tagged code path: the `ui` build tag expects a prebuilt tree under
+the path named in `internal/ui/assets.go`, and nothing in this repository
+produces one. Anything you serve through the passthrough directory is served
+from disk at runtime only.

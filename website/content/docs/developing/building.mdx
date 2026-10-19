@@ -17,25 +17,21 @@ Building Dumpling from source requires:
 - Basic development environment (git, xcode if you're on Mac, etc)
 
 1. `$ git clone https://github.com/opendumpling/opendumpling` or if you're using SSH auth for
-   github, `$ git clone git@github.com:hashicorp/boundary`
-2. `$ cd boundary`
+   github, `$ git clone git@github.com:opendumpling/opendumpling`
+2. `$ cd opendumpling`
 3. `$ make install`
 
-The first time you run `make install` it will build UI assets, which will take a
-long time. After the initial build, you can update those assets to the
-currently-pinned version via `make build-ui`.
+`make install` builds the `dumpling` binary, which contains the CLI and the
+controller and worker servers. It does not build or embed a web UI; see
+[Develop the UI](/docs/developing/ui) for why, and for how to serve one from a
+separate checkout.
 
-Once you've built Dumpling, the binary will be available at `<repo path>/bin/boundary`. Move this
+Once you've built Dumpling, the binary will be available at `<repo path>/bin/dumpling`. Move this
 binary to somewhere in your `$PATH` such as `/usr/local/bin`.
 
 ## Cross-platform build
 
-If you need to cross compile boundary for another OS or architecture, use the [GOOS and GOARCH](https://github.com/opendumpling/opendumpling/blob/master/scripts/build.sh#L26)
+If you need to cross compile Dumpling for another OS or architecture, use the [GOOS and GOARCH](https://github.com/opendumpling/opendumpling/blob/master/scripts/build.sh#L26)
 environment variable to set this. Example: `$ GOOS=linux GOARCH=amd64 make install`
 
-For more details, please consult the [Dumpling project on GitHub](https://github.com/opendumpling/opendumpling#build-and-start-boundary-in-dev-mode).
-
-## Troubleshoot
-
-UI assets are built inside a Docker container. If this build step fails, try
-increasing memory and swap available to Docker.
+For more details, please consult the [Dumpling project on GitHub](https://github.com/opendumpling/opendumpling#build-and-start-dumpling-in-dev-mode).

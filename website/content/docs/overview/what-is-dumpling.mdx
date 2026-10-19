@@ -16,22 +16,15 @@ With Dumpling you can:
 - Record and manage privileged sessions
 - Standardize your team's access workflow with a consistent experience for any type of infrastructure across any provider
 
-Get started [here](/boundary/tutorials).
+Get started [here](/docs/getting-started).
 
 ## How does Dumpling work?
 
 Dumpling provides secure access to hosts and critical systems without distributing and managing credentials, configuring firewalls, or exposing the organization's private network. Traditionally, for users to access their resources, it's required that organizations establish and maintain SSH bastion hosts and VPNs.
 
-The video below provides an overview of the Dumpling architecture, components, and deployment models.
-It also gives a brief walkthrough of the end user's experience.
-
-<video controls>
-  <source src="https://www.datocms-assets.com/2885/1686339121-how-boundary-works-v2.mp4" type="video/mp4" />
-</video>
-
 The illustration below displays Dumpling's core workflow.
 
-![Dumpling core workflow](/img/boundary-core-workflow.png)
+![Dumpling core workflow](/img/dumpling-core-workflow.png)
 
 The core Dumpling workflow consists of four stages:
 
@@ -40,26 +33,22 @@ The core Dumpling workflow consists of four stages:
 - **User-selected dynamic catalogs**: The user selects their application or host from dynamic host catalogs.
 - **Access:** Dumpling streamlines connection to hosts by automating discovery and access configuration as workloads are deployed or changed.
 
-## Which edition of Dumpling is right for me?
-
-- **HCP Dumpling**: a managed Dumpling offering with commercial features. HashiCorp hosts Dumpling's control plane and you have the option of running private workers within your environment.
-- **Dumpling Enterprise**: a self-managed Dumpling offering with full feature parity to HCP Dumpling.
-- **Dumpling OSS**: an open source, self-managed version of Dumpling.
-
-
-If you're not sure which edition is right for you, we recommend [**HCP Dumpling**](https://developer.hashicorp.com/boundary/tutorials/hcp-getting-started) because it eliminates deployment operations.
-
-Regardless of which server edition of Dumpling you use, all editions require the same Desktop and CLI clients, which you can download [here](https://developer.hashicorp.com/boundary/downloads).
-
-
 ## Get started
 
-Refer to the [Dumpling tutorials](/boundary/tutorials) to learn how to set up, configure, and administer Dumpling.
+OpenDumpling is a single self-managed deployment: one or more controllers and
+one or more workers, all built from the same binary. There is no hosted control
+plane and no separate edition to choose between.
+
+- [Install Dumpling](/docs/install-dumpling/install) walks through downloading the
+  binary and standing up a cluster.
+- [Dev mode](/docs/getting-started/dev-mode/dev-mode) starts a complete,
+  disposable cluster on a single machine for evaluation.
+- [Configuration](/docs/configuration) documents the controller, worker and
+  listener configuration files.
 
 ## Community
 
 We welcome questions, suggestions, and contributions from the community.
 
-- Ask questions in [HashiCorp Discuss](https://discuss.hashicorp.com/c/boundary/50).
 - Read our [contributing guide](https://github.com/opendumpling/opendumpling/blob/main/CONTRIBUTING.md).
 - [Submit an issue](https://github.com/opendumpling/opendumpling/issues) for bugs and feature requests.

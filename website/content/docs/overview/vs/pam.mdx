@@ -15,14 +15,14 @@ Dumpling can manage network access to privileged systems and audit access.
 It can be used with credential management providers, like Vault, to manage access to privileged accounts and credentials.
 
 Where Dumpling differs from traditional PAM solutions is in its automation-friendly workflows.
-Dumpling is instrumented programmatically via REST, CLI, and [Terraform](https://registry.terraform.io/providers/hashicorp/boundary/latest/docs).
+Dumpling is instrumented programmatically via its [REST API](/docs/api-clients/api) and the [CLI](/docs/api-clients/cli).
 It provides automation-friendly workflows for managing users and credentials, as well as the discovery and configuration of new services:
 
-- **Automated credential management**: Dumpling and Vault can create workflows with automated credential management in which user sessions are secured with [single-use dynamic credentials that are injected into sessions](/boundary/tutorials/access-management/hcp-private-vault-cred-injection) such that secrets are never returned to users.
+- **Automated credential management**: Dumpling and Vault can create workflows with automated credential management in which user sessions are secured with single-use dynamic credentials that are injected into sessions such that secrets are never returned to users.
 - **Context-based access**: When users' business context changes, you want to ensure their permissions reflect the new business context.
 As an example, on-call engineers might require different permissions than when they end their on-call shifts.
-[Dumpling's managed groups](/boundary/tutorials/access-management/oidc-idp-groups) enable user permission workflows to be assigned dynamically based on identity provider MFA checks, group memberships, and other IDP-level context.
-- **[Host discovery](/boundary/docs/concepts/host-discovery)**: Dumpling's [dynamic host catalogs](/boundary/tutorials/access-management/aws-host-catalogs) are advanced workflows for automating the process of onboarding new or changed infrastructure resources and their connection information, and applying pre-configured security policies.
+Dumpling's managed groups enable user permission workflows to be assigned dynamically based on identity provider MFA checks, group memberships, and other IDP-level context.
+- **[Host discovery](/docs/concepts/host-discovery)**: Dumpling's dynamic host catalogs are advanced workflows for automating the process of onboarding new or changed infrastructure resources and their connection information, and applying pre-configured security policies.
 
 _Can Dumpling replace a PAM solution?_
 

@@ -24,8 +24,8 @@ The general architecture for the server infrastructure requires 3 controllers an
 
 ![](/img/production.png)
 
-As shown above, Dumpling is broken up into its controller and worker server components across 3 [EC2 instances](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance), in
-3 separate [subnets](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet), in three separate availability zones, with the controller API and UI being publically exposed by an [application load balancer (ALB)](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb). The worker and controller VM's are in independent [auto-scaling groups](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group), allowing them to maintain their exact capacity.
+As shown above, Dumpling is broken up into its controller and worker server components across 3 [EC2 instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html), in
+3 separate subnets, in three separate availability zones, with the controller API being publically exposed by an [application load balancer (ALB)](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html). The worker and controller VM's are in independent [auto-scaling groups](https://docs.aws.amazon.com/autoscaling/ec2/userguide/auto-scaling-groups.html), allowing them to maintain their exact capacity.
 
 The workers must be able to establish a connection to the hosts with which they interact. In the architecture above, we place them in the public subnet so our remote client can establish a session between them and the target VM.
 
@@ -42,6 +42,6 @@ For general configuration, we recommend the following:
 
 ### Controller configuration
 
-When running Dumpling controller as a service we recommend storing the file at `/etc/boundary-controller.hcl`. A `boundary` user and group should exist to manage this configuration file and to further restrict who can read and modify it.
+When running Dumpling controller as a service we recommend storing the file at `/etc/dumpling-controller.hcl`. A `dumpling` user and group should exist to manage this configuration file and to further restrict who can read and modify it.
 
-For detailed configuration options, see our [configuration docs](/boundary/docs/configuration).
+For detailed configuration options, see our [configuration docs](/docs/configuration).

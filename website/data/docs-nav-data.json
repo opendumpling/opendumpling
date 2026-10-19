@@ -4,7 +4,7 @@
     "routes": [
       {
         "title": "What is Dumpling?",
-        "path": "overview/what-is-boundary"
+        "path": "overview/what-is-dumpling"
       },
       {
         "title": "Use cases",
@@ -53,14 +53,6 @@
         "path": "getting-started"
       },
       {
-        "title": "Self-managed Dumpling quick start",
-        "href": "https://developer.hashicorp.com/boundary/tutorials/oss-getting-started/"
-      },
-      {
-        "title": "HCP Dumpling quick start",
-        "href": "https://developer.hashicorp.com/boundary/tutorials/hcp-getting-started/"
-      },
-      {
         "title": "Dev mode quick start",
         "routes": [
           {
@@ -84,44 +76,44 @@
     "routes": [
       {
         "title": "Overview",
-        "path": "install-boundary"
+        "path": "install-dumpling"
       },
       {
         "title": "Recommended architecture",
-        "path": "install-boundary/recommended-architecture"
+        "path": "install-dumpling/recommended-architecture"
       },
       {
         "title": "System requirements",
-        "path": "install-boundary/system-requirements"
+        "path": "install-dumpling/system-requirements"
       },
       {
         "title": "Fault tolerance recommendations",
-        "path": "install-boundary/fault-tolerance"
+        "path": "install-dumpling/fault-tolerance"
       },
       {
         "title": "Install Dumpling",
-        "path": "install-boundary/install"
+        "path": "install-dumpling/install"
       },
       {
         "title": "Configure controllers",
-        "path": "install-boundary/configure-controllers"
+        "path": "install-dumpling/configure-controllers"
       },
       {
         "title": "Configure workers",
-        "path": "install-boundary/configure-workers"
+        "path": "install-dumpling/configure-workers"
       },
       {
         "title": "Non-dev environments",
-        "path": "install-boundary/no-gen-resources"
+        "path": "install-dumpling/no-gen-resources"
       },
       {
         "title": "Systemd install",
         "hidden": true,
-        "path": "install-boundary/systemd"
+        "path": "install-dumpling/systemd"
       },
       {
         "title": "Configure high availability",
-        "path": "install-boundary/high-availability"
+        "path": "install-dumpling/high-availability"
       }
     ]
   },
@@ -436,6 +428,10 @@
         "path": "operations/health"
       },
       {
+        "title": "Version compatibility",
+        "path": "operations/version-compatibility"
+      },
+      {
         "title": "Session recordings",
         "path": "operations/manage-recorded-sessions"
       }
@@ -510,15 +506,6 @@
       {
         "title": "Go SDK",
         "path": "api-clients/go-sdk"
-      },
-      {
-        "title": "Desktop",
-        "hidden": true,
-        "path": "api-clients/desktop"
-      },
-      {
-        "title": "Desktop",
-        "href": "https://learn.hashicorp.com/tutorials/boundary/hcp-getting-started-desktop-app"
       }
     ]
   },
@@ -536,69 +523,6 @@
       {
         "title": "Develop the UI",
         "path": "developing/ui"
-      }
-    ]
-  },
-  {
-    "divider": true
-  },
-  {
-    "title": "Dumpling OSS",
-    "hidden": true,
-    "routes": [
-      {
-        "title": "Overview",
-        "path": "oss"
-      }
-    ]
-  },
-  {
-    "title": "HCP Dumpling",
-    "routes": [
-      {
-        "title": "Overview",
-        "path": "hcp"
-      },
-      {
-        "title": "Get started",
-        "routes": [
-          {
-            "title": "Deploy and login",
-            "path": "hcp/get-started/deploy-and-login"
-          },
-          {
-            "title": "Connect to target",
-            "path": "hcp/get-started/connect-to-target"
-          }
-        ]
-      },
-      {
-        "title": "Documentation",
-        "href": "https://cloud.hashicorp.com/docs/boundary/"
-      }
-    ]
-  },
-  {
-    "divider": true
-  },
-  {
-    "title": "Dumpling Enterprise",
-    "routes": [
-      {
-        "title": "Overview",
-        "path": "enterprise"
-      },
-      {
-        "title": "Licensing",
-        "path": "enterprise/licensing"
-      },
-      {
-        "title": "Automated license reporting",
-        "path": "enterprise/automated-license-reporting"
-      },
-      {
-        "title": "Supported versions policy",
-        "path": "enterprise/supported-versions"
       }
     ]
   },

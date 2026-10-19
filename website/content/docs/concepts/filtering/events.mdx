@@ -17,9 +17,9 @@ json.
 
 Dumpling allows you to configure any number of sinks where these events will be
 written. When configuring an event sink, you can specify [common sink
-parameters](/boundary/docs/configuration/events/common) which include both
+parameters](/docs/configuration/events/common) which include both
 `allow_filters` and `deny_filters` which use the standard [filter
-syntax](/boundary/docs/concepts/filtering) used elsewhere in Dumpling.
+syntax](/docs/concepts/filtering) used elsewhere in Dumpling.
 
 Example events encoded as cloudevents-text.  The first event is a system event
 and the second event is an observation event.
@@ -27,7 +27,7 @@ and the second event is an observation event.
 ```json
 {
   "id": "DU7u227Jhc",
-  "source": "https://hashicorp.com/boundary/dev-controller/boundary-dev",
+  "source": "https://dumpling.example.com/controller/dev-controller",
   "specversion": "1.0",
   "type": "system",
   "data": {
@@ -43,7 +43,7 @@ and the second event is an observation event.
 }
 {
   "id": "s5ESg6CckX",
-  "source": "https://hashicorp.com/boundary/dev-controller/boundary-dev",
+  "source": "https://dumpling.example.com/controller/dev-controller",
   "specversion": "1.0",
   "type": "observation",
   "data": {
@@ -79,9 +79,9 @@ sink "stderr" = {
 }
 ```
 
-When running `boundary dev` the example allow filter can be given via:
+When running `dumpling dev` the example allow filter can be given via:
 ```bash
-boundary dev \
+dumpling dev \
     -event-allow-filter '"/data/request_info/path" contains ":authenticate"' \
     -event-allow-filter '"/data/op" contains ".createClientConn"'
 ```
@@ -90,4 +90,4 @@ easier to surround the filter with single quotes than to deal with escaping
 double quotes.
 
 ~> **Note:** Both `-event-allow-filter` and `-event-deny-filter` command flags are
-supported for the `boundary dev` command.
+supported for the `dumpling dev` command.

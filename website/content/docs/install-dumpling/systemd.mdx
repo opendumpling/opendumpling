@@ -13,11 +13,11 @@ This section covers how to install Dumpling under the [systemd](https://systemd.
 
 `TYPE` below can be either `worker` or `controller` if you want to run them independently, e.g. for high availability. If you want to run combined nodes, modify as desired.
 
-1. `/etc/boundary-${TYPE}.hcl`: Configuration file for the boundary service.
+1. `/etc/dumpling-${TYPE}.hcl`: Configuration file for the Dumpling service.
 
-2. `/usr/local/bin/boundary`: The Dumpling binary, which can be built from the [source](https://github.com/opendumpling/opendumpling) or downloaded from our [release page](/boundary/downloads).
+2. `/usr/local/bin/dumpling`: The Dumpling binary, which can be built from the [source](https://github.com/opendumpling/opendumpling) or downloaded from our [release page](https://github.com/opendumpling/opendumpling/releases).
 
-3. `/etc/systemd/system/boundary-${TYPE}.service`: Systemd unit file for the Dumpling service.
+3. `/etc/systemd/system/dumpling-${TYPE}.service`: Systemd unit file for the Dumpling service.
 
 ## User and group configuration
 
@@ -31,8 +31,8 @@ Description=${NAME} ${TYPE}
 
 [Service]
 ExecStart=/usr/local/bin/${NAME} server -config /etc/${NAME}-${TYPE}.hcl
-User=boundary
-Group=boundary
+User=dumpling
+Group=dumpling
 LimitMEMLOCK=infinity
 Capabilities=CAP_IPC_LOCK+ep
 CapabilityBoundingSet=CAP_SYSLOG CAP_IPC_LOCK
@@ -43,16 +43,16 @@ WantedBy=multi-user.target
 
 ## systemd all-in-one installation script
 
-Here's a simple install script that creates the `boundary` group and user, installs the
+Here's a simple install script that creates the `dumpling` group and user, installs the
 systemd unit file, and enables it at startup:
 
 ```
 #!/bin/bash
-# Installs the boundary as a service for systemd on linux
+# Installs Dumpling as a service for systemd on linux
 # Usage: ./install.sh <worker|controller>
 
 TYPE=$1
-NAME=boundary
+NAME=dumpling
 
 sudo cat << EOF > /etc/systemd/system/${NAME}-${TYPE}.service
 [Unit]
@@ -60,8 +60,8 @@ Description=${NAME} ${TYPE}
 
 [Service]
 ExecStart=/usr/local/bin/${NAME} server -config /etc/${NAME}-${TYPE}.hcl
-User=boundary
-Group=boundary
+User=dumpling
+Group=dumpling
 LimitMEMLOCK=infinity
 Capabilities=CAP_IPC_LOCK+ep
 CapabilityBoundingSet=CAP_SYSLOG CAP_IPC_LOCK
@@ -70,17 +70,17 @@ CapabilityBoundingSet=CAP_SYSLOG CAP_IPC_LOCK
 WantedBy=multi-user.target
 EOF
 
-# Add the boundary system user and group to ensure we have a no-login
+# Add the Dumpling system user and group to ensure we have a no-login
 # user capable of owning and running Dumpling
-sudo adduser --system --group boundary || true
-sudo chown boundary:boundary /etc/${NAME}-${TYPE}.hcl
-sudo chown boundary:boundary /usr/local/bin/boundary
+sudo adduser --system --group dumpling || true
+sudo chown dumpling:dumpling /etc/${NAME}-${TYPE}.hcl
+sudo chown dumpling:dumpling /usr/local/bin/dumpling
 
 # Make sure to initialize the DB before starting the service. This will result in
 # a database already initialized warning if another controller or worker has done this
 # already, making it a lazy, best effort initialization
 if [ "${TYPE}" = "controller" ]; then
-  sudo /usr/local/bin/boundary database init -config /etc/${NAME}-${TYPE}.hcl || true
+  sudo /usr/local/bin/dumpling database init -config /etc/${NAME}-${TYPE}.hcl || true
 fi
 
 sudo chmod 664 /etc/systemd/system/${NAME}-${TYPE}.service

@@ -9,19 +9,17 @@ description: |-
 
 The release notes below contain information about new functionality available in the Dumpling v0.13.0 release.
 To see a granular record of when each item was merged into the Dumpling project, please refer to the [Changelog](https://github.com/opendumpling/opendumpling/blob/main/CHANGELOG.md).
-To learn about what Dumpling consists of, we highly recommend you review the [Getting Started Page](/boundary/docs/getting-started).
+To learn about what Dumpling consists of, we highly recommend you review the [Getting Started Page](/docs/getting-started).
 
-For instructions on how to upgrade an existing Dumpling deployment to v0.13.0, refer to Dumpling's [general upgrade guide](/boundary/tutorials/oss-configuration/upgrade-version).
+For guidance on which versions can be mixed during an upgrade, refer to [Version compatibility](/docs/operations/version-compatibility).
 
 ## Dumpling v0.13.0 highlights
 
 The 0.13.0 release adds major new functionality to Dumpling.
 Highlights include:
 
-- Dumpling Enterprise version
 - SSH session recording
 - LDAP authentication method (beta)
-- HCP Dumpling maintenance window
 - OIDC authentication improvements
 - Shared KMS workers
 - Static ports for targets
@@ -29,21 +27,14 @@ Highlights include:
 
 ## New features
 
-**Dumpling Enterprise**: Organizations are now able to deploy Dumpling Enterprise within their self-managed infrastructure to let their teams securely access hosts and services consistently across any environment.
-The introduction of Dumpling Enterprise allows organizations in highly regulated industries who are prohibited from adopting cloud based solutions to leverage Dumpling's secure remote access functionalities.
-Dumpling Enterprise has the same feature set as HCP Dumpling and seamless migrations from OSS deployments are supported as well.
-
-For more information, refer to [Dumpling Enterprise](/boundary/docs/enterprise).
-
-**SSH session recording <sup>HCP/ENT</sup>**: A fundamental challenge of securing access to sensitive computing resources is creating a system of record around users' access and actions over remote sessions.
+**SSH session recording**: A fundamental challenge of securing access to sensitive computing resources is creating a system of record around users' access and actions over remote sessions.
 This release introduces session recording to help you address your compliance and threat management needs.
 
 When you enable session recording for a target, any sessions in which a user requests access to that target are recorded.
 Recorded sessions are stored in an external data store so that you can access and manage them outside of Dumpling for long-lasting data retention.
-You can view recorded sessions using a session player that runs in a browser.
 
-For more information, refer to [Auditing](/boundary/docs/concepts/auditing).
-To configure session recording for targets, refer to the session recording [overview](/boundary/docs/configuration/session-recording).
+For more information, refer to [Auditing](/docs/concepts/auditing).
+To configure session recording for targets, refer to the session recording [overview](/docs/configuration/session-recording).
 
 **LDAP authentication method <sup>Beta</sup>**: This release introduces a new Lightweight Directory Access Protocol (LDAP) authentication method as a preview feature.
 LDAP is an open, vendor-neutral application protocol for accessing and maintaining directory information.
@@ -52,21 +43,14 @@ You can now configure Dumpling to delegate authentication to an LDAP directory.
 The first time a user successfully authenticates using an LDAP auth method, a new LDAP account is created.
 LDAP-managed groups let you assign roles in Dumpling based on the LDAP account's group memberships.
 
-Create, read, update, and delete (CRUD) support for the new LDAP features is available through the CLI, API, and SDK, as well as HashiCorp Terraform.
-You can use LDAP to log in through any of the Dumpling clients, including the CLI, Dumpling Desktop, and the Dumpling admin UI.
-Support for LDAP CRUD operations via the Dumpling admin UI is planned for an upcoming release.
+Create, read, update, and delete (CRUD) support for the new LDAP features is available through the CLI, API, and SDK.
+You can use LDAP to log in through any Dumpling client.
 
 For more information, refer to the LDAP domain model documentation:
 
-- [Accounts](/boundary/docs/concepts/domain-model/accounts#ldap-account-attributes-beta)
-- [Auth methods](/boundary/docs/concepts/domain-model/auth-methods#ldap-auth-method-attributes-beta)
-- [Managed groups](/boundary/docs/concepts/domain-model/managed-groups#ldap-managed-group-information-and-attributes-beta)
-
-**HCP Dumpling maintenance window <sup>HCP only</sup>**: HCP Dumpling automatically updates your environment when a new version of Dumpling is released.
-You can now schedule when that maintenance occurs to ensure that it does not interrupt peak work hours.
-When you schedule a maintenance window, HCP Dumpling waits util the day and time window you selected to apply any patch or major version updates.
-
-For more information, refer to [Maintenance windows](/hcp/docs/boundary/maintenance-window).
+- [Accounts](/docs/concepts/domain-model/accounts#ldap-account-attributes-beta)
+- [Auth methods](/docs/concepts/domain-model/auth-methods#ldap-auth-method-attributes-beta)
+- [Managed groups](/docs/concepts/domain-model/managed-groups#ldap-managed-group-information-and-attributes-beta)
 
 **OIDC authentication improvements**: The Dumpling CLI now supports user authentication against an OIDC source in locked down environments where a browser may not be available to complete the auth flow.
 During authentication, the CLI will output the auth URL which can be used to complete the flow on another device and the resulting token is automatically passed to the CLI.
@@ -74,12 +58,12 @@ During authentication, the CLI will output the auth URL which can be used to com
 **Shared KMS workers**: KMS workers now have feature parity with PKI workers.
 You can use more than one KMS for registering downstreams across different networks.
 
-For more information, refer to the [worker configuration](/boundary/docs/configuration/worker) documentation.
+For more information, refer to the [worker configuration](/docs/configuration/worker) documentation.
 
 **Static ports for targets**: Administrators can now configure a default, static port for clients when connecting to targets using the optional `default_client_port` attribute.
 Any workers that connect to a target will use the default port, if one is specified, unless overidden by the client attribute `-listen-port`.
 
-**Dynamic host catalog external name**: You can now view the AWS or Azure host name when listing hosts in CLI, admin console, and desktop client.
+**Dynamic host catalog external name**: You can now view the AWS or Azure host name when listing hosts in the CLI.
 
 ## Deprecations and changes
 
@@ -101,11 +85,8 @@ An error message is provided now, with hints for resolution.
 - `WithAutomaticVersioning` for auth tokens from the Go SDK was incorrectly being generated for auth token resources, which do not support versioning.
 It has now been removed.
 
-- With the introduction of new plugin services, the Azure and AWS Host plugin repositories have been renamed to drop the word `host`:
-
-   - The https://github.com/hashicorp/boundary-plugin-host-aws repository was renamed to https://github.com/hashicorp/boundary-plugin-aws.
-
-   - The https://github.com/hashicorp/boundary-plugin-host-azure repository was renamed to https://github.com/hashicorp/boundary-plugin-azure.
+- With the introduction of new plugin services, the plugin implementations are vendored in this repository,
+  under `plugins/dumpling/mains/aws` and `plugins/dumpling/mains/azure`.
 
 - PostgreSQL 12 or greater is now required.
 PostgreSQL 11 is no longer supported.

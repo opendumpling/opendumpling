@@ -14,21 +14,21 @@ of the CLI.
 ## CLI command structure
 
 There are a number of command and subcommand options available.
-To see all available command options, run `boundary -h`
-and to see all available subcommand options run `boundary <command> -h`.
+To see all available command options, run `dumpling -h`
+and to see all available subcommand options run `dumpling <command> -h`.
 
 Below is the typical structure for most Dumpling CLI commands:
 
 ```text
-boundary <command> <subcommand> [options] [args]
+dumpling <command> <subcommand> [options] [args]
 ```
 
-- `options` - [Client](/boundary/docs/api-clients/cli#client-options) and [connection](/boundary/docs/api-clients/cli#connection-options) options to specify additional settings
+- `options` - [Client](/docs/api-clients/cli#client-options) and [connection](/docs/api-clients/cli#connection-options) options to specify additional settings
 - `args` - API arguments specific to the operation
 
 ### Examples
 
-The following shows use of the [`-addr`](/boundary/docs/api-clients/cli#addr) flag to specify which Dumpling controller to send the request to.
+The following shows use of the [`-addr`](/docs/api-clients/cli#connection-options) flag to specify which Dumpling controller to send the request to.
 
 ```shell-session
 $ dumpling authenticate password \
@@ -46,12 +46,12 @@ some cases the parameters to those flags.
 
 This can be installed via the CLI itself:
 
-`boundary config autocomplete install`
+`dumpling config autocomplete install`
 
 If you want to install it manually, for Bash, the following line in a
 `~/.bash_profile` or similar file will work:
 
-`complete -C /path/to/boundary boundary`
+`complete -C /path/to/dumpling dumpling`
 
 ## Keyring token storage
 
@@ -103,13 +103,13 @@ Available keyring types:
 ## Map to collections and sub-types
 
 Generally speaking, Dumpling's CLI commands map to the collections they operate
-on. For instance, when operating on roles, the command will be `boundary roles ...`.
+on. For instance, when operating on roles, the command will be `dumpling roles ...`.
 
 As a result, the patterns for reading, deleting, and listing are predictable:
 
-- `boundary <collection> read`
-- `boundary <collection> delete`
-- `boundary <collection> list`
+- `dumpling <collection> read`
+- `dumpling <collection> delete`
+- `dumpling <collection> list`
 
 `read` and `delete` will always operate on a particular resource identifier, so
 will always take in an `-id` parameter. `list` operates on collections so will
@@ -122,15 +122,15 @@ operated on through an implementation. As an example, a role is not an abstract
 type, and does not have various implementations of it. As a result, a role can
 be operated on directly:
 
-- `boundary roles create`
-- `boundary roles update`.
+- `dumpling roles create`
+- `dumpling roles update`.
 
 However, a target can be one of many types of targets, and a concrete
 implementation of a target is a `tcp` type of target. Therefore an extra
 parameter is required when creating or updating a target:
 
-- `boundary targets create tcp`
-- `boundary targets update tcp`
+- `dumpling targets create tcp`
+- `dumpling targets update tcp`
 
 This allows the CLI to perform proper presentation and validation of parameters
 and functions for the given type.
@@ -152,12 +152,12 @@ definition, but are otherwise order independent.
 
 For instance, the following are equivalent:
 
-- `boundary roles create -scope-id global -name foo`
-- `boundary roles create -name foo -scope-id global`
+- `dumpling roles create -scope-id global -name foo`
+- `dumpling roles create -name foo -scope-id global`
 
 But the following results in an error:
 
-- `boundary roles -name foo -scope-id global create`
+- `dumpling roles -name foo -scope-id global create`
 
 This applies to `-h` as well!
 
@@ -182,7 +182,7 @@ mind that this is not a direct translation to database `NULL` semantics!
 
 Every command that results in an API call contains a set of flags that control
 connection options, which control TLS and other settings for the connection.
-You can also run `boundary dev -h` to see the available connection options.
+You can also run `dumpling dev -h` to see the available connection options.
 
 -  `-addr=<string>`: Address of the Dumpling controller, as a complete URL (e.g.
       https://dumpling.example.com:9200). Instead of passing the `-addr` argument with every command,
@@ -246,7 +246,7 @@ or as parameters to other tools, _always_ use formatted output. The default text
 output is meant for human users and the formatting or the information included
 within that output from the original JSON may change at any time.
 
-Note that using `-format json` on a `boundary authenticate` command results in
+Note that using `-format json` on a `dumpling authenticate` command results in
 Dumpling not saving the token to the system password store. In this case, the
 authentication information will only be printed to your terminal in JSON format.
 You can use the `DUMPLING_TOKEN` environment variable or `-token` flag to

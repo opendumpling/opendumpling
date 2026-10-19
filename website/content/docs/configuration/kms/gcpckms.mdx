@@ -19,11 +19,11 @@ configuration file by providing all the required values:
 ```hcl
 kms "gcpckms" {
   purpose     = "root"
-  credentials = "/usr/boundary/boundary-project-user-creds.json"
-  project     = "boundary-project"
+  credentials = "/usr/dumpling/dumpling-project-user-creds.json"
+  project     = "dumpling-project"
   region      = "global"
-  key_ring    = "boundary-keyring"
-  crypto_key  = "boundary-key"
+  key_ring    = "dumpling-keyring"
+  crypto_key  = "dumpling-key"
 }
 ```
 

@@ -50,8 +50,8 @@ worker {
     region = ["us-east-1"]
   }
 
-  # HCP Dumpling only
-  # cluster_id = "....."
+  # cluster_id = "prod-cluster"
+  # discovery_domain = "dumpling.local"
 }
 ```
 
@@ -67,7 +67,7 @@ worker {
   - an env var (env://) from which the address will be read
 
 - `initial_upstreams` - A list of hosts/IP addresses and optionally ports for
-  reaching the boundary cluster. The port will default to `:9201` if not
+  reaching the cluster. The port will default to `:9201` if not
   specified. This value can be a direct access string array with the addresses,
   or it can refer to a file on disk (`file://`) from which the addresses will be
   read, or an env var (`env://`) from which the addresses will be read. When
@@ -75,16 +75,28 @@ worker {
   `["127.0.0.1", "192.168.0.1", "10.0.0.1"]`
 
 - `tags` - A map of key-value pairs where values are an array of strings. Most
-  commonly used for [filtering](/boundary/docs/concepts/filtering) targets a
+  commonly used for [filtering](/docs/concepts/filtering) targets a
   worker can proxy via [worker
-  tags](/boundary/docs/concepts/filtering/worker-tags). On `SIGHUP`, the tags
+  tags](/docs/concepts/filtering/worker-tags). On `SIGHUP`, the tags
   set here will be re-parsed and new values used. It can also be a string
   referring to a file on disk (`file://`) or an env var (`env://`).
 
-- `cluster_id` - A string that can be used to configure PKI workers
-  to connect to your HCP Dumpling cluster rather than specifying
-  `initial_upstreams`. This is currently only valid for workers using the PKI
-  registration method and for workers directly connected to HCP Dumpling.
+- `cluster_id` - A string that identifies the cluster this worker belongs to.
+  Instead of listing controller addresses in `initial_upstreams`, a worker
+  configured with a `cluster_id` resolves them through DNS as
+  `<cluster_id>.<discovery_domain>`, and falls back to
+  `discovery_fallback_addr` if that lookup fails. This lets one worker
+  configuration be reused across a cluster whose addresses change, and is
+  valid for both KMS and PKI workers. `cluster_id` and `initial_upstreams`
+  are mutually exclusive.
+
+- `discovery_domain` - The DNS domain used to resolve `cluster_id`. Defaults
+  to `dumpling.local`. Only valid alongside `cluster_id`.
+
+- `discovery_fallback_addr` - One or more addresses to dial when discovery for
+  `cluster_id` fails. Can be a direct address string, a JSON array of
+  addresses, a file on disk (`file://`), or an env var (`env://`). Only valid
+  alongside `cluster_id`.
 
 ## Signals
 
@@ -94,7 +106,7 @@ Any other updated values are ignored.
 The `SIGTERM` and `SIGINT` signals initiate a graceful shutdown on a worker. The worker waits for any sessions to drain
 before shutting down. Workers in a graceful shutdown state do not receive any new work, including session proxying, from the control plane.
 
-## Multi-hop worker capabilities <sup>HCP/ENT</sup>
+## Multi-hop worker capabilities
 
 Multi-hop capabilities, including multi-hop sessions and Vault private access,
 is when a session or Vault credential request goes through more than one worker.
@@ -155,7 +167,7 @@ listener "tcp" {
 
 worker {
   # Path for worker storage, assuming PKI registration. Must be unique across workers
-  auth_storage_path="/boundary/demo-worker-1"
+  auth_storage_path="/dumpling/demo-worker-1"
 
   # Workers typically need to reach upstreams on :9201
   initial_upstreams = [
@@ -184,13 +196,18 @@ kms "aead" {
 
 ```
 
-## Tutorials
+## Related documentation
 
-Refer to the [Self-Managed Worker Registration with HCP Dumpling](/boundary/tutorials/hcp-administration/hcp-manage-workers) tutorial to learn how to register and manage PKI workers.
+- [KMS workers](/docs/configuration/worker/kms-worker) and
+  [PKI workers](/docs/configuration/worker/pki-worker) cover the two worker
+  registration methods.
+- [Worker tags](/docs/concepts/filtering/worker-tags) explains how
+  `ingress_worker_filter` and `egress_worker_filter` select workers, which is
+  what multi-hop sessions are built on.
+- [Configure workers](/docs/install-dumpling/configure-workers) walks through
+  adopting a worker once it has been started.
 
-Refer to the [Manage Multi-Hop Sessions with HCP Dumpling](/boundary/tutorials/hcp-administration/hcp-manage-multi-hop) tutorial to learn how to configure a multi-hop session.
-
-[kms workers]: /boundary/docs/configuration/worker/kms-worker
-[pki workers]: /boundary/docs/configuration/worker/pki-worker
-[target]: /boundary/docs/concepts/domain-model/targets
-[target worker filters]: /boundary/docs/concepts/filtering/worker-tags#target-worker-filtering
+[kms workers]: /docs/configuration/worker/kms-worker
+[pki workers]: /docs/configuration/worker/pki-worker
+[target]: /docs/concepts/domain-model/targets
+[target worker filters]: /docs/concepts/filtering/worker-tags#target-workers

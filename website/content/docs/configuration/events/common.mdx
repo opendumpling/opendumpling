@@ -18,15 +18,15 @@ These parameters are shared across all sink types:
 
 - `event_source_url` - Specifies an optional event source URL for the sink. If
   not specified, the default source will be composed of the
-  `https://hashicorp.com/dumpling.io/ServerName/Path/FileName`.
+  `https://dumpling.example.com/ServerName/Path/FileName`.
 
 - `allow_filters` - Specifies a set of predicates for including an event in the
   sink. If any filter matches, the event will be included. For more information,
-  on using filters see: [event filtering](/boundary/docs/concepts/filtering/events)
+  on using filters see: [event filtering](/docs/concepts/filtering/events)
 
 - `deny-filters` - Specifies a set predicates for excluding an event in the
   sink. If any filter matches, the event will be excluded. For more information
-  on using filters see: [event filtering](/boundary/docs/concepts/filtering/events)
+  on using filters see: [event filtering](/docs/concepts/filtering/events)
 
 - `format` - Specifies the format for the sink. Can be `cloudevents-json`,
   `cloudevents-text`, `hclog-json`, or `hclog-text`.

@@ -15,12 +15,12 @@ affect the database queries generated for the operation and as such is not
 designed to provide greater efficiency.
 
 Starting in Dumpling 0.1.8, when running a list action, a filter can be
-specified. It uses the standard [filter syntax](/boundary/docs/concepts/filtering) used
+specified. It uses the standard [filter syntax](/docs/concepts/filtering) used
 elsewhere in Dumpling. Unless otherwise specified for a given list endpoint, the
 list of items being returned is looped through and the filter is run on the JSON
 representation of that item. A good way to see what that data looks like is by
 looking at representative JSON output on the command line; for example, the
-following is the output of `boundary targets list -scope-id p_1234567890 -format json` on a dev instance (piped through `jq` for readability):
+following is the output of `dumpling targets list -scope-id p_1234567890 -format json` on a dev instance (piped through `jq` for readability):
 
 ```json
 [

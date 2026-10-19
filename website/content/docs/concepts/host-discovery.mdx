@@ -20,20 +20,20 @@ as hosts.
 
 Dumpling supports target/host discovery in three primary workflows:
 
-**[Manual configuration](/boundary/tutorials/oss-administration/oss-manage-targets)**:
+**Manual configuration**:
 Dumpling administrators can manually configure static
 hosts and targets via the administrator UI and CLI. Manual configuration of
 targets with static hosts requires knowledge of the IP address or endpoint used
 to connect to a host.
 
-**[Host discovery via configuration as code with Terraform](/boundary/tutorials/oss-getting-started/oss-getting-started-config)**:
-Dumpling is fully programmatically instrumented and the discovery and configuration of new
-infrastructure targets can be automated with
-[Dumpling’s Terraform provider](https://registry.terraform.io/providers/hashicorp/boundary/latest/docs).
-This allows for dynamic configuration of a host and target without the need
-for prior knowledge of the target’s connection info.
+**Host discovery via configuration as code**:
+Dumpling is fully programmatically instrumented, so the configuration of new
+hosts and targets can be automated through Dumpling's
+[HTTP API](/docs/api-clients/api) from whatever already provisions your
+infrastructure. This allows for dynamic configuration of a host and target
+without the need for prior knowledge of the target’s connection info.
 
-**[Runtime host discovery via dynamic host catalogs](/boundary/tutorials/access-management/azure-host-catalogs)**:
+**Runtime host discovery via dynamic host catalogs**:
 Dumpling dynamic host catalogs automate the ingestion of resources from
 infrastructure providers into Dumpling. Dumpling hosts are automatically
 created, updated and added to host sets in order to reflect the connection
@@ -47,11 +47,15 @@ securely query infrastructure providers at runtime to discover and configure
 new services. Dumpling dynamic host catalogs are written in go-plugin and run
 as separate processes. Dumpling administrators can define rules for which
 external resources should be ingested into the catalog by
-[creating dynamic host](/boundary/docs/concepts/domain-model/host-sets)
+[creating dynamic host](/docs/concepts/domain-model/host-sets)
  sets with an attributes filter. Attributes specify the fields which the plugin
  should use to lookup which hosts should be members of this host set.
 
 Currently, Dumpling supports dynamic host catalog implementations for AWS and
 Azure and we will continue to grow this ecosystem to support additional providers.
+The AWS and Azure plugins are vendored in this repository under
+`plugins/dumpling/mains/`.
 
-You can get started with dynamic host catalogs [here](/boundary/tutorials/access-management/azure-host-catalogs).
+To create a dynamic host catalog, see
+[host catalogs](/docs/concepts/domain-model/host-catalogs) and
+[host sets](/docs/concepts/domain-model/host-sets).

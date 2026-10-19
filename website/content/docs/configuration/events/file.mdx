@@ -16,7 +16,7 @@ sink {
     event_types = ["observation"]
     format = "cloudevents-json"
     file {
-      path = "/var/log/boundary"
+      path = "/var/log/dumpling"
       file_name = "events.ndjson"
     }
   }
@@ -28,7 +28,7 @@ to multiple sinks; however, each file sink must have a unique `path` +
 
 ## Common parameters
 
-These parameters are shared across all sink types: [common sink parameters](/boundary/docs/configuration/events/common)
+These parameters are shared across all sink types: [common sink parameters](/docs/configuration/events/common)
 
 ## `file` parameters
 

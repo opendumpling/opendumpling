@@ -12,7 +12,7 @@ Since every hosting environment is different, and every customer's Dumpling usag
 
 To match your requirements and maximize the stability of your Dumpling controller and worker instances, it's important to ensure that you perform load tests and continue to monitor resource usage as well as all reported matrices from Dumpling's telemetry.
 
-Refer to [Maintaining and operating Dumpling](/boundary/docs/operations) for more information.
+Refer to [Maintaining and operating Dumpling](/docs/operations) for more information.
 
 <Note>
 All specifications outlined in this topic are minimum recommendations without any reservations towards vertical scaling, redundancy, or other site reliability needs, and without an understanding of your user volumes or their use cases in all scenarios.
@@ -87,11 +87,11 @@ If general network egress is restricted, you must pay particular attention to gr
 
 <Note>
 
-If any of the default port mappings below do not meet your organization's requirements, you can update the default listening ports using the resource's [listener](/boundary/docs/configuration/listener) stanza.
+If any of the default port mappings below do not meet your organization's requirements, you can update the default listening ports using the resource's [listener](/docs/configuration/listener) stanza.
 
 </Note>
 
- ![Dumpling network](/img/boundary-network.png)
+ ![Dumpling network](/img/dumpling-network.png)
 
 | Source          | Destination                 | Default destination port | protocol  | Purpose                                 |
 | --------------- | --------------------------- | ------------------------ | --------- | --------------------------------------  |
@@ -119,7 +119,7 @@ This also means that you can use a simple layer 4 load balancer to pass through 
 ## Database recommendations
 
 Dumpling clusters depend on a PostgreSQL database for managing state and configuration.
-Ensure you are using a version of PostgreSQL covered under [Dumpling's supported version policy](https://developer.hashicorp.com/boundary/docs/enterprise/supported-versions#postgresql-support-policy).
+Ensure you are using a version of PostgreSQL covered under [Dumpling's supported version policy](/docs/operations/version-compatibility).
 
 Each major cloud provider offers a managed PostgreSQL database service:
 
@@ -132,7 +132,7 @@ Each major cloud provider offers a managed PostgreSQL database service:
 ### Database network requirements
 
 Dumpling controllers must be able to reach the PostgreSQL database.
-If you use a [high availability](/boundary/docs/install-boundary/high-availability) (HA) configuration, then the controllers must have access to the PostgreSQL server infrastructure.
+If you use a [high availability](/docs/install-dumpling/high-availability) (HA) configuration, then the controllers must have access to the PostgreSQL server infrastructure.
 In non-HA configurations, the Dumpling servers must have access.
 Worker nodes never need access to the database.
 
@@ -141,7 +141,7 @@ Worker nodes never need access to the database.
 After the database has been initialized, the database user for a Dumpling controller requires only permissions for [data manipulation](https://www.postgresql.org/docs/current/dml.html) operations (select, insert, update, and delete).
 
 Database initialization requires elevated privileges.
-When you initialize the database with the `boundary database init` command, the Dumpling database user requires the `superuser` role plus `all privileges` on the Dumpling database.
+When you initialize the database with the `dumpling database init` command, the Dumpling database user requires the `superuser` role plus `all privileges` on the Dumpling database.
 
 ### Required PostgreSQL modules
 
@@ -156,7 +156,7 @@ There are also a number of self-hosted options, as well as service discovery sys
 
 To monitor the health of Dumpling controller nodes, you should configure the load balancer to poll the `/health` API endpoint to detect the status of the node and direct traffic accordingly.
 
-Refer to the [listener stanza documentation](/boundary/docs/configuration/listener/) for more information.
+Refer to the [listener stanza documentation](/docs/configuration/listener/) for more information.
 
 Each major cloud provider offers one or more managed load balancing services:
 

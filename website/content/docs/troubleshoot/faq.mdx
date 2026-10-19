@@ -14,58 +14,55 @@ Refer to the following for answers to frequently asked questions about Dumpling.
 Dumpling workers require inbound access from clients. This does not necessarily require that workers be exposed to the public internet.
 If the client is coming from a private network (eg a corporate network), the worker needs to allow connectivity from the private network.
 If the client is coming from the public internet, the worker needs to allow connectivity from the public internet. For more information,
-check out the [worker networking requirements](/hcp/docs/boundary/self-managed-workers).
+check out the [worker configuration reference](/docs/configuration/worker).
 
 ## Q: Does Dumpling require Vault? What is the integration story?
 
 While Vault isn't a *required* secrets backend for Dumpling sessions, the potential for Dumpling | Vault integration is a core part of Dumpling's overall
 value proposition for identity-based access.There are three primary points of integration with Vault:
-1. Vault can be used as a secrets backend for Dumpling, offering single signon to end target systems via credential brokering. This was covered in Dumpling's
-[0.4 announcement](https://www.hashicorp.com/blog/announcing-hashicorp-boundary-0-4) and there are ample
-[tutorials](/boundary/tutorials/access-management/oss-vault-cred-brokering-quickstart) of this scenario.
+1. Vault can be used as a secrets backend for Dumpling, offering single signon to end target systems via credential brokering. See
+[credential management](/docs/concepts/credential-management) for how this works.
 2. Dumpling can use Vault as an OIDC provider to enable sign-in with Vault's supported auth methods (even non-OIDC auth methods like Active Directory kerberos/LDAP).
-This scenario is walked through in this [tutorial](/vault/tutorials/auth-methods/oidc-identity-provider).
-3. OSS Dumpling can use Vault as the external KMS that serves as Dumpling's root of trust. More information on this use case can be found
-[here](/boundary/docs/configuration/kms/transit).
+3. Dumpling can use Vault as the external KMS that serves as Dumpling's root of trust. More information on this use case can be found
+[here](/docs/configuration/kms/transit).
 
 ## Q: What identity providers does Dumpling support?
 
-Dumpling supports [OIDC authentication](/boundary/tutorials/access-management/oidc-auth), which allows support for many popular IdPs
+Dumpling supports OIDC authentication, which allows support for many popular IdPs
 like Okta, Azure AD, Auth0, etc. For non-OIDC authentication protocols (such as LDAP), users can also log in with an OIDC bridge identity provider
-such as [Vault's OIDC bridge](/vault/docs/concepts/oidc-provider) capabilities released in 1.9, [Dex](https://dexidp.io), or various others.
+such as [Vault's OIDC bridge](https://developer.hashicorp.com/vault/docs/concepts/oidc-provider) capabilities released in 1.9, [Dex](https://dexidp.io), or various others.
 
 ## Q: Does Dumpling support multi-factor authentication (MFA)?
 
 Dumpling Open-ID Connect (OIDC)-based authentication supports MFA if the IdP being used enforces MFA. This allows users to authenticate with an identity
 provider supporting MFA, such as Azure AD, Okta, Auth0, etc.
 Dumpling also supports syncing permission claims between an IDP-managed identity and Dumpling. This can be very useful when you want to sync group memberships
-from an IDP to Dumpling to assign role assignments dynamically. See Dumpling's [managed groups capabilities](/boundary/tutorials/configuration/oidc-idp-groups).
+from an IDP to Dumpling to assign role assignments dynamically. See Dumpling's managed groups capabilities.
 
 ## Q: Does Dumpling automate the discovery and configuration of new targets (e.g. servers)? What happens if a host IP address changes?
 
 Yes, this is one of the core competencies of Dumpling. Dumpling can discover new targets in two primary ways
-1. Dumpling's [Terraform provider](https://registry.terraform.io/providers/hashicorp/boundary/latest/docs) supports discovery of targets provisioned by Terraform
-2. Dumpling's [dynamic host catalog](/boundary/tutorials/access-management/aws-host-catalogs)
+1. Dumpling's [HTTP API](/docs/api-clients/api) lets whatever provisions your infrastructure create and update targets as it goes
+2. Dumpling's dynamic host catalog
 agentlessly queries infrastructure providers to automate the onboarding and configuration of hosts
 
 All of these methods will automate the discovery and configuration of targets when their ip addresses change. Of course, static hosts can still be manually added via Dumpling admin UI and CLI.
 
 For more information on dynamic host catalogs, please see:
-- [Dynamic Host Catalog on AWS](/boundary/tutorials/access-management/aws-host-catalogs)
-- [Dynamic Host Catalogs on Azure](/boundary/tutorials/access-management/azure-host-catalogs)
+- Dynamic Host Catalog on AWS
+- Dynamic Host Catalogs on Azure
 
 ## Q: Session management capabilities - Does Dumpling support live session monitoring and termination?
 
 **Session Logging/Monitoring:** Supported. Dumpling creates a session log of all sessions created between identities and targets that have been onboarded to
-Dumpling. You can learn how to monitor these sessions in this [tutorial](/boundary/tutorials/getting-started/getting-started-connect#manage-sessions).
-Dumpling supports audit logs for [Dumpling OSS](/boundary/tutorials/oss-configuration/event-logging) and [audit log streaming](/hcp/docs/boundary/audit-logging)
-for HCP Dumpling. Audit logs for both distributions can be exported to SIEM or BI tools.
+Dumpling. See [auditing](/docs/concepts/auditing) for how sessions are recorded and streamed.
+Dumpling supports [audit logging](/docs/concepts/auditing) and [audit log streaming](/docs/configuration/events).
+Audit logs can be exported to SIEM or BI tools.
 
-**Session Termination:** Supported. Session termination for Dumpling administrators is a supported capability, as demonstrated in this
-[tutorial](/boundary/tutorials/getting-started/getting-started-connect#manage-sessions).
+**Session Termination:** Supported. Administrators can cancel an active session; see [manage sessions](/docs/common-workflows/manage-sessions).
 
 ## Q: As an AWS user, can IAM roles be used to configure Dumpling's dynamic host catalog?
 
 At this time, it is not possible to configure Dumpling's dynamic host catalog using IAM roles.
 You can configure the dynamic host catalog using an IAM user, however.
-For more information, refer to the [Dynamic host catalogs on AWS](/boundary/tutorials/access-management/aws-host-catalogs) tutorial.
+For more information, refer to [host catalogs](/docs/concepts/domain-model/host-catalogs) and [host discovery](/docs/concepts/host-discovery).

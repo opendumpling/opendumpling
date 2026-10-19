@@ -7,17 +7,17 @@ description: |-
 
 # Dumpling v0.4.0
 
-The release notes below contain information about new functionality available in Dumpling v0.4.0. To see a granular record of when each item was merged into the Dumpling project, please refer to the [Changelog](https://github.com/opendumpling/opendumpling/blob/main/CHANGELOG.md). To learn about what Dumpling consists of, we highly recommend you start at the [Getting Started Page](/boundary/docs/getting-started).
+The release notes below contain information about new functionality available in Dumpling v0.4.0. To see a granular record of when each item was merged into the Dumpling project, please refer to the [Changelog](https://github.com/opendumpling/opendumpling/blob/main/CHANGELOG.md). To learn about what Dumpling consists of, we highly recommend you start at the [Getting Started Page](/docs/getting-started).
 
-Lastly, for instructions on how to upgrade an existing Dumpling deployment to v0.4.0, please review Dumpling’s [general upgrade guide](/boundary/tutorials/oss-configuration/upgrade-version).
+For guidance on which versions can be mixed during an upgrade, refer to [Version compatibility](/docs/operations/version-compatibility).
 
 ## Dumpling v0.4.0 highlights
 
-**Session Credential Brokering:** Dumpling 0.4, adds a Vault integration for the brokering of [Vault](https://www.vaultproject.io/) secrets to Dumpling clients (both command line and desktop clients) for use
-in Dumpling sessions. Brokering of Vault secrets is the foundation of Dumpling’s larger credential-management story for seamless single sign-on to infrastructure targets. This feature introduces new Dumpling resources - [credential stores](/boundary/docs/concepts/domain-model/credential-stores), [credential libraries](/boundary/docs/concepts/domain-model/credential-libraries), and [credentials](/boundary/docs/concepts/domain-model/credentials) -
-to support binding credentials with user sessions, as well as surfacing those credentials during session initialization on the command line and in Dumpling Desktop.
+**Session Credential Brokering:** Dumpling 0.4, adds a Vault integration for the brokering of [Vault](https://www.vaultproject.io/) secrets to Dumpling clients for use
+in Dumpling sessions. Brokering of Vault secrets is the foundation of Dumpling’s larger credential-management story for seamless single sign-on to infrastructure targets. This feature introduces new Dumpling resources - [credential stores](/docs/concepts/domain-model/credential-stores), [credential libraries](/docs/concepts/domain-model/credential-libraries), and [credentials](/docs/concepts/domain-model/credentials) -
+to support binding credentials with user sessions, as well as surfacing those credentials during session initialization on the command line.
 
-**`boundary connect` Credential Brokering Integration:** Additionally, we have started integration into the [boundary connect helpers](/boundary/docs/getting-started/connect-to-target), starting in this release with the Postgres helper; if the credential contains a username/password and boundary connect postgres is the helper being used, the command will automatically pass the credentials to the psql process.
+**`dumpling connect` Credential Brokering Integration:** Additionally, we have started integration into the [dumpling connect helpers](/docs/getting-started/dev-mode/connect-to-dev-target), starting in this release with the Postgres helper; if the credential contains a username/password and dumpling connect postgres is the helper being used, the command will automatically pass the credentials to the psql process.
 
 **Session Security Improvements:** Dumpling workers will now close any existing proxy connections they're handling when they cannot make a status request to the worker. The timeout for this behavior is currenly 15 seconds.
 

@@ -1,0 +1,71 @@
+---
+layout: docs
+page_title: Install Dumpling
+description: |-
+ Install a self-managed version of Dumpling
+---
+
+# Install Dumpling
+
+This guide outlines the required steps to manually install and configure a single OpenDumpling cluster as defined in the [Recommended architecture](/docs/install-dumpling/recommended-architecture) topic.
+It assumes you install Dumpling on virtual machines (VMs) or bare-metal servers.
+
+OpenDumpling is distributed as a single static binary. Every tagged release publishes
+one archive per operating system and architecture to
+[Dumpling's releases page](https://github.com/opendumpling/opendumpling/releases),
+named `dumpling_<version>_<os>_<arch>.zip`, alongside a
+`dumpling_<version>_SHA256SUMS` checksum file.
+
+There is no package repository and no installer: you download the archive that
+matches your platform, verify its checksum, extract the binary, and run it.
+Because the binary contains the CLI as well as the controller and worker servers,
+the same archive is used on every node.
+
+You must complete the following steps for each Dumpling controller and worker node that you want to deploy.
+The binary operates as either a worker or controller, depending on the subsequent configuration that you generate for the Dumpling binary.
+
+## Download the binary
+
+1. Download the archive for your platform and the checksum file from the
+   [releases page](https://github.com/opendumpling/opendumpling/releases).
+
+1. Verify the archive against the published checksums:
+
+    ```shell-session
+    $ sha256sum --check --ignore-missing dumpling_<version>_SHA256SUMS
+    ```
+
+1. Extract the binary and move it somewhere on your `$PATH`:
+
+    ```shell-session
+    $ unzip dumpling_<version>_<os>_<arch>.zip
+    $ sudo install -m 0755 dumpling /usr/local/bin/dumpling
+    ```
+
+    On Windows the archive contains `dumpling.exe` instead.
+
+1. Confirm the binary runs:
+
+    ```shell-session
+    $ dumpling version
+    ```
+
+## Initialize the database
+
+Before a controller can start it needs a database. Provide the connection
+information through your controller configuration and initialize the schema
+once per cluster:
+
+```shell-session
+$ dumpling database init -config /etc/dumpling-controller.hcl
+```
+
+See [Configure controllers](/docs/install-dumpling/configure-controllers) for the
+configuration file itself.
+
+## Run Dumpling as a service
+
+On Linux, the recommended way to keep Dumpling running is a systemd unit. The
+[systemd installation](/docs/install-dumpling/systemd) page provides a unit file
+and an install script that also creates the non-root `dumpling` user and group
+the service should run as.

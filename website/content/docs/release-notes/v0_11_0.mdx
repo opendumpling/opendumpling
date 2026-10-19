@@ -9,26 +9,19 @@ description: |-
 
 The release notes below contain information about new functionality available in the Dumpling v0.11.0 release. To see a granular record of when each item was
 merged into the Dumpling project, please refer to the [Changelog](https://github.com/opendumpling/opendumpling/blob/main/CHANGELOG.md). To learn about what Dumpling
-consists of, we highly recommend you start at the [Getting Started Page](/boundary/docs/getting-started).
+consists of, we highly recommend you start at the [Getting Started Page](/docs/getting-started).
 
-Lastly, for instructions on how to upgrade an existing Dumpling deployment to v0.11.0, please review Dumpling's
-[general upgrade guide](/boundary/tutorials/oss-configuration/upgrade-version).
+For guidance on which versions can be mixed during an upgrade, refer to [Version compatibility](/docs/operations/version-compatibility).
 
 ## Dumpling v0.11.0 highlights
 
-**HCP Dumpling General Availability:** Dumpling is now available on the HashiCorp Cloud Platform! HCP Dumpling provides an easy way to securely access critical
-systems with fine-grained authorizations based on trusted identities. Dumpling on HashiCorp Cloud Platform provides a fully managed, single workflow to securely
-connect to hosts and critical systems across Kubernetes clusters, cloud service catalogs, and on-premises infrastructure
+**Private Vault access:** You can integrate an on-premises instance of Vault without having to publicly expose it, by deploying a Dumpling worker
+in the same private network as the Vault instance. See [Vault workers](/docs/concepts/filtering/worker-tags).
 
-**Private Vault Access:** HCP Dumpling users are now able to integrate their on-premises instance of Vault without having to publicly expose Vault. This is
-accomplished by deploying a Dumpling worker binary within the same private network as the Vault instance and peering with the HCP Dumpling control plane.
-[Learn more here](/boundary/tutorials/access-management/hcp-vault-cred-brokering-quickstart).
+**SSH credential injection:** SSH targets can be configured for credential injection so that credentials are never exposed to the user.
 
-**SSH Credential Injection:** SSH Targets can now be set up through the Admin UI, making the Credential Injection workflow more seamless and easy to use.
-[Learn more here](/boundary/tutorials/hcp-administration/hcp-ssh-cred-injection).
-
-**Improved Worker Management:** Administrators are now able to register and manage Dumpling workers through the Admin UI. Admin users can view session counts,
-IP addresses and release versions of all registered workers through the 'Workers' tab.
+**Improved worker management:** Administrators can register and manage Dumpling workers and view session counts,
+IP addresses and release versions of all registered workers through the CLI and the API.
 
 **Support for Generic Credentials:** Dumpling now supports brokering of 'generic credentials'. This will enable users to broker any kind of key/value pair type
 credentials when they are connecting to a remote host.

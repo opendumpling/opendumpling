@@ -7,21 +7,21 @@ description: |-
 
 # Dumpling v0.7.0
 
-The release notes below contain information about new functionality available in Dumpling v0.7.0 and the corresponding Dumpling Desktop v1.4.0 release.
+The release notes below contain information about new functionality available in Dumpling v0.7.0.
 To see a granular record of when each item was merged into the Dumpling project, please refer to the [Changelog](https://github.com/opendumpling/opendumpling/blob/main/CHANGELOG.md).
-To learn about what Dumpling consists of, we highly recommend you start at the [Getting Started Page](/boundary/docs/getting-started).
+To learn about what Dumpling consists of, we highly recommend you start at the [Getting Started Page](/docs/getting-started).
 
-Lastly, for instructions on how to upgrade an existing Dumpling deployment to v0.7.0, please review Dumpling’s [general upgrade guide](/boundary/tutorials/oss-configuration/upgrade-version).
+For guidance on which versions can be mixed during an upgrade, refer to [Version compatibility](/docs/operations/version-compatibility).
 
 ## Dumpling v0.7.0 highlights
 
 **Dynamic Host Catalogs:** Dumpling introduces a new resource type, dynamic host catalogs, which automate the discovery of host resources from a catalog provider. The 0.7 release includes
 initial support for Azure and AWS host catalogs with more catalog providers to follow in future releases. Catalogs are implemented via Dumpling's (currently internal) new go-plugin system.
 
-**Managed group configuration in the admin console**: Managed groups are a special type of IAM group which populate users based on administrator-defined filters of external identity provider (IdP) metadata.
-Configuration of managed groups is now available in the Dumpling admin console.
+**Managed groups:** Managed groups are a special type of IAM group which populate users based on administrator-defined filters of external identity provider (IdP) metadata.
+Configuration of managed groups is now available through the CLI and the API.
 
-**UI Support for Resource Filtering:** Users may now filter auth method and session resources in the admin console and Dumpling Desktop.
+**Resource filtering:** Auth method and session resources can now be filtered when listing them.
 
 ## What's changed
 

@@ -15,7 +15,7 @@ Unix sockets cannot currently be used for `"proxy"` purpose on a Worker.
 ```hcl
 listener "unix" {
   purpose = "api"
-  address = "/var/run/boundary-api.sock"
+  address = "/var/run/dumpling-api.sock"
 }
 ```
 
@@ -64,21 +64,21 @@ Refer to the following sections for the supported `unix` listener parameters.
   `default_max_request_duration` for this listener.
 
 - `cors_enabled` `(boolean: true)` - Specifies if CORS should be enabled, which
-  allows Dumpling to support external browser-based clients (not including admin
-  UI), such as Dumpling Desktop. If not specified, CORS will be enabled with an
-  allowed origin that grants access to Dumpling Desktop, unless overridden with
+  allows Dumpling to support external browser-based and native clients that the
+  controller does not serve itself. If not specified, CORS will be enabled with an
+  allowed origin that grants access to a desktop client, unless overridden with
   `cors_disable_default_allowed_origin_values`.
 
 - `cors_disable_default_allowed_origin_values` `(boolean: false)` - Specifies
   that Dumpling should not append default allowed origin values to any specified
-  in `cors_allowed_origins`, such as Dumpling Desktop's origin. This also
+  in `cors_allowed_origins`, such as a desktop client's origin. This also
   disables the behavior of enabling CORS if `cors_enabled` is not specified.
 
-- `cors_allowed_origins` `(array(string): ["serve://boundary"])` - An array of
+- `cors_allowed_origins` `(array(string): ["serve://dumpling"])` - An array of
   allowed CORS origins. Origins must include protocol, host, and port (if port
   is different than the default for the specified protocol). To allow all
-  origins, set to `['*']`. By default, Dumpling Desktop's origin
-  `serve://boundary` is appended to any values included here, unless
+  origins, set to `['*']`. By default, the desktop client origin
+  `serve://dumpling` is appended to any values included here, unless
   `cors_disable_default_allowed_origin_values` is specified.
 
 - `cors_allowed_headers` `(array(string): [])` – An array specifying headers
@@ -92,7 +92,7 @@ Refer to the following sections for the supported `unix` listener parameters.
 ~> `tls` parameters are valid for `api` and `ops` listeners. `cluster`
 and `proxy` connections use their own ephemeral TLS stacks. For more
 information, see [the connections security concepts
-page](/boundary/docs/concepts/security/connections-tls).
+page](/docs/concepts/security/connections-tls).
 
 - `tls_disable` `(string: "false")` – Specifies if TLS will be disabled. Dumpling
   assumes TLS by default, so you must explicitly disable TLS to opt-in to
@@ -177,7 +177,7 @@ This example shows enabling a TLS listener.
 ```hcl
 listener "unix" {
   purpose = "api"
-  address = "/var/run/boundary-api.sock"
+  address = "/var/run/dumpling-api.sock"
   tls_cert_file = "/etc/certs/Dumpling.crt"
   tls_key_file  = "/etc/certs/Dumpling.key"
 }
@@ -190,15 +190,13 @@ This example shows Dumpling listening on a private interface, as well as localho
 ```hcl
 listener "tcp" {
   purpose = "api"
-  address = "/var/run/boundary-api.sock"
+  address = "/var/run/dumpling-api.sock"
 }
 
 listener "tcp" {
   purpose = "cluster"
-  address = "/var/run/boundary-cluster.sock"
+  address = "/var/run/dumpling-cluster.sock"
 }
 ```
 
 [golang-tls]: https://golang.org/src/crypto/tls/cipher_suites.go
-[api-addr]: /boundary/docs/configuration#api_addr
-[cluster-addr]: /boundary/docs/configuration#cluster_addr

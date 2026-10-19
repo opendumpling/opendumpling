@@ -8,7 +8,7 @@ description: |-
 # Create a storage bucket
 
 As of Dumpling 0.13.0, you can record and audit user sessions.
-A resource known as a [storage bucket](/boundary/docs/concepts/domain-model/storage-buckets) is used to store the recorded sessions.
+A resource known as a [storage bucket](/docs/concepts/domain-model/storage-buckets) is used to store the recorded sessions.
 The storage bucket represents a bucket in an external store.
 Before you can enable session recording, you must create one or more storage buckets.
 
@@ -17,7 +17,7 @@ A storage bucket that is associated with the Global scope can be associated with
 However, a storage bucket in an Org scope can only be associated with targets in a project from the same Org scope.
 Any storage buckets associated with an Org scope are deleted when the Org itself is deleted.
 
-For more information about using session recording to audit user sessions, refer to [Auditing](/boundary/docs/concepts/auditing).
+For more information about using session recording to audit user sessions, refer to [Auditing](/docs/concepts/auditing).
 
 ## Requirements
 	
@@ -72,9 +72,9 @@ Session recording requires specific configuration for both the AWS S3 storage bu
 
 ### Dumpling workers requirements
 
-[Session recording](/boundary/docs/configuration/session-recording) requires at least one PKI worker that:
+[Session recording](/docs/configuration/session-recording) requires at least one PKI worker that:
 - Has access to the AWS S3 storage bucket
-- Has an accessible directory defined by `recording_storage_path` for storing session recordings while they are in progress. On session closure, Dumpling moves the local session recording to remote storage and deletes the local copy. For more details, refer to [PKI workers](/boundary/docs/configuration/worker/pki-worker#session-recording-hcp-ent).
+- Has an accessible directory defined by `recording_storage_path` for storing session recordings while they are in progress. On session closure, Dumpling moves the local session recording to remote storage and deletes the local copy. For more details, refer to [PKI workers](/docs/configuration/worker/pki-worker#session-recording).
 - Has at least 1 MB of available disk space.
 - Runs Darwin, Windows, or Linux. The following binaries are not supported for session recording: NetBSD, OpenBSD, Solaris.
 
@@ -82,7 +82,7 @@ Development example:
 
 ```hcl
 worker {
-auth_storage_path="/boundary/demo-worker-1"
+auth_storage_path="/dumpling/demo-worker-1"
 initial_upstreams = ["10.0.0.1"]
 recording_storage_path="/local/storage/directory"
 }
@@ -90,17 +90,15 @@ recording_storage_path="/local/storage/directory"
 
 Complete the following steps to create a storage bucket for session recording:
 
-<Tabs>
-<Tab heading="CLI">
 
 1. Log in to Dumpling.
 1. Use the following command to create a storage bucket:
 
     ```bash
-    boundary storage-buckets create -bucket-name mybucket1 -plugin-name aws -secrets ‘{“access_key_id”: “123456789” , “secret_access_key” : “123/456789/12345678”}’ -worker-filter ‘“dev” in “/tags/type”’ -attributes ‘{“region”:”us-east-1”,”disable_credential_rotation”:true}’ -scope-id o_1234567890
+    dumpling storage-buckets create -bucket-name mybucket1 -plugin-name aws -secrets ‘{“access_key_id”: “123456789” , “secret_access_key” : “123/456789/12345678”}’ -worker-filter ‘“dev” in “/tags/type”’ -attributes ‘{“region”:”us-east-1”,”disable_credential_rotation”:true}’ -scope-id o_1234567890
     ```
 
-    Replace the values above with the following required AWS secrets and any optional [attributes](/boundary/docs/concepts/domain-model/storage-buckets) you want to associate with the storage bucket:
+    Replace the values above with the following required AWS secrets and any optional [attributes](/docs/concepts/domain-model/storage-buckets) you want to associate with the storage bucket:
 
     - `region`: (Required) The AWS region to use.
     - `bucket-name`: (Required) Name of the bucket in AWS.
@@ -111,32 +109,7 @@ Complete the following steps to create a storage bucket for session recording:
     - `shared_credentials_file`: (Optional) The shared credentials file to use.
     - `shared_credentials_profile`: (Optional) The profile name to use in the shared credentials file.
 
-</Tab>
 
-<Tab heading="UI">
-
-1. Log in to Dumpling.
-1. Select **Storage Buckets** in the navigation bar.
-1. Select **New Storage Bucket**.
-1. Complete the following fields:
-   - **Name**: (Optional) The name field is optional, but if you enter a name it must be unique.
-   - **Description**: (Optional) An optional description of the bucket for identification purposes.
-   - **Scope**: (Required) A storage bucket can belong to the Global scope or an Org scope.
-   It can only associated with targets from the scope it belongs to.
-   - **Bucket name**: (Required) Name of the bucket in AWS.
-   - **Bucket prefix**: (Optional) A base path where session recordings are stored.
-   - **Region**: (Required) The AWS region to use.
-   - **Access key ID**: (Required) The access key ID that AWS generates for the IAM user to use with the storage bucket.
-   - **Secret access key**: (Required) The secret access key that AWS generates for the IAM user to use with this storage bucket.
-   - **Worker filter** (Required) A filter that indicates which Dumpling workers have access to the storage. The filter must match an existing worker in order to create a storage bucket.
-   - **Disable credential rotation** (Optional) Although credentials are stored encrypted within Dumpling, by default the [AWS plugin](https://github.com/hashicorp/boundary-plugin-aws) attempts to rotate the credentials you provide. The given credentials are used to create a new credential, and then the original credential is revoked. After rotation, only Dumpling knows the client secret the plugin uses.
-
-      Select this option to disable this behavior and prevent the automatic rotation of credentials.
-
-1. Select **Save**.
-
-</Tab>
-</Tabs>
 
 Dumpling creates the storage bucket and provides you with the bucket's ID.
-Once the storage bucket is created, you can use the bucket's ID to [enable session recording on targets](/boundary/docs/configuration/session-recording/enable-session-recording).
+Once the storage bucket is created, you can use the bucket's ID to [enable session recording on targets](/docs/configuration/session-recording/enable-session-recording).

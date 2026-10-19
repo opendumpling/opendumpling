@@ -25,7 +25,7 @@ Further, security teams seek to prevent incidents and proactively identify poten
 
 ## Session recording
 
-Dumpling provides auditing capabilities via [session recording](/boundary/docs/concepts/domain-model/session-recordings).
+Dumpling provides auditing capabilities via [session recording](/docs/concepts/domain-model/session-recordings).
 In Dumpling, a session represents a set of connections between a user and a host from a target.
 The session begins when an authorized user requests access to a target, and it ends when that access is terminated.
 All sessions have a fixed time limit, and all connections are proxied through a worker.
@@ -47,7 +47,7 @@ The player then retrieves the data from the controller.
 
 ## Storage buckets
 
-A resource known as a [storage bucket](/boundary/docs/concepts/domain-model/storage-buckets) is used to store the recorded sessions.
+A resource known as a [storage bucket](/docs/concepts/domain-model/storage-buckets) is used to store the recorded sessions.
 The storage bucket represents a bucket in an external object store.
 At this time, the only supported storage for storage buckets is AWS S3.
 In AWS S3, a storage bucket contains the bucket name, region, and optional prefix, as well as any credentials needed to access the bucket, such as the secret key.
@@ -83,4 +83,4 @@ The SHA256SUMS.sign is a copy of the SHA256SUMS file, signed with the BSR's priv
 
 
 
-For more information, refer to the [overview of configuring session recording](/boundary/docs/configuration/session-recording).
+For more information, refer to the [overview of configuring session recording](/docs/configuration/session-recording).

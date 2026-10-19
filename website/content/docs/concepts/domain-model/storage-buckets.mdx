@@ -5,7 +5,7 @@ description: |-
   The anatomy of a Dumpling storage bucket
 ---
 
-# Storage buckets <sup>HCP/ENT</sup>
+# Storage buckets
 
 
 A resource known as a storage bucket is used to store the [session recordings][].
@@ -49,7 +49,7 @@ AWS S3 buckets have the following attributes:
 
 - `region` - (Required) The S3 region to configure the storage bucket in.
 - `disable_credential_rotation` - (Optional) If set to `true`, credential rotation is not performed.
-By default, the AWS plugin [rotates credentials](https://github.com/hashicorp/boundary-plugin-aws/blob/main/README.md#credential-rotation).
+By default, the AWS plugin [rotates credentials](https://github.com/opendumpling/opendumpling/blob/main/plugins/dumpling/mains/aws/plugin/service/storage/README.md).
 
 #### Secrets
 
@@ -60,15 +60,15 @@ AWS S3 buckets have the following secrets:
 
 ## Referenced by
 
-- [Session recordings](/boundary/docs/concepts/domain-model/session-recordings)
+- [Session recordings](/docs/concepts/domain-model/session-recordings)
 
 ## Service API docs
 
 The following services are relevant to this resource:
 
-- [Session recording service](/boundary/api-docs/session-recording-service)
+- [Session recording service](/api-docs/session-recording-service)
 
-[session recordings]: /boundary/docs/concepts/domain-model/session-recordings
-[credentials]: /boundary/docs/concepts/domain-model/credentials
-[targets]: /boundary/docs/concepts/domain-model/targets
-[scope]: /boundary/docs/concepts/domain-model/scopes
+[session recordings]: /docs/concepts/domain-model/session-recordings
+[credentials]: /docs/concepts/domain-model/credentials
+[targets]: /docs/concepts/domain-model/targets
+[scope]: /docs/concepts/domain-model/scopes

@@ -18,10 +18,10 @@ To use TLS, you must have two files on each Dumpling controller node.
 You may have to create a new directory to store the certificate material at `/etc/dumpling.d/tls`.
 Place the files in the following paths:
 
-- `/etc/dumpling.d/tls/boundary-cert.pem`
+- `/etc/dumpling.d/tls/dumpling-cert.pem`
 
     In this path, place the Dumpling TLS certificate with a Common Name (CN) and Subject Alternate Name (SAN) that matches your planned primary DNS record for accessing the Dumpling controllers and any additional SANs as necessary.
-- `/etc/dumpling.d/tls/boundary-key.pem`
+- `/etc/dumpling.d/tls/dumpling-key.pem`
 
     In this path, place the Dumpling TLS certificate's private key.
 
@@ -45,7 +45,7 @@ If a worker is used with PKI authentication, this is unnecessary.
 
 There are other optional KMS keys that you can configure for different encryption scenarios.
 These scenarios include Dumpling worker PKI auth encryption and Dumpling worker or controller configuration encryption.
-Refer to [Data security in Dumpling](/boundary/docs/concepts/security/data-encryption) for more information.
+Refer to [Data security in Dumpling](/docs/concepts/security/data-encryption) for more information.
 
 <Note>
 There are two types of Dumpling workers, distinguished by the method by which they authenticate with the Dumpling controllers.
@@ -54,7 +54,7 @@ You use the Worker-auth key listed above to enable KMS worker authentication.
 </Note>
 
 HashiCorp strongly recommends that you use either Vault Transit or your cloud provider's key management system.
-Refer to the [Vault Transit](/vault/docs/secrets/transit) documentation or your cloud provider's key management documentation for more information.
+Refer to the [Vault Transit](https://developer.hashicorp.com/vault/docs/secrets/transit) documentation or your cloud provider's key management documentation for more information.
 
 After you create the keys in Vault or the key management system of your choice, you can prepare the PostgreSQL database.
 
@@ -63,7 +63,7 @@ After you create the keys in Vault or the key management system of your choice, 
 Dumpling manages its state and configuration in a Relational Database Management System (RDBMS), PostgreSQL.
 You should create, set up, and make the PostgreSQL database accessible to the Dumpling controller nodes before you configure the nodes.
 
-Refer to the [Database recommendations](/boundary/docs/install-boundary/system-requirements#database-recommendations) documentation for examples of cloud managed PostgreSQL databases.
+Refer to the [Database recommendations](/docs/install-dumpling/system-requirements#database-recommendations) documentation for examples of cloud managed PostgreSQL databases.
 
 ## Create the controller configuration
 
@@ -102,7 +102,7 @@ The following is an example of how this environment file could be configured:
 <CodeBlockConfig lineNumbers filename="/etc/dumpling.d/dumpling.env">
 
 ```shell-session
-POSTGRESQL_CONNECTION_STRING=postgresql://boundary:boundary@postgres.yourdomain.com:5432/boundary
+POSTGRESQL_CONNECTION_STRING=postgresql://dumpling:dumpling@postgres.yourdomain.com:5432/dumpling
 AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
 AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 ```
@@ -133,13 +133,13 @@ listener "tcp" {
 
   # TLS Configuration
   tls_disable   = false
-  tls_cert_file = "/etc/dumpling.d/tls/boundary-cert.pem"
-  tls_key_file  = "/etc/dumpling.d/tls/boundary-key.pem"
+  tls_cert_file = "/etc/dumpling.d/tls/dumpling-cert.pem"
+  tls_key_file  = "/etc/dumpling.d/tls/dumpling-key.pem"
 
-  # Uncomment to enable CORS for the Admin UI. Be sure to set the allowed origin(s)
+  # Uncomment to enable CORS for browser and native clients. Be sure to set the allowed origin(s)
   # to appropriate values.
   #cors_enabled = true
-  #cors_allowed_origins = ["https://yourcorp.yourdomain.com", "serve://boundary"]
+  #cors_allowed_origins = ["https://yourcorp.yourdomain.com", "serve://dumpling"]
 }
 
 # Data-plane listener configuration block (used for worker coordination)
@@ -159,14 +159,14 @@ listener "tcp" {
   purpose = "ops"
 
   tls_disable   = false
-  tls_cert_file = "/etc/dumpling.d/tls/boundary-cert.pem"
-  tls_key_file  = "/etc/dumpling.d/tls/boundary-key.pem"
+  tls_cert_file = "/etc/dumpling.d/tls/dumpling-cert.pem"
+  tls_key_file  = "/etc/dumpling.d/tls/dumpling-key.pem"
 }
 
 # Controller configuration block
 controller {
   # This name attr must be unique across all controller instances if running in HA mode
-  name = "boundary-controller-1"
+  name = "dumpling-controller-1"
   description = "Dumpling controller number one"
 
   # This is the public hostname or IP where the workers can reach the
@@ -188,7 +188,7 @@ controller {
 
 # Events (logging) configuration. This
 # configures logging for ALL events to both
-# stderr and a file at /var/log/boundary/controller.log
+# stderr and a file at /var/log/dumpling/controller.log
 events {
   audit_enabled       = true
   sysevents_enabled   = true
@@ -205,7 +205,7 @@ events {
     event_types = ["*"]
     format = "cloudevents-json"
     file {
-      path = "/var/log/boundary"
+      path = "/var/log/dumpling"
       file_name = "controller.log"
     }
     audit_config {
@@ -255,7 +255,7 @@ Dumpling only supports memory locking on UNIX-like systems that support `mlock()
 
    On Linux, to give the Dumpling executable the ability to use `mlock` syscall without running the process as root, run the following command:
 
-   `sudo setcap cap_ipc_lock=+ep $(readlink -f $(which boundary))`
+   `sudo setcap cap_ipc_lock=+ep $(readlink -f $(which dumpling))`
 
    If you use a Linux distribution with a modern version of systemd, you can add the following directive to the **"[Service]"** configuration section:
 
@@ -263,24 +263,24 @@ Dumpling only supports memory locking on UNIX-like systems that support `mlock()
 
 - `listener` - Configures the listeners on which Dumpling serves traffic (API cluster and proxy).
 - `controller` - Configures the controller.
-If present, `boundary server` starts a controller subprocess.
+If present, `dumpling server` starts a controller subprocess.
 - `events` - Configures event-specific parameters.
 
    The example events configuration above is exhaustive and writes all events to both `stderr` and a file.
    This configuration may or may not work for your organization's logging solution.
 
-- `kms` - Configures KMS blocks for [various purposes](/boundary/docs/concepts/security/data-encryption).
+- `kms` - Configures KMS blocks for [various purposes](/docs/concepts/security/data-encryption).
 
    Refer to the links below for configuration information for the different cloud KMS blocks:
 
-   - [AWS](/boundary/docs/configuration/kms/awskms)
-   - [Azure](/boundary/docs/configuration/kms/azurekeyvault)
-   - [GCP](/boundary/docs/configuration/kms/gcpckms)
-   - [OCI](/boundary/docs/configuration/kms/ocikms)
-   - [AliCloud](/boundary/docs/configuration/kms/alicloudkms)
-   - [Vault Transit](/boundary/docs/configuration/kms/transit)
+   - [AWS](/docs/configuration/kms/awskms)
+   - [Azure](/docs/configuration/kms/azurekeyvault)
+   - [GCP](/docs/configuration/kms/gcpckms)
+   - [OCI](/docs/configuration/kms/ocikms)
+   - [AliCloud](/docs/configuration/kms/alicloudkms)
+   - [Vault Transit](/docs/configuration/kms/transit)
 
-Refer to the documentation for additional [top-level configuration options](/boundary/docs/configuration) and additional [controller-specific options](/boundary/docs/configuration/controller).
+Refer to the documentation for additional [top-level configuration options](/docs/configuration) and additional [controller-specific options](/docs/configuration/controller).
 
 ## Initialize the database
 
@@ -293,7 +293,7 @@ For finer control over these resources, remvoe the flags.
 Run the following command to initialize the database:
 
 ```hcl
-boundary database init \
+dumpling database init \
    -skip-auth-method-creation \
    -skip-host-resources-creation \
    -skip-scopes-creation \
@@ -304,7 +304,7 @@ boundary database init \
 You can use the help output for the `init` command to view the flags available to skip the creation of any auto-generated resources:
 
 ```hcl
-boundary database init -h
+dumpling database init -h
 ```
 
 ## Start the Dumpling service
@@ -312,13 +312,13 @@ boundary database init -h
 When the configuration files are in place on each Dumpling controller, you can proceed to enable and start the binary on each of the Dumpling controller nodes using `systemd`.
 Run the following commands to start the service:
 
-1. `sudo systemctl enable boundary`
-1. `sudo systemctl start boundary`
+1. `sudo systemctl enable dumpling`
+1. `sudo systemctl start dumpling`
 
 ## Authenticate and manage resources
 
 Upon logging in to Dumpling for the first time, HashiCorp recommends creating an admin user for the global and project level scopes to manage Dumpling.
 This allows you to configure targets within those scopes and manage them.
 
-We recommend that you use the [KMS recovery workflow](/boundary/docs/install-boundary/no-gen-resources#recovery-kms-workflow) to log in to Dumpling for the first time.
-Refer to [Creating your first login account](/boundary/docs/install-boundary/no-gen-resources/#creating-your-first-login-account) to learn about setting up your first auth method, user, account, and role to log in to Dumpling going forward without the recovery KMS workflow.
+We recommend that you use the [KMS recovery workflow](/docs/install-dumpling/no-gen-resources#recovery-kms-workflow) to log in to Dumpling for the first time.
+Refer to [Creating your first login account](/docs/install-dumpling/no-gen-resources#create-your-first-login-account) to learn about setting up your first auth method, user, account, and role to log in to Dumpling going forward without the recovery KMS workflow.

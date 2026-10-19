@@ -15,7 +15,7 @@ Example (not safe for production!):
 
 ```hcl
 worker {
-  auth_storage_path="/boundary/demo-worker-1"
+  auth_storage_path="/dumpling/demo-worker-1"
   initial_upstreams = ["10.0.0.1"]
 }
 ```
@@ -27,14 +27,14 @@ There are two mechanisms that can be used to register a PKI worker to the cluste
 ### Controller-led authorization flow
 
 In this flow, the operator fetches an activation token from the controller's
-`workers:create:controller-led` action (on the CLI, this is via `boundary
+`workers:create:controller-led` action (on the CLI, this is via `dumpling
 workers create controller-led`). That activation token is given to the worker
 via the `controller_generated_activation_token` parameter. This can be done
 either directly or via an env var or file by using `env://` or `file://` syntax:
 
 ```hcl
 worker {
-  auth_storage_path="/boundary/demo-worker-1"
+  auth_storage_path="/dumpling/demo-worker-1"
   initial_upstreams = ["10.0.0.1"]
   controller_generated_activation_token = "neslat_........."
   # controller_generated_activation_token = "env://ACT_TOKEN"
@@ -59,7 +59,7 @@ In this flow, the worker prints out an authorization request token to two
 places: the startup information printed to stdout, and a file called
 `auth_request_token` in the base of the configured `auth_storage_path`. This
 token can be submitted to a controller at the `workers:create:worker-led` path;
-on the CLI this would be via `boundary workers create worker-led
+on the CLI this would be via `dumpling workers create worker-led
 -worker-generated-auth-token`. No values are needed in the configuration file.
 
 ## KMS configuration
@@ -77,9 +77,9 @@ kms "aead" {
 }
 ```
 
-## Session recording <sup>(HCP/ENT)</sup>
+## Session recording
 
-[Session recording](/boundary/docs/configuration/session-recording) requires at least one PKI worker with access to local and remote storage.
+[Session recording](/docs/configuration/session-recording) requires at least one PKI worker with access to local and remote storage.
 PKI workers used for session recording require an accessible directory defined by `recording_storage_path` for
 storing in-progress session recordings. On session closure, a local session recording is moved to remote storage and
 deleted locally.
@@ -88,12 +88,12 @@ Development example:
 
 ```hcl
 worker {
-  auth_storage_path="/boundary/demo-worker-1"
+  auth_storage_path="/dumpling/demo-worker-1"
   initial_upstreams = ["10.0.0.1"]
   recording_storage_path="/local/storage/directory"
 }
 ```
 
 ~> **Note:** `name` and `description` fields are not valid config fields for PKI
-workers. These fields are only valid for [KMS Workers](/boundary/docs/configuration/worker/kms-worker). `name` and
+workers. These fields are only valid for [KMS Workers](/docs/configuration/worker/kms-worker). `name` and
 `description` can only be set for PKI workers through the API.
