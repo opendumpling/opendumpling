@@ -434,7 +434,7 @@ func (s Service) getFromRepo(ctx context.Context, id string) (host.Catalog, *plu
 		if err != nil {
 			return nil, nil, err
 		}
-		hc, hcplg, err := repo.LookupCatalog(ctx, id)
+		hc, pluginCat, err := repo.LookupCatalog(ctx, id)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -442,7 +442,7 @@ func (s Service) getFromRepo(ctx context.Context, id string) (host.Catalog, *plu
 			return nil, nil, handlers.NotFoundErrorf("Host Catalog %q doesn't exist.", id)
 		}
 		cat = hc
-		plg = toPluginInfo(hcplg)
+		plg = toPluginInfo(pluginCat)
 	}
 	return cat, plg, nil
 }

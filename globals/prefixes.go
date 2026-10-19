@@ -88,7 +88,12 @@ const (
 	StaticHostPrefix = "hst"
 
 	// PluginHostCatalogPrefix is the prefix for plugin host catalogs
-	PluginHostCatalogPrefix = "hcplg"
+	PluginHostCatalogPrefix = "hcat"
+	// PluginHostCatalogLegacyPrefix is the prefix plugin host catalogs were
+	// created with before the prefixes above were renamed. It is kept
+	// registered so catalogs that already exist keep resolving; only new
+	// catalogs get PluginHostCatalogPrefix.
+	PluginHostCatalogLegacyPrefix = "hcplg"
 	// PluginHostCatalogPreviousPrefix is the previous prefix for plugin host
 	// catalogs
 	PluginHostCatalogPreviousPrefix = "hc"

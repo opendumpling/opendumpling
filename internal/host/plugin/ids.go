@@ -14,7 +14,7 @@ import (
 )
 
 func init() {
-	if err := subtypes.Register(host.Domain, Subtype, globals.PluginHostCatalogPrefix, globals.PluginHostCatalogPreviousPrefix, globals.PluginHostSetPrefix, globals.PluginHostSetPreviousPrefix, globals.PluginHostPrefix, globals.PluginHostPreviousPrefix); err != nil {
+	if err := subtypes.Register(host.Domain, Subtype, globals.PluginHostCatalogPrefix, globals.PluginHostCatalogLegacyPrefix, globals.PluginHostCatalogPreviousPrefix, globals.PluginHostSetPrefix, globals.PluginHostSetPreviousPrefix, globals.PluginHostPrefix, globals.PluginHostPreviousPrefix); err != nil {
 		panic(err)
 	}
 }
