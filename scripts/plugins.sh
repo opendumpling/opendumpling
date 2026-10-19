@@ -16,32 +16,31 @@ SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ] ; do SOURCE="$(readlink "$SOURCE")"; done
 export DIR="$( cd -P "$( dirname "$SOURCE" )/.." && pwd )"
 
-# Create dumpling plugins
-echo "==> Building dumpling plugins..."
-rm -f $DIR/plugins/dumpling/assets/dumpling-plugin-*
-for CURR_PLUGIN in $(ls $DIR/plugins/dumpling/mains); do
-    cd $DIR/plugins/dumpling/mains/$CURR_PLUGIN;
-    go build -v -o $DIR/plugins/dumpling/assets/dumpling-plugin-${CURR_PLUGIN}${BINARY_SUFFIX} .;
-    cd $DIR;
-done;
-cd $DIR/plugins/dumpling/assets;
-for CURR_PLUGIN in $(ls dumpling-plugin*); do
-    gzip -f -9 $CURR_PLUGIN;
-done;
-cd $DIR;
+# Plugin mains are enumerated with a glob instead of the output of ls, since ls
+# is free to decorate its output with colours or padding depending on the
+# environment and those decorations end up inside the directory name.
+build_plugins() {
+    local group="$1"
+    local prefix="$2"
+    local assets="$DIR/plugins/$group/assets"
+    local mains=("$DIR"/plugins/"$group"/mains/*)
+    local main name
 
-# Create other plugins
+    echo "==> Building ${group} plugins..."
+    rm -f "$assets"/dumpling-plugin-*
+
+    for main in "${mains[@]}"; do
+        [ -d "$main" ] || continue
+        name="$(basename "$main")"
+        ( cd "$main" && go build -v -o "$assets/${prefix}${name}${BINARY_SUFFIX}" . )
+    done
+
+    if compgen -G "$assets/dumpling-plugin-*" > /dev/null; then
+        gzip -f -9 "$assets"/dumpling-plugin-*
+    fi
+}
+
+build_plugins dumpling dumpling-plugin-
 for PLUGIN_TYPE in "kms"; do
-    echo "==> Building ${PLUGIN_TYPE} plugins..."
-    rm -f $DIR/plugins/$PLUGIN_TYPE/assets/dumpling-plugin-${PLUGIN_TYPE}*
-    for CURR_PLUGIN in $(ls $DIR/plugins/$PLUGIN_TYPE/mains); do
-        cd $DIR/plugins/$PLUGIN_TYPE/mains/$CURR_PLUGIN;
-        go build -v -o $DIR/plugins/$PLUGIN_TYPE/assets/dumpling-plugin-${PLUGIN_TYPE}-${CURR_PLUGIN}${BINARY_SUFFIX} .;
-        cd $DIR;
-    done;
-    cd $DIR/plugins/$PLUGIN_TYPE/assets;
-    for CURR_PLUGIN in $(ls dumpling-plugin*); do
-        gzip -f -9 $CURR_PLUGIN;
-    done;
-    cd $DIR;
-done;
+    build_plugins "$PLUGIN_TYPE" "dumpling-plugin-${PLUGIN_TYPE}-"
+done

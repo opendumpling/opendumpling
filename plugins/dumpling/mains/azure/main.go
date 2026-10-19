@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"os"
 
-	az "github.com/hashicorp/boundary-plugin-azure/plugin"
+	az "github.com/opendumpling/opendumpling/plugins/dumpling/mains/azure/plugin"
 	hp "github.com/opendumpling/opendumpling/sdk/plugins"
 )
 

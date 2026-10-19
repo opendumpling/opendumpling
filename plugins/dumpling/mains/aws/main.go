@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"os"
 
-	aws "github.com/hashicorp/boundary-plugin-aws/plugin"
+	aws "github.com/opendumpling/opendumpling/plugins/dumpling/mains/aws/plugin"
 	hp "github.com/opendumpling/opendumpling/sdk/plugins"
 )
 

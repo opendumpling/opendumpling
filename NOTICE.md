@@ -14,6 +14,26 @@ Boundary source code to the Business Source License (BUSL-1.1). OpenDumpling is
 based on the MPL-2.0 v0.13.1 codebase so that the rights granted by that license
 are preserved.
 
+## Vendored upstream code
+
+Two components were vendored into this repository so that OpenDumpling builds
+entirely from its own source, with no dependency on a HashiCorp repository:
+
+* `plugins/dumpling/mains/aws` — originally
+  `github.com/hashicorp/boundary-plugin-aws` v0.1.6
+* `plugins/dumpling/mains/azure` — originally
+  `github.com/hashicorp/boundary-plugin-azure` v0.1.3
+
+Both were MPL-2.0 and remain so. Their per-file `Copyright (c) HashiCorp, Inc.`
+headers are retained, as are their own `LICENSE` texts under
+`plugins/dumpling/mains/{aws,azure}/plugin/`. The vendored packages speak the
+plugin protocol through this repository's own `sdk/` module rather than
+`github.com/hashicorp/boundary/sdk`.
+
+```text
+Copyright (c) 2021 HashiCorp, Inc.
+```
+
 ## Trademarks
 
 OpenDumpling is **not affiliated with, endorsed by, or sponsored by
