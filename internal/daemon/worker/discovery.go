@@ -34,9 +34,8 @@ var ClusterIdResolver = ResolveClusterAddressesByDns
 var lookupHost = net.DefaultResolver.LookupHost
 
 // ResolveClusterAddressesByDns resolves a cluster id by looking up
-// "<cluster id>.<discovery domain>" in DNS, the same way a self-managed HCP
-// Boundary worker finds the control plane of its cluster without being told an
-// address.
+// "<cluster id>.<discovery domain>" in DNS, the same way a managed worker
+// finds the control plane of its cluster without being told an address.
 //
 // Every address the name resolves to is returned without a port, so the caller
 // applies the same port default it applies to initial_upstreams. Discovery
@@ -102,12 +101,12 @@ func ResolveClusterAddressesByDns(ctx context.Context, clusterId, discoveryDomai
 // from. Discovery failing is not worth reporting here, the caller already has
 // a connection problem of its own to deal with.
 func (w *Worker) clusterUpstreams(ctx context.Context) []string {
-	if w.conf.RawConfig.HcpbClusterId == "" {
+	if w.conf.RawConfig.ClusterId == "" {
 		return nil
 	}
 	addrs, err := ClusterIdResolver(
 		ctx,
-		w.conf.RawConfig.HcpbClusterId,
+		w.conf.RawConfig.ClusterId,
 		w.conf.RawConfig.DiscoveryDomain,
 		w.conf.RawConfig.DiscoveryFallbackAddr,
 	)

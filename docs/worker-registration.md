@@ -2,9 +2,9 @@
 
 This document describes how a worker finds a Dumpling cluster and how it is
 registered with it, in the order an operator goes through them. It mirrors the
-flow HCP Boundary uses: a worker is configured with nothing but the id of the
-cluster it belongs to, it prints a registration request, and that request is
-what authorizes it.
+flow a managed control plane uses: a worker is configured with nothing but the
+id of the cluster it belongs to, it prints a registration request, and that
+request is what authorizes it.
 
 The alternative, listing upstream addresses directly, is described in
 `docs/multihop-ssh-testrunbook.md` and still works exactly as before.
@@ -37,20 +37,20 @@ A worker needs one upstream. There are two ways to give it one.
 ### With a cluster id
 
 ```hcl
-hcp_boundary_cluster_id = "c-4f9a1c2e"
+cluster_id = "c-4f9a1c2e"
 ```
 
 The worker resolves `<cluster id>.<discovery domain>` in DNS and dials every
-address it finds, the way a self-managed HCP Boundary worker finds its control
-plane without being told an address. This is what makes a worker configurable
-without knowing anything about the network it runs in, which is the point of a
-cluster id.
+address it finds, the way a worker discovers the control plane of its own
+cluster without being told an address. This is what makes a worker
+configurable without knowing anything about the network it runs in, which is
+the point of a cluster id.
 
 `discovery_domain` defaults to `dumpling.local`. A cluster which publishes
 itself under a different name says so:
 
 ```hcl
-hcp_boundary_cluster_id = "c-4f9a1c2e"
+cluster_id = "c-4f9a1c2e"
 discovery_domain        = "dumpling.example.com"
 ```
 
@@ -76,8 +76,8 @@ is a perfectly normal thing. `discovery_fallback_addr` is used when the lookup
 fails:
 
 ```hcl
-hcp_boundary_cluster_id  = "c-4f9a1c2e"
-discovery_fallback_addr  = ["boundary.example.com:9201"]
+cluster_id  = "c-4f9a1c2e"
+discovery_fallback_addr  = ["dumpling.example.com:9201"]
 ```
 
 The fallback is only consulted when a cluster id is set, so a worker never
@@ -86,8 +86,8 @@ same forms as `initial_upstreams`: a list of addresses, or a single string
 holding a JSON array which may be read from an environment variable or a file.
 
 ```hcl
-hcp_boundary_cluster_id = "c-4f9a1c2e"
-discovery_fallback_addr = "env://BOUNDARY_UPSTREAMS"
+cluster_id = "c-4f9a1c2e"
+discovery_fallback_addr = "env://DUMPLING_UPSTREAMS"
 ```
 
 Setting neither `discovery_domain` nor `discovery_fallback_addr` is allowed but
@@ -98,11 +98,11 @@ warned about at start up: the worker can then only reach its cluster when
 
 ```hcl
 worker {
-  initial_upstreams = ["boundary.example.com:9201"]
+  initial_upstreams = ["dumpling.example.com:9201"]
 }
 ```
 
-This is the older form and it is mutually exclusive with `hcp_boundary_cluster_id`.
+This is the older form and it is mutually exclusive with `cluster_id`.
 Use it for a worker which joins through another worker rather than through the
 cluster itself, which is how the downstream workers of a multi-hop route are
 configured.
@@ -114,8 +114,8 @@ without a `worker-auth` KMS stanza or a name, since both of those would mean
 authenticating by key instead:
 
 ```hcl
-hcp_boundary_cluster_id = "c-4f9a1c2e"
-discovery_fallback_addr = ["boundary.example.com:9201"]
+cluster_id = "c-4f9a1c2e"
+discovery_fallback_addr = ["dumpling.example.com:9201"]
 
 disable_mlock = true
 
@@ -145,7 +145,7 @@ while it is current.
 Register it, pointing at the file rather than copying the token out of a log:
 
 ```sh
-export DUMPLING_ADDR=https://boundary.example.com:9200
+export DUMPLING_ADDR=https://dumpling.example.com:9200
 dumpling workers register \
   -name ingress-1 \
   -auth-request-file /opt/dumpling/ingress-1/auth_request_token

@@ -120,7 +120,7 @@ type connectedState struct {
 
 // AllKeyIds returns all key ids for downstream workers.
 // Deprecated. Please use Unmapped KeyIds instead when communicating with
-// controllers running version >= 0.12.0 HCP and >0.12.0 OSS.
+// controllers running version >= 0.12.0 managed and >0.12.0 self-managed.
 func (s *connectedState) AllKeyIds() []string {
 	return s.allKeyIds
 }

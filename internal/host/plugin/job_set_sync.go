@@ -15,7 +15,7 @@ import (
 	"github.com/opendumpling/opendumpling/internal/observability/event"
 	"github.com/opendumpling/opendumpling/internal/oplog"
 	"github.com/opendumpling/opendumpling/internal/scheduler"
-	hcpb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/hostcatalogs"
+	hostcatalogspb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/hostcatalogs"
 	pb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/hostsets"
 	plgpb "github.com/opendumpling/opendumpling/sdk/pbs/plugin"
 	"github.com/hashicorp/go-secure-stdlib/strutil"
@@ -202,7 +202,7 @@ func (r *SetSyncJob) syncSets(ctx context.Context, setAggs []*hostSetAgg) error 
 		publicId  string                        // ID of the catalog
 		plg       plgpb.HostPluginServiceClient // plugin client for the catalog
 		setInfos  map[string]*setInfo           // map of set IDs to set information
-		plgCat    *hcpb.HostCatalog             // plugin host catalog
+		plgCat    *hostcatalogspb.HostCatalog             // plugin host catalog
 		storeCat  *HostCatalog
 		persisted *plgpb.HostCatalogPersisted // host catalog persisted (secret) data
 	}

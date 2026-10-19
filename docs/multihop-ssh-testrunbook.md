@@ -67,7 +67,7 @@ disable_mlock = true
 # The id a worker is configured with to find this cluster. It is also what the
 # controller reports back at start up, so there is one value to hand to the
 # workers. See docs/worker-registration.md.
-hcp_boundary_cluster_id = "c-demo"
+cluster_id = "c-demo"
 
 controller {
   name = "demo-controller"
@@ -112,7 +112,7 @@ dumpling server -config controller.hcl
 In a second terminal:
 
 ```sh
-export BOUNDARY_ADDR="http://127.0.0.1:9200"
+export DUMPLING_ADDR="http://127.0.0.1:9200"
 dumpling authenticate -auth-method-id <ampw_...> -name admin
 ```
 
@@ -121,7 +121,7 @@ method). The password of the `admin` user from the dev install is `password`.
 Save the token:
 
 ```sh
-export BOUNDARY_TOKEN=<token from the authenticate output>
+export DUMPLING_TOKEN=<token from the authenticate output>
 ```
 
 ---
@@ -139,7 +139,7 @@ see step 8.
 # controller by resolving this. On a single machine there is no discovery DNS,
 # so the address is given as the fallback instead. See
 # docs/worker-registration.md.
-hcp_boundary_cluster_id = "c-demo"
+cluster_id = "c-demo"
 discovery_fallback_addr = ["127.0.0.1:9201"]
 
 worker {

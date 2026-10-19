@@ -2570,40 +2570,40 @@ worker {
 		},
 		{
 			name: "cluster id only",
-			raw:  `hcp_boundary_cluster_id = "c-1"`,
+			raw:  `cluster_id = "c-1"`,
 		},
 		{
 			name: "discovery domain",
 			raw: `
-hcp_boundary_cluster_id = "c-1"
+cluster_id = "c-1"
 discovery_domain        = "dumpling.example.com"`,
 			expDomain: "dumpling.example.com",
 		},
 		{
 			name: "trailing dot is trimmed",
 			raw: `
-hcp_boundary_cluster_id = "c-1"
+cluster_id = "c-1"
 discovery_domain        = "dumpling.example.com."`,
 			expDomain: "dumpling.example.com",
 		},
 		{
 			name: "fallback as a list",
 			raw: `
-hcp_boundary_cluster_id   = "c-1"
+cluster_id   = "c-1"
 discovery_fallback_addr   = ["boundary.example.com:9201", "10.0.0.5"]`,
 			expFallback: []string{"boundary.example.com:9201", "10.0.0.5"},
 		},
 		{
 			name: "fallback from an environment variable",
 			raw: `
-hcp_boundary_cluster_id = "c-1"
+cluster_id = "c-1"
 discovery_fallback_addr = "env://DUMPLING_TEST_FALLBACK_ADDRS"`,
 			expFallback: []string{"boundary.example.com:9201"},
 		},
 		{
 			name: "whitespace in the discovery domain",
 			raw: `
-hcp_boundary_cluster_id = "c-1"
+cluster_id = "c-1"
 discovery_domain        = "dumpling example.com"`,
 			expErrSubstr: "whitespace",
 		},

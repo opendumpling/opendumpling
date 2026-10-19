@@ -487,8 +487,8 @@ open-source release of 0.12.3; the same fixes will be in 0.13.0 OSS.
 * sessions: Fix an issue where sessions could not have more than one connection
   ([Issue](https://github.com/opendumpling/opendumpling/issues/2362),
   [PR](https://github.com/opendumpling/opendumpling/pull/2369))
-* workers: Fix repeating error in logs when connected to HCP Dumpling about an
-  unimplemented HcpbWorkers call
+* workers: Fix repeating error in logs when connected to a managed control
+  plane about an unimplemented ListManagedWorkers call
   ([PR](https://github.com/opendumpling/opendumpling/pull/2361))
 * workers: Fix a panic that could occur when `workers:create:worker-led` (e.g.
   via `boundary workers create worker-led`) was given an invalid token

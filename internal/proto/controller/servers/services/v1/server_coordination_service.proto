@@ -15,8 +15,9 @@ service ServerCoordinationService {
   // jobs as well as provide a list of the controllers in the system.
   rpc Status(StatusRequest) returns (StatusResponse) {}
 
-  // Returns the addresses of HCP Dumpling workers, if any
-  rpc ListHcpbWorkers(ListHcpbWorkersRequest) returns (ListHcpbWorkersResponse) {}
+  // Returns the addresses of workers the control plane manages on the
+  // operator's behalf, if any
+  rpc ListManagedWorkers(ListManagedWorkersRequest) returns (ListManagedWorkersResponse) {}
 }
 
 enum CONNECTIONSTATUS {
@@ -186,7 +187,8 @@ message StatusResponse {
   AuthorizedDownstreamWorkerList authorized_downstream_workers = 51;
 }
 
-// WorkerInfo contains information about workers for the HcpbWorkerResponse message
+// WorkerInfo contains information about workers for the
+// ListManagedWorkersResponse message
 message WorkerInfo {
   // The id of the worker
   string id = 1;
@@ -195,10 +197,10 @@ message WorkerInfo {
   string address = 2;
 }
 
-// A HCP Dumpling workers request. Empty for now.
-message ListHcpbWorkersRequest {}
+// A managed workers request. Empty for now.
+message ListManagedWorkersRequest {}
 
 // A response containing worker information
-message ListHcpbWorkersResponse {
+message ListManagedWorkersResponse {
   repeated WorkerInfo workers = 1;
 }

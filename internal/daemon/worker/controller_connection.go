@@ -67,10 +67,10 @@ func (w *Worker) StartControllerConnections() error {
 
 	if len(initialAddrs) == 0 {
 		switch {
-		case w.conf.RawConfig.HcpbClusterId != "":
+		case w.conf.RawConfig.ClusterId != "":
 			discovered, err := ClusterIdResolver(
 				w.baseContext,
-				w.conf.RawConfig.HcpbClusterId,
+				w.conf.RawConfig.ClusterId,
 				w.conf.RawConfig.DiscoveryDomain,
 				w.conf.RawConfig.DiscoveryFallbackAddr,
 			)
@@ -80,7 +80,7 @@ func (w *Worker) StartControllerConnections() error {
 			}
 			event.WriteSysEvent(w.baseContext, op, fmt.Sprintf(
 				"Cluster %s resolved to upstream addresses %s",
-				w.conf.RawConfig.HcpbClusterId,
+				w.conf.RawConfig.ClusterId,
 				strings.Join(discovered, ", "),
 			))
 			initialAddrs = append(initialAddrs, discovered...)

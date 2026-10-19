@@ -456,10 +456,10 @@ func (ws *workerServiceServer) Status(ctx context.Context, req *pbs.StatusReques
 	return ret, nil
 }
 
-// ListHcpbWorkers looks up workers that are HCP Dumpling-managed, currently by
-// seeing if they are KMS and have a known tag
-func (ws *workerServiceServer) ListHcpbWorkers(ctx context.Context, req *pbs.ListHcpbWorkersRequest) (*pbs.ListHcpbWorkersResponse, error) {
-	const op = "workers.(workerServiceServer).ListHcpbWorkers"
+// ListManagedWorkers looks up workers that the control plane manages on the
+// operator's behalf, currently by seeing if they are KMS and have a known tag
+func (ws *workerServiceServer) ListManagedWorkers(ctx context.Context, req *pbs.ListManagedWorkersRequest) (*pbs.ListManagedWorkersResponse, error) {
+	const op = "workers.(workerServiceServer).ListManagedWorkers"
 
 	serversRepo, err := ws.serversRepoFn()
 	if err != nil {
@@ -477,7 +477,7 @@ func (ws *workerServiceServer) ListHcpbWorkers(ctx context.Context, req *pbs.Lis
 	}
 
 	managed, _ := dcommon.SeparateManagedWorkers(workers)
-	resp := &pbs.ListHcpbWorkersResponse{}
+	resp := &pbs.ListManagedWorkersResponse{}
 	if len(managed) == 0 {
 		return resp, nil
 	}

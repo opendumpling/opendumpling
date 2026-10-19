@@ -358,12 +358,12 @@ func (c *Command) Run(args []string) int {
 			}
 		}
 
-		if c.Config.HcpbClusterId != "" {
+		if c.Config.ClusterId != "" {
 			if len(c.Config.Worker.InitialUpstreams) > 0 {
 				c.UI.Error("Initial upstreams and cluster ID are mutually exclusive fields")
 				return base.CommandUserError
 			}
-			if !strutil.Printable(c.Config.HcpbClusterId) {
+			if !strutil.Printable(c.Config.ClusterId) {
 				c.UI.Error("Cluster ID contains non-printable characters")
 				return base.CommandUserError
 			}
@@ -379,14 +379,14 @@ func (c *Command) Run(args []string) int {
 			default:
 				c.UI.Warn(fmt.Sprintf(
 					"Cluster ID is resolved through DNS as %q and no %q or %q is set; a worker relying on this can only reach the cluster when that name resolves",
-					c.Config.HcpbClusterId+"."+worker.DefaultClusterDiscoveryDomain,
+					c.Config.ClusterId+"."+worker.DefaultClusterDiscoveryDomain,
 					"discovery_domain",
 					"discovery_fallback_addr",
 				))
 			}
 		} else if c.Config.DiscoveryDomain != "" || len(c.Config.DiscoveryFallbackAddr) > 0 {
 			c.UI.Error(fmt.Errorf("%q and %q are only used together with %q",
-				"discovery_domain", "discovery_fallback_addr", "hcp_boundary_cluster_id").Error())
+				"discovery_domain", "discovery_fallback_addr", "cluster_id").Error())
 			return base.CommandUserError
 		}
 	}
@@ -394,9 +394,9 @@ func (c *Command) Run(args []string) int {
 	// Report the cluster id back however this process is configured; it is
 	// what an operator copies into the configuration of a worker which is
 	// about to join this cluster.
-	if c.Config.HcpbClusterId != "" {
+	if c.Config.ClusterId != "" {
 		c.InfoKeys = append(c.InfoKeys, "cluster id")
-		c.Info["cluster id"] = c.Config.HcpbClusterId
+		c.Info["cluster id"] = c.Config.ClusterId
 	}
 	if err := c.SetupListeners(c.UI, c.Config.SharedConfig, []string{"api", "cluster", "proxy", "ops"}); err != nil {
 		c.UI.Error(err.Error())

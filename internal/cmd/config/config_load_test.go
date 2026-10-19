@@ -454,7 +454,7 @@ func TestLoad(t *testing.T) {
 				Plugins: config.Plugins{
 					ExecutionDir: "",
 				},
-				HcpbClusterId: "",
+				ClusterId: "",
 				Reporting: config.Reporting{
 					License: config.License{
 						Enabled: false,
@@ -877,7 +877,7 @@ func TestLoad(t *testing.T) {
 				Plugins: config.Plugins{
 					ExecutionDir: "",
 				},
-				HcpbClusterId: "",
+				ClusterId: "",
 			},
 			nil,
 		},
@@ -1295,7 +1295,7 @@ func TestLoad(t *testing.T) {
 				Plugins: config.Plugins{
 					ExecutionDir: "",
 				},
-				HcpbClusterId: "",
+				ClusterId: "",
 			},
 			nil,
 		},
@@ -1713,7 +1713,7 @@ func TestLoad(t *testing.T) {
 				Plugins: config.Plugins{
 					ExecutionDir: "",
 				},
-				HcpbClusterId: "",
+				ClusterId: "",
 			},
 			nil,
 		},
@@ -1802,7 +1802,7 @@ func TestLoad(t *testing.T) {
 				Plugins: config.Plugins{
 					ExecutionDir: "",
 				},
-				HcpbClusterId: "",
+				ClusterId: "",
 			},
 			nil,
 		},

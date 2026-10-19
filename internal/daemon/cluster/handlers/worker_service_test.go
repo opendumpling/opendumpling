@@ -556,7 +556,7 @@ func TestCancelSession(t *testing.T) {
 
 // This test creates workers of both kms and pki type and verifies that the only
 // returned workers are those that are alive with the expected tag key/value
-func TestHcpbWorkers(t *testing.T) {
+func TestListManagedWorkers(t *testing.T) {
 	t.Parallel()
 	require, assert := require.New(t), assert.New(t)
 
@@ -620,7 +620,7 @@ func TestHcpbWorkers(t *testing.T) {
 	s := NewWorkerServiceServer(serversRepoFn, workerAuthRepoFn, sessionRepoFn, connectionRepoFn, nil, new(sync.Map), kmsCache, &liveDur, fce)
 	require.NotNil(t, s)
 
-	res, err := s.ListHcpbWorkers(ctx, &pbs.ListHcpbWorkersRequest{})
+	res, err := s.ListManagedWorkers(ctx, &pbs.ListManagedWorkersRequest{})
 	require.NoError(err)
 	require.NotNil(res)
 	expValues := []string{"kms.1", "kms.2", "shutdown.kms.3", "pki.1"}

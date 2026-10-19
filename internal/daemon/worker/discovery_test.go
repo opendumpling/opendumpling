@@ -132,7 +132,7 @@ func TestClusterUpstreams(t *testing.T) {
 			return []string{"10.0.0.5"}, nil
 		})
 
-		w := &Worker{conf: &Config{RawConfig: &config.Config{HcpbClusterId: "c-1"}}}
+		w := &Worker{conf: &Config{RawConfig: &config.Config{ClusterId: "c-1"}}}
 		assert.Equal(t, []string{"10.0.0.5"}, w.clusterUpstreams(ctx))
 	})
 
@@ -141,7 +141,7 @@ func TestClusterUpstreams(t *testing.T) {
 			return nil, fmt.Errorf("no such host")
 		})
 
-		w := &Worker{conf: &Config{RawConfig: &config.Config{HcpbClusterId: "c-1"}}}
+		w := &Worker{conf: &Config{RawConfig: &config.Config{ClusterId: "c-1"}}}
 		assert.Empty(t, w.clusterUpstreams(ctx))
 	})
 }

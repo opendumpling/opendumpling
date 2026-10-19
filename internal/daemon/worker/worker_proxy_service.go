@@ -42,8 +42,8 @@ func (ws *workerProxyServiceServer) Status(ctx context.Context, req *pbs.StatusR
 	return resp, err
 }
 
-func (ws *workerProxyServiceServer) ListHcpbWorkers(ctx context.Context, req *pbs.ListHcpbWorkersRequest) (*pbs.ListHcpbWorkersResponse, error) {
-	return pbs.NewServerCoordinationServiceClient(ws.cc).ListHcpbWorkers(ctx, req)
+func (ws *workerProxyServiceServer) ListManagedWorkers(ctx context.Context, req *pbs.ListManagedWorkersRequest) (*pbs.ListManagedWorkersResponse, error) {
+	return pbs.NewServerCoordinationServiceClient(ws.cc).ListManagedWorkers(ctx, req)
 }
 
 func (ws *workerProxyServiceServer) LookupSession(ctx context.Context, req *pbs.LookupSessionRequest) (*pbs.LookupSessionResponse, error) {

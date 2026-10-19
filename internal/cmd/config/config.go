@@ -154,11 +154,11 @@ type Config struct {
 
 	// Identifies the Dumpling cluster this process belongs to. A worker which
 	// has this set finds its controllers by resolving the cluster id instead
-	// of listing their addresses, which is how HCP Boundary workers are
-	// configured. On a worker it is mutually exclusive with the worker's
-	// initial_upstreams; on a controller it is only reported back so an
-	// operator has something to hand to the workers.
-	HcpbClusterId string `hcl:"hcp_boundary_cluster_id"`
+	// of listing their addresses, which is how a control plane hands the
+	// address of itself to workers it manages. On a worker it is mutually
+	// exclusive with the worker's initial_upstreams; on a controller it is
+	// only reported back so an operator has something to hand to the workers.
+	ClusterId string `hcl:"cluster_id"`
 
 	// DiscoveryDomain is the DNS domain a worker resolves a cluster id
 	// against. Together with the cluster id it forms the name
@@ -232,8 +232,6 @@ type Controller struct {
 	// TODO: This field is currently internal.
 	SchedulerRunJobInterval time.Duration `hcl:"-"`
 
-	// License is the license used by HCP builds
-	License string `hcl:"license"`
 }
 
 func (c *Controller) InitNameIfEmpty(ctx context.Context) error {

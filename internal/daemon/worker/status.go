@@ -25,7 +25,7 @@ var firstStatusCheckPostHooks []func(context.Context, *Worker) error
 
 var downstreamWorkersFactory func(ctx context.Context, workerId string, ver string) (downstreamers, error)
 
-var checkHCPBUpstreams func(w *Worker) bool
+var checkManagedUpstreams func(w *Worker) bool
 
 type LastStatusInformation struct {
 	*pbs.StatusResponse
@@ -289,13 +289,13 @@ func (w *Worker) sendWorkerStatus(cancelCtx context.Context, sessionManager sess
 		for _, v := range result.CalculatedUpstreams {
 			addrs = append(addrs, v.Address)
 		}
-	} else if checkHCPBUpstreams != nil && checkHCPBUpstreams(w) {
+	} else if checkManagedUpstreams != nil && checkManagedUpstreams(w) {
 		// This is a worker that is one hop away from managed workers, so attempt to get that list
-		hcpbWorkersCtx, hcpbWorkersCancel := context.WithTimeout(cancelCtx, time.Duration(w.statusCallTimeoutDuration.Load()))
-		defer hcpbWorkersCancel()
-		workersResp, err := client.ListHcpbWorkers(hcpbWorkersCtx, &pbs.ListHcpbWorkersRequest{})
+		managedWorkersCtx, managedWorkersCancel := context.WithTimeout(cancelCtx, time.Duration(w.statusCallTimeoutDuration.Load()))
+		defer managedWorkersCancel()
+		workersResp, err := client.ListManagedWorkers(managedWorkersCtx, &pbs.ListManagedWorkersRequest{})
 		if err != nil {
-			event.WriteError(hcpbWorkersCtx, op, err, event.WithInfoMsg("error fetching managed worker information"))
+			event.WriteError(managedWorkersCtx, op, err, event.WithInfoMsg("error fetching managed worker information"))
 		} else {
 			addrs = make([]string, 0, len(workersResp.Workers))
 			for _, v := range workersResp.Workers {
