@@ -148,16 +148,16 @@ The `ingress_worker_filter` attribute controls which workers are used for ingres
 This is the worker a client connects to when initiating a connection to a target.
 
 
-## Vault workers
-Tags are used to control which [PKI workers] can manage Vault requests by specifying
+## OpenBao workers
+Tags are used to control which [PKI workers] can manage OpenBao requests by specifying
 a `worker_filter`attribute when configuring [credential stores].
 
-This allows the use of private Vault instances with Dumpling. PKI workers
-deployed in the same network as a private Vault instance can access and relay
-Vault requests to Dumpling controllers.
+This allows the use of private OpenBao instances with Dumpling. PKI workers
+deployed in the same network as a private OpenBao instance can access and relay
+OpenBao requests to Dumpling controllers.
 
- ~> **Note:** A PKI worker that matches the worker filter must exist before defining the Vault credential store, as it
- will perform the Vault calls needed to set up the credential store with Dumpling.
+ ~> **Note:** A PKI worker that matches the worker filter must exist before defining the OpenBao credential store, as it
+ will perform the OpenBao calls needed to set up the credential store with Dumpling.
 
 [PKI workers]: /docs/configuration/worker/pki-worker
-[credential stores]: /docs/concepts/domain-model/credential-stores#vault-credential-store-attributes
+[credential stores]: /docs/concepts/domain-model/credential-stores#openbao-credential-store-attributes

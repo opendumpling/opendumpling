@@ -16,7 +16,7 @@ each time it connects it reauthenticates using the trusted KMS.
 `use_deprecated_kms_auth_method` value to true. Additionally, a worker
 registered using this method _against a pre-0.13 controller_ will only be able
 to register directly to a controller, and cannot be used as part of multi-hop or
-Vault private access capabilities.
+OpenBao private access capabilities.
 
 KMS Workers require a `name` field. This specifies a unique name of this worker
 within the Dumpling cluster and _must be unique across workers_. The `name`
@@ -83,7 +83,7 @@ kms "aead" {
 In the examples above we are encoding key bytes directly in the configuration
 file. This is because we are using the `aead` method where you directly supply a
 key; in production you'd want to use a KMS such as AWS KMS, GCP CKMS, Azure
-KeyVault, or HashiCorp Vault. For a complete guide to all available KMS types,
+Azure Key Vault, or OpenBao. For a complete guide to all available KMS types,
 see our [KMS documentation](/docs/configuration/kms).
 
 ## Complete configuration example

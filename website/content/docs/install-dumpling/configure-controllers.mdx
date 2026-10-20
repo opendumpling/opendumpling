@@ -11,7 +11,7 @@ Refer to the sections below to configure your Dumpling controllers.
 
 ## Prepare TLS certificates
 
-HashiCorp recommends that the Dumpling controller nodes handle TLS via PKI for user connections.
+We recommend that the Dumpling controller nodes handle TLS via PKI for user connections.
 Further, we strongly recommend that you use certificates that are generated and signed by an appropriate certificate authority (CA).
 
 To use TLS, you must have two files on each Dumpling controller node.
@@ -53,10 +53,10 @@ One worker uses a PKI exchange to authenticate with the controllers, and the oth
 You use the Worker-auth key listed above to enable KMS worker authentication.
 </Note>
 
-HashiCorp strongly recommends that you use either Vault Transit or your cloud provider's key management system.
-Refer to the [Vault Transit](https://developer.hashicorp.com/vault/docs/secrets/transit) documentation or your cloud provider's key management documentation for more information.
+We strongly recommend that you use either OpenBao Transit or your cloud provider's key management system.
+Refer to the [OpenBao Transit](https://openbao.org/docs/secrets/transit) documentation or your cloud provider's key management documentation for more information.
 
-After you create the keys in Vault or the key management system of your choice, you can prepare the PostgreSQL database.
+After you create the keys in OpenBao or the key management system of your choice, you can prepare the PostgreSQL database.
 
 ## Prepare the database
 
@@ -85,7 +85,7 @@ The core required values for a Dumpling controller configuration include the fol
 - `disable_mlock`
 - A `controller` block
 
-When you install Dumpling from the HashiCorp Linux Repository, it installs some example configuration files under `/etc/dumpling.d/`.
+The repository includes example configuration files under `/etc/dumpling.d/`.
 Run the following commands to rename the example configuration files:
 
 1. `sudo mv dumpling.hcl dumpling.hcl.old`
@@ -278,7 +278,7 @@ If present, `dumpling server` starts a controller subprocess.
    - [GCP](/docs/configuration/kms/gcpckms)
    - [OCI](/docs/configuration/kms/ocikms)
    - [AliCloud](/docs/configuration/kms/alicloudkms)
-   - [Vault Transit](/docs/configuration/kms/transit)
+   - [OpenBao Transit](/docs/configuration/kms/transit)
 
 Refer to the documentation for additional [top-level configuration options](/docs/configuration) and additional [controller-specific options](/docs/configuration/controller).
 
@@ -317,7 +317,7 @@ Run the following commands to start the service:
 
 ## Authenticate and manage resources
 
-Upon logging in to Dumpling for the first time, HashiCorp recommends creating an admin user for the global and project level scopes to manage Dumpling.
+Upon logging in to Dumpling for the first time, we recommend creating an admin user for the global and project level scopes to manage Dumpling.
 This allows you to configure targets within those scopes and manage them.
 
 We recommend that you use the [KMS recovery workflow](/docs/install-dumpling/no-gen-resources#recovery-kms-workflow) to log in to Dumpling for the first time.

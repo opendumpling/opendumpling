@@ -359,7 +359,7 @@
             "path": "configuration/kms/ocikms"
           },
           {
-            "title": "Vault transit",
+            "title": "OpenBao transit",
             "path": "configuration/kms/transit"
           }
         ]

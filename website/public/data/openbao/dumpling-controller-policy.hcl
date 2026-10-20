@@ -32,7 +32,7 @@ path "sys/leases/revoke" {
   capabilities = ["update"]
 }
 
-# Allow Dumpling to read and verify the token's capabilities for each Vault
+# Allow Dumpling to read and verify the token's capabilities for each OpenBao
 # path used by the credential store. This is provided by the "default"
 # policy.
 path "sys/capabilities-self" {

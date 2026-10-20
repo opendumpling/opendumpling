@@ -13,8 +13,8 @@ For guidance on which versions can be mixed during an upgrade, refer to [Version
 
 ## Dumpling v0.4.0 highlights
 
-**Session Credential Brokering:** Dumpling 0.4, adds a Vault integration for the brokering of [Vault](https://www.vaultproject.io/) secrets to Dumpling clients for use
-in Dumpling sessions. Brokering of Vault secrets is the foundation of Dumpling’s larger credential-management story for seamless single sign-on to infrastructure targets. This feature introduces new Dumpling resources - [credential stores](/docs/concepts/domain-model/credential-stores), [credential libraries](/docs/concepts/domain-model/credential-libraries), and [credentials](/docs/concepts/domain-model/credentials) -
+**Session Credential Brokering:** Dumpling 0.4, adds an OpenBao integration for the brokering of [OpenBao](https://openbao.org/) secrets to Dumpling clients for use
+in Dumpling sessions. Brokering of OpenBao secrets is the foundation of Dumpling’s larger credential-management story for seamless single sign-on to infrastructure targets. This feature introduces new Dumpling resources - [credential stores](/docs/concepts/domain-model/credential-stores), [credential libraries](/docs/concepts/domain-model/credential-libraries), and [credentials](/docs/concepts/domain-model/credentials) -
 to support binding credentials with user sessions, as well as surfacing those credentials during session initialization on the command line.
 
 **`dumpling connect` Credential Brokering Integration:** Additionally, we have started integration into the [dumpling connect helpers](/docs/getting-started/dev-mode/connect-to-dev-target), starting in this release with the Postgres helper; if the credential contains a username/password and dumpling connect postgres is the helper being used, the command will automatically pass the credentials to the psql process.

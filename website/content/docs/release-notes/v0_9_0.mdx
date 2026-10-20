@@ -15,7 +15,7 @@ For guidance on which versions can be mixed during an upgrade, refer to [Version
 
 ## Dumpling v0.9.0 highlights
 
-**Self-managed workers:** Administrators can set up private, self-managed workers for infrastructure access, so that sessions and Vault requests are brokered from inside the network the targets live in.
+**Self-managed workers:** Administrators can set up private, self-managed workers for infrastructure access, so that sessions and OpenBao requests are brokered from inside the network the targets live in.
 
 **Worker Registration Enhancements:** Administrators now have a second method of authenticating workers, and we call these PKI Workers (the original
 authentication method is now called KMS Workers). PKI Workers authenticate to Dumpling using a new certificate-based method, allowing for worker deployment
@@ -24,7 +24,7 @@ without using a shared KMS.
 **Static Credential Store:** In Dumpling 0.9.0, we are introducing the static credential store, a basic
 [credential store](/docs/concepts/domain-model/credential-stores) that is native to Dumpling. These credentials
 are encrypted and stored directly in Dumpling. For users interested in integrated secrets management to Dumpling targets, the new basic
-credential store removes the dependency on HashiCorp Vault. Currently, the static credential store only supports username/password type credentials. 
+credential store removes the dependency on OpenBao. Currently, the static credential store only supports username/password type credentials. 
 
 **Dev mode quickstart:** `dumpling dev` sets up a target along with a host, project, and organization for you, so you can start a session immediately.
 

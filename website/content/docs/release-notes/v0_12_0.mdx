@@ -19,7 +19,7 @@ The 0.12.0 release adds major new functionality to Dumpling.
 Highlights include:
 
 - Reversed-proxying to target networks through multi-hop sessions
-- Credential injection using Vault SSH signed certificates
+- Credential injection using OpenBao SSH signed certificates
 - Addresses on targets
 - Authentication improvements
 
@@ -37,16 +37,16 @@ They only need network access to the client-facing (or "frontline") worker.
 
 For more information, refer to the [multi-hop worker capabilities](/docs/configuration/worker#multi-hop-worker-capabilities) documentation.
 
-**Credential injection using Vault SSH signed certificates**: You can now configure SSH credential injection using Vault's secret engine to create the SSH certificate credentials.
+**Credential injection using OpenBao SSH signed certificates**: You can now configure SSH credential injection using OpenBao's SSH secrets engine to create the SSH certificate credentials.
 SSH certificate-based authentication extends key-based authentication using digital signatures
 Your users' authenticity is determined by a certificate signed by a trusted certificate authority (CA).
-You configure Vault's secrets engine to act as the CA.
-Vault is the only supported CA in Dumpling version 0.12.0.
+You configure OpenBao's SSH secrets engine to act as the CA.
+OpenBao is the only supported CA in Dumpling version 0.12.0.
 
 SSH certificates let you specify how long they are valid for, who can gain access to a target, how users can log in, and what commands can be used on the target machine.
 SSH certificates are short-lived and self-destructive unlinke SSH key pairs.
 
-For more information, refer to the [Vault SSH certificate credential library attributes](/docs/concepts/domain-model/credential-libraries#vault-ssh-certificate-credential-library-attributes) documentation.
+For more information, refer to the [OpenBao SSH certificate credential library attributes](/docs/concepts/domain-model/credential-libraries#openbao-ssh-certificate-credential-library-attributes) documentation.
 
 **Addresses on targets**: OpenDumpling offers an extensible domain model that allows administrators to organize target resources in a way that best compliments how their organization manages its computing infrastructure.
 But that flexibility could become a hindrance when setting up a quick proof-of-concept and defining a target to create a session.
@@ -97,7 +97,7 @@ This meant that targets could use ports attached to host addresses, which was no
   This means that the fallback logic for targets that did not have a default port defined is no longer in service.
   All targets must now have a default port defined.
 
-- With the introduction of `vault-ssh-certificate` credential libraries, the Vault credential library subtype is being renamed to `vault-generic` to denote it as a credential library that can be used in a generalized way to issue credentials from Vault.
+- With the introduction of `vault-ssh-certificate` credential libraries, the credential library subtype that was simply named `vault` is renamed to `vault-generic` to denote it as a credential library that can be used in a generalized way to issue credentials from OpenBao. The subtype names are kept as-is for compatibility with existing configuration and API clients.
 Existing credential libraries with the subtype of `vault` will be updated to `vault-generic`.
 The `vault` subtype will still be accepted as a valid subtype in API requests to the credential library's endpoints, but it is deprecated and will be removed in Dumpling 0.14.0.
 We recommend that you use `vault-generic` instead.

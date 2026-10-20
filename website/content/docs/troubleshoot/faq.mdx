@@ -16,21 +16,23 @@ If the client is coming from a private network (eg a corporate network), the wor
 If the client is coming from the public internet, the worker needs to allow connectivity from the public internet. For more information,
 check out the [worker configuration reference](/docs/configuration/worker).
 
-## Q: Does Dumpling require Vault? What is the integration story?
+## Q: Does Dumpling require OpenBao? What is the integration story?
 
-While Vault isn't a *required* secrets backend for Dumpling sessions, the potential for Dumpling | Vault integration is a core part of Dumpling's overall
-value proposition for identity-based access.There are three primary points of integration with Vault:
-1. Vault can be used as a secrets backend for Dumpling, offering single signon to end target systems via credential brokering. See
+While OpenBao isn't a *required* secrets backend for Dumpling sessions, the potential for Dumpling | OpenBao integration is a core part of Dumpling's overall
+value proposition for identity-based access.
+[OpenBao](https://openbao.org/) is an open source, API-compatible secrets manager descended from Vault,
+and Dumpling talks to it over the Vault-compatible HTTP API. There are three primary points of integration with OpenBao:
+1. OpenBao can be used as a secrets backend for Dumpling, offering single signon to end target systems via credential brokering. See
 [credential management](/docs/concepts/credential-management) for how this works.
-2. Dumpling can use Vault as an OIDC provider to enable sign-in with Vault's supported auth methods (even non-OIDC auth methods like Active Directory kerberos/LDAP).
-3. Dumpling can use Vault as the external KMS that serves as Dumpling's root of trust. More information on this use case can be found
+2. Dumpling can use OpenBao as an OIDC provider to enable sign-in with OpenBao's supported auth methods (even non-OIDC auth methods like Active Directory kerberos/LDAP).
+3. Dumpling can use OpenBao as the external KMS that serves as Dumpling's root of trust. More information on this use case can be found
 [here](/docs/configuration/kms/transit).
 
 ## Q: What identity providers does Dumpling support?
 
 Dumpling supports OIDC authentication, which allows support for many popular IdPs
 like Okta, Azure AD, Auth0, etc. For non-OIDC authentication protocols (such as LDAP), users can also log in with an OIDC bridge identity provider
-such as [Vault's OIDC bridge](https://developer.hashicorp.com/vault/docs/concepts/oidc-provider) capabilities released in 1.9, [Dex](https://dexidp.io), or various others.
+such as [OpenBao's OIDC bridge](https://openbao.org/docs/concepts/oidc-provider) capabilities, [Dex](https://dexidp.io), or various others.
 
 ## Q: Does Dumpling support multi-factor authentication (MFA)?
 

@@ -7,7 +7,7 @@ description: >-
 
 # `azurekeyvault` KMS
 
-The Azure Key Vault KMS configures Vault to use Azure Key Vault for key management.
+The Azure Key Vault KMS configures Dumpling to use Azure Key Vault for key management.
 The Azure Key Vault KMS is activated by one of the following:
 
 - The presence of a `seal "azurekeyvault"` block in Dumpling's configuration file.
@@ -30,7 +30,7 @@ kms "azurekeyvault" {
 
 ## `azurekeyvault` parameters
 
-These parameters apply to the `kms` stanza in the Vault configuration file:
+These parameters apply to the `kms` stanza in the Dumpling configuration file:
 
 - `purpose` - Purpose of this KMS, acceptable values are: `worker-auth`, `worker-auth-storage`,
    `root`, `previous-root`, `recovery`, or `config`.
