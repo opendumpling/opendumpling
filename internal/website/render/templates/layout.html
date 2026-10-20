@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ if .Title }}{{ .Title }} | Dumpling{{ else }}Dumpling documentation{{ end }}</title>
+{{ with .Description }}<meta name="description" content="{{ . }}">{{ end }}
+<link rel="icon" type="image/svg+xml" href="/img/logo.svg">
+<link rel="stylesheet" href="/style.css">
+<script>
+(function () {
+  try {
+    var t = localStorage.getItem("dumpling-theme");
+    if (t) { document.documentElement.setAttribute("data-theme", t); }
+  } catch (e) {}
+})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="header-inner">
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="sidebar" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <a class="brand" href="/docs/">
+      <img src="/img/logo.svg" alt="" width="32" height="32">
+      <span class="brand-word">Dumpling</span>
+    </a>
+    <nav class="header-links" aria-label="Site">
+      <a href="/docs/">Documentation</a>
+      <a href="/api-docs/">API reference</a>
+      <a href="https://github.com/opendumpling/opendumpling" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <button class="theme-toggle" type="button" aria-label="Switch colour scheme" title="Switch colour scheme">
+        <span class="theme-icon" aria-hidden="true"></span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <nav class="nav" aria-label="Documentation">
+      {{ template "nav" .Nav }}
+    </nav>
+  </aside>
+
+  <main class="content" id="main">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/docs/">Documentation</a>
+      {{ range .Trail }}<span class="sep" aria-hidden="true">/</span>{{ if .Href }}<a href="{{ .Href }}">{{ .Title }}</a>{{ else }}<span>{{ .Title }}</span>{{ end }}{{ end }}
+    </nav>
+    <article class="prose">
+      {{ .Content }}
+    </article>
+    {{ if or .Prev .Next }}
+    <nav class="pager" aria-label="Pagination">
+      {{ with .Prev }}<a class="pager-prev" href="{{ .Href }}"><span class="dir">Previous</span><span class="t">{{ .Title }}</span></a>{{ else }}<span></span>{{ end }}
+      {{ with .Next }}<a class="pager-next" href="{{ .Href }}"><span class="dir">Next</span><span class="t">{{ .Title }}</span></a>{{ end }}
+    </nav>
+    {{ end }}
+    <footer class="site-footer">
+      <p>Dumpling is licensed under the Mozilla Public License 2.0.</p>
+      <p><a href="https://github.com/opendumpling/opendumpling" target="_blank" rel="noopener noreferrer">Edit this documentation on GitHub</a></p>
+    </footer>
+  </main>
+
+  {{ if .Headings }}
+  <aside class="toc" aria-label="On this page">
+    <p class="toc-title">On this page</p>
+    <ul>
+      {{ range .Headings }}<li class="lvl-{{ .Level }}"><a href="#{{ .ID }}">{{ .Text }}</a></li>{{ end }}
+    </ul>
+  </aside>
+  {{ end }}
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var btn = document.querySelector(".theme-toggle");
+  if (btn) {
+    btn.addEventListener("click", function () {
+      var cur = root.getAttribute("data-theme");
+      if (cur === "auto") {
+        cur = window.matchMedia("(prefers-color-scheme: dark)").matches ? "light" : "dark";
+      } else {
+        cur = cur === "dark" ? "light" : "dark";
+      }
+      root.setAttribute("data-theme", cur);
+      try { localStorage.setItem("dumpling-theme", cur); } catch (e) {}
+    });
+  }
+  var toggle = document.querySelector(".nav-toggle");
+  var sidebar = document.getElementById("sidebar");
+  if (toggle && sidebar) {
+    toggle.addEventListener("click", function () {
+      var open = sidebar.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+  }
+})();
+</script>
+</body>
+</html>

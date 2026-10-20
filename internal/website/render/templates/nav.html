@@ -1,0 +1,19 @@
+{{- define "nav" -}}
+<ul class="nav-list">
+{{- range . }}
+  {{- if .Divider }}
+  <li class="nav-divider" role="separator"></li>
+  {{- else if .Href }}
+  <li class="{{ if .Active }}active{{ end }}">
+    <a href="{{ .Href }}"{{ if .Active }} aria-current="page"{{ end }}>{{ .Title }}</a>
+    {{- if .Routes }}{{ template "nav" .Routes }}{{ end }}
+  </li>
+  {{- else }}
+  <li class="nav-section">
+    <span class="nav-section-title">{{ .Title }}</span>
+    {{- if .Routes }}{{ template "nav" .Routes }}{{ end }}
+  </li>
+  {{- end }}
+{{- end }}
+</ul>
+{{- end -}}
