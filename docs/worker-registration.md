@@ -7,7 +7,7 @@ id of the cluster it belongs to, it prints a registration request, and that
 request is what authorizes it.
 
 The alternative, listing upstream addresses directly, is described in
-`docs/multihop-ssh-testrunbook.md` and still works exactly as before.
+`docs/multihop-ssh-runbook.md` and still works exactly as before.
 
 ## Two things a worker has to get right
 
@@ -15,8 +15,8 @@ A worker has to be told *where* its cluster is and it has to *authenticate* to
 it. Those are separate, and the two ways of authenticating are mutually
 exclusive, which is what makes the choice below worth spelling out.
 
-| | With a `worker-auth` KMS stanza | With an `auth_storage_path` |
-|---|---|---|
+| Aspect | With a `worker-auth` KMS stanza | With an `auth_storage_path` |
+| --- | --- | --- |
 | Identity | the `name` in its configuration | a registration request, registered once |
 | Registration | none | `dumpling workers register` |
 | `auth_storage_path` | must not be set | must be set |
@@ -57,7 +57,7 @@ discovery_domain        = "dumpling.example.com"
 with, for instance, a single wildcard record pointing at whatever hosts the
 cluster:
 
-```
+```text
 *.dumpling.example.com.  300  IN  A  203.0.113.10
 ```
 
