@@ -237,16 +237,14 @@ copywrite:
 	copywrite headers
 
 .PHONY: website
-# must have nodejs and npm installed
-website: website-install website-start
-
-.PHONY: website-install
-website-install:
-	@npm install --prefix website/
+# renders the documentation to website/build as static HTML
+website:
+	@go run ./internal/website/render build
 
 .PHONY: website-start
+# renders and serves the documentation on http://localhost:3000
 website-start:
-	@npm start --prefix website/
+	@go run ./internal/website/render serve
 
 .PHONY: test-database-up
 test-database-up:
