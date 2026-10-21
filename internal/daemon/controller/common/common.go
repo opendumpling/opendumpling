@@ -13,6 +13,7 @@ import (
 	"github.com/opendumpling/opendumpling/internal/credential/vault"
 	pluginhost "github.com/opendumpling/opendumpling/internal/host/plugin"
 	"github.com/opendumpling/opendumpling/internal/host/static"
+	"github.com/opendumpling/opendumpling/internal/alias"
 	"github.com/opendumpling/opendumpling/internal/iam"
 	"github.com/opendumpling/opendumpling/internal/plugin"
 	"github.com/opendumpling/opendumpling/internal/server"
@@ -35,6 +36,7 @@ type (
 	ConnectionRepoFactory          func() (*session.ConnectionRepository, error)
 	WorkerAuthRepoStorageFactory   func() (*server.WorkerAuthRepositoryStorage, error)
 	PluginStorageBucketRepoFactory func() (*pluginstorage.Repository, error)
+	AliasRepoFactory               func() (*alias.Repository, error)
 )
 
 // Downstreamers provides at least a minimum interface that must be met by a

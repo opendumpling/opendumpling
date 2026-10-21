@@ -11,6 +11,7 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"github.com/opendumpling/opendumpling/internal/alias"
 	"github.com/opendumpling/opendumpling/internal/auth/ldap"
 	"github.com/opendumpling/opendumpling/internal/auth/oidc"
 	"github.com/opendumpling/opendumpling/internal/auth/password"
@@ -124,6 +125,7 @@ type Controller struct {
 	VaultCredentialRepoFn     common.VaultCredentialRepoFactory
 	StaticCredentialRepoFn    common.StaticCredentialRepoFactory
 	IamRepoFn                 common.IamRepoFactory
+	AliasRepoFn               common.AliasRepoFactory
 	OidcRepoFn                common.OidcAuthRepoFactory
 	LdapRepoFn                common.LdapAuthRepoFactory
 	PasswordAuthRepoFn        common.PasswordAuthRepoFactory
@@ -371,6 +373,9 @@ func New(ctx context.Context, conf *Config) (*Controller, error) {
 	}
 	c.IamRepoFn = func() (*iam.Repository, error) {
 		return iam.NewRepository(ctx, dbase, dbase, c.kms, iam.WithRandomReader(c.conf.SecureRandomReader))
+	}
+	c.AliasRepoFn = func() (*alias.Repository, error) {
+		return alias.NewRepository(ctx, dbase, dbase, c.kms)
 	}
 	c.StaticHostRepoFn = func() (*static.Repository, error) {
 		return static.NewRepository(ctx, dbase, dbase, c.kms)

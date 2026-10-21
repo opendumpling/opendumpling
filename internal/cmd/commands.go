@@ -16,6 +16,7 @@ import (
 	"github.com/opendumpling/opendumpling/internal/cmd/commands/credentialstorescmd"
 	"github.com/opendumpling/opendumpling/internal/cmd/commands/database"
 	"github.com/opendumpling/opendumpling/internal/cmd/commands/dev"
+	"github.com/opendumpling/opendumpling/internal/cmd/commands/aliasescmd"
 	"github.com/opendumpling/opendumpling/internal/cmd/commands/groupscmd"
 	"github.com/opendumpling/opendumpling/internal/cmd/commands/hostcatalogscmd"
 	"github.com/opendumpling/opendumpling/internal/cmd/commands/hostscmd"
@@ -567,6 +568,41 @@ func initCommands(ui, serverCmdUi cli.Ui, runOpts *RunOptions) {
 			}, nil
 		},
 
+		"aliases": func() (cli.Command, error) {
+			return &aliasescmd.Command{
+				Command: base.NewCommand(ui),
+			}, nil
+		},
+		"aliases create": func() (cli.Command, error) {
+			return &aliasescmd.Command{
+				Command: base.NewCommand(ui),
+				Func:    "create",
+			}, nil
+		},
+		"aliases update": func() (cli.Command, error) {
+			return &aliasescmd.Command{
+				Command: base.NewCommand(ui),
+				Func:    "update",
+			}, nil
+		},
+		"aliases read": func() (cli.Command, error) {
+			return &aliasescmd.Command{
+				Command: base.NewCommand(ui),
+				Func:    "read",
+			}, nil
+		},
+		"aliases delete": func() (cli.Command, error) {
+			return &aliasescmd.Command{
+				Command: base.NewCommand(ui),
+				Func:    "delete",
+			}, nil
+		},
+		"aliases list": func() (cli.Command, error) {
+			return &aliasescmd.Command{
+				Command: base.NewCommand(ui),
+				Func:    "list",
+			}, nil
+		},
 		"groups": func() (cli.Command, error) {
 			return &groupscmd.Command{
 				Command: base.NewCommand(ui),

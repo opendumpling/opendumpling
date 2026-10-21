@@ -164,6 +164,7 @@ protobuild:
 	@protoc-go-inject-tag -input=./internal/credential/static/store/static.pb.go
 	@protoc-go-inject-tag -input=./internal/kms/store/audit_key.pb.go
 	@protoc-go-inject-tag -input=./internal/auth/ldap/store/ldap.pb.go
+	@protoc-go-inject-tag -input=./internal/alias/store/alias.pb.go
 	@protoc-go-inject-tag -input=./internal/gen/controller/servers/services/upstream_message_service.pb.go
 	@protoc-go-inject-tag -input=./internal/storage/plugin/store/storage.pb.go
 
@@ -208,6 +209,8 @@ protobuild:
 	@protoc-go-inject-tag -input=./internal/gen/controller/api/services/session_recording_service.pb.go
 	@protoc-go-inject-tag -input=./sdk/pbs/controller/api/resources/session_recordings/session_recording.pb.go
 	@protoc-go-inject-tag -input=./internal/gen/controller/api/services/worker_service.pb.go
+	@protoc-go-inject-tag -input=./sdk/pbs/controller/api/resources/aliases/alias.pb.go
+	@protoc-go-inject-tag -input=./internal/gen/controller/api/services/alias_service.pb.go
 	@protoc-go-inject-tag -input=./internal/gen/controller/servers/services/server_coordination_service.pb.go
 	@protoc-go-inject-tag -input=./internal/gen/controller/servers/servers.pb.go
 

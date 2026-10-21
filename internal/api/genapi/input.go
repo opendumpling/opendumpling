@@ -13,6 +13,7 @@ import (
 	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/credentiallibraries"
 	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/credentials"
 	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/credentialstores"
+	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/aliases"
 	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/groups"
 	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/hostcatalogs"
 	"github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/hosts"
@@ -275,6 +276,23 @@ var inputStructs = []*structInfo{
 			},
 		},
 		pluralResourceName:  "groups",
+		versionEnabled:      true,
+		createResponseTypes: []string{CreateResponseType, ReadResponseType, UpdateResponseType, DeleteResponseType, ListResponseType},
+		recursiveListing:    true,
+	},
+	// Alias related resources
+	{
+		inProto: &aliases.Alias{},
+		outFile: "aliases/alias.gen.go",
+		templates: []*template.Template{
+			clientTemplate,
+			commonCreateTemplate,
+			readTemplate,
+			updateTemplate,
+			deleteTemplate,
+			listTemplate,
+		},
+		pluralResourceName:  "aliases",
 		versionEnabled:      true,
 		createResponseTypes: []string{CreateResponseType, ReadResponseType, UpdateResponseType, DeleteResponseType, ListResponseType},
 		recursiveListing:    true,

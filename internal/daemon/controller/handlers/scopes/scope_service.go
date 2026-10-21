@@ -14,6 +14,7 @@ import (
 	"github.com/opendumpling/opendumpling/internal/daemon/controller/common"
 	"github.com/opendumpling/opendumpling/internal/daemon/controller/common/scopeids"
 	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/aliases"
 	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/authmethods"
 	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/authtokens"
 	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/credentialstores"
@@ -69,6 +70,7 @@ var (
 
 	scopeCollectionTypeMapMap = map[string]map[resource.Type]action.ActionSet{
 		scope.Global.String(): {
+			resource.Alias:            aliases.CollectionActions,
 			resource.AuthMethod:       authmethods.CollectionActions,
 			resource.StorageBucket:    storage_buckets.CollectionActions,
 			resource.AuthToken:        authtokens.CollectionActions,
@@ -81,6 +83,7 @@ var (
 		},
 
 		scope.Org.String(): {
+			resource.Alias:            aliases.CollectionActions,
 			resource.AuthMethod:       authmethods.CollectionActions,
 			resource.StorageBucket:    storage_buckets.CollectionActions,
 			resource.AuthToken:        authtokens.CollectionActions,
@@ -92,6 +95,7 @@ var (
 		},
 
 		scope.Project.String(): {
+			resource.Alias:           aliases.CollectionActions,
 			resource.CredentialStore: credentialstores.CollectionActions,
 			resource.Group:           groups.CollectionActions,
 			resource.HostCatalog:     host_catalogs.CollectionActions,

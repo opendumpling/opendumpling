@@ -1,0 +1,64 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
+syntax = "proto3";
+
+package controller.storage.alias.store.v1;
+
+import "controller/custom_options/v1/options.proto";
+import "controller/storage/timestamp/v1/timestamp.proto";
+
+option go_package = "github.com/opendumpling/opendumpling/internal/alias/store;store";
+
+message Alias {
+  // public_id is used to access the Alias via an API
+  // @inject_tag: gorm:"primary_key"
+  string public_id = 10;
+
+  // scope id for the alias
+  // @inject_tag: `gorm:"default:null"`
+  string scope_id = 20;
+
+  // name is the optional friendly name used to
+  // access the Alias via an API
+  // @inject_tag: `gorm:"default:null"`
+  string name = 30 [(custom_options.v1.mask_mapping) = {
+    this: "name"
+    that: "name"
+  }];
+
+  // value is the DNS-like string a user types to reach the destination. It
+  // has to be unique within the alias's scope.
+  // @inject_tag: `gorm:"default:null"`
+  string value = 40 [(custom_options.v1.mask_mapping) = {
+    this: "value"
+    that: "value"
+  }];
+
+  // description of the alias
+  // @inject_tag: `gorm:"default:null"`
+  string description = 50 [(custom_options.v1.mask_mapping) = {
+    this: "description"
+    that: "description"
+  }];
+
+  // destination_id is the public id of the resource the alias points at. It
+  // currently always refers to a target.
+  // @inject_tag: `gorm:"default:null"`
+  string destination_id = 60 [(custom_options.v1.mask_mapping) = {
+    this: "destination_id"
+    that: "destination_id"
+  }];
+
+  // create_time from the RDBMS
+  // @inject_tag: `gorm:"default:current_timestamp"`
+  timestamp.v1.Timestamp create_time = 70;
+
+  // update_time from the RDBMS
+  // @inject_tag: `gorm:"default:current_timestamp"`
+  timestamp.v1.Timestamp update_time = 80;
+
+  // version allows optimistic locking of the alias when modifying it.
+  // @inject_tag: `gorm:"default:null"`
+  uint32 version = 90;
+}

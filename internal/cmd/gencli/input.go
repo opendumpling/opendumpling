@@ -368,6 +368,19 @@ var inputStructs = map[string][]*cmdInfo{
 			HasJsonObject: true,
 		},
 	},
+	"aliases": {
+		{
+			ResourceType:     resource.Alias.String(),
+			Pkg:              "aliases",
+			StdActions:       []string{"create", "read", "update", "delete", "list"},
+			HasExtraHelpFunc: true,
+			HasId:            true,
+			Container:        "Scope",
+			HasName:          true,
+			HasDescription:   true,
+			VersionedActions: []string{"update"},
+		},
+	},
 	"groups": {
 		{
 			ResourceType:        resource.Group.String(),

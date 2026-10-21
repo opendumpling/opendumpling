@@ -22,6 +22,7 @@ import (
 	"github.com/opendumpling/opendumpling/internal/daemon/common"
 	"github.com/opendumpling/opendumpling/internal/daemon/controller/auth"
 	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/accounts"
+	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/aliases"
 	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/authmethods"
 	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/authtokens"
 	"github.com/opendumpling/opendumpling/internal/daemon/controller/handlers/credentiallibraries"
@@ -241,6 +242,13 @@ func (c *Controller) registerGrpcServices(s *grpc.Server) error {
 			return fmt.Errorf("failed to create group handler service: %w", err)
 		}
 		services.RegisterGroupServiceServer(s, gs)
+	}
+	if _, ok := currentServices[services.AliasService_ServiceDesc.ServiceName]; !ok {
+		as, err := aliases.NewService(c.baseContext, c.AliasRepoFn, c.IamRepoFn)
+		if err != nil {
+			return fmt.Errorf("failed to create alias handler service: %w", err)
+		}
+		services.RegisterAliasServiceServer(s, as)
 	}
 	if _, ok := currentServices[services.RoleService_ServiceDesc.ServiceName]; !ok {
 		rs, err := roles.NewService(c.baseContext, c.IamRepoFn)

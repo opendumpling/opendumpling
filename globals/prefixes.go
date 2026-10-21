@@ -126,6 +126,9 @@ const (
 	ConnectionRecordingPrefix = "cr"
 	// ChannelRecordingPrefix is the prefix for channel recordings
 	ChannelRecordingPrefix = "chr"
+
+	// AliasPrefix is the prefix for aliases
+	AliasPrefix = "al"
 )
 
 var prefixToResourceType = map[string]resource.Type{
@@ -166,6 +169,7 @@ var prefixToResourceType = map[string]resource.Type{
 	WorkerPrefix:                               resource.Worker,
 	PluginStorageBucketPrefix:                  resource.StorageBucket,
 	SessionRecordingPrefix:                     resource.SessionRecording,
+	AliasPrefix:                                resource.Alias,
 }
 
 var resourceTypeToPrefixes map[resource.Type][]string = func() map[resource.Type][]string {
