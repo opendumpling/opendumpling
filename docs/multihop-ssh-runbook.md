@@ -158,6 +158,13 @@ listener "tcp" {
   purpose = "cluster"
 }
 
+# Health checks are served by the ops listener, not the API listener.
+listener "tcp" {
+  address     = "0.0.0.0"
+  purpose     = "ops"
+  tls_disable = true
+}
+
 # The transit plugin uses OpenBao's API. The root token is only for this
 # throwaway dev-mode demo; use a narrowly scoped token outside the demo.
 kms "transit" {
@@ -206,15 +213,16 @@ docker run -d --name dm-controller \
   --network net-front \
   --network-alias controller \
   --cap-add IPC_LOCK \
-  -p 9200:9200 \
+  -p 9200:9200 -p 9203:9203 \
   -v "$DEMO/controller.hcl:/dumpling/config.hcl:ro" \
   dumpling:dev server -config /dumpling/config.hcl
 
-until curl -sf http://127.0.0.1:9200/health >/dev/null; do sleep 1; done
+until curl -sf http://127.0.0.1:9203/health >/dev/null; do sleep 1; done
 ```
 
-The controller is now reachable from your shell at `127.0.0.1:9200` and from
-the other containers as `controller:9200` (API) and `controller:9201` (cluster).
+The controller API is reachable from your shell at `127.0.0.1:9200`; the ops
+health endpoint is at `127.0.0.1:9203/health`. Other containers reach the API
+as `controller:9200` and the cluster listener as `controller:9201`.
 The root KMS is OpenBao Transit; the AWS host plugin loaded by the controller is
 not a KMS and is not involved in encrypting Dumpling's data.
 

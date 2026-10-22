@@ -14,7 +14,7 @@ type SinkConfig struct {
 	Name           string                `hcl:"name"`             // Name defines a name for the sink.
 	Description    string                `hcl:"description"`      // Description defines a description for the sink.
 	EventTypes     []Type                `hcl:"event_types"`      // EventTypes defines a list of event types that will be sent to the sink. See the docs for EventTypes for a list of accepted values.
-	EventSourceUrl string                `hcl:"event_source_url"` // EventSource defines an optional event source URL for the sink.  If not defined a default source will be composed of the https://hashicorp.com/dumpling.io/ServerName/Path/FileName.
+	EventSourceUrl string                `hcl:"event_source_url"` // EventSource defines an optional CloudEvents source URI for the sink. If not defined, a source under the OpenDumpling GitHub repository URL is used.
 	AllowFilters   []string              `hcl:"allow_filters"`    // AllowFilters define a set predicates for including an event in the sink. If any filter matches, the event will be included. The filter should be in a format supported by hashicorp/go-bexpr.
 	DenyFilters    []string              `hcl:"deny_filters"`     // DenyFilters define a set predicates for excluding an event in the sink. If any filter matches, the event will be excluded. The filter should be in a format supported by hashicorp/go-bexpr.
 	Format         SinkFormat            `hcl:"format"`           // Format defines the format for the sink (JSONSinkFormat or TextSinkFormat).

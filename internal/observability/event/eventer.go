@@ -576,7 +576,7 @@ func newFmtFilterNode(serverName string, c SinkConfig, opt ...Option) (eventlogg
 				return "", nil, fmt.Errorf("%s: invalid event source URL (%s): %w", op, c.EventSourceUrl, err)
 			}
 		default:
-			s := fmt.Sprintf("https://hashicorp.com/boundary/%s", serverName)
+			s := fmt.Sprintf("https://github.com/opendumpling/opendumpling/%s", serverName)
 			sourceUrl, err = url.Parse(s)
 			if err != nil {
 				return "", nil, fmt.Errorf("%s: invalid event source URL (%s): %w", op, s, err)

@@ -24,6 +24,15 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func Test_newFmtFilterNode_DefaultEventSource(t *testing.T) {
+	_, node, err := newFmtFilterNode("demo-controller", SinkConfig{Format: JSONSinkFormat})
+	require.NoError(t, err)
+
+	cloudEventsNode, ok := node.(*cloudEventsFormatterFilter)
+	require.True(t, ok)
+	require.Equal(t, "https://github.com/opendumpling/opendumpling/demo-controller", cloudEventsNode.Source.String())
+}
+
 func Test_InitSysEventer(t *testing.T) {
 	// this test and its subtests cannot be run in parallel because of it's
 	// dependency on the sysEventer
