@@ -92,10 +92,10 @@ docker network create net-back
 That gap is the whole point. When you disconnect the private worker later and watch it fail, you will have proven the route.
 
 The HCL addresses `controller`, `public`, and `private` are Docker network
-aliases; the containers themselves are named `dm-controller`, `dm-public`, and
-`dm-private`. The run commands below attach the aliases on the networks where
-those names need to resolve. The target uses its container name, `dm-target`,
-directly.
+aliases (not Dumpling target aliases); the containers themselves are named
+`dm-controller`, `dm-public`, and `dm-private`. The run commands below attach
+the aliases on the networks where those names need to resolve. The target uses
+its container name, `dm-target`, directly.
 
 ---
 
@@ -511,19 +511,45 @@ What happens at authorization time (`internal/daemon/worker/proxy/multihopdialer
 
 The filters match on the worker's **name**, which is why the configs set `name = "public"` and `name = "private"`.
 
+Create a Dumpling alias for the SSH target in the same project scope:
+
+```sh
+A=$(dumpling aliases create \
+  -scope-id "$PROJECT_SCOPE_ID" \
+  -name "Linux SSH demo" \
+  -value linux \
+  -destination-id "$T" \
+  -format json | jq -r .item.id)
+```
+
 ---
 
 ## 10. Connect
 
 ```sh
-dumpling connect ssh -target-id "$T"
+dumpling ssh-config \
+  -scope-id "$PROJECT_SCOPE_ID" \
+  -binary "$(command -v dumpling)" > "$DEMO/ssh_config"
+
+# The SSH worker presents a per-session host key on the local proxy. Make this
+# demo alias use localhost semantics so OpenSSH does not pin that ephemeral key.
+cat >> "$DEMO/ssh_config" <<'EOF'
+Host linux
+  HostName localhost
+  NoHostAuthenticationForLocalhost yes
+EOF
+chmod 600 "$DEMO/ssh_config"
+
+ssh -F "$DEMO/ssh_config" linux
 ```
 
-The `ssh` subcommand starts a local listener and execs your `ssh` client. (The
-bare `dumpling connect -format json` form only prints the local proxy address
-and waits for a client to connect to it.) You land as `root` on `dm-target`. On
-the target, the login is by **public key** — and the key came from the worker,
-not from you:
+OpenSSH uses Dumpling's generated `ProxyCommand` to reach the alias. The
+localhost setting is demo-specific: the worker currently ignores endpoint
+host-key verification, so OpenSSH cannot pin the target's real host key through
+this injected-credential proxy. You land as `root` on `dm-target`; the injected
+key is used by the worker, not by your SSH client. (The bare
+`dumpling connect -format json` form only prints the local proxy address and
+waits for an SSH client to connect to it.)
 
 ```sh
 docker logs dm-target 2>&1 | tail -n 20
@@ -545,7 +571,7 @@ Watch which command the CLI runs. With injection, the client gets no key file an
 # brokered: the CLI writes a temp key and passes -i, because the client is
 # being handed the credential
 dumpling targets set-credential-sources -id "$T" -brokered-credential-source "$CRED"
-dumpling connect ssh -target-id "$T"
+ssh -F "$DEMO/ssh_config" linux
 
 # back to injected
 dumpling targets set-credential-sources -id "$T" \
@@ -670,6 +696,7 @@ These are the things to know before you point this at anything valuable.
 ## 14. Cleanup
 
 ```sh
+dumpling aliases delete -id "$A"
 dumpling targets delete -id "$T"
 dumpling credential-libraries delete -id "$CL" 2>/dev/null
 dumpling credential-stores delete -id "$CS"  2>/dev/null

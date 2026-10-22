@@ -20,15 +20,39 @@ func init() {
 	executeExtraActions = executeExtraActionsImpl
 }
 
+type extraCmdVars struct {
+	flagValue         string
+	flagDestinationId string
+}
+
 func extraActionsFlagsMapFuncImpl() map[string][]string {
-	return nil
+	return map[string][]string{
+		"create": {"value", "destination-id"},
+		"update": {"value", "destination-id"},
+	}
 }
 
 func extraSynopsisFuncImpl(_ *Command) string {
 	return ""
 }
 
-func extraFlagsFuncImpl(_ *Command, _ *base.FlagSets, _ *base.FlagSet) {
+func extraFlagsFuncImpl(c *Command, _ *base.FlagSets, f *base.FlagSet) {
+	for _, name := range flagsMap[c.Func] {
+		switch name {
+		case "value":
+			f.StringVar(&base.StringVar{
+				Name:   "value",
+				Target: &c.flagValue,
+				Usage:  "The alias value used to look up its destination.",
+			})
+		case "destination-id":
+			f.StringVar(&base.StringVar{
+				Name:   "destination-id",
+				Target: &c.flagDestinationId,
+				Usage:  "The ID of the target this alias points to.",
+			})
+		}
+	}
 }
 
 func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
@@ -39,7 +63,29 @@ func (c *Command) extraHelpFunc(helpMap map[string]func() string) string {
 	return c.Flags().Help()
 }
 
-func extraFlagsHandlingFuncImpl(c *Command, _ *base.FlagSets, _ *[]aliases.Option) bool {
+func extraFlagsHandlingFuncImpl(c *Command, _ *base.FlagSets, opts *[]aliases.Option) bool {
+	switch c.Func {
+	case "create":
+		if c.flagValue == "" {
+			c.UI.Error("Alias value must be passed in via -value")
+			return false
+		}
+		if c.flagDestinationId == "" {
+			c.UI.Error("Destination target ID must be passed in via -destination-id")
+			return false
+		}
+		*opts = append(*opts,
+			aliases.WithValue(c.flagValue),
+			aliases.WithDestinationId(c.flagDestinationId),
+		)
+	case "update":
+		if c.flagValue != "" {
+			*opts = append(*opts, aliases.WithValue(c.flagValue))
+		}
+		if c.flagDestinationId != "" {
+			*opts = append(*opts, aliases.WithDestinationId(c.flagDestinationId))
+		}
+	}
 	return true
 }
 
