@@ -258,7 +258,8 @@ This is the worker your client connects to. It carries a `worker-auth` KMS that 
 worker {
   name        = "public"
   description = "Public (ingress) worker"
-  public_addr = "public:9202"
+  # The CLI runs on the Docker host, so advertise the host-side published port.
+  public_addr = "127.0.0.1:9202"
 
   # The controller's cluster address. A worker with the shared key needs no
   # discovery; it just needs to know whom to talk to.
@@ -268,11 +269,6 @@ worker {
 listener "tcp" {
   address = "0.0.0.0"
   purpose = "proxy"
-}
-
-listener "tcp" {
-  address = "0.0.0.0"
-  purpose = "cluster"
 }
 
 kms "aead" {
@@ -288,9 +284,14 @@ docker run -d --name dm-public \
   --network net-front \
   --network-alias public \
   --cap-add IPC_LOCK \
+  -p 127.0.0.1:9202:9202 \
   -v "$DEMO/public-worker.hcl:/dumpling/config.hcl:ro" \
   dumpling:dev server -config /dumpling/config.hcl
 ```
+
+The published port is for the CLI running on the Docker host. The private
+worker reaches the same listener over Docker DNS as `public:9202`; no host port
+is needed for that container-to-container connection.
 
 ---
 
@@ -306,9 +307,10 @@ worker {
   description = "Private (egress) worker"
   public_addr = "private:9202"
 
-  # Register with the controller *through* the public worker: this is the
-  # public worker's cluster listener, not the controller's.
-  initial_upstreams = ["public:9201"]
+  # Register with the controller *through* the public worker. Worker-to-worker
+  # enrollment uses the public worker's proxy listener (9202), not a controller
+  # cluster listener.
+  initial_upstreams = ["public:9202"]
 
   # Turn on the egress behaviour and keep a pool of pre-established data plane
   # connections towards the upstream(s).
@@ -323,11 +325,6 @@ listener "tcp" {
   purpose = "proxy"
 }
 
-listener "tcp" {
-  address = "0.0.0.0"
-  purpose = "cluster"
-}
-
 kms "aead" {
   purpose   = "worker-auth"
   aead_type = "aes-gcm"
@@ -338,7 +335,7 @@ kms "aead" {
 
 Two things to notice:
 
-- `initial_upstreams` points at the **public worker's cluster listener** (`public:9201`). The private worker registers with the controller through the public worker, and on top of that keeps a permanent pool of data-plane connections to it (`internal/daemon/worker/dataplane_upstream.go`). Those pre-established connections are what let a session flow *back* to a worker nobody can dial.
+- `initial_upstreams` points at the **public worker's proxy listener** (`public:9202`). That listener handles worker-auth connections as well as client proxy traffic. The private worker registers with the controller through the public worker, and on top of that keeps a permanent pool of data-plane connections to it (`internal/daemon/worker/dataplane_upstream.go`). Those pre-established connections are what let a session flow *back* to a worker nobody can dial.
 - The `proxy` listener still binds `127.0.0.1` inside the container. The worker bootstrap requires one; nothing outside can reach it.
 
 ```sh
