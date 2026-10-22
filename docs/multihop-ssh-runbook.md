@@ -366,11 +366,13 @@ That is the pool of ten connections the private worker opened. No pool, no multi
 ```sh
 dumpling workers list -format json | jq -r '.items[].id' | while read id; do
   dumpling workers read -id "$id" -format json \
-    | jq '{name: .item.name, downstream: .item.downstream_worker_count}'
+    | jq '{name: .item.name, downstream_workers: (.item.directly_connected_downstream_workers // [])}'
 done
 ```
 
-The public worker reports `downstream_worker_count: 1`; the private worker `0`.
+The public worker's `downstream_workers` list should contain the private
+worker's ID; the private worker's list should be empty. (The API reports the
+IDs, not a `downstream_worker_count` field.)
 
 ---
 
@@ -438,30 +440,31 @@ docker exec dm-public  sh -c 'nc -vz dm-target 22 2>&1 | head -1 || true; echo "
 
 ## 8. Wire up the resources
 
-We use `-scope-global` throughout so there is no role or grant setup.
+We use the global scope (`-scope-id global`) throughout so there is no role or
+grant setup. The CLI reads the SSH private key from its file; it does not accept
+the literal key contents as a flag value.
 
 ```sh
 # A host catalog, a host set, and a host. The address is the *container* name,
 # because it is resolved by the private worker, which is on net-back.
-HC=$(dumpling host-catalogs create static -scope-global -format json | jq -r .item.id)
+HC=$(dumpling host-catalogs create static -scope-id global -format json | jq -r .item.id)
 HS=$(dumpling host-sets create static -host-catalog-id "$HC" -format json | jq -r .item.id)
 dumpling hosts create static -host-catalog-id "$HC" -address dm-target
 
 # A static credential store — no secrets manager required.
-CS=$(dumpling credential-stores create static -scope-global -format json | jq -r .item.id)
+CS=$(dumpling credential-stores create static -scope-id global -format json | jq -r .item.id)
 
 # The credential to inject: the private key from step 7, as user root.
-PRIV=$(cat "$DEMO/keys/target_key")
 CRED=$(dumpling credentials create ssh-private-key \
         -credential-store-id "$CS" \
         -username root \
-        -private-key "$PRIV" \
+        -private-key "file://$DEMO/keys/target_key" \
         -format json | jq -r .item.id)
 
 # The SSH target.
-T=$(dumpling targets create ssh -scope-global -name linux \
+T=$(dumpling targets create ssh -scope-id global -name linux \
       -default-port 22 -format json | jq -r .item.id)
-dumpling targets add-host-sets -id "$T" -host-set "$HS"
+dumpling targets add-host-sources -id "$T" -host-source "$HS"
 
 # Attach the credential as INJECTED, not brokered.
 dumpling targets set-credential-sources -id "$T" \
@@ -599,7 +602,7 @@ docker restart dm-target
 Create a Vault-flavoured credential store and library. Because the controller also runs in a container, the OpenBao address must be the container name:
 
 ```sh
-CSV=$(dumpling credential-stores create vault -scope-global \
+CSV=$(dumpling credential-stores create vault -scope-id global \
         -address "http://dm-openbao:8200" \
         -token root -format json | jq -r .item.id)
 
