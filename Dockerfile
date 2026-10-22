@@ -19,6 +19,7 @@
 # Build stage
 # ---------------------------------------------------------------------------
 FROM --platform=$BUILDPLATFORM golang:1.23-alpine AS build
+RUN apk add --no-cache bash
 
 # TARGETOS/TARGETARCH are provided automatically by BuildKit when --platform
 # is used, and used here to cross-compile a static binary.
@@ -34,6 +35,10 @@ COPY . .
 
 RUN --mount=type=cache,target=/go/pkg/mod \
     --mount=type=cache,target=/root/.cache/go-build \
+    CGO_ENABLED=0 \
+    GOOS=${TARGETOS:-linux} \
+    GOARCH=${TARGETARCH:-amd64} \
+    ./scripts/plugins.sh && \
     CGO_ENABLED=0 \
     GOOS=${TARGETOS:-linux} \
     GOARCH=${TARGETARCH:-amd64} \

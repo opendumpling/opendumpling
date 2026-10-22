@@ -33,7 +33,7 @@ Build the image once, from the repository root:
 
 ```sh
 cd /path/to/opendumpling
-docker build -t dumpling:dev .
+docker build --build-arg VERSION=0.0.0-dev -t dumpling:dev .
 ```
 
 And build the CLI you will drive the API with:
@@ -52,7 +52,7 @@ mkdir -p "$DEMO"
 cd "$DEMO"
 ```
 
-> **Podman note:** the commands below are Docker's. With Podman, substitute `podman` for `docker`; `docker network create`, `docker run`, `docker exec`, `docker logs` all have direct equivalents. Builds work too (`podman build -t dumpling:dev .`).
+> **Podman note:** the commands below are Docker's. With Podman, substitute `podman` for `docker`; `docker network create`, `docker run`, `docker exec`, `docker logs` all have direct equivalents. Build with the same version argument: `podman build --build-arg VERSION=0.0.0-dev -t dumpling:dev .`.
 
 ---
 
@@ -91,13 +91,35 @@ docker network create net-back
 
 That gap is the whole point. When you disconnect the private worker later and watch it fail, you will have proven the route.
 
+The HCL addresses `controller`, `public`, and `private` are Docker network
+aliases; the containers themselves are named `dm-controller`, `dm-public`, and
+`dm-private`. The run commands below attach the aliases on the networks where
+those names need to resolve. The target uses its container name, `dm-target`,
+directly.
+
 ---
 
-## 2. Database
+## 2. OpenBao and database
 
-The controller keeps its state in Postgres.
+The controller stores its state in Postgres. OpenBao Transit is used as the
+controller's **root KMS**; it is unrelated to the AWS host plugin (which is a
+separate host-discovery feature). This demo uses OpenBao's dev mode and root
+token, so do not reuse these settings in production.
 
 ```sh
+docker run -d --name dm-openbao \
+  --network net-front \
+  -p 8200:8200 \
+  openbao/openbao:2 server -dev -dev-root-token-id=root \
+    -dev-listen-address=0.0.0.0:8200
+
+until docker exec -e BAO_ADDR=http://127.0.0.1:8200 dm-openbao bao status >/dev/null 2>&1; do sleep 1; done
+
+docker exec -e BAO_ADDR=http://127.0.0.1:8200 -e BAO_TOKEN=root dm-openbao \
+  bao secrets enable -path=transit transit
+docker exec -e BAO_ADDR=http://127.0.0.1:8200 -e BAO_TOKEN=root dm-openbao \
+  bao write -f transit/keys/dumpling-root
+
 docker run -d --name dm-pg \
   --network net-front \
   -e POSTGRES_USER=dumpling \
@@ -108,34 +130,19 @@ docker run -d --name dm-pg \
 until docker exec dm-pg pg_isready -U dumpling >/dev/null 2>&1; do sleep 1; done
 ```
 
-Initialize the schema with the CLI, straight from the image:
-
-```sh
-docker run --rm --network net-front \
-  dumpling:dev \
-  database init \
-  -url "postgresql://dumpling:dumpling@dm-pg:5432/dumpling?sslmode=disable"
-```
-
-The output includes a dev password auth method id (`ampw_...`), the login name `admin`, and a password. Keep the auth method id handy for step 5.
-
----
-
-## 3. Controller
-
-Write `controller.hcl`:
+Create `$DEMO/controller.hcl` **before** initializing the database. The
+database URL is intentionally literal here: both `database init` and the
+controller need it, and the migration URL is supplied explicitly to init.
 
 ```hcl
-disable_mlock = true
+disable_mlock = false
 
-# The id a worker is configured with to find this cluster. It is also what the
-# controller reports at start up, so there is one value to hand to the workers.
 cluster_id = "c-demo"
 
 controller {
   name = "demo-controller"
   database {
-    url = "env://DB_URL"
+    url = "postgresql://dumpling:dumpling@dm-pg:5432/dumpling?sslmode=disable"
   }
   public_cluster_addr = "controller:9201"
 }
@@ -151,13 +158,18 @@ listener "tcp" {
   purpose = "cluster"
 }
 
-kms "aead" {
-  purpose   = "root"
-  aead_type = "aes-gcm"
-  key       = "sP1fnF5Xz85RrXyELHFeZg9Ad2qt4Z4bgNHVGtD6ung="
-  key_id    = "global_root"
+# The transit plugin uses OpenBao's API. The root token is only for this
+# throwaway dev-mode demo; use a narrowly scoped token outside the demo.
+kms "transit" {
+  purpose         = "root"
+  address         = "http://dm-openbao:8200"
+  token           = "root"
+  mount_path      = "transit"
+  key_name        = "dumpling-root"
+  disable_renewal = "true"
 }
 
+# Shared worker-auth key for this local demo. Workers must use the same key.
 kms "aead" {
   purpose   = "worker-auth"
   aead_type = "aes-gcm"
@@ -166,20 +178,45 @@ kms "aead" {
 }
 ```
 
+Initialize the schema using the full CLI command (the image entrypoint does not
+reliably dispatch the bare `database` subcommand). `IPC_LOCK` is needed because
+mlock is enabled in the config:
+
+```sh
+docker run --rm --network net-front --cap-add IPC_LOCK \
+  -v "$DEMO/controller.hcl:/dumpling/config.hcl:ro" \
+  dumpling:dev \
+  dumpling database init \
+  -config /dumpling/config.hcl \
+  -migration-url "postgresql://dumpling:dumpling@dm-pg:5432/dumpling?sslmode=disable"
+```
+
+The output includes a dev password auth method id (`ampw_...`), the login name
+`admin`, and a password. Keep the auth method id handy for step 4.
+
+---
+
+## 3. Controller
+
+The controller configuration was created in step 2, before database init.
 Start it, publishing the API port to your machine:
 
 ```sh
 docker run -d --name dm-controller \
   --network net-front \
+  --network-alias controller \
+  --cap-add IPC_LOCK \
   -p 9200:9200 \
-  -e DB_URL="postgresql://dumpling:dumpling@dm-pg:5432/dumpling?sslmode=disable" \
   -v "$DEMO/controller.hcl:/dumpling/config.hcl:ro" \
   dumpling:dev server -config /dumpling/config.hcl
 
 until curl -sf http://127.0.0.1:9200/health >/dev/null; do sleep 1; done
 ```
 
-The controller is now reachable from your shell at `127.0.0.1:9200` and from the other containers as `controller:9200` (API) and `controller:9201` (cluster).
+The controller is now reachable from your shell at `127.0.0.1:9200` and from
+the other containers as `controller:9200` (API) and `controller:9201` (cluster).
+The root KMS is OpenBao Transit; the AWS host plugin loaded by the controller is
+not a KMS and is not involved in encrypting Dumpling's data.
 
 ---
 
@@ -236,6 +273,8 @@ kms "aead" {
 ```sh
 docker run -d --name dm-public \
   --network net-front \
+  --network-alias public \
+  --cap-add IPC_LOCK \
   -v "$DEMO/public-worker.hcl:/dumpling/config.hcl:ro" \
   dumpling:dev server -config /dumpling/config.hcl
 ```
@@ -292,10 +331,12 @@ Two things to notice:
 ```sh
 docker run -d --name dm-private \
   --network net-front \
+  --network-alias private \
+  --cap-add IPC_LOCK \
   -v "$DEMO/private-worker.hcl:/dumpling/config.hcl:ro" \
   dumpling:dev server -config /dumpling/config.hcl
 
-docker network connect net-back dm-private
+docker network connect --alias private net-back dm-private
 ```
 
 ### Check the pool came up
@@ -514,15 +555,8 @@ docker network connect net-back dm-private
 
 To exercise the certificate library instead of a static key, add OpenBao.
 
-```sh
-docker run -d --name dm-openbao \
-  --network net-front \
-  -p 8200:8200 \
-  openbao/openbao:2 server -dev -dev-root-token-id=root \
-    -dev-listen-address=0.0.0.0:8200
-```
-
-Configure an SSH CA and a signing role using `bao` inside the container:
+Configure an SSH CA and a signing role using the same OpenBao container started
+in step 2:
 
 ```sh
 docker exec -e BAO_ADDR=http://127.0.0.1:8200 -e BAO_TOKEN=root dm-openbao \
