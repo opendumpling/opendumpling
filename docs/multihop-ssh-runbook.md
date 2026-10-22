@@ -199,7 +199,8 @@ docker run --rm --network net-front --cap-add IPC_LOCK \
 ```
 
 The output includes a dev password auth method id (`ampw_...`), the login name
-`admin`, and a password. Keep the auth method id handy for step 4.
+`admin`, a password, and an initial project scope ID (`p_...`). Keep the auth
+method ID for step 4 and the project scope ID for step 8.
 
 ---
 
@@ -440,19 +441,21 @@ docker exec dm-public  sh -c 'nc -vz dm-target 22 2>&1 | head -1 || true; echo "
 
 ## 8. Wire up the resources
 
-We use the global scope (`-scope-id global`) throughout so there is no role or
-grant setup. The CLI reads the SSH private key from its file; it does not accept
-the literal key contents as a flag value.
+Create these resources in the initial project scope printed by `database init`.
+Set `PROJECT_SCOPE_ID` to that `p_...` ID first. The CLI reads the SSH private
+key from its file; it does not accept the literal key contents as a flag value.
 
 ```sh
+export PROJECT_SCOPE_ID=<p_... from step 2>
+
 # A host catalog, a host set, and a host. The address is the *container* name,
 # because it is resolved by the private worker, which is on net-back.
-HC=$(dumpling host-catalogs create static -scope-id global -format json | jq -r .item.id)
+HC=$(dumpling host-catalogs create static -scope-id "$PROJECT_SCOPE_ID" -format json | jq -r .item.id)
 HS=$(dumpling host-sets create static -host-catalog-id "$HC" -format json | jq -r .item.id)
 dumpling hosts create static -host-catalog-id "$HC" -address dm-target
 
 # A static credential store — no secrets manager required.
-CS=$(dumpling credential-stores create static -scope-id global -format json | jq -r .item.id)
+CS=$(dumpling credential-stores create static -scope-id "$PROJECT_SCOPE_ID" -format json | jq -r .item.id)
 
 # The credential to inject: the private key from step 7, as user root.
 CRED=$(dumpling credentials create ssh-private-key \
@@ -462,7 +465,7 @@ CRED=$(dumpling credentials create ssh-private-key \
         -format json | jq -r .item.id)
 
 # The SSH target.
-T=$(dumpling targets create ssh -scope-id global -name linux \
+T=$(dumpling targets create ssh -scope-id "$PROJECT_SCOPE_ID" -name linux \
       -default-port 22 -format json | jq -r .item.id)
 dumpling targets add-host-sources -id "$T" -host-source "$HS"
 
@@ -602,7 +605,7 @@ docker restart dm-target
 Create a Vault-flavoured credential store and library. Because the controller also runs in a container, the OpenBao address must be the container name:
 
 ```sh
-CSV=$(dumpling credential-stores create vault -scope-id global \
+CSV=$(dumpling credential-stores create vault -scope-id "$PROJECT_SCOPE_ID" \
         -address "http://dm-openbao:8200" \
         -token root -format json | jq -r .item.id)
 
