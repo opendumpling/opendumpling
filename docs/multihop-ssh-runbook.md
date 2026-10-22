@@ -235,11 +235,16 @@ export DUMPLING_ADDR="http://127.0.0.1:9200"
 
 dumpling authenticate password \
   -auth-method-id <ampw_... from step 2> \
-  -login-name admin \
-  -password password
-
-export DUMPLING_TOKEN=<token from the output>
+  -login-name admin
 ```
+
+The CLI prompts for the password printed by `database init`. If you prefer to
+pass it non-interactively, set an environment variable and use
+`-password env://DUMPLING_PASSWORD`; a literal password value is not accepted by
+the flag. On success, the CLI stores the auth token in the OS keyring (Keychain
+on macOS); later `dumpling` commands read it from there automatically. It does
+not set `DUMPLING_TOKEN`, and you do not need to export the token. The keyring is
+local to the machine and user that ran `authenticate`.
 
 ---
 
@@ -254,11 +259,11 @@ worker {
   name        = "public"
   description = "Public (ingress) worker"
   public_addr = "public:9202"
-}
 
-# The controller's cluster address. A worker with the shared key needs no
-# discovery; it just needs to know whom to talk to.
-initial_upstreams = ["controller:9201"]
+  # The controller's cluster address. A worker with the shared key needs no
+  # discovery; it just needs to know whom to talk to.
+  initial_upstreams = ["controller:9201"]
+}
 
 listener "tcp" {
   address = "0.0.0.0"
