@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"io"
 	"net"
-	"strconv"
 	"sync"
 	"time"
 )
@@ -169,11 +168,12 @@ func ServeDataPlaneConn(ctx context.Context, conn net.Conn, next DataPlaneNextHo
 				continue
 			}
 			resp := &DataPlaneDialResponse{}
-			if host, port, err := net.SplitHostPort(req.Endpoint); err == nil {
-				resp.Ip = host
-				if parsed, err := strconv.ParseUint(port, 10, 32); err == nil {
-					resp.Port = uint32(parsed)
-				}
+			if addr, ok := epConn.RemoteAddr().(*net.TCPAddr); ok {
+				// Report the resolved address of the connection we actually opened,
+				// not the hostname from req.Endpoint. The controller stores this in
+				// an inet column, which cannot accept DNS names.
+				resp.Ip = addr.IP.String()
+				resp.Port = uint32(addr.Port)
 			}
 			if err := writeDataPlaneFrame(conn, resp); err != nil {
 				epConn.Close()

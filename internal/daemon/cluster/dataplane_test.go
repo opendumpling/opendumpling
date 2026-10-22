@@ -7,6 +7,7 @@ import (
 	"context"
 	"io"
 	"net"
+	"strconv"
 	"testing"
 	"time"
 
@@ -134,6 +135,52 @@ func TestDataPlaneDialToEgress(t *testing.T) {
 	case <-time.After(5 * time.Second):
 		t.Fatal("ServeDataPlaneConn did not return after the session ended")
 	}
+}
+
+func TestDataPlaneDialToEgressResolvesHostname(t *testing.T) {
+	t.Parallel()
+	ctx := context.Background()
+	endpoint := testDataPlaneEndpoint(t)
+	_, port, err := net.SplitHostPort(endpoint)
+	require.NoError(t, err)
+	endpoint = net.JoinHostPort("localhost", port)
+
+	egress, ingress := net.Pipe()
+	defer ingress.Close()
+	served := make(chan error, 1)
+	go func() {
+		served <- ServeDataPlaneConn(ctx, egress, nil)
+	}()
+
+	resp, err := DataPlaneDial(ctx, ingress, &DataPlaneDialRequest{Endpoint: endpoint})
+	require.NoError(t, err)
+	assert.Empty(t, resp.Error)
+	assert.NotNil(t, net.ParseIP(resp.Ip))
+	assert.NotEqual(t, "localhost", resp.Ip)
+	assert.Equal(t, uint32(mustParsePort(t, endpoint)), resp.Port)
+
+	_, err = ingress.Write([]byte("ping"))
+	require.NoError(t, err)
+	buf := make([]byte, 4)
+	_, err = io.ReadFull(ingress, buf)
+	require.NoError(t, err)
+	assert.Equal(t, "ping", string(buf))
+
+	require.NoError(t, ingress.Close())
+	select {
+	case <-served:
+	case <-time.After(5 * time.Second):
+		t.Fatal("ServeDataPlaneConn did not return after the session ended")
+	}
+}
+
+func mustParsePort(t *testing.T, endpoint string) uint64 {
+	t.Helper()
+	_, port, err := net.SplitHostPort(endpoint)
+	require.NoError(t, err)
+	parsed, err := strconv.ParseUint(port, 10, 32)
+	require.NoError(t, err)
+	return parsed
 }
 
 func TestDataPlaneDialToUnreachableEndpoint(t *testing.T) {

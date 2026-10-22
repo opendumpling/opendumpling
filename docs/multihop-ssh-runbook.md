@@ -516,10 +516,14 @@ The filters match on the worker's **name**, which is why the configs set `name =
 ## 10. Connect
 
 ```sh
-dumpling connect -target-id "$T" -format json
+dumpling connect ssh -target-id "$T"
 ```
 
-For an SSH target the CLI starts a local listener and execs your `ssh` client. You land as `root` on `dm-target`. On the target, the login is by **public key** — and the key came from the worker, not from you:
+The `ssh` subcommand starts a local listener and execs your `ssh` client. (The
+bare `dumpling connect -format json` form only prints the local proxy address
+and waits for a client to connect to it.) You land as `root` on `dm-target`. On
+the target, the login is by **public key** — and the key came from the worker,
+not from you:
 
 ```sh
 docker logs dm-target 2>&1 | tail -n 20
@@ -541,7 +545,7 @@ Watch which command the CLI runs. With injection, the client gets no key file an
 # brokered: the CLI writes a temp key and passes -i, because the client is
 # being handed the credential
 dumpling targets set-credential-sources -id "$T" -brokered-credential-source "$CRED"
-dumpling connect -target-id "$T" -format json
+dumpling connect ssh -target-id "$T"
 
 # back to injected
 dumpling targets set-credential-sources -id "$T" \
