@@ -174,3 +174,19 @@ func TestCreate(t *testing.T) {
 		})
 	}
 }
+
+func TestListFilterByValue(t *testing.T) {
+	ctx := context.Background()
+	_, _, _, aliasRepoFn, iamRepoFn := createDefaultAliasAndRepo(t)
+	s, err := aliases.NewService(ctx, aliasRepoFn, iamRepoFn)
+	require.NoError(t, err)
+
+	got, err := s.ListAliases(auth.DisabledAuthTestContext(iamRepoFn, scope.Global.String()), &pbs.ListAliasesRequest{
+		ScopeId:   scope.Global.String(),
+		Recursive: true,
+		Filter:    `"/item/value" == "default-org"`,
+	})
+	require.NoError(t, err)
+	require.Len(t, got.GetItems(), 1)
+	assert.Equal(t, "default-org", got.GetItems()[0].GetValue().GetValue())
+}

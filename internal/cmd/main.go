@@ -163,7 +163,7 @@ func RunCustom(args []string, runOpts *RunOptions) int {
 	}
 
 	switch format {
-	case "table", "json":
+	case "table", "json", "ssh-proxy":
 	default:
 		ui.Error(fmt.Sprintf("Invalid output format: %s", format))
 		return 1

@@ -293,6 +293,11 @@ func (c *Command) PrintCliError(err error) {
 		}
 		b, _ := JsonFormatter{}.Format(output)
 		c.UI.Error(string(b))
+	default:
+		// Unknown formats must never suppress errors. In particular, the
+		// ssh-proxy format must report failures to stderr without writing to
+		// stdout, which is reserved for the proxied byte stream.
+		c.UI.Error(err.Error())
 	}
 }
 

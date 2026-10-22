@@ -473,8 +473,8 @@ func (c *Command) FlagSet(bit FlagSetBit) *FlagSets {
 					Target:     &c.flagFormat,
 					Default:    "table",
 					EnvVar:     EnvDumplingCLIFormat,
-					Completion: complete.PredictSet("table", "json", "yaml"),
-					Usage:      "Print the output in the given format. Valid formats are \"table\" or \"json\".",
+					Completion: complete.PredictSet("table", "json", "yaml", "ssh-proxy"),
+					Usage:      "Print the output in the given format. Valid formats are \"table\" or \"json\"; \"ssh-proxy\" is reserved for dumpling connect's SSH ProxyCommand mode.",
 				})
 			}
 		}

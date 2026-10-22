@@ -15,7 +15,8 @@ import (
 )
 
 const (
-	sshSynopsis = "Authorize a session against a target and invoke an SSH client to connect"
+	sshSynopsis      = "Authorize a session against a target and invoke an SSH client to connect"
+	sshProxySynopsis = "Speak the SSH ProxyCommand protocol on stdin/stdout for use with an SSH client"
 )
 
 func sshOptions(c *Command, set *base.FlagSets) {

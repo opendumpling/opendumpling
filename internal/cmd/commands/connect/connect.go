@@ -20,16 +20,16 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/hashicorp/go-cleanhttp"
+	"github.com/hashicorp/go-secure-stdlib/base62"
+	"github.com/mitchellh/cli"
+	"github.com/mr-tron/base58"
 	"github.com/opendumpling/opendumpling/api"
 	"github.com/opendumpling/opendumpling/api/targets"
 	"github.com/opendumpling/opendumpling/globals"
 	"github.com/opendumpling/opendumpling/internal/cmd/base"
 	"github.com/opendumpling/opendumpling/internal/proxy"
 	targetspb "github.com/opendumpling/opendumpling/sdk/pbs/controller/api/resources/targets"
-	"github.com/hashicorp/go-cleanhttp"
-	"github.com/hashicorp/go-secure-stdlib/base62"
-	"github.com/mitchellh/cli"
-	"github.com/mr-tron/base58"
 	"github.com/posener/complete"
 	"go.uber.org/atomic"
 	exec "golang.org/x/sys/execabs"
@@ -75,6 +75,10 @@ type Command struct {
 	flagExec       string
 	flagUsername   string
 	flagDbname     string
+
+	// Alias
+	flagAlias        string
+	flagAliasScopeId string
 
 	// HTTP
 	httpFlags
@@ -125,6 +129,8 @@ func (c *Command) Synopsis() string {
 		return sshSynopsis
 	case "kube":
 		return kubeSynopsis
+	case "ssh-proxy":
+		return sshProxySynopsis
 	default:
 		return ""
 	}
@@ -141,6 +147,28 @@ func (c *Command) Help() string {
 			"  Example:",
 			"",
 			`      $ dumpling connect -target-id ttcp_1234567890`,
+			`      $ dumpling connect -format ssh-proxy -alias my-target`,
+			"",
+			"",
+		}) + c.Flags().Help()
+
+	case "ssh-proxy":
+		return base.WrapForHelpText([]string{
+			"Usage: dumpling connect ssh-proxy [options]",
+			"",
+			`  This command speaks the SSH ProxyCommand protocol on stdin/stdout. It is`,
+			`  meant to be invoked by an SSH client, not directly by a user, via a`,
+			`  ProxyCommand entry in ~/.ssh/config. When SSH runs the command it`,
+			`  forwards the SSH transport through Dumpling to the authorized target.`,
+			"",
+			"  Example:",
+			"",
+			`      $ dumpling connect -format ssh-proxy -alias my-target`,
+			"",
+			"  Or, in ~/.ssh/config:",
+			"",
+			`      Host my-target`,
+			`        ProxyCommand dumpling connect -format ssh-proxy -alias %h --`,
 			"",
 			"",
 		}) + c.Flags().Help()
@@ -199,6 +227,22 @@ func (c *Command) Flags() *base.FlagSets {
 	})
 
 	f.StringVar(&base.StringVar{
+		Name:       "alias",
+		Target:     &c.flagAlias,
+		EnvVar:     "DUMPLING_CONNECT_ALIAS",
+		Completion: complete.PredictAnything,
+		Usage:      "The value of an alias to resolve to a target, instead of specifying the target id. Mutually exclusive with -target-id, -target-name and -authz-token.",
+	})
+
+	f.StringVar(&base.StringVar{
+		Name:       "alias-scope-id",
+		Target:     &c.flagAliasScopeId,
+		EnvVar:     "DUMPLING_CONNECT_ALIAS_SCOPE_ID",
+		Completion: complete.PredictAnything,
+		Usage:      "Scope in which to resolve -alias. If unset, the alias is resolved by searching from the global scope down. Using this avoids ambiguity if the same alias value exists in more than one scope.",
+	})
+
+	f.StringVar(&base.StringVar{
 		Name:       "target-scope-id",
 		Target:     &c.FlagScopeId,
 		EnvVar:     "DUMPLING_CONNECT_TARGET_SCOPE_ID",
@@ -231,6 +275,9 @@ func (c *Command) Flags() *base.FlagSets {
 			Completion: complete.PredictAnything,
 			Usage:      `If set, the CLI will attempt to bind its listening port to the given value. If it cannot, the command will error.`,
 		})
+
+	case "ssh-proxy":
+		// SSH ProxyCommand mode has no command-specific flags.
 
 	case "http":
 		httpOptions(c, set)
@@ -275,9 +322,14 @@ func (c *Command) Run(args []string) (retCode int) {
 		c.PrintCliError(err)
 		return base.CommandUserError
 	}
+	stdioMode := c.Func == "ssh-proxy" || (c.Func == "connect" && base.Format(c.UI) == "ssh-proxy")
 
 	switch {
 	case c.flagAuthzToken != "":
+		if c.flagAliasScopeId != "" {
+			c.PrintCliError(errors.New(`-alias-scope-id requires -alias and cannot be used with -authz-token`))
+			return base.CommandUserError
+		}
 		switch {
 		case c.flagTargetId != "":
 			c.PrintCliError(errors.New(`-target-id and -authz-token cannot both be specified`))
@@ -285,8 +337,27 @@ func (c *Command) Run(args []string) (retCode int) {
 		case c.flagTargetName != "":
 			c.PrintCliError(errors.New(`-target-name and -authz-token cannot both be specified`))
 			return base.CommandUserError
+		case c.flagAlias != "":
+			c.PrintCliError(errors.New(`-alias and -authz-token cannot both be specified`))
+			return base.CommandUserError
+		}
+	case c.flagAlias != "":
+		switch {
+		case c.flagTargetId != "":
+			c.PrintCliError(errors.New(`-target-id and -alias cannot both be specified`))
+			return base.CommandUserError
+		case c.flagTargetName != "":
+			c.PrintCliError(errors.New(`-target-name and -alias cannot both be specified`))
+			return base.CommandUserError
+		case c.FlagScopeId != "" || c.FlagScopeName != "":
+			c.PrintCliError(errors.New(`-alias resolves its own scope; -target-scope-id and -target-scope-name cannot be specified with it`))
+			return base.CommandUserError
 		}
 	default:
+		if c.flagAliasScopeId != "" {
+			c.PrintCliError(errors.New(`-alias-scope-id requires -alias`))
+			return base.CommandUserError
+		}
 		if c.flagTargetId == "" &&
 			(c.flagTargetName == "" ||
 				(c.FlagScopeId == "" && c.FlagScopeName == "")) {
@@ -378,6 +449,15 @@ func (c *Command) Run(args []string) (retCode int) {
 		}
 		targetClient := targets.NewClient(client)
 
+		if c.flagAlias != "" {
+			targetId, err := c.resolveAlias(c.Context, client)
+			if err != nil {
+				c.PrintCliError(err)
+				return base.CommandUserError
+			}
+			c.flagTargetId = targetId
+		}
+
 		var opts []targets.Option
 		if len(c.flagHostId) != 0 {
 			opts = append(opts, targets.WithHostId(c.flagHostId))
@@ -463,6 +543,17 @@ func (c *Command) Run(args []string) (retCode int) {
 	transport.DialContext = func(ctx context.Context, network, addr string) (net.Conn, error) {
 		dialer := &tls.Dialer{Config: tlsConf}
 		return dialer.DialContext(ctx, network, addr)
+	}
+
+	if stdioMode {
+		// Speak the SSH ProxyCommand protocol directly on stdin/stdout. This
+		// is invoked by an SSH client and must not write anything to stdout
+		// other than the proxied bytes.
+		if err := c.runStdioProxy(workerAddr, transport, tofuToken); err != nil {
+			c.PrintCliError(err)
+			return base.CommandCliError
+		}
+		return base.CommandSuccess
 	}
 
 	c.listener, err = net.ListenTCP("tcp", &net.TCPAddr{

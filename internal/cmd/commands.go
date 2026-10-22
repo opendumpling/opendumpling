@@ -28,6 +28,7 @@ import (
 	"github.com/opendumpling/opendumpling/internal/cmd/commands/server"
 	"github.com/opendumpling/opendumpling/internal/cmd/commands/sessionrecordingscmd"
 	"github.com/opendumpling/opendumpling/internal/cmd/commands/sessionscmd"
+	"github.com/opendumpling/opendumpling/internal/cmd/commands/sshconfigcmd"
 	"github.com/opendumpling/opendumpling/internal/cmd/commands/storagebucketscmd"
 	"github.com/opendumpling/opendumpling/internal/cmd/commands/targetscmd"
 	"github.com/opendumpling/opendumpling/internal/cmd/commands/userscmd"
@@ -345,6 +346,12 @@ func initCommands(ui, serverCmdUi cli.Ui, runOpts *RunOptions) {
 			return &connect.Command{
 				Command: base.NewCommand(ui),
 				Func:    "ssh",
+			}, nil
+		},
+		"connect ssh-proxy": func() (cli.Command, error) {
+			return &connect.Command{
+				Command: base.NewCommand(ui),
+				Func:    "ssh-proxy",
 			}, nil
 		},
 
@@ -1117,6 +1124,12 @@ func initCommands(ui, serverCmdUi cli.Ui, runOpts *RunOptions) {
 			return &storagebucketscmd.Command{
 				Command: base.NewCommand(ui),
 				Func:    "update",
+			}, nil
+		},
+
+		"ssh-config": func() (cli.Command, error) {
+			return &sshconfigcmd.Command{
+				Command: base.NewCommand(ui),
 			}, nil
 		},
 

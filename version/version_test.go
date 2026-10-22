@@ -16,41 +16,41 @@ func TestFromVersionString(t *testing.T) {
 		want  *Info
 	}{
 		{
-			input: "Dumpling v0.12.0-beta+hcp.int (revision)",
+			input: "OpenDumpling v0.12.0-beta+dev.int (revision)",
 			want: &Info{
 				Revision:          "revision",
 				Version:           "0.12.0",
 				VersionPrerelease: "beta",
-				VersionMetadata:   "hcp.int",
+				VersionMetadata:   "dev.int",
 			},
 		},
 		{
-			input: "Dumpling v0.12.0+hcp.int",
+			input: "OpenDumpling v0.12.0+dev.int",
 			want: &Info{
 				Version:         "0.12.0",
-				VersionMetadata: "hcp.int",
+				VersionMetadata: "dev.int",
 			},
 		},
 		{
-			input: "Dumpling v0.12.0",
+			input: "OpenDumpling v0.12.0",
 			want: &Info{
 				Version: "0.12.0",
 			},
 		},
 		{
-			input: "0.12.0-alpha+hcp.int (revision)",
+			input: "0.12.0-alpha+dev.int (revision)",
 			want: &Info{
 				Revision:          "revision",
 				Version:           "0.12.0",
 				VersionPrerelease: "alpha",
-				VersionMetadata:   "hcp.int",
+				VersionMetadata:   "dev.int",
 			},
 		},
 		{
-			input: " 0.12.0-hcp+int ",
+			input: " 0.12.0-dev+int ",
 			want: &Info{
 				Version:           "0.12.0",
-				VersionPrerelease: "hcp",
+				VersionPrerelease: "dev",
 				VersionMetadata:   "int",
 			},
 		},
@@ -59,7 +59,7 @@ func TestFromVersionString(t *testing.T) {
 			want:  nil,
 		},
 		{
-			input: "Dumpling (version unknown)",
+			input: "OpenDumpling (version unknown)",
 			want:  nil,
 		},
 		{
@@ -82,27 +82,27 @@ func TestSemver(t *testing.T) {
 		want   *gvers.Version
 	}{
 		{
-			name: "0.12.0+hcp.int",
+			name: "0.12.0+dev.int",
 			toTest: &Info{
 				Version:         "0.12.0",
-				VersionMetadata: "hcp.int",
+				VersionMetadata: "dev.int",
 			},
-			want: gvers.Must(gvers.NewSemver("0.12.0+hcp.int")),
+			want: gvers.Must(gvers.NewSemver("0.12.0+dev.int")),
 		},
 		{
-			name: "0.12.0+hcp.int (revision)",
+			name: "0.12.0+dev.int (revision)",
 			toTest: &Info{
 				Version:         "0.12.0",
-				VersionMetadata: "hcp.int",
+				VersionMetadata: "dev.int",
 				Revision:        "revision",
 			},
-			want: gvers.Must(gvers.NewSemver("0.12.0+hcp.int")),
+			want: gvers.Must(gvers.NewSemver("0.12.0+dev.int")),
 		},
 		{
 			name: "unparsable",
 			toTest: &Info{
 				Version:         "some unparsable string",
-				VersionMetadata: "hcp.int",
+				VersionMetadata: "dev.int",
 			},
 			want: nil,
 		},
