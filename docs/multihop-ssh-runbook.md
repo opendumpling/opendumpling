@@ -455,7 +455,8 @@ echo "Using project scope $PROJECT_SCOPE_ID"
 # because it is resolved by the private worker, which is on net-back.
 HC=$(dumpling host-catalogs create static -scope-id "$PROJECT_SCOPE_ID" -format json | jq -r .item.id)
 HS=$(dumpling host-sets create static -host-catalog-id "$HC" -format json | jq -r .item.id)
-dumpling hosts create static -host-catalog-id "$HC" -address dm-target
+H=$(dumpling hosts create static -host-catalog-id "$HC" -address dm-target -format json | jq -r .item.id)
+dumpling host-sets add-hosts -id "$HS" -host "$H"
 
 # A static credential store — no secrets manager required.
 CS=$(dumpling credential-stores create static -scope-id "$PROJECT_SCOPE_ID" -format json | jq -r .item.id)
@@ -491,7 +492,7 @@ You can watch the difference in the CLI's own behaviour later.
 Without filters the controller takes the shortest path and the public worker would try to dial the target itself — and fail, because it cannot see it. The filters are the switch that routes the session through the private worker.
 
 ```sh
-dumpling targets update -id "$T" \
+dumpling targets update ssh -id "$T" \
   -ingress-worker-filter '"/name" == "public"' \
   -egress-worker-filter  '"/name" == "private"'
 ```
@@ -499,7 +500,7 @@ dumpling targets update -id "$T" \
 Verify:
 
 ```sh
-dumpling targets read -id "$T" | grep -i worker-filter
+dumpling targets read -id "$T" | grep -i 'worker filter'
 ```
 
 What happens at authorization time (`internal/daemon/worker/proxy/multihopdialer.go`):
