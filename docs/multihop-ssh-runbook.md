@@ -134,7 +134,8 @@ Create `$DEMO/controller.hcl` **before** initializing the database. The
 database URL is intentionally literal here: both `database init` and the
 controller need it, and the migration URL is supplied explicitly to init.
 
-```hcl
+```sh
+cat > "$DEMO/controller.hcl" <<'EOF'
 disable_mlock = false
 
 cluster_id = "c-demo"
@@ -183,6 +184,7 @@ kms "aead" {
   key       = "8fZBjCUfN0TzjEGLQldGY4+iE9AkOvCfjh7+p0GtRBQ="
   key_id    = "global_worker-auth"
 }
+EOF
 ```
 
 Initialize the schema using the full CLI command (the image entrypoint does not
@@ -190,17 +192,27 @@ reliably dispatch the bare `database` subcommand). `IPC_LOCK` is needed because
 mlock is enabled in the config:
 
 ```sh
+(umask 077; : > "$DEMO/database-init.json")
 docker run --rm --network net-front --cap-add IPC_LOCK \
   -v "$DEMO/controller.hcl:/dumpling/config.hcl:ro" \
   dumpling:dev \
   dumpling database init \
   -config /dumpling/config.hcl \
-  -migration-url "postgresql://dumpling:dumpling@dm-pg:5432/dumpling?sslmode=disable"
+  -migration-url "postgresql://dumpling:dumpling@dm-pg:5432/dumpling?sslmode=disable" \
+  -format json > "$DEMO/database-init.json"
+
+# This file contains the generated admin password. Keep it private.
+chmod 600 "$DEMO/database-init.json"
+export DUMPLING_AUTH_METHOD_ID="$(jq -r '.auth_method.auth_method_id' "$DEMO/database-init.json")"
+export DUMPLING_LOGIN_NAME="$(jq -r '.auth_method.login_name' "$DEMO/database-init.json")"
+export DUMPLING_PASSWORD="$(jq -r '.auth_method.password' "$DEMO/database-init.json")"
+export PROJECT_SCOPE_ID="$(jq -r '.project_scope.scope_id' "$DEMO/database-init.json")"
+echo "Initialized auth method $DUMPLING_AUTH_METHOD_ID and project scope $PROJECT_SCOPE_ID"
 ```
 
-The output includes a dev password auth method id (`ampw_...`), the login name
-`admin`, a password, and an initial project scope ID (`p_...`). Keep the auth
-method ID for step 4 and the project scope ID for step 8.
+The init response is saved locally rather than printed, so the generated
+password is not displayed in the terminal. The shell variables above are used
+by the next steps; they are available as long as you continue in this shell.
 
 ---
 
@@ -235,17 +247,16 @@ not a KMS and is not involved in encrypting Dumpling's data.
 export DUMPLING_ADDR="http://127.0.0.1:9200"
 
 dumpling authenticate password \
-  -auth-method-id <ampw_... from step 2> \
-  -login-name admin
+  -auth-method-id "$DUMPLING_AUTH_METHOD_ID" \
+  -login-name "$DUMPLING_LOGIN_NAME" \
+  -password env://DUMPLING_PASSWORD
+
+unset DUMPLING_PASSWORD
 ```
 
-The CLI prompts for the password printed by `database init`. If you prefer to
-pass it non-interactively, set an environment variable and use
-`-password env://DUMPLING_PASSWORD`; a literal password value is not accepted by
-the flag. On success, the CLI stores the auth token in the OS keyring (Keychain
-on macOS); later `dumpling` commands read it from there automatically. It does
-not set `DUMPLING_TOKEN`, and you do not need to export the token. The keyring is
-local to the machine and user that ran `authenticate`.
+On success, the CLI stores the auth token in the OS keyring (Keychain on macOS);
+later `dumpling` commands read it from there automatically. It does not set
+`DUMPLING_TOKEN`, and you do not need to export the token.
 
 ---
 
@@ -253,9 +264,10 @@ local to the machine and user that ran `authenticate`.
 
 This is the worker your client connects to. It carries a `worker-auth` KMS that matches the controller's, so it authenticates with the shared key and needs no registration. It is also the kind of worker that can accept *downstream* workers — the private one.
 
-`public-worker.hcl`:
+Write `public-worker.hcl`:
 
-```hcl
+```sh
+cat > "$DEMO/public-worker.hcl" <<'EOF'
 worker {
   name        = "public"
   description = "Public (ingress) worker"
@@ -278,6 +290,7 @@ kms "aead" {
   key       = "8fZBjCUfN0TzjEGLQldGY4+iE9AkOvCfjh7+p0GtRBQ="
   key_id    = "global_worker-auth"
 }
+EOF
 ```
 
 ```sh
@@ -300,9 +313,10 @@ is needed for that container-to-container connection.
 
 This worker dials *out* to the public worker and has no reachable inbound port of its own. It joins both networks so it can reach the target on `net-back` and the public worker on `net-front`.
 
-`private-worker.hcl`:
+Write `private-worker.hcl`:
 
-```hcl
+```sh
+cat > "$DEMO/private-worker.hcl" <<'EOF'
 worker {
   name        = "private"
   description = "Private (egress) worker"
@@ -332,6 +346,7 @@ kms "aead" {
   key       = "8fZBjCUfN0TzjEGLQldGY4+iE9AkOvCfjh7+p0GtRBQ="
   key_id    = "global_worker-auth"
 }
+EOF
 ```
 
 Two things to notice:
@@ -381,9 +396,12 @@ IDs, not a `downstream_worker_count` field.)
 
 The target must be reachable **only** from the private worker. We build a tiny sshd container, put it on `net-back` alone, and give it an authorized key.
 
-`target.Dockerfile`:
+Create the target build context and both files before building the image:
 
-```dockerfile
+```sh
+mkdir -p "$DEMO/target" "$DEMO/keys"
+
+cat > "$DEMO/target.Dockerfile" <<'EOF'
 FROM debian:12-slim
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -394,11 +412,11 @@ COPY bootstrap.sh /usr/local/bin/bootstrap.sh
 RUN chmod +x /usr/local/bin/bootstrap.sh
 EXPOSE 22
 CMD ["/usr/local/bin/bootstrap.sh"]
+EOF
 ```
 
-`target/bootstrap.sh`:
-
 ```sh
+cat > "$DEMO/target/bootstrap.sh" <<'EOF'
 #!/bin/bash
 set -e
 
@@ -415,18 +433,17 @@ fi
 
 ssh-keygen -A
 exec /usr/sbin/sshd -D -e
+EOF
 ```
 
 Generate a keypair — this is the credential that will be *injected*; your client will never see it:
 
 ```sh
-mkdir -p "$DEMO/target" "$DEMO/keys"
 ssh-keygen -t ed25519 -N "" -f "$DEMO/keys/target_key"
 cp "$DEMO/keys/target_key.pub" "$DEMO/keys/authorized_key.pub"
 : > "$DEMO/keys/dumpling.pub"    # no CA yet
 
-cd "$DEMO"
-docker build -t dm-target -f target.Dockerfile target
+docker build -t dm-target -f "$DEMO/target.Dockerfile" "$DEMO/target"
 docker run -d --name dm-target --network net-back -v "$DEMO/keys:/keys:ro" dm-target
 ```
 
@@ -441,14 +458,17 @@ docker exec dm-public  sh -c 'nc -vz dm-target 22 2>&1 | head -1 || true; echo "
 
 ## 8. Wire up the resources
 
-Create these resources in the project scope generated by `database init`.
-Resolve its ID from the controller so there is no need to copy it by hand. The
-CLI reads the SSH private key from its file; it does not accept the literal key
+Create these resources in the project scope generated by `database init`; its
+ID is already in `$PROJECT_SCOPE_ID`. If you started this demo before init
+saved JSON to a file, resolve the scope from the controller instead. The CLI
+reads the SSH private key from its file; it does not accept the literal key
 contents as a flag value.
 
 ```sh
-PROJECT_SCOPE_ID=$(dumpling scopes list -scope-id global -recursive -format json \
-  | jq -r '.items[] | select(.name == "Generated project scope") | .id')
+if [ -z "${PROJECT_SCOPE_ID:-}" ]; then
+  PROJECT_SCOPE_ID=$(dumpling scopes list -scope-id global -recursive -format json \
+    | jq -r '.items[] | select(.name == "Generated project scope") | .id')
+fi
 echo "Using project scope $PROJECT_SCOPE_ID"
 
 # A host catalog, a host set, and a host. The address is the *container* name,
@@ -517,7 +537,7 @@ Create a Dumpling alias for the SSH target in the same project scope:
 A=$(dumpling aliases create \
   -scope-id "$PROJECT_SCOPE_ID" \
   -name "Linux SSH demo" \
-  -value linux \
+  -value linux.dumpling \
   -destination-id "$T" \
   -format json | jq -r .item.id)
 ```
@@ -527,23 +547,18 @@ A=$(dumpling aliases create \
 ## 10. Connect
 
 ```sh
-dumpling ssh-config \
-  -scope-id "$PROJECT_SCOPE_ID" \
-  -binary "$(command -v dumpling)" > "$DEMO/ssh_config"
-
-# The SSH worker presents a per-session host key on the local proxy. Make this
-# demo alias use localhost semantics so OpenSSH does not pin that ephemeral key.
-cat >> "$DEMO/ssh_config" <<'EOF'
-Host linux
+cat > "$DEMO/ssh_config" <<EOF
+Host *.dumpling
   HostName localhost
   NoHostAuthenticationForLocalhost yes
+  ProxyCommand dumpling connect -format ssh-proxy -alias %n -alias-scope-id $PROJECT_SCOPE_ID
 EOF
 chmod 600 "$DEMO/ssh_config"
 
-ssh -F "$DEMO/ssh_config" linux
+ssh -F "$DEMO/ssh_config" linux.dumpling
 ```
 
-OpenSSH uses Dumpling's generated `ProxyCommand` to reach the alias. The
+OpenSSH uses Dumpling's `ProxyCommand` to reach the alias. The
 localhost setting is demo-specific: the worker currently ignores endpoint
 host-key verification, so OpenSSH cannot pin the target's real host key through
 this injected-credential proxy. You land as `root` on `dm-target`; the injected
@@ -571,7 +586,7 @@ Watch which command the CLI runs. With injection, the client gets no key file an
 # brokered: the CLI writes a temp key and passes -i, because the client is
 # being handed the credential
 dumpling targets set-credential-sources -id "$T" -brokered-credential-source "$CRED"
-ssh -F "$DEMO/ssh_config" linux
+dumpling connect ssh -alias linux.dumpling -alias-scope-id "$PROJECT_SCOPE_ID"
 
 # back to injected
 dumpling targets set-credential-sources -id "$T" \
