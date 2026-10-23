@@ -342,6 +342,9 @@ func registerGrpcGatewayEndpoints(ctx context.Context, gwMux *runtime.ServeMux, 
 	if err := services.RegisterGroupServiceHandlerFromEndpoint(ctx, gwMux, gatewayTarget, dialOptions); err != nil {
 		return fmt.Errorf("failed to register group service handler: %w", err)
 	}
+	if err := services.RegisterAliasServiceHandlerFromEndpoint(ctx, gwMux, gatewayTarget, dialOptions); err != nil {
+		return fmt.Errorf("failed to register alias service handler: %w", err)
+	}
 	if err := services.RegisterRoleServiceHandlerFromEndpoint(ctx, gwMux, gatewayTarget, dialOptions); err != nil {
 		return fmt.Errorf("failed to register role service handler: %w", err)
 	}
